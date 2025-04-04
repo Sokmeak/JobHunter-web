@@ -1,0 +1,55 @@
+<template>
+  <section class="companies-section py-5">
+    <div class="container">
+      <h5 class="text-muted mb-4">Companies we helped grow</h5>
+      <div class="row align-items-center">
+        <div class="col-6 col-md-3 mb-4 mb-md-0">
+          <img
+            src="data:image/png;base64,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"
+            alt="Vodafone"
+            class="img-fluid company-logo"
+          />
+        </div>
+        <div class="col-6 col-md-3 mb-4 mb-md-0">
+          <img
+            src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/7d/Intel_logo_%282006-2020%29.svg/250px-Intel_logo_%282006-2020%29.svg.png"
+            alt="Intel"
+            class="img-fluid company-logo"
+          />
+        </div>
+        <div class="col-6 col-md-3 mb-4 mb-md-0">
+          <img
+            src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAARwAAACxCAMAAAAh3/JWAAAAnFBMVEX///8AAAAAmmYAklfz+fd9fX0hn26GhoaEhIQAlV3V1dXS0tL09PTk8eu728wAmGKr1MGx1sVhs4/l5eWzs7OoqKh2dnbMzMzz8/Ph4eFwcHC9vb28vLxhYWFqamqampovLy9RUVGenp6Njo7U6N8XFxcpKSk9PT2urq5MTEw4ODghISF6vZ/0+vfG4dQAiUURERFEqH5TrYdwuJg0Xw4SAAAGwElEQVR4nO2cbVviOBSGW5URFcbZFUHGcQAdX2fdnd39//9tCxSbPDknSZsAe+lzf4TQpjdtcs5JoCgIIYQQQgghhBBCCCGEEEIIIYQQQgghhBBCCCGEEEIIIYQQQgghZL8cvR4l8rrvS9gef/51mMj5vi9hi/w4PEjj076vYJuk2nnXclLt6HKmvWOL/m2oK6N+07p3EdN57RPm68Dd7HI0iTr4kjQ7upxxiVwFetKzWg/CXb+2PnDavNF3zo3Mx6MoQ0l2dDluh44DHbEvaR7s+NQ+vCHnOChnycMswk+KHVXOpdCbVnLKRaD5FRy9tZyK58k27ahyHoSuXLaSU/b8ze8zyKlu0KCe7nY0OadiT9rJKb1D+CO27ianukNDo1tnO5qcr2I/rtvJ8bX/7jTuKqcsv23JjiZH7sVLSznlVGt757btLif0AHe1o8iRhmO4gCg52vT/5D92WznBwb+bHUXOT6UTN23l3IstJ9KxU+SUz9uwI8s5UzvhiyzE0O1RaHghHjpJjv9r62hHluOOlhv6beWU3512A/nQuhzjo1fT69sb8eN3+e2IcpTeQ0cj5bi9lkKoSDk1E+nbO8tuR5Rz65HjiV20jOjJbrZQmrWQU4XXgp6AnMqOl5M4Ob+scy5iu6Cmi1YQ6ya0XeRIg3oo9yuOhj6+OHYkOXBaiHn0iEvPpY1hfKY2aimnGDhTaqhs4OdzlBx7wDuGUoQeCHoKDW8R/je9TVs5bnY27malJkoOZMtTLC2oA59HzkPdRE7ZusrBvD6mhqQTJce+8ecF5ohqROErUS3kq0mTU4zgEP5i5Y8v3rej5NjnW5Yp4FnQAkFv/W7sHjpdDqb2D3rLohge/pYsB4bjgXtRWprnL27OiuIluxycsjwB/PDkJF2OPRyvnyHIoTvJKa/1uLuzHByTn9SGw5ODdDkwLEykF5VH25Zzv/C7qBKLDHIgMnBzlcZNBjkzsV834qteOaUz0wL96AK754pw+vO4ySDHPtcmL4JnWw4EUY53bqrmL8j9O8nBMV5xs0qrkuXYS0nNAGdHo/MoOd6oZu4URrrJgflKLD2u3aTLWVinaooxUBoUA0FHDqo2GWSSA6matBZRu0mWA2UoY/C33xADQVeOnkktb8kscmAiHQluNhedKkefs+0ESwwoBDlaDr76grPIgfKKO5e/uUmWY5/pq/EOTC1SICjJKZ4lN+tL2IYcZ91x2JS4EuXAGGE9wDDyCTmeKEeq1deFlyxy4MHFO8dwkyrn2dMpSLBmsXLcCX0zYO1gzDHdJMqB4RiuHy4xVg4+kE1BKIscWJq111gtN4lyoE8w6AbnBUWOU1nMKudFPQi6SZRjnwfXyeD5cMsDmhw7SGqUbyNCNiuluNyQJAdGFefWgATLibdUOWYcYCjIIceTWw1xKSZJzmOgS/B4OOvTupxiIRnPIQeedWN91XGTJAcHziAYCHrkFPP1a9YCXw450CXj+O5KS4qc8C5FAIv9PjnrRVS73JJBDiZvxqOeV05bN04g6JOzChNgU0EGOfNSbZlVDlbyI4BAyCunOJth3JguB7cRmXdmVjn+6rdMGzkuyXKcrSzmBJpTTuvheIk92+9ajrMZxNoplVNOD88Ugx0I7liOu1ZufVeCnM9d5XRxA4HgbuW4u89+Wu+7cg7+/l3hn+Va6FCVI+1gjMAKBHcp50rYC2zXbgU5B+cyh/+uPuHY2cjBOTEWMxDcnZxTqcAI9TdJjszJH/VH0E4tB1KUeTFQwBKBGQjuQs7gYnIpbyDHRDhazpsbx04tB74Jz48cMNMzAsGtyYkCdy7FyjHcVHbOBTn6FTvAA2hEdnuV41T8I+VYbsDOWg5Emt49vRhJ/z/kuKshcXLAjW1nLQciBv/vP6BbTUl7f3Lmwq0eJecQ3Vh2VnIiV+PlnjfRxd7kiDvHY+QIbkw7Kzkw/Ae2rGJG8xYI7knOg/xrlQg5opuiONrYWcrBHEX9HVDNwm7+Vmvei5xfwgJwpBzFTWNnKQeGY/+Pqgq3wrSRuQc5z/rwGJTjjMWmnfONnOitYxugh5tAcNdyHm99v+EJyfG42dj55G46DF6U89uIOv7qtTyOLidcsV3cXQc2HQfkeN3Udio5l+OeSfCPB6qsz/7EuL63R9bL4e3kU7u9+Y8E9gka+sd3t0/X05jN2H45ATdrO+/3vyy8coJuVnY+ppwIN0Xx+jHlRLmp7p13LEf/2VmcmypW3moH94r6l13v+K+4CCGEEEIIIYQQQgghhBBCCCGEEEIIIYQQQgghhBBCCCGEEEII+bD8B3cJd0Fx44pnAAAAAElFTkSuQmCC"
+            alt="AMD"
+            class="img-fluid company-logo"
+          />
+        </div>
+        <div class="col-6 col-md-3">
+          <img
+            src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAASwAAACoCAMAAABt9SM9AAAAdVBMVEX///8AAAC/v7/09PSioqLS0tIwMDD6+vrl5eV7e3vx8fF4eHjLy8tQUFBGRkarq6vY2NiOjo7e3t6EhIS3t7cXFxcMDAyampo+Pj5hYWHb29uwsLDs7OwgICCgoKBXV1dsbGwsLCyJiYm8vLxlZWU3NzckJCSrYnspAAAE5klEQVR4nO2d13KrQAyGg4MDbsENN1xTzvs/4okhTgyIErMrrTT67pmR/lkWrcry9KQoiqIoiqIoimKTPbUBTJj724Pn7ajNYMB04WX0qS1xnuTi3RhT2+I4vneHilVHz8sxpbbHYYaTvFZeSG2Ruyy9ItQWucuopFVMbZKzvJa08rbUNrnKS1krb01tlKNAWunHEKb4GdT9vZoFqNWA2iwneQe10pMhxBDW6oXaLicBgoYrS2q7XKQcuKesqO1yElgrr0dtl4usYa1eqe1ykoqFpfl3gCOslU9tl5PEoFYTarOcpA8vLGqz3GQAaqUZUhBQKz3ngISQVhphwUSqVXvKeXetFVZSTvrNqU1yl1VBqteA2iKHKWilcXsdOalOQ2pz3OZeKq3lNPAj1ZsG7Y0cPO8wWUT6CUwJ5j1/NjiPZlH/ue0zu2gwyYqum8nAH7d+jjXD5SCfgBkljVt4fw2UL0aJdMEisGizWdekQPtAQH8LwCI8y7GZV7vtvfjgOpnOqh/J1pfMnS08Nfh9ei88sV9fGh5JH5P3yQxqVtUv59/kQuiDPTQQ0tofKmqm0EI5ToNgvGitVIqopMTHn1x/gAW1h8YIi2kEC2yonTTE2L5UX8QiDtwJilZfCIhRoYS6HVbsc4QV/XtW+KR2tiMVtWVLnKnd7URFr6M1WJ8V/xZadmZG7W8X3lClilmfqaeoWp2p3e3GAVMr1ttVZfueHZgfpQNMrbhXzODRG9UKAnNhse9HakqeG4T/uCaeVidqVzuDeIBmn2yoGuqyAP85sWc0rQTkk/1mLw0hoON7i6WVgIWF9y1kH2JhJkipPTUA2pYlobhqvQJ9g3myIQVLKwlvIZpYEr6Fcyyx3qg9NUCv2U0z8D/qIJbsJezvaLks1sWvb1q1RJpAQpsRmljUjprgrGK1By3nQO2oCdDE4p9RRhRLwkU+aOdoCffoo23wEoJStNAhofbUAPDFOxaQkPtDO+5IuIgTrxBG7akB0FI0EnZ4vGbSEbWr3cEr3kt4D/HEKo4KM+SCJpaAkgVaCC+hMQQvdhBwgzDO8GoG+9YQ1Gkwamc7gzmJcqZ2titoeYcr3MMHvMnoK8wvWNmjisV98B5XrJh35QIt/ydBLcxIK4VzoQd12jCF87kHrRz2A+PhMLQraH555dtUgy+W5x2pnX6Upiv+rBAzrSTiVS3y8Dz8EInFM2WDOX5/B7XbjwH+5MQ6XCv6GwqxuDYwU2zxfG9nIxCL7/09qFf3ZFC73AF0rThPPiHesZLBOWWKnajh3VSDvLQ4ZwCxlxbvhYXa9cB7x0pB1IrzpzADMYyndtUA5b8VWoJp3i8HVnGa76nwnor/2JuGa7qhAMp11Px39wyMLGBM7aQxEBqQJEwefmO9LMa4Gl3C9qmHf8vyPZavauNbtwexGj8ImA3LYzGQ51r9qsHaD8MEjO+UsBZtse6QrMJS56SQY04RK7GpuM39hoWMPN+iaiPGG2skRe4lDP/jSbRWLQoY23XS6+92/V4yazxRSrhMspa6nPw2KRT+Qr/ujwWcO99bsr9UKAX3Nz5HFbnDE/vCVyuAc2J8rHF9B00v8mwdfYBh/qu4mjX+kamXH5z6FL9b3RMsv3fvw0fScrRynow+r+fLf9uI+TDmIwRhyLuRQ1EURVEURTHCf8eYSCcC+BLCAAAAAElFTkSuQmCC"
+            alt="Company"
+            class="img-fluid company-logo"
+          />
+        </div>
+        
+      </div>
+    </div>
+  </section>
+</template>
+
+<script>
+export default {
+  name: "CompaniesSection",
+};
+</script>
+
+<style scoped>
+.company-logo {
+  opacity: 0.6;
+  transition: opacity 0.3s;
+}
+
+.company-logo:hover {
+  opacity: 1;
+}
+</style>

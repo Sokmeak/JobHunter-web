@@ -1,11 +1,19 @@
-
-
-<script setup>
-
+<script>
+import Landing from "./pages/Landing.vue";
+export default {
+  name: "App",
+  components: {
+    Landing,
+  },
+};
 </script>
 
-<!-- <template>
-  <div class="container">
+<template>
+  <div id="app">
+    <Landing />
+  </div>
+
+  <!-- <div class="container">
     <h1>Welcome to JobHunter platform.</h1>
     <h2>Find your dream job with us!</h2>
     <h3>Explore thousands of job listings.</h3>
@@ -17,19 +25,8 @@
         Learn More</a
       >
     </button>
-  </div>
-</template> -->
-
-<template>
-  <div class="container mx-auto p-4">
-    <h1 class="text-4xl font-bold text-blue-500">Hello, Tailwind!</h1>
-    <button class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">
-      Click Me
-    </button>
-  </div>
+  </div> -->
 </template>
-
-
 
 <style scoped>
 /* .container {
@@ -40,8 +37,8 @@
   height: 100vh;
   background-color: #f0f0f0;
   font-family: "Arial", sans-serif;
-}
-h1 {
+} */
+/* h1 {
   color: #42b983;
   font-size: 2em;
   text-align: center;
@@ -72,3 +69,24 @@ button a {
   text-decoration: none;
 } */
 </style>
+
+<!-- 
+
+
+    <div class="body">
+      <div class="card" style="width: 18rem">
+        <img src="./assets/images/PP.png" class="card-img-top" alt="..." />
+        <div class="card-body">
+          <h5 class="card-title">Card title</h5>
+          <p class="card-text">
+            Some quick example text to build on the card title and make up the
+            bulk of the card's content.
+          </p>
+          <a
+            href="https://en.wikipedia.org/wiki/Phnom_Penh"
+            class="btn btn-primary"
+            >Learn more</a
+          >
+        </div>
+      </div>
+    </div>-->
