@@ -5,6 +5,14 @@
     <h1>Welcome to JobHunter platform.</h1>
     <h2>Find your dream job with us!</h2>
     <h3>Explore thousands of job listings.</h3>
+    <button>
+      <a
+        href="https://www.figma.com/proto/OxXC4tfeREC8IKuZfRcaBR/JobHunter----Website?page-id=0%3A1&node-id=1-5747&viewport=10915%2C-111%2C0.58&t=1QFxHa5Ft3VQyozW-1&scaling=min-zoom&content-scaling=fixed&starting-point-node-id=1%3A5827"
+        target="_blank"
+      >
+        Learn More</a
+      >
+    </button>
   </div>
 </template>
 
@@ -28,5 +36,23 @@ h1 {
   letter-spacing: 2px;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
   transition: all 0.3s ease;
+}
+button {
+  background-color: #42b983;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-size: 1em;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+button:hover {
+  background-color: #36a372;
+  transform: scale(1.05);
+}
+button a {
+  color: white;
+  text-decoration: none;
 }
 </style>
