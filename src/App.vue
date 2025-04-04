@@ -1,11 +1,15 @@
-<script setup></script>
 
-<template>
+
+<script setup>
+
+</script>
+
+<!-- <template>
   <div class="container">
     <h1>Welcome to JobHunter platform.</h1>
     <h2>Find your dream job with us!</h2>
     <h3>Explore thousands of job listings.</h3>
-    <button>
+    <button class="btn btn-primary btn-lg">
       <a
         href="https://www.figma.com/proto/OxXC4tfeREC8IKuZfRcaBR/JobHunter----Website?page-id=0%3A1&node-id=1-5747&viewport=10915%2C-111%2C0.58&t=1QFxHa5Ft3VQyozW-1&scaling=min-zoom&content-scaling=fixed&starting-point-node-id=1%3A5827"
         target="_blank"
@@ -14,10 +18,21 @@
       >
     </button>
   </div>
+</template> -->
+
+<template>
+  <div class="container mx-auto p-4">
+    <h1 class="text-4xl font-bold text-blue-500">Hello, Tailwind!</h1>
+    <button class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">
+      Click Me
+    </button>
+  </div>
 </template>
 
+
+
 <style scoped>
-.container {
+/* .container {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -40,13 +55,14 @@ h1 {
 button {
   background-color: #42b983;
   color: white;
-  border: none;
   padding: 10px 20px;
-  font-size: 1em;
-  cursor: pointer;
+  border: none;
   border-radius: 5px;
-  transition: background-color 0.3s ease, transform 0.3s ease;
+  font-size: 1.2em;
+  cursor: pointer;
+  transition: all 0.3s ease;
 }
+
 button:hover {
   background-color: #36a372;
   transform: scale(1.05);
@@ -54,5 +70,5 @@ button:hover {
 button a {
   color: white;
   text-decoration: none;
-}
+} */
 </style>
