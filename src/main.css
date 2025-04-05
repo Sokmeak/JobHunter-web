@@ -2,7 +2,42 @@
 
 #app {
   font-family: "Epilogue", sans-serif;
-  font-optical-sizing: auto;
+}
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+.primary-color {
+  color: #4640de;
+}
+.secondary-color {
+  color: #ccccf5;
+}
+.teriary-color {
+  color: #e7f6fd;
+}
+
+.cyan-accent-color {
+  color: #26a4ff;
+}
+
+.red-accent-color {
+  color: #ff6550;
+}
+.green-accent-color {
+  color: #56cdad;
+}
+.purple-accent-color {
+  color: #7b61ff;
+}
+
+.yellow-accent-color {
+  color: #ffb836;
+}
+.neutral-color {
+  color: #25324b;
 }
 
 /* #app {

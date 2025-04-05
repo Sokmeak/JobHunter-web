@@ -1,0 +1,43 @@
+/* src/assets/styles/global.scss */
+
+@use "./variables" as *;
+
+.primary-color {
+  color: $primary-color;
+}
+
+.bg-primary-color {
+  background-color: $bg-primary-color;
+}
+
+.secondary-color {
+  color: $secondary-color;
+}
+
+.teriary-color {
+  color: $teriary-color;
+}
+
+.cyan-accent-color {
+  color: $cyan-accent-color;
+}
+
+.red-accent-color {
+  color: $red-accent-color;
+}
+
+.green-accent-color {
+  color: $green-accent-color;
+}
+
+.purple-accent-color {
+  color: $purple-accent-color;
+}
+
+.yellow-accent-color {
+  color: $yellow-accent-color;
+}
+
+.neutral-color {
+  color: $neutral-color;
+}

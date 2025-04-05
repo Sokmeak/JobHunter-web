@@ -35,7 +35,7 @@
       </div>
 
       <div class="card-item d-flex justify-content-between">
-        <a href="#" class="btn btn-sm btn-outline-primary">Apply</a>
+        <a href="#" class="apply-btn btn btn-sm btn-outline-primary">Apply</a>
         <button class="btn btn-sm btn-link text-muted">
           <i class="bi bi-bookmark"></i>
         </button>
@@ -88,7 +88,7 @@ export default {
 }
 
 .apply-btn:hover {
-  background-color: #4640de !important;
-  color: white !important;
+  background-color: #4640de;
+  color: white;
 }
 </style>

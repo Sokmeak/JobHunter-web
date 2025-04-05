@@ -2,9 +2,11 @@
   <section class="latest-jobs py-5 bg-light">
     <div class="container">
       <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2 class="mb-0">Latest <span class="text-primary">jobs open</span></h2>
-        <a href="#" class="text-decoration-none text-primary"
-          >Show all jobs <i class="bi bi-arrow-right"></i
+        <h2 class="mb-0">
+          Latest <span class="cyan-accent-color">jobs open</span>
+        </h2>
+        <a href="#" class="text-decoration-none primary-color">
+          Show all jobs <i class="bi bi-arrow-right"></i
         ></a>
       </div>
 

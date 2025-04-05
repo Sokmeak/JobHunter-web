@@ -1,34 +1,20 @@
 <script>
-import Landing from "./pages/Landing.vue";
-import { RouterView } from "vue-router";
+import Layout from "./pages/Layout.vue";
+import NavBar from "./components/NavBar.vue";
+import Footer from "./components/Footer.vue";
 
 export default {
   name: "App",
   components: {
-    Landing,
+    NavBar,
+    Layout,
+    Footer,
   },
 };
 </script>
 
 <template>
-  <div id="app">
-    <RouterView/>
-    
-  </div>
-
-  <!-- <div class="container">
-    <h1>Welcome to JobHunter platform.</h1>
-    <h2>Find your dream job with us!</h2>
-    <h3>Explore thousands of job listings.</h3>
-    <button class="btn btn-primary btn-lg">
-      <a
-        href="https://www.figma.com/proto/OxXC4tfeREC8IKuZfRcaBR/JobHunter----Website?page-id=0%3A1&node-id=1-5747&viewport=10915%2C-111%2C0.58&t=1QFxHa5Ft3VQyozW-1&scaling=min-zoom&content-scaling=fixed&starting-point-node-id=1%3A5827"
-        target="_blank"
-      >
-        Learn More</a
-      >
-    </button>
-  </div> -->
+  <RouterView />
 </template>
 
 <style scoped>
@@ -93,3 +79,17 @@ button a {
         </div>
       </div>
     </div>-->
+
+<!-- <div class="container">
+    <h1>Welcome to JobHunter platform.</h1>
+    <h2>Find your dream job with us!</h2>
+    <h3>Explore thousands of job listings.</h3>
+    <button class="btn btn-primary btn-lg">
+      <a
+        href="https://www.figma.com/proto/OxXC4tfeREC8IKuZfRcaBR/JobHunter----Website?page-id=0%3A1&node-id=1-5747&viewport=10915%2C-111%2C0.58&t=1QFxHa5Ft3VQyozW-1&scaling=min-zoom&content-scaling=fixed&starting-point-node-id=1%3A5827"
+        target="_blank"
+      >
+        Learn More</a
+      >
+    </button>
+  </div> -->

@@ -1,6 +1,6 @@
 <template>
-  <a
-    href="/"
+  <router-link
+    to="/"
     class="d-flex align-items-center text-dark text-decoration-none gap-2"
   >
     <svg
@@ -44,10 +44,11 @@
         </clipPath>
       </defs>
     </svg>
+
     <span class="brandName" :style="{ color: brandColor || 'black' }"
       >JobHunter</span
     >
-  </a>
+  </router-link>
 </template>
 
 <script>
@@ -62,7 +63,7 @@ export default {
 <style>
 .brandName {
   font-family: "ClashDisplay-Medium", sans-serif;
-  
+
   font-weight: 500;
   font-size: 24px;
 }

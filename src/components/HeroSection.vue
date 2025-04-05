@@ -13,7 +13,7 @@
         <div class="col-lg-8">
           <h1 class="display-5 fw-bold mb-3">
             Discover<br />more than<br />
-            <span class="text-secondary">5000+ Jobs</span>
+            <span class="cyan-accent-color">5000+ Jobs</span>
           </h1>
           <img
             src="../assets/images/highlight.svg"
@@ -73,7 +73,11 @@
                 </div>
               </div>
               <div class="col-md-3">
-                <button class="btn btn-primary">Search my job</button>
+                <button
+                  class="btn btn-primary bg-primary-color hovered-btn-primary"
+                >
+                  Search my job
+                </button>
               </div>
             </div>
           </div>
@@ -200,18 +204,15 @@
 }
 
 /* Override Bootstrap colors */
-.btn-primary {
+/* .btn-primary {
   background-color: #6366f1;
   border-color: #6366f1;
 }
 
+*/
 .btn-primary:hover {
   background-color: #4f46e5;
   border-color: #4f46e5;
-}
-
-.text-primary {
-  color: #6366f1 !important;
 }
 
 /* Make sure content is above the background */
