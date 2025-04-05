@@ -1,5 +1,12 @@
 /* Custom Bootstrap variables */
-$primary: #4640DE;
+$primary: #4640de;
+$secondary: #26a4ff;
+$primary-light: #7b61ff;
+
+$success: #56cdad;
+$warning: #ffb836;
+
+$fail: #ff6550;
 
 /* Import Bootstrap */
-@import 'bootstrap/scss/bootstrap';
+@import "bootstrap/scss/bootstrap";

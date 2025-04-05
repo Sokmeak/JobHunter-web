@@ -1,5 +1,7 @@
 <script>
 import Landing from "./pages/Landing.vue";
+import { RouterView } from "vue-router";
+
 export default {
   name: "App",
   components: {
@@ -10,7 +12,8 @@ export default {
 
 <template>
   <div id="app">
-    <Landing />
+    <RouterView/>
+    
   </div>
 
   <!-- <div class="container">

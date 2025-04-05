@@ -27,6 +27,8 @@
           <a href="#" class="btn btn-link text-dark text-decoration-none me-2"
             >Login</a
           >
+          <span class="divider"></span>
+
           <a href="#" class="btn btn-primary px-4">Sign Up</a>
         </div>
       </div>
@@ -43,3 +45,11 @@ export default {
   },
 };
 </script>
+
+<style>
+.divider {
+  height: 2rem;
+  border-left: 1px solid #939393;
+  margin: 3px 15px;
+}
+</style>
