@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router";
-import LandingPage from "../pages/views/Landing.vue";
-import FindJobs from "@/pages/views/FindJobs.vue";
-import BrowseCompanies from "@/pages/views/BrowseCompanies.vue";
+import LandingPage from "../pages/views/landing/Landing.vue";
+import FindJobs from "@/pages/views/landing/FindJobs.vue";
+import BrowseCompanies from "@/pages/views/landing/BrowseCompanies.vue";
 import Layout from "@/pages/Layout.vue";
 import UserDashboard from "@/pages/views/applicants/UserDashboard.vue";
 import MyApplications from "@/pages/views/applicants/MyApplications.vue";

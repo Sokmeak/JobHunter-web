@@ -8,9 +8,9 @@
 
 <script>
 import { RouterLink, RouterView } from "vue-router";
-import Landing from "./views/Landing.vue";
-import NavBar from "@/components/NavBar.vue";
-import Footer from "@/components/Footer.vue";
+import Landing from "./views/landing/Landing.vue";
+import NavBar from "@/components/sharecomponents/NavBar.vue";
+import Footer from "@/components/sharecomponents/Footer.vue";
 
 export default {
   components: {

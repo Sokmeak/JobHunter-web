@@ -128,7 +128,7 @@
           <img
             width="150"
             height="150"
-            src="../assets/images/youtube.svg"
+            src="../../assets/images/youtube.svg"
             class="img-fluid company-logo"
             alt="YouTube logo"
           />

@@ -1,5 +1,6 @@
 @import url("/src/css/clash-display.css");
 
+
 #app {
   font-family: "Epilogue", sans-serif;
 }
@@ -8,7 +9,7 @@
   margin: 0;
   padding: 0;
 }
-
+/* 
 .primary-color {
   color: #4640de;
 }
@@ -38,7 +39,7 @@
 }
 .neutral-color {
   color: #25324b;
-}
+} */
 
 /* #app {
   font-family: ClashDisplay-medium;

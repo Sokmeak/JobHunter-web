@@ -109,7 +109,8 @@ export default {
 };
 </script>
 
-<style scoped>
+<style lang="css" scoped>
+@import "@/style/variables.css"; /* Import your CSS variables here */
 .footer {
   background-color: #1e2235;
   color: #ffffff;
@@ -182,11 +183,11 @@ export default {
 .form-control:focus {
   background-color: rgba(255, 255, 255, 0.15);
   box-shadow: none;
-  border-color: #4640de;
+  border-color: var(--primary-color);
 }
 
 .subscribe-btn {
-  background-color: #4640de;
+  background-color: var(--primary-color);
   color: white;
   border: none;
   padding: 0 24px;
@@ -195,7 +196,7 @@ export default {
 }
 
 .subscribe-btn:hover {
-  background-color: #3530c0;
+  background-color:var(--primary-color);
 }
 
 .social-link {
@@ -211,7 +212,7 @@ export default {
 }
 
 .social-link:hover {
-  background-color: #4640de;
+  background-color: var(--primary-color);
   transform: translateY(-3px);
 }
 

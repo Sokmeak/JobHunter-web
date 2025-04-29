@@ -3,7 +3,6 @@ import "./main.css";
 
 import "bootstrap/dist/css/bootstrap.css";
 
-import "./style/global.scss";
 
 
 import "bootstrap-icons/font/bootstrap-icons.css";

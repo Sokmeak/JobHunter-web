@@ -11,7 +11,7 @@
         </div>
         <div class="col-lg-6">
           <img
-            src="../assets/images/CTA.png"
+            src="../../assets/images/CTA.png"
             alt="Dashboard"
             class="img-fluid rounded shadow"
           />
