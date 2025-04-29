@@ -1,20 +1,16 @@
 <script>
-import Layout from "./pages/Layout.vue";
-import NavBar from "./components/NavBar.vue";
-import Footer from "./components/Footer.vue";
+
 
 export default {
   name: "App",
-  components: {
-    NavBar,
-    Layout,
-    Footer,
-  },
+  
 };
 </script>
 
 <template>
   <RouterView />
+  <!-- <DashboardView />
+  <Sidebar/> -->
 </template>
 
 <style scoped>
@@ -25,7 +21,7 @@ export default {
   justify-content: center;
   height: 100vh;
   background-color: #f0f0f0;
-  font-family: "Arial", sans-serif;
+  font-family: "Arial", sans-serif;`
 } */
 /* h1 {
   color: #42b983;

@@ -16,7 +16,7 @@ import CategorySection from "@/components/CategorySection.vue";
 import JobPostingCTA from "@/components/JobPostingCTA.vue";
 import FeaturedJobs from "@/components/FeaturedJob.vue";
 import LatestJobs from "@/components/LatestJobs.vue";
-
+ 
 export default {
   name: "Landing",
   components: {
