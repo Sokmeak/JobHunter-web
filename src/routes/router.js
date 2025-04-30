@@ -3,6 +3,8 @@ import LandingPage from "../pages/views/Landing.vue";
 import FindJobs from "@/pages/views/FindJobs.vue";
 import BrowseCompanies from "@/pages/views/BrowseCompanies.vue";
 import Layout from "@/pages/Layout.vue";
+import DashboardAdmin from '@/pages/views/DashboardAdmin.vue'
+
 
 const routes = [
   {
@@ -31,6 +33,9 @@ const routes = [
         props: true,
       },
     ],
+  },
+  {
+    path: '/admin-dashboard', component: DashboardAdmin, name: "DashboardAdmin", props: true,
   },
 ];
 
