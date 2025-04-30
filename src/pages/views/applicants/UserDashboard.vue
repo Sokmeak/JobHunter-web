@@ -1,11 +1,11 @@
 <template>
   <div class="d-flex">
     <!-- Sidebar -->
-    <SidebarNavigation :user="user" />
+    <!-- <SidebarNavigation :user="user" /> -->
 
     <!-- Main Content -->
     <div class="flex-grow-1 vh-100 overflow-auto">
-      <DashboardHeader />
+      <DashboardHeader title="Dashboard" />
 
       <div class="container-fluid py-4">
         <GreetingSection :user-name="user.name" :date-range="dateRange" />
@@ -46,7 +46,6 @@
 </template>
 
 <script>
-import SidebarNavigation from "@/components/Applicants/layout/SidebarNavigation.vue";
 import DashboardHeader from "@/components/Applicants/layout/DashboardHeader.vue";
 import GreetingSection from "@/components/Applicants/applications/GreetingSection.vue";
 import StatCard from "@/components/Applicants/dashboard/StatCard.vue";
@@ -139,7 +138,6 @@ export default {
   },
 
   components: {
-    SidebarNavigation,
     DashboardHeader,
     GreetingSection,
     StatCard,
