@@ -6,10 +6,6 @@
           Find your
           <span class="text-primary position-relative">
             {{ title }}
-            <!-- <span
-                class="position-absolute bottom-0 start-0 w-100"
-                style="height: 2px; background-color: #0d6efd"
-              ></span> -->
           </span>
         </h1>
         <img
@@ -23,43 +19,59 @@
         </p>
       </div>
 
-      <!-- use component instead -->
-      <SearchJob @search="onSearch" />
+      <!-- SearchJob component -->
+      <SearchJob
+        v-model="searchValue"
+        ref="searchJobComponent"
+        @search="handleSearch"
+      />
+
+      <!-- Popular tags -->
       <div class="text-left text-secondary small">
         Popular:
         <span
           v-for="(tag, index) in popularTags"
           :key="index"
           class="badge rounded-pill bg-light text-dark me-2 small"
-          >{{ tag }}</span
         >
+          {{ tag }}
+        </span>
       </div>
     </div>
   </div>
 </template>
 
-<script>
-// No additional script needed
-import SearchJob from "../sharecomponents/SeachJob.vue";
+<script setup>
+import { ref } from "vue";
+import SearchJob from "./SearchJob.vue";
 
-export default {
-  name: "HeroSection",
-  components: {
-    SearchJob,
-  },
+// Props
+defineProps({
+  title: String,
+  subtitle: String,
+  popularTags: Array,
+});
 
-  props: {
-    title: String,
-    subtitle: String,
-    popularTags: Array,
-  },
+// Emits
+const emit = defineEmits(["search", "clear-search"]); // Properly define emits
 
-  methods: {
-    onSearch(query) {
-      this.$emit("search", query); // re-emit the event to parent
-    },
-  },
-};
+// Refs
+const searchJobComponent = ref(null);
+const searchValue = ref("");
+
+// Methods
+function handleSearch(query) {
+  // Emit the search event to the parent
+  console.log("Search query from HeroSection:", query);
+  searchValue.value = query;
+  emit("search", query);
+}
+
+function clearSearch() {
+  // Call the clearSearch function from SearchJob
+  searchJobComponent.value?.clearSearch();
+  console.log("Search inputs cleared in HeroSection");
+}
 </script>
 
 <style scoped>
@@ -76,12 +88,6 @@ export default {
 
 .text-primary {
   color: #5b9af5 !important;
-}
-
-.position-absolute.bottom-0.start-0.w-100 {
-  bottom: -4px !important;
-  height: 3px !important;
-  background-color: #5b9af5 !important;
 }
 
 .card {

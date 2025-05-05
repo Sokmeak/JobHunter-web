@@ -4,6 +4,8 @@
       :title="title"
       :subtitle="subtitle"
       :popular-tags="popularTags"
+      @search="handleSearch"
+      @clearSearch="clearSearch"
     ></HeroSection>
 
     <div class="container py-4">
@@ -18,6 +20,8 @@
             @update:filters="updateFilters"
           />
         </div>
+
+        <!-- default before search -->
 
         <div class="col-lg-9">
           <job-listings
@@ -43,6 +47,16 @@ import JobListings from "@/components/findjob/JobListings.vue";
 const title = "Dream Job";
 const subtitle = "Explore thousands of job opportunities in one place.";
 const popularTags = ["UI Designer", "UX Developer", "Android", "Admin"];
+
+
+// Search state
+const searchQuery = ref("");
+// const selectedFilters = ref({
+//   employmentTypes: [],
+//   categories: [],
+//   jobLevels: [],
+//   salaryRanges: [],
+// });
 
 const employmentTypes = [
   { id: "full-time", label: "Full-time", count: 3 },
@@ -300,12 +314,40 @@ const updateFilters = (filterType, value) => {
   };
 };
 
+
+
 // Filtered jobs
 const filteredJobs = computed(() => {
   const start = (currentPage.value - 1) * itemsPerPage;
   const end = start + itemsPerPage;
   return jobs.value.slice(start, end);
 });
+
+// Event Handlers
+function handleSearch(query) {
+  searchQuery.value = query;
+  console.log("Search query:", searchQuery.value);
+
+  // Update URL with search query
+  const url = new URL(window.location);
+  url.searchParams.set("q", query);
+  window.history.pushState({}, "", url);
+}
+
+function clearSearch() {
+  // Clear search query
+  searchQuery.value = "";
+
+  // Call clearSearch from HeroSection
+  heroSectionComponent.value?.clearSearch();
+
+  console.log("Search inputs cleared in BrowseCompanies");
+
+  // Remove search query from URL
+  const url = new URL(window.location);
+  url.searchParams.delete("q");
+  window.history.pushState({}, "", url);
+}
 </script>
 
 <style>

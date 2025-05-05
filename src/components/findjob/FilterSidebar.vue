@@ -32,7 +32,7 @@
 
 <script setup>
 import { defineProps, defineEmits } from "vue";
-import FilterSection from "./FilterSection.vue";
+import FilterSection from "../sharecomponents/FilterSection.vue";
 
 const props = defineProps({
   employmentTypes: Array,

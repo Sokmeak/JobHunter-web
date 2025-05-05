@@ -1,4 +1,4 @@
-<template>
+<!-- <template>
   <div class="filter-sidebar pe-4">
     <div class="filter-section mb-4">
       <h3 class="fs-5 fw-medium mb-3">Industry</h3>
@@ -54,9 +54,9 @@
       </div>
     </div>
   </div>
-</template>
+</template> -->
 
-<!-- <template>
+<template>
   <div class="filter-sidebar">
     <filter-section
       title="Industry"
@@ -74,10 +74,11 @@
       @update:selected="updateSelected('sizes', $event)"
     />
   </div>
-</template> -->
+</template>
 
 <script setup>
 import { ref, watch, reactive } from "vue";
+import FilterSection from "../sharecomponents/FilterSection.vue";
 
 const props = defineProps({
   initialIndustries: {
@@ -161,4 +162,3 @@ function emitFilterChange() {
   padding-right: 1rem;
 }
 </style>
-

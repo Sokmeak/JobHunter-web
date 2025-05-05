@@ -38,7 +38,7 @@
           </div>
           <h3 class="fs-4 fw-bold">No results found</h3>
           <p class="text-muted">
-            We couldn't find any companies matching "{{ searchQuery }}"
+            We couldn't find any companies matching "{{ searchQuery.keyword }}"
           </p>
           <button class="btn btn-outline-primary mt-3" @click="clearSearch">
             Clear search
@@ -177,10 +177,10 @@ const companies = ref([
 ]);
 
 // Event handlers
-// function handleSearch(query) {
-//   searchQuery.value = query;
-//   currentPage.value = 1; // Reset to first page on new search
-// }
+function handleSearch(query) {
+  searchQuery.value = query;
+  currentPage.value = 1; // Reset to first page on new search
+}
 
 function handleFilterChange(filters) {
   selectedIndustries.value = filters.industries;
@@ -219,7 +219,9 @@ const filteredCompanies = computed(() => {
 
   // Filter by search query
   if (searchQuery.value) {
-    const searchTerms = searchQuery.value.toLowerCase().split(" ");
+    // filter only keyword
+    console.log("query", searchQuery.value.keyword);
+    const searchTerms = searchQuery.value.keyword.toLowerCase().split(" ");
 
     result = result.filter((company) => {
       // Check if any search term matches company name, description, or tags
@@ -271,7 +273,7 @@ const filteredCompanies = computed(() => {
   } else {
     // For 'relevant' sorting, prioritize exact matches in name
     if (searchQuery.value) {
-      const query = searchQuery.value.toLowerCase();
+      const query = searchQuery.value.keyword.toLowerCase();
       result = [...result].sort((a, b) => {
         const aNameMatch = a.name.toLowerCase().includes(query) ? 1 : 0;
         const bNameMatch = b.name.toLowerCase().includes(query) ? 1 : 0;

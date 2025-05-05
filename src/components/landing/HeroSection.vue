@@ -53,7 +53,7 @@
 
 <script>
 // No additional script needed
-import SearchJob from "../sharecomponents/SeachJob.vue";
+import SearchJob from "../sharecomponents/SearchJob.vue";
 
 export default {
   name: "HeroSection",

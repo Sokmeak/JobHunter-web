@@ -44,18 +44,13 @@
         </div>
       </div>
       <div class="col-md-2">
-        <button
-          class="btn btn-primary bg-primary-color hovered-btn-primary"
-          @click="search"
-        >
-          Search my job
-        </button>
+        <button class="btn btn-primary" @click="search">Search my job</button>
       </div>
     </div>
   </div>
 </template>
 
-<script setup>
+<!-- <script setup>
 import { ref } from "vue";
 import { defineProps, defineEmits } from "vue";
 import { useRouter } from "vue-router";
@@ -71,16 +66,50 @@ function search() {
     console.log("Search:", searchInput.value.trim());
   }
 }
+
+
 // how can I use this search feaceure in the landing page
+</script> -->
+
+<script setup>
+import { ref } from "vue";
+import { defineProps, defineEmits, defineExpose } from "vue";
+
+const emit = defineEmits(["search"]);
+
+const searchInput = ref(""); // For job title or keyword
+const locationInput = ref(""); // For location
+
+function search() {
+  const trimmedSearchInput = searchInput.value.trim();
+  const trimmedLocationInput = locationInput.value.trim();
+
+  if (trimmedSearchInput || trimmedLocationInput) {
+    emit("search", {
+      keyword: trimmedSearchInput,
+      location: trimmedLocationInput,
+    });
+    console.log("Search:", {
+      keyword: trimmedSearchInput,
+      location: trimmedLocationInput,
+    });
+  }
+}
+
+function clearSearch() {
+  searchInput.value = "";
+  locationInput.value = "";
+  console.log("Search inputs cleared");
+}
+
+defineExpose({
+  clearSearch,
+});
 </script>
 
 <style lang="css" scoped>
 @import "@/style/variables.css"; /* Import your CSS variables here */
 /* Search form styling */
-
-.bg-primary-color {
-  background-color: var(--primary-color) !important;
-}
 .search-form {
   width: 100%;
   border-radius: 8px;
@@ -88,6 +117,7 @@ function search() {
   z-index: 2;
 }
 
+/* Input styles */
 .search,
 .position {
   border: none;
@@ -95,13 +125,28 @@ function search() {
   border-bottom: gray 1px solid;
 }
 
-.search:focus {
-  outline: none;
-  box-shadow: none;
-}
-
 .custom-select:focus {
   outline: none;
   box-shadow: none;
 }
+
+/* Button styles */
+.btn-primary {
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
+  transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+  cursor: pointer !important;
+  background-color: rgb(53, 53, 238);
+
+  /* border-color: var(--primary-color-hover); */
+  transform: translateY(-1px); /* Optional: Add slight lift effect */
+}
+
+/* .btn-primary:active {
+  background-color: var(--primary-color-hover);
+  transform: translateY(0);
+} */
 </style>
