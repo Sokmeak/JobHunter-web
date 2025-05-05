@@ -31,7 +31,11 @@ const props = defineProps({
 defineEmits(["select"]);
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+@use "@/style/variables.css" as *; /* <-- important */
+.primary-color {
+  color: var(--primary-color);
+}
 .category-card {
   border: 1px solid #e2e8f0;
   border-radius: 0.5rem;

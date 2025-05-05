@@ -63,9 +63,14 @@ export default {
 };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+@use "@/style/variables.css" as *; /* <-- important */
+
+.cyan-accent-color {
+  color: var(--cyan-accent-color);
+}
 .hero-wrapper {
-  margin-top: 3rem;
+  margin-top: 1rem;
 
   min-height: 80vh;
   background-color: white;
@@ -118,7 +123,7 @@ export default {
   right: 5%;
   width: 40%;
   height: 100%;
-  background-image: url("../assets/images/handsomeboy.png");
+  background-image: url("@/assets/images/handsomeboy.png");
   background-position: center right;
   background-repeat: no-repeat;
   background-size: contain;

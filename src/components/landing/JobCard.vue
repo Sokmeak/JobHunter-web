@@ -34,10 +34,14 @@
         >
       </div>
 
+      <!-- Actions -->
       <div class="card-item d-flex justify-content-between">
-        <a href="#" class="apply-btn btn btn-sm btn-outline-primary">Apply</a>
-        <button class="btn btn-sm btn-link text-muted">
-          <i class="bi bi-bookmark"></i>
+        <a href="#" class="apply-btn btn btn-md btn-outline-primary">Apply</a>
+        <button
+          class="btn btn-md btn-link text-muted bookmark"
+          @click="toggleBookmark"
+        >
+          <i :class="bookmarkIcon"></i>
         </button>
       </div>
     </div>
@@ -53,12 +57,52 @@ export default {
       required: true,
     },
   },
+
+  data() {
+    return {
+      bookmarked: false,
+    };
+  },
+  computed: {
+    bookmarkIcon() {
+      return this.bookmarked ? "bi bi-bookmark-fill" : "bi bi-bookmark";
+    },
+  },
+  methods: {
+    toggleBookmark() {
+      this.bookmarked = !this.bookmarked;
+
+      // Optional: persist to localStorage
+      const saved = JSON.parse(localStorage.getItem("bookmarkedJobs") || "[]");
+      if (this.bookmarked) {
+        saved.push(this.job.id); // assuming job has `id`
+      } else {
+        const index = saved.indexOf(this.job.id);
+        if (index !== -1) saved.splice(index, 1);
+      }
+      localStorage.setItem("bookmarkedJobs", JSON.stringify(saved));
+    },
+  },
+  mounted() {
+    // Check if job is already bookmarked
+    const saved = JSON.parse(localStorage.getItem("bookmarkedJobs") || "[]");
+    if (saved.includes(this.job.id)) {
+      this.bookmarked = true;
+    }
+  },
 };
 </script>
 
 <style scoped>
 .card {
   transition: transform 0.2s, box-shadow 0.2s;
+}
+.bi {
+  color: #4640de;
+}
+.btn-outline-primary {
+  border-color: #4640de;
+  color: #4640de;
 }
 
 .card:hover {

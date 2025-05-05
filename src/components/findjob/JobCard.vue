@@ -90,3 +90,14 @@ const getCompanyLogo = (company) => {
   );
 };
 </script>
+
+<style lang="scss" scoped>
+@use "@/style/variables.css" as *; /* <-- important */
+
+.btn-primary {
+  background-color: var(--primary-color);
+}
+.primary-color {
+  background-color: var(--primary-color);
+}
+</style>

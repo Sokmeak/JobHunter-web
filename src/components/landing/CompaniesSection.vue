@@ -144,7 +144,11 @@ export default {
 };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>              
+@use "@/style/variables.css" as *; // <-- important
+
+
+
 .company-logo {
   opacity: 0.6;
   transition: opacity 0.3s;

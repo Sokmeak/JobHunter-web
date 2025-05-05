@@ -48,7 +48,7 @@
                       }}</span>
                       <span class="text-muted small">{{ job.postedTime }}</span>
                     </div>
-                    <a href="#" class="btn btn-sm btn-outline-primary">Apply</a>
+                    <a href="#" class="btn btn-md btn-outline-primary applyButton">Apply</a>
                   </div>
                 </div>
               </div>
@@ -109,9 +109,26 @@ export default {
 };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+@use "@/style/variables.css" as *; /* <-- important */
+
+.cyan-accent-color {
+  color: var(--cyan-accent-color);
+}
+.primary-color {
+  color: var(--primary-color);
+}
+.btn-outline-primary {
+  border-color: var(--primary-color);
+  color: var(--primary-color);
+}
+.applyButton:hover{
+  background-color: var(--primary-color);
+  color: white;
+}
 .card:hover {
   transform: translateY(-5px);
+
   transition: transform 0.3s ease;
   cursor: pointer;
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1) !important;

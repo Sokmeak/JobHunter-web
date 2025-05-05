@@ -72,7 +72,7 @@
 import { defineProps, defineEmits, computed, ref } from "vue";
 import { GridIcon, ListIcon } from "lucide-vue-next";
 import JobCard from "./JobCard.vue";
-import Pagination from "./Pagination.vue";
+import Pagination from "../sharecomponents/Pagination.vue";
 
 const viewMode = ref("list");
 
@@ -96,8 +96,17 @@ const updatePage = (page) => {
 };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+@use "@/style/variables.css" as *; /* <-- important */
+
+.primary-color {
+  color: var(--primary-color);
+}
 .gap-3 {
-  gap: 1rem;
+  gap: 1.5rem !important;
+}
+.btn{
+  color: var(--primary-color)
+
 }
 </style>

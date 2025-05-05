@@ -455,7 +455,11 @@ const viewCompanyDetails = (companyId) => {
 };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+@use "@/style/variables.css" as *; /* <-- important */
+.primary-color {
+  color: var(--primary-color);
+} 
 .companies-by-category {
   margin: 3rem 0;
 }

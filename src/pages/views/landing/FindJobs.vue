@@ -1,7 +1,11 @@
 <template>
-  <div class="job-portal">
-    <hero-section></hero-section>
-   
+  <div class="container py-4">
+    <HeroSection
+      :title="title"
+      :subtitle="subtitle"
+      :popular-tags="popularTags"
+    ></HeroSection>
+
     <div class="container py-4">
       <div class="row g-4">
         <div class="col-lg-3">
@@ -31,12 +35,15 @@
 
 <script setup>
 import { ref, computed } from "vue";
-import HeaderSection from "@/components/findjob/HeaderSection.vue";
 import HeroSection from "@/components/sharecomponents/HeroSection.vue";
 import FilterSidebar from "@/components/findjob/FilterSidebar.vue";
 import JobListings from "@/components/findjob/JobListings.vue";
 
 // Data for filters
+const title = "Dream Job";
+const subtitle = "Explore thousands of job opportunities in one place.";
+const popularTags = ["UI Designer", "UX Developer", "Android", "Admin"];
+
 const employmentTypes = [
   { id: "full-time", label: "Full-time", count: 3 },
   { id: "part-time", label: "Part-Time", count: 5 },
@@ -276,7 +283,6 @@ const jobs = ref([
 const currentPage = ref(1);
 const itemsPerPage = 7;
 const totalJobs = computed(() => jobs.value.length);
-
 
 // Selected filters
 const selectedFilters = ref({
