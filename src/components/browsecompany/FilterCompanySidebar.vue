@@ -96,14 +96,14 @@ const emit = defineEmits(["filter-change"]);
 // Industry filter data
 const industries = ref([
   { id: "advertising", label: "Advertising", count: 43 },
-  { id: "business-service", label: "Business Service", count: 4 },
-  { id: "blockchain", label: "Blockchain", count: 5 },
+  { id: "business service", label: "Business Service", count: 4 },
+  { id: "tech", label: "Tech", count: 5 },
   { id: "cloud", label: "Cloud", count: 15 },
-  { id: "consumer-tech", label: "Consumer Tech", count: 5 },
+  { id: "consumer tech", label: "Consumer Tech", count: 5 },
   { id: "education", label: "Education", count: 34 },
   { id: "fintech", label: "Fintech", count: 45 },
   { id: "gaming", label: "Gaming", count: 33 },
-  { id: "food-beverage", label: "Food & Beverage", count: 5 },
+  { id: "food beverage", label: "Food & Beverage", count: 5 },
   { id: "healthcare", label: "Healthcare", count: 3 },
   { id: "hosting", label: "Hosting", count: 5 },
   { id: "media", label: "Media", count: 4 },

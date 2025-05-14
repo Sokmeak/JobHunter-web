@@ -13,13 +13,6 @@
 
       <!-- Right side with results and pagination -->
       <div class="col-md-9">
-        <!-- <ManualPagination
-          :total-items="filteredCompanies.length"
-          :initial-page="currentPage"
-          :initial-per-page="itemsPerPage"
-          @page-change="handlePageChange"
-          @per-page-change="handlePerPageChange"
-        /> -->
         <!-- Empty state when no results found -->
         <div v-if="filteredCompanies.length === 0" class="text-center py-5">
           <div class="mb-4">
@@ -56,7 +49,7 @@
             @sort-change="handleSortChange"
           />
 
-          <ManualPagination
+          <Pagination
             :total-items="filteredCompanies.length"
             :initial-page="currentPage"
             :initial-per-page="itemsPerPage"
@@ -73,7 +66,7 @@
 import { ref, computed, onMounted, watch } from "vue";
 import FilterCompanySidebar from "./FilterCompanySidebar.vue";
 import CompanyResults from "./CompanyResultsPage.vue";
-import ManualPagination from "./Pagination.vue";
+import Pagination from "../sharecomponents/Pagination.vue";
 
 const props = defineProps({
   initialSearchQuery: {
@@ -83,17 +76,6 @@ const props = defineProps({
 });
 
 const emit = defineEmits(["clear-search"]);
-
-// Props and data
-const title = ref("Find your dream companies");
-const subtitle = ref("Find the dream companies you dream work for");
-const popularTags = ref([
-  "Twitter",
-  "Microsoft",
-  "Apple",
-  "Facebook",
-  "Google",
-]);
 
 // Search and filter state
 const searchQuery = ref(props.initialSearchQuery);
@@ -176,14 +158,19 @@ const companies = ref([
   },
 ]);
 
-// Event handlers
-function handleSearch(query) {
-  searchQuery.value = query;
-  currentPage.value = 1; // Reset to first page on new search
-}
+// // Event handlers
+// function handleSearch(query) {
+//   searchQuery.value = query;
+//   currentPage.value = 1; // Reset to first page on new search
+// }
 
 function handleFilterChange(filters) {
   selectedIndustries.value = filters.industries;
+
+  // Destructure the first industry
+  const [firstIndustry] = selectedIndustries.value || [];
+  console.log("First industry:", firstIndustry); // Output: "advertising"
+
   selectedSizes.value = filters.sizes;
   currentPage.value = 1; // Reset to first page on filter change
 }
@@ -209,7 +196,7 @@ function handlePerPageChange(perPage) {
 }
 
 function clearSearch() {
-  searchQuery.value = "";
+  console.log("trigger clear in company page");
   emit("clear-search");
 }
 
@@ -234,13 +221,17 @@ const filteredCompanies = computed(() => {
     });
   }
 
-  // Apply industry filter if any selected
+  // Apply industry filter with case-insensitive matching
   if (selectedIndustries.value.length > 0) {
+    const lowerCaseIndustries = selectedIndustries.value.map((industry) =>
+      industry.toLowerCase()
+    );
     result = result.filter((company) => {
-      return company.tags.some((tag) => selectedIndustries.value.includes(tag));
+      return company.tags.some((tag) =>
+        lowerCaseIndustries.includes(tag.toLowerCase())
+      );
     });
   }
-
   // Apply size filter if any selected
   if (selectedSizes.value.length > 0) {
     // In a real app, you would filter by company size here
@@ -284,14 +275,6 @@ const filteredCompanies = computed(() => {
 
   return result;
 });
-
-// Pagination
-// const totalPages = computed(() => {
-//   return Math.max(
-//     1,
-//     Math.ceil(filteredCompanies.value.length / itemsPerPage.value)
-//   );
-// });
 
 const paginatedCompanies = computed(() => {
   const start = (currentPage.value - 1) * itemsPerPage.value;

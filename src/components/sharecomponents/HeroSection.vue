@@ -22,6 +22,7 @@
       <!-- SearchJob component -->
       <SearchJob
         v-model="searchValue"
+        :placeholder="placeholder"
         ref="searchJobComponent"
         @search="handleSearch"
       />
@@ -50,28 +51,37 @@ defineProps({
   title: String,
   subtitle: String,
   popularTags: Array,
+  placeholder: {
+    type: String,
+    default: "Job title or keyword",
+  },
 });
 
 // Emits
-const emit = defineEmits(["search", "clear-search"]); // Properly define emits
+const emit = defineEmits(["search", "clear-search"]);
 
 // Refs
 const searchJobComponent = ref(null);
-const searchValue = ref("");
+const searchValue = ref({ keyword: "", location: "" });
 
 // Methods
 function handleSearch(query) {
-  // Emit the search event to the parent
   console.log("Search query from HeroSection:", query);
   searchValue.value = query;
   emit("search", query);
 }
 
 function clearSearch() {
-  // Call the clearSearch function from SearchJob
   searchJobComponent.value?.clearSearch();
+  searchValue.value = { keyword: "", location: "" };
   console.log("Search inputs cleared in HeroSection");
+  emit("clear-search");
 }
+
+// Expose clearSearch to parent
+defineExpose({
+  clearSearch,
+});
 </script>
 
 <style scoped>
@@ -81,7 +91,6 @@ function clearSearch() {
   }
 }
 
-/* Bootstrap customizations */
 .bg-light {
   background-color: #f8f9fa !important;
 }

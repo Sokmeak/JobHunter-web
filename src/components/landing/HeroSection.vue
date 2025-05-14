@@ -10,11 +10,13 @@
     <div class="container py-5">
       <!-- Hero Content -->
       <div class="row align-items-center">
-        <div class="col-lg-10">
-          <h1 class="display-5 fw-bold mb-3">
-            Discover<br />more than<br />
-            <span class="cyan-accent-color">5000+ Jobs</span>
-          </h1>
+        <div class="col-lg-10 g-5">
+          <span class="typed-text-container">
+            <h1 class="display-5 fw-bold mb-3" aria-live="polite">
+              <span id="typed-text"></span>
+            </h1>
+          </span>
+
           <img
             src="../../assets/images/highlight.svg"
             width="300px"
@@ -22,28 +24,21 @@
             class="highlight-img"
           />
 
-          <p class="lead text-muted mb-4">
-            Great platform for the job seeker that searching for new career
+          <p class="lead text-muted mb-4 fw-normal">
+            Great platform for the job seeker that searching for new career<br />
             heights and passionate about startups.
           </p>
-          <!-- use component instead -->
-          <SearchJob />
 
-          <!-- Popular tags with badge styling -->
-          <div class="mt-2">
-            <span class="text-muted small">Popular:</span>
-            <span class="badge rounded-pill bg-light text-dark me-2 small"
-              >UI Designer</span
+          <div class="d-flex flex-wrap gap-3">
+            <RouterLink
+              to="/find-jobs"
+              class="btn button-primary-color btn-primary px-4 py-2"
             >
-            <span class="badge rounded-pill bg-light text-dark me-2 small"
-              >UX Developer</span
-            >
-            <span class="badge rounded-pill bg-light text-dark me-2 small"
-              >Android</span
-            >
-            <span class="badge rounded-pill bg-light text-dark me-2 small"
-              >Admin</span
-            >
+              Find Jobs
+            </RouterLink>
+            <button class="btn button-secodary-color px-4 py-2">
+              Post a Job
+            </button>
           </div>
         </div>
       </div>
@@ -54,11 +49,46 @@
 <script>
 // No additional script needed
 import SearchJob from "../sharecomponents/SearchJob.vue";
+import Typed from "typed.js";
 
 export default {
   name: "HeroSection",
   components: {
     SearchJob,
+  },
+
+  mounted() {
+    // Initialize Typed.js
+    this.typedInstance = new Typed("#typed-text", {
+      strings: [
+        "Discover<br/><span style='color: #26a4ff; font-weight: 600;'>5000+ job opportunities</span>.",
+        "Unlock<br/><span style='color: #26a4ff; font-weight: 600;'>your dream career</span> today.",
+        "Explore<br/><span style='color: #26a4ff; font-weight: 600;'>5000+ open positions</span> now.",
+        "Start<br/><span style='color: #26a4ff; font-weight: 600;'>your professional journey</span> with us.",
+        "Browse<br/><span style='color: #26a4ff; font-weight: 600;'>thousands of active listings</span>.",
+        "Apply<br/><span style='color: #26a4ff; font-weight: 600;'>anytime, anywhere</span>.",
+        "Connect<br/><span style='color: #26a4ff; font-weight: 600;'>with top employers</span> easily.",
+        "Find<br/><span style='color: #26a4ff; font-weight: 600;'>5000+ careers</span> waiting for you.",
+        "Take<br/><span style='color: #26a4ff; font-weight: 600;'>your skills to the next level</span>.",
+        "Join<br/><span style='color: #26a4ff; font-weight: 600;'>our growing job platform</span> today.",
+      ],
+      typeSpeed: 100,
+      backSpeed: 100,
+      backDelay: 1000,
+      startDelay: 500,
+      loop: true,
+      smartBackspace: true, // only erase what's necessary
+      loopCount: Infinity,
+      showCursor: true,
+      cursorChar: "|",
+      html: true, // Enable HTML rendering
+    });
+  },
+  beforeUnmount() {
+    // Clean up Typed instance when component is destroyed
+    if (this.typedInstance) {
+      this.typedInstance.destroy();
+    }
   },
 };
 </script>
@@ -69,6 +99,31 @@ export default {
 .cyan-accent-color {
   color: var(--cyan-accent-color);
 }
+.button-primary-color {
+  background-color: var(--primary-color);
+}
+.button-secodary-color {
+  border: var(--primary-color) 1px solid;
+  color: var(--primary-color);
+}
+.button-secodary-color:hover {
+  background-color: var(--primary-color);
+  color: white;
+}
+.typed-text-container {
+  height: 9rem;
+  overflow: hidden; /* Prevents layout shifts or overflow */
+  display: flex;
+  align-items: center; /* Vertically center the text */
+
+  text-align: left; /* Keep text centered */
+}
+
+.typed-text-container h1 {
+  margin: 0; /* Avoid unwanted spacing */
+  line-height: 1.2; /* Adjust line spacing */
+}
+
 .hero-wrapper {
   margin-top: 1rem;
 

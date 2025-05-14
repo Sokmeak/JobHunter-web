@@ -11,7 +11,7 @@
             class="form-control search"
             @keyup.enter="search"
             v-model="searchInput"
-            placeholder="Job title or keyword"
+            :placeholder="placeholder"
           />
         </div>
       </div>
@@ -23,22 +23,26 @@
           <div class="position position-relative">
             <select
               class="form-select border-0 shadow-none ps-3 pe-5 custom-select"
+              v-model="locationInput"
             >
-              <option selected disabled>Location, City</option>
-              <option value="phnom-penh">Phnom Penh</option>
-              <option value="siem-reap">Siem Reap</option>
-              <option value="battambang">Battambang</option>
-              <option value="sihanoukville">Sihanoukville</option>
-              <option value="kampong-cham">Kampong Cham</option>
-              <option value="kampot">Kampot</option>
-              <option value="kandal">Kandal</option>
-              <option value="takeo">Takeo</option>
-              <option value="prey-veng">Prey Veng</option>
-              <option value="svay-rieng">Svay Rieng</option>
-              <option value="kampong-thom">Kampong Thom</option>
-              <option value="kratie">Kratie</option>
-              <option value="mondulkiri">Mondulkiri</option>
-              <option value="ratanakiri">Ratanakiri</option>
+              <option value="" selected>Location, City</option>
+              <option value="paris">Paris</option>
+              <option value="san-francisco">San Francisco</option>
+              <option value="hamburg">Hamburg</option>
+              <option value="madrid">Madrid</option>
+              <option value="ankara">Ankara</option>
+              <option value="berlin">Berlin</option>
+              <option value="new-york">New York</option>
+              <option value="amsterdam">Amsterdam</option>
+              <option value="toronto">Toronto</option>
+              <option value="london">London</option>
+              <option value="rome">Rome</option>
+              <option value="sydney">Sydney</option>
+              <option value="lisbon">Lisbon</option>
+              <option value="stockholm">Stockholm</option>
+              <option value="tokyo">Tokyo</option>
+              <option value="dublin">Dublin</option>
+              <option value="oslo">Oslo</option>
             </select>
           </div>
         </div>
@@ -50,46 +54,53 @@
   </div>
 </template>
 
-<!-- <script setup>
-import { ref } from "vue";
-import { defineProps, defineEmits } from "vue";
-import { useRouter } from "vue-router";
-
-const emit = defineEmits(["search"]);
-
-const searchInput = ref("");
-const hoveredTag = ref(null);
-
-function search() {
-  if (searchInput.value.trim()) {
-    emit("search", searchInput.value.trim());
-    console.log("Search:", searchInput.value.trim());
-  }
-}
-
-
-// how can I use this search feaceure in the landing page
-</script> -->
-
 <script setup>
-import { ref } from "vue";
+import { ref, watch } from "vue";
 import { defineProps, defineEmits, defineExpose } from "vue";
 
-const emit = defineEmits(["search"]);
+// Props
+const props = defineProps({
+  placeholder: {
+    type: String,
+    default: "Job title or keyword",
+  },
+  modelValue: {
+    type: Object,
+    default: () => ({ keyword: "", location: "" }),
+  },
+});
 
-const searchInput = ref(""); // For job title or keyword
-const locationInput = ref(""); // For location
+// Emits
+const emit = defineEmits(["update:modelValue", "search"]);
 
+// Reactive state
+const searchInput = ref(props.modelValue.keyword);
+const locationInput = ref(props.modelValue.location);
+
+// Sync v-model with internal state
+watch([searchInput, locationInput], ([newSearch, newLocation]) => {
+  emit("update:modelValue", {
+    keyword: newSearch,
+    location: newLocation,
+  });
+});
+
+// Watch modelValue to sync external changes
+watch(
+  () => props.modelValue,
+  (newValue) => {
+    searchInput.value = newValue.keyword;
+    locationInput.value = newValue.location;
+  },
+  { deep: true }
+);
+
+// Methods
 function search() {
   const trimmedSearchInput = searchInput.value.trim();
   const trimmedLocationInput = locationInput.value.trim();
-
   if (trimmedSearchInput || trimmedLocationInput) {
     emit("search", {
-      keyword: trimmedSearchInput,
-      location: trimmedLocationInput,
-    });
-    console.log("Search:", {
       keyword: trimmedSearchInput,
       location: trimmedLocationInput,
     });
@@ -99,17 +110,18 @@ function search() {
 function clearSearch() {
   searchInput.value = "";
   locationInput.value = "";
-  console.log("Search inputs cleared");
+  emit("update:modelValue", { keyword: "", location: "" });
 }
 
+// Expose clearSearch to parent
 defineExpose({
   clearSearch,
 });
 </script>
 
 <style lang="css" scoped>
-@import "@/style/variables.css"; /* Import your CSS variables here */
-/* Search form styling */
+@import "@/style/variables.css";
+
 .search-form {
   width: 100%;
   border-radius: 8px;
@@ -117,36 +129,61 @@ defineExpose({
   z-index: 2;
 }
 
-/* Input styles */
-.search,
+.search {
+  border: none;
+  border-radius: 6px;
+  background-color: #f8f9fa;
+  padding: 0.75rem 1rem;
+  font-size: 0.95rem;
+  color: #333;
+  transition: background-color 0.2s;
+}
+
+.search:focus {
+  outline: none;
+  border: none;
+  box-shadow: none;
+  background-color: #fff;
+}
+
+.input-group-text {
+  background-color: #f8f9fa;
+  border: none;
+  border-radius: 6px 0 0 6px;
+}
+
 .position {
   border: none;
-  border-radius: 0;
-  border-bottom: gray 1px solid;
+}
+
+.custom-select {
+  border: none;
+  border-radius: 6px;
+  background-color: #f8f9fa;
+  padding: 0.75rem 1rem;
+  font-size: 0.95rem;
+  color: #333;
+  transition: background-color 0.2s;
 }
 
 .custom-select:focus {
   outline: none;
   box-shadow: none;
+  background-color: #fff;
 }
 
-/* Button styles */
 .btn-primary {
   background-color: var(--primary-color);
   border-color: var(--primary-color);
+  border-radius: 6px;
+  padding: 0.75rem 1.5rem;
+  font-size: 0.95rem;
   transition: all 0.3s ease;
 }
 
 .btn-primary:hover {
-  cursor: pointer !important;
+  cursor: pointer;
   background-color: rgb(53, 53, 238);
-
-  /* border-color: var(--primary-color-hover); */
-  transform: translateY(-1px); /* Optional: Add slight lift effect */
+  transform: translateY(-1px);
 }
-
-/* .btn-primary:active {
-  background-color: var(--primary-color-hover);
-  transform: translateY(0);
-} */
 </style>
