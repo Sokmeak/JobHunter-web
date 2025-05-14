@@ -70,10 +70,11 @@
             >
             <span class="divider d-none d-lg-block"></span>
 
-            <a
-              href="#"
+            <RouterLink
+              to="/signup"
               class="btn btn-primary bg-primary-color px-4 mt-2 mt-lg-0"
-              >Sign Up</a
+            >
+              Sign Up</RouterLink
             >
           </div>
         </div>
