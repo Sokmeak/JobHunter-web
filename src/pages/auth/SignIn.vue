@@ -1,11 +1,5 @@
 <template>
   <div class="login-page">
-    <!-- Animated background shapes -->
-    <div class="shape shape-1"></div>
-    <div class="shape shape-2"></div>
-    <div class="shape shape-3"></div>
-    <div class="shape shape-4"></div>
-
     <!-- Header -->
     <header
       class="container py-3 d-flex justify-content-between align-items-center"
@@ -265,6 +259,7 @@
 
 <script setup>
 import PrimaryLogo from "@/components/sharecomponents/PrimaryLogo.vue";
+
 import { ref } from "vue";
 
 // Form data
@@ -330,6 +325,8 @@ function handleSubmit() {
 </script>
 
 <style scoped>
+/* Import Bootstrap CSS and icons */
+/* Import Bootstrap CSS and icons */
 :root {
   --primary-color: #4640de;
   --primary-light: #6b67e8;

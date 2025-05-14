@@ -20,12 +20,12 @@ const routes = [
   {
     path: "/",
     name: "Layout", // base route
-    redirect: "/landing",
+    redirect: "",
     component: Layout,
     children: [
       // the first child route
       {
-        path: "landing",
+        path: "",
         component: LandingPage,
         name: "LandingPage",
         props: true,
