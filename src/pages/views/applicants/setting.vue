@@ -74,6 +74,7 @@ import DashboardHeader from "@/components/Applicants/layout/DashboardHeader.vue"
 import LoginSettings from "@/components/Applicants/settings/LoginSettings.vue";
 import NotificationSettings from "@/components/Applicants/settings/NotificationSettings.vue";
 import ProfileSetting from "@/components/Applicants/settings/ProfileSetting.vue";
+
 export default {
   name: "SettingsPage",
   components: {
@@ -125,6 +126,7 @@ export default {
       // API call would go here
     },
   },
+   
 };
 </script>
 
