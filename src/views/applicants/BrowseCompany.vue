@@ -95,7 +95,7 @@ import SearchResultsPage from "@/components/browsecompany/SearchResultsPage.vue"
 
 const searchQuery = ref({ keyword: "", location: "" });
 
-
+const placeholder = ref("Company or Organization name...");
 
 // Event Handlers
 function handleSearch(query) {

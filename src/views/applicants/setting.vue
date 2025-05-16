@@ -42,7 +42,7 @@
     <div class="tab-content">
       <!-- Profile Tab -->
       <div v-if="activeTab === 'profile'" class="tab-pane fade show active">
-        <profile-settings :user="user" @save="saveProfile" />
+        <ProfileSetting :user="user" @save="saveProfile" />
       </div>
 
       <!-- Login Details Tab -->
