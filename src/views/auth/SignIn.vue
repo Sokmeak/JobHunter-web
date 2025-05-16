@@ -134,13 +134,14 @@
                 </label>
               </div>
 
-              <button
+              <RouterLink
+                to="/applicant"
                 type="submit"
                 class="btn btn-primary w-100 py-3 d-flex align-items-center justify-content-center"
               >
                 <span>Sign In</span>
                 <i class="bi bi-box-arrow-in-right ms-2"></i>
-              </button>
+              </RouterLink>
             </form>
 
             <p class="text-center mt-4 mb-0">

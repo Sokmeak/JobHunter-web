@@ -1,16 +1,14 @@
 import { createRouter, createWebHistory } from "vue-router";
 
-
-
-import ApplicantLayout from "@/pages/views/applicants/ApplicantLayout.vue";
-import UserDashboard from "@/pages/views/applicants/UserDashboard.vue";
-import MyApplications from "@/pages/views/applicants/MyApplications.vue";
-import Messages from "@/pages/views/applicants/Messages.vue";
-import Profile from "@/pages/views/applicants/Profile.vue";
-import Settings from "@/pages/views/applicants/setting.vue";
-import HelpCenter from "@/pages/views/applicants/HelpCenter.vue";
-import FindJob from "@/pages/views/applicants/FindJob.vue";
-import BrowseCompany from "@/pages/views/applicants/BrowseCompany.vue";
+import ApplicantLayout from "@/views/applicants/ApplicantLayout.vue";
+import UserDashboard from "@/views/applicants/UserDashboard.vue";
+import MyApplications from "@/views/applicants/MyApplications.vue";
+import Messages from "@/views/applicants/Messages.vue";
+import Profile from "@/views/applicants/Profile.vue";
+import Settings from "@/views/applicants/setting.vue";
+import HelpCenter from "@/views/applicants/HelpCenter.vue";
+import FindJob from "@/views/applicants/FindJob.vue";
+import BrowseCompany from "@/views/applicants/BrowseCompany.vue";
 import LandingPage from "../views/landing/Landing.vue";
 import FindJobs from "@/views/landing/FindJobs.vue";
 import BrowseCompanies from "@/views/landing/BrowseCompanies.vue";
@@ -81,6 +79,13 @@ const routes = [
         name: "BrowseCompanies",
         component: BrowseCompanies,
       },
+
+      {
+        path: "company",
+        component: CompanyProfile,
+        name: "companyProfile",
+        props: true,
+      },
     ],
   },
   {
@@ -106,12 +111,12 @@ const routes = [
       {
         path: "find-jobs",
         name: "ApplicantFindJobs",
-        component: FindJob,
+        component: () => import("@/views/applicants/FindJob.vue"),
       },
       {
         path: "BrowseCompany",
         name: "ApplicantCompany",
-        component: BrowseCompany,
+        component: () => import("@/views/applicants/BrowseCompany.vue"),
       },
       {
         path: "profile",
@@ -127,7 +132,7 @@ const routes = [
         path: "help",
         name: "Help",
         component: HelpCenter,
-        name: "BrowseCompanies",
+
         props: true,
         // children: [
         //   {
@@ -137,12 +142,6 @@ const routes = [
         //     props: true,
         //   },
         // ],
-      },
-      {
-        path: "company",
-        component: CompanyProfile,
-        name: "companyProfile",
-        props: true,
       },
     ],
   },
