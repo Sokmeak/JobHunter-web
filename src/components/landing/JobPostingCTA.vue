@@ -1,6 +1,6 @@
 <template>
   <section class="job-posting-cta">
-    <div class="container p-5 bg-primary text-white">
+    <div class="container p-5 bg-primary-color text-white">
       <div class="row align-items-center">
         <div class="col-lg-6 mb-4 mb-lg-0">
           <h1 class="display-5 mb-3 fw-bold">Start posting<br />jobs today</h1>
@@ -26,3 +26,11 @@ export default {
   name: "JobPostingCTA",
 };
 </script>
+
+<style lang="scss" scoped>
+@use "@/style/variables.css" as *; /* <-- important */
+
+.bg-primary-color {
+  background-color: var(--primary-color);
+}
+</style>

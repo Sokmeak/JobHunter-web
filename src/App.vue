@@ -11,7 +11,7 @@ export default {
   <!-- <DashboardView />
   <Sidebar/> -->
 </template>
-
+<!--  
 <style scoped>
 /* .container {
   display: flex;
@@ -53,7 +53,7 @@ button a {
   text-decoration: none;
 } */
 </style>
-
+-->
 <!-- 
 
 
