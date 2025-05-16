@@ -5,11 +5,7 @@
         <h1 class="display-5 fw-bold mb-2">
           Find your
           <span class="text-primary position-relative">
-            dream job
-            <!-- <span
-                class="position-absolute bottom-0 start-0 w-100"
-                style="height: 2px; background-color: #0d6efd"
-              ></span> -->
+            {{ title }}
           </span>
         </h1>
         <img
@@ -19,29 +15,73 @@
           class="highlight-img"
         />
         <p class="text-secondary mt-2">
-          Find your next career at companies like HubSpot, Nike, and Dropbox
+          {{ subtitle }}
         </p>
       </div>
 
-      <!-- use component instead -->
-      <SearchJob />
-      <div class="text-center text-secondary small">
-        Popular: UI Designer, UX Researcher, Android, Admin
+      <!-- SearchJob component -->
+      <SearchJob
+        v-model="searchValue"
+        :placeholder="placeholder"
+        ref="searchJobComponent"
+        @search="handleSearch"
+      />
+
+      <!-- Popular tags -->
+      <div class="text-left text-secondary small">
+        Popular:
+        <span
+          v-for="(tag, index) in popularTags"
+          :key="index"
+          class="badge rounded-pill bg-light text-dark me-2 small"
+        >
+          {{ tag }}
+        </span>
       </div>
     </div>
   </div>
 </template>
 
-<script>
-// No additional script needed
-import SearchJob from "../sharecomponents/SeachJob.vue";
+<script setup>
+import { ref } from "vue";
+import SearchJob from "./SearchJob.vue";
 
-export default {
-  name: "HeroSection",
-  components: {
-    SearchJob,
+// Props
+defineProps({
+  title: String,
+  subtitle: String,
+  popularTags: Array,
+  placeholder: {
+    type: String,
+    default: "Job title or keyword",
   },
-};
+});
+
+// Emits
+const emit = defineEmits(["search", "clear-search"]);
+
+// Refs
+const searchJobComponent = ref(null);
+const searchValue = ref({ keyword: "", location: "" });
+
+// Methods
+function handleSearch(query) {
+  console.log("Search query from HeroSection:", query);
+  searchValue.value = query;
+  emit("search", query);
+}
+
+function clearSearch() {
+  searchJobComponent.value?.clearSearch();
+  searchValue.value = { keyword: "", location: "" };
+  console.log("Search inputs cleared in HeroSection");
+  emit("clear-search");
+}
+
+// Expose clearSearch to parent
+defineExpose({
+  clearSearch,
+});
 </script>
 
 <style scoped>
@@ -51,19 +91,12 @@ export default {
   }
 }
 
-/* Bootstrap customizations */
 .bg-light {
   background-color: #f8f9fa !important;
 }
 
 .text-primary {
   color: #5b9af5 !important;
-}
-
-.position-absolute.bottom-0.start-0.w-100 {
-  bottom: -4px !important;
-  height: 3px !important;
-  background-color: #5b9af5 !important;
 }
 
 .card {

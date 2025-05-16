@@ -78,7 +78,19 @@ export default {
 };
 </script>
 
-<style scoped>
+
+
+<style lang="scss" scoped>
+@use "@/style/variables.css" as *; /* <-- important */
+
+.cyan-accent-color {
+  color: var(--cyan-accent-color);
+}
+.primary-color {
+  color: var(--primary-color);
+}
+
+
 .category-icon {
   width: 40px;
   height: 40px;

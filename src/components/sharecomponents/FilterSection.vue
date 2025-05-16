@@ -9,15 +9,19 @@
       <chevron-down-icon v-else class="h-5 w-5 text-gray-500" />
     </div>
 
-    <div v-if="isOpen" class="space-y-2">
-      <div v-for="item in items" :key="item.id" class="flex items-center">
+    <div v-if="isOpen" class="space-y-3">
+      <div
+        v-for="item in items"
+        :key="item.id"
+        class="flex items-center justify-between border-b gap-x-3"
+      >                                                                                                                                                                                                                                                   
         <input
           type="checkbox"
           :id="item.id"
           :value="item.id"
           :checked="selectedItems.includes(item.id)"
           @change="toggleItem(item.id)"
-          class="h-4 w-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500"
+          class="h-4 w-4  rounded border-gray-300 me-2 focus:ring-purple-500"
         />
         <label :for="item.id" class="ml-2 text-sm text-gray-700 flex-1">
           {{ item.label }}
@@ -55,3 +59,11 @@ const toggleItem = (itemId) => {
   emit("update:selected", newSelectedItems);
 };
 </script>
+
+<style lang="scss" scoped>
+@use "@/style/variables.css" as *; /* <-- important */
+
+.primary-color {
+  color: var(--primary-color);
+}
+</style>

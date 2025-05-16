@@ -32,7 +32,7 @@
 
 <script setup>
 import { defineProps, defineEmits } from "vue";
-import FilterSection from "./FilterSection.vue";
+import FilterSection from "../sharecomponents/FilterSection.vue";
 
 const props = defineProps({
   employmentTypes: Array,
@@ -49,7 +49,10 @@ const updateSelected = (filterType, selectedItems) => {
 };
 </script>
 
-<style>
+<style lang="scss" scoped>
+@use "@/style/variables.css" as *; /* <-- important */
 
-
+.primary-color {
+  color: var(--primary-color);
+}
 </style>

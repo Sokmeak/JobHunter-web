@@ -113,3 +113,14 @@ export default {
   },
 };
 </script>
+
+<style lang="scss" scoped>
+@use "@/style/variables.css" as *; /* <-- important */
+
+.cyan-accent-color {
+  color: var(--cyan-accent-color);
+}
+.primary-color {
+  color: var(--primary-color);
+}
+</style>

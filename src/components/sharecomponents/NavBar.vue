@@ -65,15 +65,18 @@
           <div
             class="d-flex flex-column flex-lg-row align-items-start align-items-lg-center mt-3 mt-lg-0"
           >
-            <a href="#" class="btn btn-link text-dark text-decoration-none me-2"
-              >Login</a
-            >
+            <RouterLink
+              to="/signin"
+              class="btn btn-secodary text-decoration-none me-2 px-4 mt-2 mt-lg-0"
+              >Login
+            </RouterLink>
             <span class="divider d-none d-lg-block"></span>
 
-            <a
-              href="#"
+            <RouterLink
+              to="/signup"
               class="btn btn-primary bg-primary-color px-4 mt-2 mt-lg-0"
-              >Sign Up</a
+            >
+              Sign Up</RouterLink
             >
           </div>
         </div>
@@ -119,6 +122,10 @@ export default {
 }
 .bg-primary-color {
   background-color: var(--primary-color);
+}
+.btn-secodary:hover {
+  background-color: var(--primary-color);
+  color: white;
 }
 
 .btn-primary:hover {
