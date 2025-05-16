@@ -5,9 +5,9 @@
         <h2 class="mb-0">
           Featured <span class="cyan-accent-color">jobs</span>
         </h2>
-        <a href="#" class="text-decoration-none primary-color"
+        <RouterLink to="/find-jobs" class="text-decoration-none primary-color"
           >Show all jobs <i class="bi bi-arrow-right"></i
-        ></a>
+        ></RouterLink>
       </div>
 
       <div class="row g-4">
@@ -24,6 +24,7 @@
 </template>
 
 <script>
+import { RouterLink } from "vue-router";
 import JobCard from "./JobCard.vue";
 
 export default {
@@ -35,6 +36,7 @@ export default {
     return {
       featuredJobs: [
         {
+          id: 1,
           title: "Email Marketing",
           company: "Figma",
           location: "San Francisco, CA",
@@ -45,6 +47,7 @@ export default {
           tags: ["Marketing"],
         },
         {
+          id: 2,
           title: "Brand Designer",
           company: "Dropbox",
           location: "San Francisco, CA",
@@ -54,6 +57,7 @@ export default {
           tags: ["Design"],
         },
         {
+          id: 3,
           title: "Email Marketing",
           company: "Webflow",
           location: "San Francisco, CA",
@@ -64,6 +68,7 @@ export default {
           tags: ["Marketing"],
         },
         {
+          id: 4,
           title: "Visual Designer",
           company: "Spotify",
           location: "New York, NY",
@@ -73,6 +78,7 @@ export default {
           tags: ["Design"],
         },
         {
+          id: 5,
           title: "Product Designer",
           company: "Shopify",
           location: "Remote",
@@ -82,6 +88,7 @@ export default {
           tags: ["Design"],
         },
         {
+          id: 6,
           title: "Lead Designer",
           company: "Dribbble",
           location: "Remote",
@@ -91,6 +98,7 @@ export default {
           tags: ["Design", "Leadership"],
         },
         {
+          id: 7,
           title: "Brand Strategist",
           company: "Behance",
           location: "New York, NY",
@@ -100,6 +108,7 @@ export default {
           tags: ["Marketing"],
         },
         {
+          id: 8,
           title: "Data Analyst",
           company: "Twitter",
           location: "San Francisco, CA",

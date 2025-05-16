@@ -75,6 +75,7 @@
         </div>
       </div>
     </div>
+    <floating-status-card :company="companyData" />
 
     <div class="row g-4">
       <!-- Left Column -->
@@ -281,26 +282,6 @@
       </div>
     </div>
 
-    <!-- Open Jobs Section -->
-    <!-- <div class="open-jobs mt-5">
-      <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2 class="section-title mb-0">Open Jobs</h2>
-        <a href="#" class="text-primary text-decoration-none">
-          Show all jobs <i class="bi bi-arrow-right ms-1"></i>
-        </a>
-      </div>
-
-      <div class="row g-4">
-        <div
-          class="col-md-6 col-lg-3"
-          v-for="(job, index) in openJobs"
-          :key="index"
-        >
-          <job-card :job="job" />
-        </div>
-      </div>
-    </div> -->
-
     <!-- Similar Jobs Section -->
     <div class="similar-jobs mt-5">
       <div class="d-flex justify-content-between align-items-center mb-4">
@@ -352,9 +333,17 @@ import { ref } from "vue";
 import JobCard from "@/components/landing/JobCard.vue";
 import TeamMemberCard from "@/components/companyprofile/TeamMemberCard.vue";
 import BenefitCard from "@/components/companyprofile/BenifitCard.vue";
+import FloatingStatusCard from "@/components/companyprofile/FloatingStatusCard.vue";
 
 // Scroll methods for similar jobs
 const jobsContainer = ref(null);
+const companyData = {
+  name: "Stripe",
+  logoInitial: "S",
+  jobs: 43,
+  employees: "4,000+",
+  locations: "20 Countries",
+};
 
 const scrollJobsRight = () => {
   if (jobsContainer.value) {

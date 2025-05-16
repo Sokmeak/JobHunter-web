@@ -33,13 +33,15 @@
           <p class="text-muted">
             We couldn't find any companies matching "{{ searchQuery.keyword }}"
           </p>
-          <button class="btn btn-outline-primary mt-3" @click="clearSearch">
-            Clear search
-          </button>
         </div>
 
         <!-- Results when companies are found -->
         <template v-else>
+          <div class="d-flex justify-content-end mt-3">
+            <button class="btn btn-danger" @click="clearSearch">
+              Clear search
+            </button>
+          </div>
           <CompanyResults
             :companies="paginatedCompanies"
             :total-results="filteredCompanies.length"
@@ -295,3 +297,5 @@ onMounted(() => {
   }
 });
 </script>
+
+<style scoped></style>

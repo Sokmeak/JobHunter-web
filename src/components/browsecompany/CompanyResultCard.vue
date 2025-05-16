@@ -1,14 +1,16 @@
 <template>
-  <div class="company-result-card" @click="$emit('click', company.id)">
-    <div
-      class="company-result-logo"
-      :style="{ backgroundColor: company.logoBg || '#f3f4f6' }"
-    >
-      <img :src="company.logo" :alt="company.name + ' logo'" />
+  <RouterLink to="/company" class="link">
+    <div class="company-result-card" @click="$emit('click', company.id)">
+      <div
+        class="company-result-logo"
+        :style="{ backgroundColor: company.logoBg || '#f3f4f6' }"
+      >
+        <img :src="company.logo" :alt="company.name + ' logo'" />
+      </div>
+      <h3 class="company-result-name">{{ company.name }}</h3>
+      <div class="company-result-jobs">{{ company.jobCount }} Jobs</div>
     </div>
-    <h3 class="company-result-name">{{ company.name }}</h3>
-    <div class="company-result-jobs">{{ company.jobCount }} Jobs</div>
-  </div>
+  </RouterLink>
 </template>
 
 <script setup>
@@ -33,6 +35,9 @@ defineEmits(["click"]);
 </script>
 
 <style scoped>
+.link{
+  text-decoration: none;
+}
 .company-result-card {
   border: 1px solid #e2e8f0;
   border-radius: 0.5rem;

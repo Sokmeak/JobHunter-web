@@ -12,7 +12,7 @@
 
       <div class="row g-4">
         <div class="col-md-6" v-for="(job, index) in latestJobs" :key="index">
-          <div class="card border-0 shadow-sm">
+          <div class="card border-0 shadow-sm" @click="selectJob(job.id)">
             <div class="card-body p-4">
               <div class="d-flex">
                 <div class="company-logo me-3">
@@ -48,7 +48,11 @@
                       }}</span>
                       <span class="text-muted small">{{ job.postedTime }}</span>
                     </div>
-                    <a href="#" class="btn btn-md btn-outline-primary applyButton">Apply</a>
+                    <RouterLink
+                      to="/jobDes"
+                      class="btn btn-md btn-outline-primary applyButton"
+                      >Apply</RouterLink
+                    >
                   </div>
                 </div>
               </div>
@@ -59,54 +63,69 @@
     </div>
   </section>
 </template>
+<script setup>
+import { ref, computed } from "vue";
 
-<script>
-export default {
-  name: "LatestJobs",
-  data() {
-    return {
-      latestJobs: [
-        {
-          title: "Social Media Assistant",
-          company: "Figma",
-          location: "New York",
-          type: "Full Time",
-          logo: "https://upload.wikimedia.org/wikipedia/commons/3/33/Figma-logo.svg",
-          tags: ["Marketing", "Social Media"],
-          postedTime: "2 days ago",
-        },
-        {
-          title: "Brand Designer",
-          company: "Dropbox",
-          location: "San Francisco",
-          type: "Full Time",
-          logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/7/78/Dropbox_Icon.svg/1200px-Dropbox_Icon.svg.png",
-          tags: ["Design", "Branding"],
-          postedTime: "3 days ago",
-        },
-        {
-          title: "Interactive Developer",
-          company: "Stripe",
-          location: "Remote",
-          type: "Full Time",
-          logo: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAMAAABF0y+mAAAAZlBMVEVjW/9gWP9bUv9XTv9aUf9dVf9hWf9USv+Efv+7uf/T0v/b2f/Bvv+cmP9pYf/m5f/////8+/9sZP/Fw//Jx/+yrv/e3f89L/9VTP/k4/+hnf/39v99d/9zbP95c/+zsP+no//Lyf/eGvq0AAAAqUlEQVR4AcWSxQGAMAwAqSW4u7P/kLi3vLnvtXHtZwhljHEBCgWoG6Zl2g4Q+Zvr+TsuvP+RwD8I35JH/rfE9WOc2KlC0sV5Gec5TySZ+wu2iwLkXpjlrxRlLncCob9T1ULRZ3roRvEX22jr1WRvx4VGOHaLDPDt4jJnlGbVYvN3tekcruuHtSRUt7J1y79lIEDKeTjPlTthYR9bqWnoqLwEwdlcMNH+ZQK2xg1GP7/6BwAAAABJRU5ErkJggg==",
-          tags: ["Frontend", "JavaScript"],
-          postedTime: "1 day ago",
-        },
-        {
-          title: "UI Designer",
-          company: "Webflow",
-          location: "San Francisco",
-          type: "Full Time",
-          logo: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAMAAABF0y+mAAAAaVBMVEUUbvUAaPUAa/UMbPWTs/mOsPmSsvlfkfdEg/ZIhfYAZ/VmlvdMh/b///+owPoAV/Ti6/11n/htmviyx/uEqfnv9P5wnfjr8P4AX/Qnd/b2+f/V4f00e/Y7fvbE1fy7zvsAY/QccfWfu/qWWPS4AAAAm0lEQVR4Ad2MAQ7CIAxFSwtDkU6nm0Onyrz/IaWJMjCeYC/Ja5qXfFgdKoFAyQQoDxVRG9NYtdFGb92uMUb7XIk40e4PyZ1jAZeI8uuj2J7EvYI6mkF8Fo0BoJ4dOdsiFBVVuFz5yxSgjOHW8sKdyob84SF6RvgX7SAuU47TrOW8XB1JFm2YWYgENb2PEcl3CY/wg0IxqQTCGnkDnMkKhb6wqhEAAAAASUVORK5CYII=",
-
-          tags: ["Design", "UI/UX"],
-          postedTime: "5 days ago",
-        },
-      ],
-    };
+const latestJobs = ref([
+  {
+    id: 1,
+    title: "Social Media Assistant",
+    company: "Figma",
+    location: "New York",
+    type: "Full Time",
+    logo: "https://upload.wikimedia.org/wikipedia/commons/3/33/Figma-logo.svg",
+    tags: ["Marketing", "Social Media"],
+    postedTime: "2 days ago",
   },
+  {
+    id: 2,
+    title: "Brand Designer",
+    company: "Dropbox",
+    location: "San Francisco",
+    type: "Full Time",
+    logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/7/78/Dropbox_Icon.svg/1200px-Dropbox_Icon.svg.png",
+    tags: ["Design", "Branding"],
+    postedTime: "3 days ago",
+  },
+  {
+    id: 3,
+    title: "Interactive Developer",
+    company: "Stripe",
+    location: "Remote",
+    type: "Full Time",
+    logo: "https://upload.wikimedia.org/wikipedia/commons/b/ba/Stripe_Logo%2C_revised_2016.svg",
+    tags: ["Frontend", "JavaScript"],
+    postedTime: "1 day ago",
+  },
+  {
+    id: 4,
+    title: "UI Designer",
+    company: "Webflow",
+    location: "San Francisco",
+    type: "Full Time",
+    logo: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRVrNlPpznFbABwrCPJMvjSaSYMSsza5r5BhA&s",
+    tags: ["Design", "UI/UX"],
+    postedTime: "5 days ago",
+  },
+]);
+const selectedJobId = ref(null);
+const selectJob = (id) => {
+  selectedJobId.value = id;
+  console.log("Selected Job ID:", id);
 };
+
+// Convert latestJobs to options for a select dropdown
+const jobOptions = computed(() =>
+  latestJobs.value.map((job) => ({
+    value: job.id,
+    label: `${job.title} at ${job.company}`,
+  }))
+);
+
+// Get the selected job object
+const selectedJob = computed(() =>
+  latestJobs.value.find((job) => job.id === selectedJobId.value)
+);
 </script>
 
 <style lang="scss" scoped>
@@ -122,7 +141,7 @@ export default {
   border-color: var(--primary-color);
   color: var(--primary-color);
 }
-.applyButton:hover{
+.applyButton:hover {
   background-color: var(--primary-color);
   color: white;
 }

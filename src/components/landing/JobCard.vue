@@ -1,5 +1,5 @@
 <template>
-  <div class="card h-100 border-0 shadow-sm">
+  <div class="card h-100 border-0 shadow-sm" @mouseover="getJobId(job.id)">
     <div class="card-body p-4">
       <div class="d-flex align-items-center mb-3">
         <div class="company-logo me-3">
@@ -36,7 +36,11 @@
 
       <!-- Actions -->
       <div class="card-item d-flex justify-content-between">
-        <a href="#" class="apply-btn btn btn-md btn-outline-primary">Apply</a>
+        <RouterLink
+          to="/jobDes"
+          class="apply-btn btn btn-md btn-outline-primary"
+          >Apply</RouterLink
+        >
         <button
           class="btn btn-md btn-link text-muted bookmark"
           @click="toggleBookmark"
@@ -48,58 +52,71 @@
   </div>
 </template>
 
-<script>
-export default {
-  name: "JobCard",
-  props: {
-    job: {
-      type: Object,
-      required: true,
-    },
-  },
+<script setup>
+import { ref, computed, onMounted } from "vue";
+import { RouterLink } from "vue-router";
 
-  data() {
-    return {
-      bookmarked: false,
-    };
+// Props definition
+const props = defineProps({
+  job: {
+    type: Object,
+    required: true,
   },
-  computed: {
-    bookmarkIcon() {
-      return this.bookmarked ? "bi bi-bookmark-fill" : "bi bi-bookmark";
-    },
-  },
-  methods: {
-    toggleBookmark() {
-      this.bookmarked = !this.bookmarked;
+});
 
-      // Optional: persist to localStorage
-      const saved = JSON.parse(localStorage.getItem("bookmarkedJobs") || "[]");
-      if (this.bookmarked) {
-        saved.push(this.job.id); // assuming job has `id`
-      } else {
-        const index = saved.indexOf(this.job.id);
-        if (index !== -1) saved.splice(index, 1);
-      }
-      localStorage.setItem("bookmarkedJobs", JSON.stringify(saved));
-    },
-  },
-  mounted() {
-    // Check if job is already bookmarked
-    const saved = JSON.parse(localStorage.getItem("bookmarkedJobs") || "[]");
-    if (saved.includes(this.job.id)) {
-      this.bookmarked = true;
-    }
-  },
+// Emit events
+const emit = defineEmits(["job-selected"]);
+
+// Reactive state
+const bookmarked = ref(false);
+
+// Computed properties
+const bookmarkIcon = computed(() => {
+  return bookmarked.value ? "bi bi-bookmark-fill" : "bi bi-bookmark";
+});
+
+// Methods
+const toggleBookmark = () => {
+  bookmarked.value = !bookmarked.value;
+
+  // Optional: persist to localStorage
+  const saved = JSON.parse(localStorage.getItem("bookmarkedJobs") || "[]");
+  if (bookmarked.value) {
+    saved.push(props.job.id); // assuming job has `id`
+  } else {
+    const index = saved.indexOf(props.job.id);
+    if (index !== -1) saved.splice(index, 1);
+  }
+  localStorage.setItem("bookmarkedJobs", JSON.stringify(saved));
 };
+
+const getJobId = (id) => {
+  // Emit the job ID when hovered
+  emit("job-selected", id);
+
+  // You can also do additional logic here if needed
+  console.log("Job hovered:", id);
+};
+
+// Lifecycle hooks
+onMounted(() => {
+  // Check if job is already bookmarked
+  const saved = JSON.parse(localStorage.getItem("bookmarkedJobs") || "[]");
+  if (saved.includes(props.job.id)) {
+    bookmarked.value = true;
+  }
+});
 </script>
 
 <style scoped>
 .card {
   transition: transform 0.2s, box-shadow 0.2s;
 }
+
 .bi {
   color: #4640de;
 }
+
 .btn-outline-primary {
   border-color: #4640de;
   color: #4640de;

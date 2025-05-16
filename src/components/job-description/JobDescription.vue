@@ -4,13 +4,17 @@
     <nav aria-label="breadcrumb" class="mb-4">
       <ol class="breadcrumb">
         <li class="breadcrumb-item">
-          <a href="#" class="text-decoration-none">Home</a>
+          <RouterLink to="/" class="text-decoration-none">Home</RouterLink>
         </li>
         <li class="breadcrumb-item">
-          <a href="#" class="text-decoration-none">Companies</a>
+          <router-link to="/all-companies" class="text-decoration-none"
+            >Companies</router-link
+          >
         </li>
         <li class="breadcrumb-item">
-          <a href="#" class="text-decoration-none">{{ currentJob.company }}</a>
+          <router-link to="/company" class="text-decoration-none">{{
+            currentJob.company
+          }}</router-link>
         </li>
         <li class="breadcrumb-item active" aria-current="page">
           {{ currentJob.title }}
@@ -53,14 +57,14 @@
           class="col-md-4 text-md-end mt-3 mt-md-0 d-flex align-items-center justify-content-md-end"
         >
           <button
-            class="btn btn-outline-secondary rounded-pill me-3 d-flex align-items-center"
+            class="btn btn-outline-secondary me-3 d-flex align-items-center"
             title="Share job"
           >
             <i class="bi bi-share me-2"></i>
             <span class="d-none d-sm-inline">Share</span>
           </button>
           <button
-            class="btn btn-primary rounded-pill px-4 py-2 position-relative overflow-hidden"
+            class="btn btn-primary px-4 py-2 position-relative overflow-hidden"
             @click="showApplicationModal"
             @mousedown="addRippleEffect"
           >
@@ -390,6 +394,7 @@ import {
   showErrorToast,
   showInfoToast,
 } from "../services/toastService";
+import { RouterLink } from "vue-router";
 
 // State
 const isModalVisible = ref(false);
@@ -721,19 +726,8 @@ onMounted(() => {
 });
 </script>
 
-<style scoped>
-:root {
-  --primary-color: #4640de;
-  --bg-primary-color: #4640de;
-  --secondary-color: #ccccf5;
-  --tertiary-color: #e7f6fd;
-  --cyan-accent-color: #26a4ff;
-  --red-accent-color: #ff6550;
-  --green-accent-color: #56cdad;
-  --purple-accent-color: #7b61ff;
-  --yellow-accent-color: #ffb836;
-  --neutral-color: #25324b;
-}
+<style scoped lang="scss">
+@use "@/style/variables.css" as *; /* <-- important */
 
 .job-listing-container {
   background-color: #f8f9fa;

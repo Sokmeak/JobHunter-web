@@ -1,5 +1,5 @@
 <template>
-  <div class="card">
+  <div class="card" @mouseover="handleHover(job.id)">
     <div class="card-body">
       <div class="d-flex align-items-center">
         <div class="me-3" style="width: 48px; height: 48px">
@@ -23,9 +23,7 @@
         </div>
 
         <div>
-          <RouterLink to="/jobDes" class="btn btn-primary"
-            >Apply</RouterLink
-          >
+          <RouterLink to="/jobDes" class="btn btn-primary">Apply</RouterLink>
         </div>
       </div>
     </div>
@@ -66,6 +64,10 @@ import { defineProps } from "vue";
 const props = defineProps({
   job: Object,
 });
+const handleHover = (id) => {
+  console.log("Hovered job ID:", id);
+  // You can also emit or store the ID if needed
+};
 
 // In a real app, you would use actual company logos
 const getCompanyLogo = (company) => {

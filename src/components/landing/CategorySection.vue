@@ -5,8 +5,8 @@
         <h2 class="mb-0">
           Explore by <span class="cyan-accent-color">category</span>
         </h2>
-        <a href="#" class="text-decoration-none primary-color">
-          Show all jobs <i class="bi bi-arrow-right"></i
+        <a href="/find-jobs" class="text-decoration-none primary-color">
+          Show all categories <i class="bi bi-arrow-right"></i
         ></a>
       </div>
 
@@ -78,8 +78,6 @@ export default {
 };
 </script>
 
-
-
 <style lang="scss" scoped>
 @use "@/style/variables.css" as *; /* <-- important */
 
@@ -89,7 +87,6 @@ export default {
 .primary-color {
   color: var(--primary-color);
 }
-
 
 .category-icon {
   width: 40px;
