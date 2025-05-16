@@ -10,7 +10,7 @@
       <!-- Role Toggle -->
       <div class="d-flex align-items-center gap-2">
         <button
-          class="btn role-toggle"
+          class="btn role-toggle me-2 px-4 mt-2 mt-lg-0"
           :class="{
             'btn-primary': activeRole === 'job-seeker',
             'btn-outline-primary': activeRole !== 'job-seeker',
@@ -20,7 +20,7 @@
           Job Seeker
         </button>
         <button
-          class="btn role-toggle"
+          class="btn role-toggle me-2 px-4 mt-2 mt-lg-0"
           :class="{
             'btn-primary': activeRole === 'company',
             'btn-outline-primary': activeRole !== 'company',
@@ -354,7 +354,7 @@ body {
 }
 
 /* Animated background shapes */
-.shape {
+/* .shape {
   position: absolute;
   border-radius: 50%;
   z-index: 0;
@@ -411,7 +411,7 @@ body {
   top: 30%;
   left: 20%;
   animation-delay: -7s;
-}
+} */
 
 @keyframes float {
   0% {
@@ -450,12 +450,11 @@ header {
   background-clip: text;
 }
 
-.role-toggle {
-  padding: 10px 20px;
+/* .role-toggle {
   font-size: 0.95rem;
   transition: all 0.3s ease;
   font-weight: 500;
-}
+} */
 
 .btn-primary {
   background-color: var(--primary-color);

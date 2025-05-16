@@ -23,7 +23,9 @@
         </div>
 
         <div>
-          <button class="btn btn-primary">Apply</button>
+          <RouterLink to="/jobDes" class="btn btn-primary"
+            >Apply</RouterLink
+          >
         </div>
       </div>
     </div>

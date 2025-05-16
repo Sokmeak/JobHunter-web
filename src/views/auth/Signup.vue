@@ -10,7 +10,7 @@
       <div class="d-flex align-items-center g-4 w-full">
         <div class="nav-toggle d-flex w-200 gap-3">
           <button
-            class="btn role-toggle"
+            class="btn role-toggle me-2 px-4 mt-2 mt-lg-0"
             :class="{
               'btn-primary': activeRole === 'job-seeker',
               'btn-outline-primary': activeRole !== 'job-seeker',
@@ -21,7 +21,7 @@
           </button>
 
           <button
-            class="btn role-toggle"
+            class="btn role-toggle me-2 px-4 mt-2 mt-lg-0"
             :class="{
               'btn-primary': activeRole === 'company',
               'btn-outline-primary': activeRole !== 'company',
@@ -471,7 +471,6 @@ header {
 }
 
 .role-toggle {
-  padding: 10px 20px;
   font-size: 0.95rem;
   transition: all 0.3s ease;
   font-weight: 500;
