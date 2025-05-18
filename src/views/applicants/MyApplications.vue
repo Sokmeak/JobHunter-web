@@ -1,7 +1,8 @@
 <template>
   <div class="d-flex">
     <!-- <SidebarNavigation :activeItem="'My Applications'" /> -->
-      <div class="main-content">
+  <!-- <div class="container py-4"> -->
+  <div class="flex-grow-1 vh-100 overflow-auto">
         <DashboardHeader title="My Application" />
         <ApplicationHeader :userName="'Jake'" :dateRange="'Jul 19 - Jul 25'" />
         <NotificationCard />

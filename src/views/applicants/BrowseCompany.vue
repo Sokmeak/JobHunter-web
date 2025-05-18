@@ -1,8 +1,7 @@
 <template>
   <div class="d-flex">
-    <div class="flex-grow-1 vh-100 overflow-auto contianer py-4">
+    <div class="flex-grow-1 vh-100 overflow-auto">
       <DashboardHeader title="BrowseCompany" />
-
       <!-- <HeroSection
         ref="heroSection"
         :title="title"
@@ -33,7 +32,8 @@
 
 <script setup>
 import { ref } from "vue";
-import DashboardHeader from "@/components/Applicants/layout/DashboardHeader.vue";import SearchJob from "@/components/sharecomponents/SearchJob.vue";
+import DashboardHeader from "@/components/Applicants/layout/DashboardHeader.vue";
+import SearchJob from "@/components/sharecomponents/SearchJob.vue";
 import SearchResultsPage from "@/components/browsecompany/SearchResultsPage.vue";
 
 // const companies = [

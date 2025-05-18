@@ -1,12 +1,8 @@
 <template>
-  <div class="messaging-container">
+  <div class="d-flex">
     <!-- Header -->
-    <div class="d-flex justify-content-between align-items-center mb-4">
-      <h2 class="mb-0">Messages</h2>
-      <button class="btn btn-outline-primary">
-        Back to homepage
-      </button>
-    </div>
+     <div class="flex-grow-1 vh-100 overflow-auto">
+      <DashboardHeader title="Messages" />
 
     <div class="row h-100">
       <!-- Left Column - Conversations List -->
@@ -54,10 +50,12 @@
       :contacts="contacts"
       @create-conversation="createNewConversation"
     />
+     </div>
   </div>
 </template>
 
 <script>
+import DashboardHeader from "@/components/Applicants/layout/DashboardHeader.vue";
 import ConversationList from '@/components/Applicants/messaging/ConversationList.vue';
 import * as bootstrap from 'bootstrap';
 import MessageThread from '@/components/Applicants/messaging/MessageThread.vue';
@@ -68,6 +66,7 @@ export default {
   components: {
     ConversationList,
     MessageThread,
+    DashboardHeader,
     NewMessageModal
   },
   data() {

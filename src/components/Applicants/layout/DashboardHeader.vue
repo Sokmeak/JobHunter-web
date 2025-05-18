@@ -2,9 +2,12 @@
   <div class="header-component d-flex justify-content-between align-items-center py-3 mb-4">
     <h1 class="h3 mb-0 fw-bold">{{ title }}</h1>
     <div class="d-flex align-items-center">
-      <button class="btn btn-outline-primary me-2" v-if="showBackButton">
+    <router-link to="/applicant/dashboard" class="btn btn-outline-primary me-2" v-if="showBackButton">
         Back to homepage
-      </button>
+      </router-link>
+      <!-- <button class="btn btn-outline-primary me-2" v-if="showBackButton">
+        Back to homepage
+      </button> -->
       <button class="btn btn-link position-relative">
         <i class="bi bi-bell fs-5"></i>
         <span v-if="notificationCount > 0" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
@@ -16,6 +19,8 @@
 </template>
 
 <script>
+import router from '@/routes/router';
+
 export default {
   name: 'DashboardHeader',
   props: {

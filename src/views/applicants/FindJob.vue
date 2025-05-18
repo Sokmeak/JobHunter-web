@@ -1,7 +1,8 @@
 <template>
-  <div class="container py-4">
+    <div class="d-flex">
+  <!-- <div class="container py-4"> -->
+  <div class="flex-grow-1 vh-100 overflow-auto">
     <DashboardHeader title="Findjob" />
-
     <SearchJob
       v-model="searchValue"
       :placeholder="placeholder"
@@ -96,6 +97,7 @@
             @page-change="updatePage"
             @per-page-change="updatePerPage"
           />
+          </div>
         </div>
       </div>
     </div>

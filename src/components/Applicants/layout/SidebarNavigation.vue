@@ -52,17 +52,17 @@
     
     <div class="user-profile">
       <div class="avatar">
-        <img src="https://v0.dev/placeholder.svg" alt="User avatar" class="rounded-circle" />
-      </div>
+        <img :src="(user && user.avatar) ? user.avatar : 'https://v0.dev/placeholder.svg'" alt="User avatar" class="rounded-circle" />
+      </div> 
       <div class="user-info">
-        <div class="user-name">Jake Gyll</div>
-        <div class="user-email">jakegyll@email.com</div>
+        <div class="user-name">{{ user && user.name ? user.name : '' }}</div>
+        <div class="user-email">{{ user && user.email ? user.email : '' }}</div>
       </div>
     </div>
   </div>
 </template>
 
-<script >
+<script>
 import PrimaryLogo from "@/components/sharecomponents/PrimaryLogo.vue";
 
 export default {
@@ -74,6 +74,11 @@ export default {
     user: {
       type: Object,
       required: true,
+      default: () => ({
+        name: '',
+        email: '',
+        avatar: ''
+      })
     },
   },
 };
