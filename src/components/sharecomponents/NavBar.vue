@@ -47,8 +47,8 @@
             <li class="nav-item">
               <RouterLink
                 class="nav-link"
-                to="find-jobs"
-                :class="{ active: route.path.includes('find-jobs') }"
+                to="jobs"
+                :class="{ active: route.path.includes('jobs') }"
                 >Find Jobs</RouterLink
               >
             </li>

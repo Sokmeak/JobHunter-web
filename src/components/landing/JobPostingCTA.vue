@@ -5,8 +5,8 @@
         <div class="col-lg-6 mb-4 mb-lg-0">
           <h1 class="display-5 mb-3 fw-bold">Start posting<br />jobs today</h1>
           <p class="mb-4">Start posting jobs for only $10 per post.</p>
-          <a href="#" class="btn btn-light px-4 py-2 fw-medium"
-            >Sign Up For Free</a
+          <RouterLink to="/signup" class="btn btn-light px-4 py-2 fw-medium"
+            >Sign Up For Free</RouterLink
           >
         </div>
         <div class="col-lg-6">

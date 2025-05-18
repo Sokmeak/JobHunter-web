@@ -5,132 +5,175 @@
         <h2 class="mb-0">
           Latest <span class="cyan-accent-color">jobs open</span>
         </h2>
-        <a href="#" class="text-decoration-none primary-color">
-          Show all jobs <i class="bi bi-arrow-right"></i
-        ></a>
+        <RouterLink to="/jobs" class="text-decoration-none primary-color">
+          Show all jobs <i class="bi bi-arrow-right"></i>
+        </RouterLink>
       </div>
 
-      <div class="row g-4">
-        <div class="col-md-6" v-for="(job, index) in latestJobs" :key="index">
-          <div class="card border-0 shadow-sm">
-            <div class="card-body p-4">
-              <div class="d-flex">
-                <div class="company-logo me-3">
-                  <img
-                    :src="job.logo"
-                    :alt="job.company"
-                    class="rounded"
-                    width="50"
-                    height="50"
-                  />
-                </div>
-                <div class="flex-grow-1">
-                  <h5 class="card-title mb-1">{{ job.title }}</h5>
-                  <p class="text-muted small mb-2">
-                    {{ job.company }} • {{ job.location }}
-                  </p>
+      <!-- Loading state with skeletons -->
+      <template v-if="isLoading">
+        <div class="row g-4">loading</div>
+      </template>
 
-                  <div class="d-flex flex-wrap gap-2 mb-3">
-                    <span
-                      v-for="(tag, tagIndex) in job.tags"
-                      :key="tagIndex"
-                      class="badge bg-light text-dark"
-                      >{{ tag }}</span
-                    >
+      <template v-else>
+        <div v-if="error" class="error text-center">
+          {{ error }}
+        </div>
+        <div v-else-if="!displayedJobs.length" class="no-jobs text-center">
+          No recent jobs available.
+        </div>
+
+        <div v-else class="row g-4">
+          <div class="col-md-6" v-for="job in displayedJobs" :key="job.id">
+            <div class="card border-0 shadow-sm" @click="selectJob(job.id)">
+              <div class="card-body p-4">
+                <div class="d-flex">
+                  <div class="company-logo me-3">
+                    <img
+                      :src="job.companyLogo"
+                      :alt="job.company"
+                      class="rounded"
+                      width="50"
+                      height="50"
+                      loading="lazy"
+                    />
                   </div>
+                  <div class="flex-grow-1">
+                    <h5 class="card-title mb-1">{{ job.title }}</h5>
+                    <p class="text-muted small mb-2">
+                      {{ job.company }} • {{ job.location }}
+                    </p>
 
-                  <div
-                    class="d-flex justify-content-between align-items-center"
-                  >
-                    <div>
-                      <span class="badge bg-light text-dark me-2">{{
-                        job.type
-                      }}</span>
-                      <span class="text-muted small">{{ job.postedTime }}</span>
+                    <div class="d-flex flex-wrap gap-2 mb-3">
+                      <span
+                        v-for="(tag, tagIndex) in job.tags.slice(0, 3)"
+                        :key="tagIndex"
+                        class="badge bg-light text-dark"
+                      >
+                        {{ tag }}
+                      </span>
                     </div>
-                    <a href="#" class="btn btn-md btn-outline-primary applyButton">Apply</a>
+
+                    <div
+                      class="d-flex justify-content-between align-items-center"
+                    >
+                      <div>
+                        <span class="badge bg-light text-dark me-2">
+                          {{ job.type }}
+                        </span>
+                        <span class="text-muted small">
+                          {{
+                            job.postedAgo || calculatePostedAgo(job.postedDate)
+                          }}
+                        </span>
+                      </div>
+                      <RouterLink
+                        :to="`/jobs/${job.id}`"
+                        class="btn btn-md btn-outline-primary applyButton"
+                        @click.stop
+                      >
+                        Apply
+                      </RouterLink>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
+      </template>
     </div>
   </section>
 </template>
 
-<script>
-export default {
-  name: "LatestJobs",
-  data() {
-    return {
-      latestJobs: [
-        {
-          title: "Social Media Assistant",
-          company: "Figma",
-          location: "New York",
-          type: "Full Time",
-          logo: "https://upload.wikimedia.org/wikipedia/commons/3/33/Figma-logo.svg",
-          tags: ["Marketing", "Social Media"],
-          postedTime: "2 days ago",
-        },
-        {
-          title: "Brand Designer",
-          company: "Dropbox",
-          location: "San Francisco",
-          type: "Full Time",
-          logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/7/78/Dropbox_Icon.svg/1200px-Dropbox_Icon.svg.png",
-          tags: ["Design", "Branding"],
-          postedTime: "3 days ago",
-        },
-        {
-          title: "Interactive Developer",
-          company: "Stripe",
-          location: "Remote",
-          type: "Full Time",
-          logo: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAMAAABF0y+mAAAAZlBMVEVjW/9gWP9bUv9XTv9aUf9dVf9hWf9USv+Efv+7uf/T0v/b2f/Bvv+cmP9pYf/m5f/////8+/9sZP/Fw//Jx/+yrv/e3f89L/9VTP/k4/+hnf/39v99d/9zbP95c/+zsP+no//Lyf/eGvq0AAAAqUlEQVR4AcWSxQGAMAwAqSW4u7P/kLi3vLnvtXHtZwhljHEBCgWoG6Zl2g4Q+Zvr+TsuvP+RwD8I35JH/rfE9WOc2KlC0sV5Gec5TySZ+wu2iwLkXpjlrxRlLncCob9T1ULRZ3roRvEX22jr1WRvx4VGOHaLDPDt4jJnlGbVYvN3tekcruuHtSRUt7J1y79lIEDKeTjPlTthYR9bqWnoqLwEwdlcMNH+ZQK2xg1GP7/6BwAAAABJRU5ErkJggg==",
-          tags: ["Frontend", "JavaScript"],
-          postedTime: "1 day ago",
-        },
-        {
-          title: "UI Designer",
-          company: "Webflow",
-          location: "San Francisco",
-          type: "Full Time",
-          logo: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAMAAABF0y+mAAAAaVBMVEUUbvUAaPUAa/UMbPWTs/mOsPmSsvlfkfdEg/ZIhfYAZ/VmlvdMh/b///+owPoAV/Ti6/11n/htmviyx/uEqfnv9P5wnfjr8P4AX/Qnd/b2+f/V4f00e/Y7fvbE1fy7zvsAY/QccfWfu/qWWPS4AAAAm0lEQVR4Ad2MAQ7CIAxFSwtDkU6nm0Onyrz/IaWJMjCeYC/Ja5qXfFgdKoFAyQQoDxVRG9NYtdFGb92uMUb7XIk40e4PyZ1jAZeI8uuj2J7EvYI6mkF8Fo0BoJ4dOdsiFBVVuFz5yxSgjOHW8sKdyob84SF6RvgX7SAuU47TrOW8XB1JFm2YWYgENb2PEcl3CY/wg0IxqQTCGnkDnMkKhb6wqhEAAAAASUVORK5CYII=",
+<script setup>
+import { RouterLink } from "vue-router";
+import { useJobStore } from "@/stores/jobStore";
+import { computed, onMounted } from "vue";
 
-          tags: ["Design", "UI/UX"],
-          postedTime: "5 days ago",
-        },
-      ],
-    };
-  },
+const jobStore = useJobStore();
+
+// Computed properties
+const latestJobs = computed(() => jobStore.latestJobs);
+const isLoading = computed(() => jobStore.isLoading);
+const error = computed(() => jobStore.error);
+
+// Only display first 8 jobs for better performance
+const displayedJobs = computed(() => latestJobs.value.slice(0, 8));
+
+// Fetch jobs on mount if not already loaded
+onMounted(() => {
+  if (!jobStore.jobs.length) {
+    jobStore.fetchLatestJobs();
+  }
+});
+
+const calculatePostedAgo = (dateString) => {
+  const date = new Date(dateString);
+  const now = new Date();
+  const diffDays = Math.floor((now - date) / (1000 * 60 * 60 * 24));
+
+  if (diffDays === 0) return "Today";
+  if (diffDays === 1) return "Yesterday";
+  if (diffDays < 7) return `${diffDays} days ago`;
+  if (diffDays < 30)
+    return `${Math.floor(diffDays / 7)} week${diffDays > 7 ? "s" : ""} ago`;
+  return date.toLocaleDateString();
+};
+
+const selectJob = (id) => {
+  // Optional: Handle job selection
+  console.log("Selected job:", id);
 };
 </script>
 
 <style lang="scss" scoped>
-@use "@/style/variables.css" as *; /* <-- important */
+@use "@/style/variables.css" as *;
 
 .cyan-accent-color {
   color: var(--cyan-accent-color);
 }
+
 .primary-color {
   color: var(--primary-color);
 }
+
 .btn-outline-primary {
   border-color: var(--primary-color);
   color: var(--primary-color);
-}
-.applyButton:hover{
-  background-color: var(--primary-color);
-  color: white;
-}
-.card:hover {
-  transform: translateY(-5px);
 
-  transition: transform 0.3s ease;
-  cursor: pointer;
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1) !important;
+  &:hover {
+    background-color: var(--primary-color);
+    color: white;
+  }
+}
+
+.card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1) !important;
+    cursor: pointer;
+  }
+}
+
+.company-logo img {
+  object-fit: contain;
+  background: white;
+  padding: 2px;
+  border: 1px solid #eee;
+}
+
+.error {
+  color: #d32f2f;
+  padding: 20px;
+  font-size: 1.2rem;
+}
+
+.no-jobs {
+  padding: 20px;
+  font-size: 1.2rem;
+  color: #666;
 }
 </style>

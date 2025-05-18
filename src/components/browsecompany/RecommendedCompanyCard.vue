@@ -1,5 +1,5 @@
 <template>
-  <div class="company-card">
+  <RouterLink to="/company" class="link company-card">
     <div class="company-header">
       <div
         class="company-logo"
@@ -27,7 +27,7 @@
         {{ tag }}
       </span>
     </div>
-  </div>
+  </RouterLink>
 </template>
 
 <script setup>
@@ -43,6 +43,9 @@ defineProps({
 </script>
 
 <style scoped>
+.link {
+  text-decoration: none;
+}
 .company-card {
   border: 1px solid #e2e8f0;
   border-radius: 0.5rem;

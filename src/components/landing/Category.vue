@@ -9,12 +9,12 @@
         <p class="card-text small mb-3">
           {{ category.jobCount }} open positions
         </p>
-        <a
-          href="#"
+        <RouterLink
+          to="/all-companies"
           class="stretched-link text-decoration-none mylink primary-color"
         >
           Explore jobs <i class="bi bi-arrow-right"></i>
-        </a>
+        </RouterLink>
       </div>
     </div>
   </div>
