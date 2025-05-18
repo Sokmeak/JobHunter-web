@@ -15,7 +15,7 @@
     <div class="results-header">
       <div class="results-count">
         <span class="results-icon">
-          <component :is="categories.icon" />
+          <i :class="['bi', getActiveCategoryIcon()]"></i>
         </span>
         <span class="results-text">{{ filteredCompanies.length }} Results</span>
       </div>
@@ -42,21 +42,58 @@
 <script setup>
 import { ref, computed } from "vue";
 import CategoryCard from "./CategoryCard.vue";
-import { defineComponent } from "vue";
 import CompanyResultCard from "./CompanyResultCard.vue";
 
-// ... rest of your component code ...
-// Categories data
+// Categories data (icon field now contains only the icon-specific class)
 const categories = ref([
-  { id: 1, name: "Design", icon: "bi bi-brush" },
-  { id: 2, name: "Fintech", icon: "bi bi-graph-up" },
-  { id: 3, name: "Hosting", icon: "bi bi-server" },
-  { id: 4, name: "Business Service", icon: "bi bi-briefcase" },
-  { id: 5, name: "Development", icon: "bi bi-code" },
+  { id: 1, name: "Design", icon: "bi-palette", jobCount: "235 jobs available" },
+  {
+    id: 2,
+    name: "Sales",
+    icon: "bi bi-graph-up",
+    jobCount: "340 jobs available",
+  },
+  {
+    id: 3,
+    name: "Marketing",
+    icon: "bi bi-megaphone",
+    jobCount: "120 jobs available",
+  },
+  {
+    id: 4,
+    name: "Finance",
+    icon: "bi bi-cash-coin",
+    jobCount: "80 jobs available",
+  },
+  {
+    id: 5,
+    name: "Technology",
+    icon: "bi bi-pc-display",
+    jobCount: "320 jobs available",
+  },
+  {
+    id: 6,
+    name: "Engineering",
+    icon: "bi bi-code-slash",
+    jobCount: "170 jobs available",
+  },
+  {
+    id: 7,
+    name: "Business",
+    icon: "bi bi-briefcase",
+    jobCount: "210 jobs available",
+  },
+  {
+    id: 8,
+    name: "Human Resources",
+    icon: "bi bi-people",
+    jobCount: "75 jobs available",
+  },
 ]);
 
 // Companies data
 const companies = ref([
+  // Design (categoryId: 1)
   {
     id: 1,
     name: "Pentagram",
@@ -153,267 +190,323 @@ const companies = ref([
     jobCount: 4,
     categoryId: 1,
   },
+
+  // Sales (categoryId: 2)
   {
     id: 13,
-    name: "Stripe",
-    logo: "https://logo.clearbit.com/stripe.com",
-    logoBg: "#6772e5",
-    jobCount: 9,
+    name: "Salesforce",
+    logo: "https://logo.clearbit.com/salesforce.com",
+    logoBg: "#00a1e0",
+    jobCount: 10,
     categoryId: 2,
   },
   {
     id: 14,
+    name: "HubSpot",
+    logo: "https://logo.clearbit.com/hubspot.com",
+    logoBg: "#ff7a59",
+    jobCount: 8,
+    categoryId: 2,
+  },
+
+  // Marketing (categoryId: 3)
+  {
+    id: 15,
+    name: "Hootsuite",
+    logo: "https://logo.clearbit.com/hootsuite.com",
+    logoBg: "#003087",
+    jobCount: 6,
+    categoryId: 3,
+  },
+  {
+    id: 16,
+    name: "Mailchimp",
+    logo: "https://logo.clearbit.com/mailchimp.com",
+    logoBg: "#ffe01b",
+    jobCount: 5,
+    categoryId: 3,
+  },
+
+  // Finance (categoryId: 4)
+  {
+    id: 17,
+    name: "Stripe",
+    logo: "https://logo.clearbit.com/stripe.com",
+    logoBg: "#6772e5",
+    jobCount: 9,
+    categoryId: 4,
+  },
+  {
+    id: 18,
     name: "Plaid",
     logo: "https://logo.clearbit.com/plaid.com",
     logoBg: "#1a1f2c",
     jobCount: 7,
-    categoryId: 2,
+    categoryId: 4,
   },
   {
-    id: 15,
+    id: 19,
     name: "Revolut",
     logo: "https://logo.clearbit.com/revolut.com",
     logoBg: "#000000",
     jobCount: 12,
-    categoryId: 2,
+    categoryId: 4,
   },
   {
-    id: 16,
+    id: 20,
     name: "Chime",
     logo: "https://logo.clearbit.com/chime.com",
     logoBg: "#00d2c5",
     jobCount: 6,
-    categoryId: 2,
+    categoryId: 4,
   },
   {
-    id: 17,
+    id: 21,
     name: "Robinhood",
     logo: "https://logo.clearbit.com/robinhood.com",
     logoBg: "#00c805",
     jobCount: 8,
-    categoryId: 2,
+    categoryId: 4,
   },
   {
-    id: 18,
+    id: 22,
     name: "Square",
     logo: "https://logo.clearbit.com/squareup.com",
     logoBg: "#003d45",
     jobCount: 11,
-    categoryId: 2,
+    categoryId: 4,
   },
   {
-    id: 19,
+    id: 23,
     name: "TransferWise",
     logo: "https://logo.clearbit.com/wise.com",
     logoBg: "#9fe870",
     jobCount: 5,
-    categoryId: 2,
+    categoryId: 4,
   },
   {
-    id: 20,
+    id: 24,
     name: "Coinbase",
     logo: "https://logo.clearbit.com/coinbase.com",
     logoBg: "#1652f0",
     jobCount: 15,
-    categoryId: 2,
+    categoryId: 4,
   },
 
-  // Hosting (categoryId: 3 - 8 entries)
+  // Technology (categoryId: 5)
   {
-    id: 21,
+    id: 25,
     name: "Vercel",
     logo: "https://logo.clearbit.com/vercel.com",
     logoBg: "#000000",
     jobCount: 7,
-    categoryId: 3,
+    categoryId: 5,
   },
   {
-    id: 22,
+    id: 26,
     name: "Netlify",
     logo: "https://logo.clearbit.com/netlify.com",
     logoBg: "#32e6e2",
     jobCount: 5,
-    categoryId: 3,
+    categoryId: 5,
   },
   {
-    id: 23,
+    id: 27,
     name: "DigitalOcean",
     logo: "https://logo.clearbit.com/digitalocean.com",
     logoBg: "#008bcf",
     jobCount: 8,
-    categoryId: 3,
+    categoryId: 5,
   },
   {
-    id: 24,
+    id: 28,
     name: "Heroku",
     logo: "https://logo.clearbit.com/heroku.com",
     logoBg: "#430098",
     jobCount: 4,
-    categoryId: 3,
+    categoryId: 5,
   },
   {
-    id: 25,
+    id: 29,
     name: "AWS",
     logo: "https://logo.clearbit.com/amazonaws.com",
     logoBg: "#ff9900",
     jobCount: 22,
-    categoryId: 3,
+    categoryId: 5,
   },
   {
-    id: 26,
+    id: 30,
     name: "Cloudflare",
     logo: "https://logo.clearbit.com/cloudflare.com",
     logoBg: "#f38020",
     jobCount: 9,
-    categoryId: 3,
+    categoryId: 5,
   },
   {
-    id: 27,
+    id: 31,
     name: "Linode",
     logo: "https://logo.clearbit.com/linode.com",
     logoBg: "#00a95c",
     jobCount: 6,
-    categoryId: 3,
+    categoryId: 5,
   },
   {
-    id: 28,
+    id: 32,
     name: "Render",
     logo: "https://logo.clearbit.com/render.com",
     logoBg: "#5e6ad2",
     jobCount: 3,
-    categoryId: 3,
+    categoryId: 5,
   },
 
-  // Business Service (categoryId: 4 - 8 entries)
-  {
-    id: 29,
-    name: "Deloitte",
-    logo: "https://logo.clearbit.com/deloitte.com",
-    logoBg: "#86bc25",
-    jobCount: 18,
-    categoryId: 4,
-  },
-  {
-    id: 30,
-    name: "McKinsey",
-    logo: "https://logo.clearbit.com/mckinsey.com",
-    logoBg: "#036c59",
-    jobCount: 15,
-    categoryId: 4,
-  },
-  {
-    id: 31,
-    name: "Accenture",
-    logo: "https://logo.clearbit.com/accenture.com",
-    logoBg: "#a100ff",
-    jobCount: 20,
-    categoryId: 4,
-  },
-  {
-    id: 32,
-    name: "PwC",
-    logo: "https://logo.clearbit.com/pwc.com",
-    logoBg: "#bc1b23",
-    jobCount: 12,
-    categoryId: 4,
-  },
+  // Engineering (categoryId: 6)
   {
     id: 33,
-    name: "EY",
-    logo: "https://logo.clearbit.com/ey.com",
-    logoBg: "#2e3192",
-    jobCount: 14,
-    categoryId: 4,
-  },
-  {
-    id: 34,
-    name: "KPMG",
-    logo: "https://logo.clearbit.com/kpmg.com",
-    logoBg: "#ff0000",
-    jobCount: 10,
-    categoryId: 4,
-  },
-  {
-    id: 35,
-    name: "Bain & Company",
-    logo: "https://logo.clearbit.com/bain.com",
-    logoBg: "#ff3d00",
-    jobCount: 9,
-    categoryId: 4,
-  },
-  {
-    id: 36,
-    name: "Boston Consulting",
-    logo: "https://logo.clearbit.com/bcg.com",
-    logoBg: "#0084ff",
-    jobCount: 11,
-    categoryId: 4,
-  },
-
-  // Development (categoryId: 5 - 8 entries)
-  {
-    id: 37,
     name: "GitHub",
     logo: "https://logo.clearbit.com/github.com",
     logoBg: "#181717",
     jobCount: 14,
-    categoryId: 5,
+    categoryId: 6,
   },
   {
-    id: 38,
+    id: 34,
     name: "GitLab",
     logo: "https://logo.clearbit.com/gitlab.com",
     logoBg: "#fc6d26",
     jobCount: 9,
-    categoryId: 5,
+    categoryId: 6,
   },
   {
-    id: 39,
+    id: 35,
     name: "JetBrains",
     logo: "https://logo.clearbit.com/jetbrains.com",
     logoBg: "#d44333",
     jobCount: 7,
-    categoryId: 5,
+    categoryId: 6,
   },
   {
-    id: 40,
+    id: 36,
     name: "Postman",
     logo: "https://logo.clearbit.com/postman.com",
     logoBg: "#ff6c37",
     jobCount: 6,
-    categoryId: 5,
+    categoryId: 6,
   },
   {
-    id: 41,
+    id: 37,
     name: "Vercel",
     logo: "https://logo.clearbit.com/vercel.com",
     logoBg: "#000000",
     jobCount: 5,
-    categoryId: 5,
+    categoryId: 6,
   },
   {
-    id: 42,
+    id: 38,
     name: "npm",
     logo: "https://logo.clearbit.com/npmjs.com",
     logoBg: "#cb3837",
     jobCount: 4,
-    categoryId: 5,
+    categoryId: 6,
   },
   {
-    id: 43,
+    id: 39,
     name: "Docker",
     logo: "https://logo.clearbit.com/docker.com",
     logoBg: "#2496ed",
     jobCount: 8,
-    categoryId: 5,
+    categoryId: 6,
   },
   {
-    id: 44,
+    id: 40,
     name: "Slack",
     logo: "https://logo.clearbit.com/slack.com",
     logoBg: "#4a154b",
     jobCount: 11,
-    categoryId: 5,
+    categoryId: 6,
+  },
+
+  // Business (categoryId: 7)
+  {
+    id: 41,
+    name: "Deloitte",
+    logo: "https://logo.clearbit.com/deloitte.com",
+    logoBg: "#86bc25",
+    jobCount: 18,
+    categoryId: 7,
+  },
+  {
+    id: 42,
+    name: "McKinsey",
+    logo: "https://logo.clearbit.com/mckinsey.com",
+    logoBg: "#036c59",
+    jobCount: 15,
+    categoryId: 7,
+  },
+  {
+    id: 43,
+    name: "Accenture",
+    logo: "https://logo.clearbit.com/accenture.com",
+    logoBg: "#a100ff",
+    jobCount: 20,
+    categoryId: 7,
+  },
+  {
+    id: 44,
+    name: "PwC",
+    logo: "https://logo.clearbit.com/pwc.com",
+    logoBg: "#bc1b23",
+    jobCount: 12,
+    categoryId: 7,
+  },
+  {
+    id: 45,
+    name: "EY",
+    logo: "https://logo.clearbit.com/ey.com",
+    logoBg: "#2e3192",
+    jobCount: 14,
+    categoryId: 7,
+  },
+  {
+    id: 46,
+    name: "KPMG",
+    logo: "https://logo.clearbit.com/kpmg.com",
+    logoBg: "#ff0000",
+    jobCount: 10,
+    categoryId: 7,
+  },
+  {
+    id: 47,
+    name: "Bain & Company",
+    logo: "https://logo.clearbit.com/bain.com",
+    logoBg: "#ff3d00",
+    jobCount: 9,
+    categoryId: 7,
+  },
+  {
+    id: 48,
+    name: "Boston Consulting",
+    logo: "https://logo.clearbit.com/bcg.com",
+    logoBg: "#0084ff",
+    jobCount: 11,
+    categoryId: 7,
+  },
+
+  // Human Resources (categoryId: 8)
+  {
+    id: 49,
+    name: "Workday",
+    logo: "https://logo.clearbit.com/workday.com",
+    logoBg: "#1e88e5",
+    jobCount: 7,
+    categoryId: 8,
+  },
+  {
+    id: 50,
+    name: "BambooHR",
+    logo: "https://logo.clearbit.com/bamboohr.com",
+    logoBg: "#4caf50",
+    jobCount: 5,
+    categoryId: 8,
   },
 ]);
 
@@ -445,7 +538,7 @@ const getActiveCategoryIcon = () => {
   const category = categories.value.find(
     (cat) => cat.id === activeCategory.value
   );
-  return category ? category.icon : null;
+  return category ? category.icon : "";
 };
 
 // View company details
@@ -456,10 +549,10 @@ const viewCompanyDetails = (companyId) => {
 </script>
 
 <style lang="scss" scoped>
-@use "@/style/variables.css" as *; /* <-- important */
+@use "@/style/variables.css" as *;
 .primary-color {
   color: var(--primary-color);
-} 
+}
 .companies-by-category {
   margin: 3rem 0;
 }
@@ -486,7 +579,7 @@ const viewCompanyDetails = (companyId) => {
 
 @media (min-width: 1024px) {
   .categories-grid {
-    grid-template-columns: repeat(5, 1fr);
+    grid-template-columns: repeat(4, 1fr);
   }
 }
 

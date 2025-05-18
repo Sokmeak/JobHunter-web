@@ -1,5 +1,5 @@
 <template>
-  <div class="card">
+  <div class="card" @mouseover="handleHover(job.id)">
     <div class="card-body">
       <div class="d-flex align-items-center">
         <div class="me-3" style="width: 48px; height: 48px">
@@ -7,7 +7,7 @@
             class="bg-light rounded d-flex align-items-center justify-content-center h-100"
           >
             <img
-              :src="getCompanyLogo(job.company)"
+              :src="job.companyLogo"
               :alt="`${job.company} logo`"
               class="img-fluid"
               style="max-width: 40px; max-height: 40px"
@@ -23,7 +23,9 @@
         </div>
 
         <div>
-          <RouterLink to="/jobDes" class="btn btn-primary"
+          <RouterLink
+            :to="{ name: 'JobDescription', params: { id: job.id } }"
+            class="btn btn-primary"
             >Apply</RouterLink
           >
         </div>
@@ -66,6 +68,10 @@ import { defineProps } from "vue";
 const props = defineProps({
   job: Object,
 });
+const handleHover = (id) => {
+  console.log("Hovered job ID:", id);
+  // You can also emit or store the ID if needed
+};
 
 // In a real app, you would use actual company logos
 const getCompanyLogo = (company) => {

@@ -1,16 +1,32 @@
-<script>
+<template>
+  <div>
+    <Loader v-if="isLoading" />
+    <RouterView v-else />
+  </div>
+</template>
 
+<script>
+import Loader from "@/components/Loader.vue";
 
 export default {
   name: "App",
+  components: {
+    Loader,
+  },
+  data() {
+    return {
+      isLoading: true, // You can control this based on actual loading state
+    };
+  },
+  mounted() {
+    // Example: simulate loading for 2 seconds
+    setTimeout(() => {
+      this.isLoading = false;
+    }, 3000);
+  },
 };
 </script>
 
-<template>
-  <RouterView />
-  <!-- <DashboardView />
-  <Sidebar/> -->
-</template>
 <!--  
 <style scoped>
 /* .container {
