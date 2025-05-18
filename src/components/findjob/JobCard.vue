@@ -7,7 +7,7 @@
             class="bg-light rounded d-flex align-items-center justify-content-center h-100"
           >
             <img
-              :src="getCompanyLogo(job.company)"
+              :src="job.companyLogo"
               :alt="`${job.company} logo`"
               class="img-fluid"
               style="max-width: 40px; max-height: 40px"
@@ -23,7 +23,11 @@
         </div>
 
         <div>
-          <RouterLink to="/jobDes" class="btn btn-primary">Apply</RouterLink>
+          <RouterLink
+            :to="{ name: 'JobDescription', params: { id: job.id } }"
+            class="btn btn-primary"
+            >Apply</RouterLink
+          >
         </div>
       </div>
     </div>
