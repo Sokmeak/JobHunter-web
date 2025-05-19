@@ -7,19 +7,17 @@
           <RouterLink to="/" class="text-decoration-none">Home</RouterLink>
         </li>
         <li class="breadcrumb-item">
-          <router-link to="/all-companies" class="text-decoration-none"
-            >Companies</router-link
+          <RouterLink to="/all-companies" class="text-decoration-none"
+            >Companies</RouterLink
           >
         </li>
         <li class="breadcrumb-item">
-          <!-- :to="`/company/${currentJob.companyId}`" -->
-          <router-link to="/company/1" class="text-decoration-none">
-            {{ companyName || "Unknown Company" }}
-          </router-link>
-          <!-- <router-link
-            :to="{ name: 'companyProfile' }"
+          <RouterLink
+            :to="`/company/${currentJob.companyId}`"
             class="text-decoration-none"
-            >{{ currentJob.company }}</router-link> -->
+          >
+            {{ companyName || "Unknown Company" }}
+          </RouterLink>
         </li>
         <li class="breadcrumb-item active" aria-current="page">
           {{ currentJob.title }}
@@ -36,7 +34,7 @@
           >
             <img
               :src="companyLogo"
-              :alt="`${currentJob.companyId} logo`"
+              :alt="`${currentJob.company} logo`"
               class="img-fluid rounded-3"
               width="60"
               height="60"
@@ -90,7 +88,7 @@
 
         <!-- Responsibilities Section -->
         <div class="bg-white rounded-4 p-4 shadow-sm mb-4">
-          <h2 mitral="fs-5 fw-bold mb-3">Responsibilities</h2>
+          <h2 class="fs-5 fw-bold mb-3">Responsibilities</h2>
           <ul class="list-unstyled mb-0">
             <li
               v-for="(responsibility, index) in currentJob.responsibilities"
@@ -177,9 +175,12 @@
             <h2 class="fs-5 fw-bold mb-0">{{ currentJob.company }}</h2>
           </div>
           <p class="text-muted mb-3">
-            <a href="#" class="text-decoration-none"
-              >Read more about {{ currentJob.company }}</a
+            <RouterLink
+              :to="`/company/${currentJob.companyId}`"
+              class="text-decoration-none"
             >
+              Read more about {{ currentJob.company }}
+            </RouterLink>
           </p>
           <p class="text-muted mb-4">
             {{ currentJob.company }} is a technology company that builds
@@ -190,14 +191,14 @@
           <div class="row g-3">
             <div class="col-md-6">
               <img
-                src="https://images.unsplash.com/photo-1497215842964-222b430dc094?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8b2ZmaWNlfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=500&q=60"
+                src="https://images.unsplash.com/photo-1497215842964-222b430dc094?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"
                 alt="Office"
                 class="img-fluid rounded-3 shadow-sm"
               />
             </div>
             <div class="col-md-6">
               <img
-                src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8NHx8dGVhbXxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60"
+                src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"
                 alt="Team"
                 class="img-fluid rounded-3 shadow-sm"
               />
@@ -221,11 +222,13 @@
               ><i class="bi bi-people-fill me-2"></i
               >{{ currentJob.applied }} applied</span
             >
-            <span class="badge bg-success rounded-pill">{{
-              currentJob.applied / currentJob.capacity <= 0.5
-                ? "Low competition"
-                : "High competition"
-            }}</span>
+            <span class="badge bg-success rounded-pill">
+              {{
+                currentJob.applied / currentJob.capacity <= 0.5
+                  ? "Low competition"
+                  : "High competition"
+              }}
+            </span>
           </div>
 
           <div class="job-meta">
@@ -327,13 +330,13 @@
           >
             <i class="bi bi-chevron-right"></i>
           </button>
-          <a
-            href="#"
+          <RouterLink
+            to="/jobs"
             class="text-primary text-decoration-none d-flex align-items-center"
           >
             Show all jobs
             <i class="bi bi-arrow-right ms-1"></i>
-          </a>
+          </RouterLink>
         </div>
       </div>
 
@@ -342,10 +345,10 @@
           <div class="d-flex flex-nowrap">
             <div
               class="job-card-wrapper"
-              v-for="(job, index) in similarJobs"
-              :key="index"
+              v-for="job in similarJobs"
+              :key="job.id"
             >
-              <job-card :job="job" />
+              <JobCard :job="job" />
             </div>
           </div>
         </div>
@@ -353,7 +356,7 @@
     </div>
 
     <!-- Job Application Modal -->
-    <job-application-modal
+    <JobApplicationModal
       :is-visible="isModalVisible"
       :job="currentJob"
       :form-subtitle="`The following is required and will only be shared with ${currentJob.company}`"
@@ -363,7 +366,7 @@
       @view-status="viewApplicationStatus"
     />
 
-    <simple-status-modal
+    <SimpleStatusModal
       :is-visible="showStatusModal"
       :is-loading="isLoadingStatus"
       :status="applicationStatus"
@@ -376,39 +379,27 @@
 </template>
 
 <script setup>
-import { ref, reactive, onMounted, computed } from "vue";
-import { useRoute } from "vue-router";
-import { useJobStore } from "../../stores/jobStore";
-// import JobCard from "../landing/JobCard.vue";
-import JobCard from "../findjob/JobCard.vue";
-import SimpleStatusModal from "./SimpleStatusModal.vue";
-import JobApplicationModal from "./JobApplicationModel.vue";
-import { getApplicationStatus } from "../services/applicationService";
-import { showSuccessToast, showErrorToast } from "../services/toastService";
-import { RouterLink } from "vue-router";
-import { useCompanyStore } from "@/stores/companyStore"; // Import company store
+import { ref, reactive, onMounted, computed, watch } from "vue";
+import { useRoute, useRouter } from "vue-router";
+import { useJobStore } from "@/stores/jobStore";
+import { useCompanyStore } from "@/stores/companyStore";
+import JobCard from "@/components/findjob/JobCard.vue";
+import SimpleStatusModal from "@/components/job-description/SimpleStatusModal.vue";
+import JobApplicationModal from "@/components/job-description/JobApplicationModel.vue";
+import { getApplicationStatus } from "@/components/services/applicationService";
+import {
+  showSuccessToast,
+  showErrorToast,
+} from "@/components/services/toastService";
 
 // State
-const companyStore = useCompanyStore(); // Initialize company store
-// Fetch company name based on companyId
-const companyName = computed(() => {
-  const company = companyStore.getCompanyById(Number(currentJob.companyId));
-  return company?.name || currentJob.company || "Unknown Company"; // Fallback to currentJob.company or default
-});
-
-const companyLogo = computed(() => {
-  const company = companyStore.getCompanyById(Number(currentJob.companyId));
-  return company?.logo || currentJob.company || "Unknown Company"; // Fallback to currentJob.company or default
-});
-
 const route = useRoute();
+const router = useRouter();
 const jobStore = useJobStore();
+const companyStore = useCompanyStore();
 const isModalVisible = ref(false);
 const rippleActive = ref(false);
-const rippleStyle = reactive({
-  left: "0px",
-  top: "0px",
-});
+const rippleStyle = reactive({ left: "0px", top: "0px" });
 const isLoading = ref(true);
 const applicationStatus = ref("loading");
 const errorMessage = ref("");
@@ -416,15 +407,27 @@ const showStatusModal = ref(false);
 const isLoadingStatus = ref(false);
 const currentApplicationId = ref("");
 
-async function fetchData() {
-  await Promise.all([jobStore.fetchJobs()]);
-}
+// Company data
+const companyName = computed(() => {
+  const company = companyStore.getCompanyById(Number(currentJob.companyId));
+  return company?.name || currentJob.company || "Unknown Company";
+});
+
+const companyLogo = computed(() => {
+  const company = companyStore.getCompanyById(Number(currentJob.companyId));
+  return (
+    company?.logo ||
+    currentJob.companyLogo ||
+    "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-E8FQZgvdXeGyMD4bsP7uoI0UDcGJuH.png"
+  );
+});
 
 // Reactive job data
 const currentJob = reactive({
   id: "",
   title: "",
   companyId: "",
+  company: "",
   location: "",
   type: "",
   companyLogo: "",
@@ -441,7 +444,7 @@ const currentJob = reactive({
   benefits: [],
 });
 
-// Computed required skills based on job tags
+// Computed required skills
 const requiredSkills = ref([]);
 
 // Similar jobs
@@ -464,23 +467,53 @@ const scrollJobsLeft = () => {
   }
 };
 
-// Fetch job data
-const fetchJobData = async () => {
-  isLoading.value = true;
-  console.log(route.params.id);
-  const jobId = Number(route.params.id); // Convert to number
-  const jobData = await jobStore.getJobById(jobId);
-  console.log(jobData);
+// Fetch all jobs
+const fetchData = async () => {
+  try {
+    await Promise.all([jobStore.fetchJobs(), companyStore.fetchCompanies()]);
+  } catch (error) {
+    console.error("Error fetching data:", error);
+    showErrorToast("Failed to load data. Please try again.");
+  }
+};
 
-  if (jobData) {
-    Object.assign(currentJob, jobData);
-    // Update required skills based on job tags
-    requiredSkills.value = generateRequiredSkills(jobData.tags);
-    // Fetch similar jobs
-    similarJobs.value = await findSimilarJobs(jobData);
-    console.log("Here is similar job: " + similarJobs.value);
-  } else {
-    throw new Error("Job not found");
+// Fetch job data
+const fetchJobData = async (jobId) => {
+  isLoading.value = true;
+  try {
+    const jobData = await jobStore.getJobById(Number(jobId));
+    if (jobData) {
+      Object.assign(currentJob, {
+        id: jobData.id || "",
+        title: jobData.title || "",
+        companyId: jobData.companyId || "",
+        company: jobData.company || "",
+        location: jobData.location || "",
+        type: jobData.type || "",
+        companyLogo: jobData.companyLogo || "",
+        description: jobData.description || "",
+        salary: jobData.salary || "",
+        postedDate: jobData.postedDate || "",
+        deadline: jobData.deadline || "",
+        applied: jobData.applied || 0,
+        capacity: jobData.capacity || 0,
+        tags: jobData.tags || [],
+        responsibilities: jobData.responsibilities || [],
+        whoYouAre: jobData.whoYouAre || [],
+        niceToHaves: jobData.niceToHaves || [],
+        benefits: jobData.benefits || [],
+      });
+      requiredSkills.value = generateRequiredSkills(jobData.tags);
+      similarJobs.value = await findSimilarJobs(jobData);
+    } else {
+      throw new Error("Job not found");
+    }
+  } catch (error) {
+    console.error("Error fetching job:", error);
+    showErrorToast("Job not found. Redirecting...");
+    router.push("/jobs");
+  } finally {
+    isLoading.value = false;
   }
 };
 
@@ -499,37 +532,31 @@ const generateRequiredSkills = (tags) => {
   return tags
     .reduce(
       (skills, tag) => {
-        if (skillMap[tag]) {
-          skills.push(...skillMap[tag]);
-        }
+        if (skillMap[tag]) skills.push(...skillMap[tag]);
         return skills;
       },
       ["English"]
     )
-    .slice(0, 5); // Limit to 5 skills, ensure English is included
+    .slice(0, 5);
 };
+
+// Find similar jobs
 const findSimilarJobs = async (currentJob) => {
-  // Validate input
   if (!currentJob || !currentJob.id || !Array.isArray(currentJob.tags)) {
     return [];
   }
-
-  // Properly call the function to get jobs
   let allJobs;
   try {
-    const jobsData = await jobStore.getAllJobs();
-    allJobs = Array.isArray(jobsData)
-      ? jobsData
-      : Array.isArray(jobsData?.value)
-      ? jobsData.value // Handle ref (e.g., in Vue with `ref([])`)
+    allJobs = await jobStore.getAllJobs();
+    allJobs = Array.isArray(allJobs)
+      ? allJobs
+      : Array.isArray(allJobs?.value)
+      ? allJobs.value
       : [];
   } catch (error) {
     console.error("Error accessing jobs:", error);
     return [];
   }
-
-  console.log("allJobs:", allJobs); // Debug
-
   return allJobs
     .filter(
       (job) =>
@@ -557,11 +584,9 @@ const addRippleEffect = (event) => {
   const rect = button.getBoundingClientRect();
   const x = event.clientX - rect.left;
   const y = event.clientY - rect.top;
-
   rippleStyle.left = `${x}px`;
   rippleStyle.top = `${y}px`;
   rippleActive.value = true;
-
   setTimeout(() => {
     rippleActive.value = false;
   }, 600);
@@ -639,9 +664,8 @@ const formatDate = (dateString) => {
   }).format(date);
 };
 
-// Lifecycle hooks
+// Lifecycle hooks and route watcher
 onMounted(() => {
-  fetchJobData();
   fetchData();
   if (!document.getElementById("toast-container")) {
     const toastContainer = document.createElement("div");
@@ -649,6 +673,18 @@ onMounted(() => {
     document.body.appendChild(toastContainer);
   }
 });
+
+// Watch route changes
+watch(
+  () => route.params.id,
+  (newId) => {
+    if (newId) {
+      console.log("Route ID changed:", newId);
+      fetchJobData(newId);
+    }
+  },
+  { immediate: true }
+);
 </script>
 
 <style scoped lang="scss">
@@ -658,92 +694,74 @@ onMounted(() => {
   background-color: #f8f9fa;
   min-height: 100vh;
 }
-
 .company-logo {
   width: 60px;
   height: 60px;
   background-color: var(--secondary-color);
   color: var(--primary-color);
 }
-
 .company-logo-sm {
   width: 40px;
   height: 40px;
   background-color: var(--secondary-color);
   color: var(--primary-color);
 }
-
 .benefit-icon {
   width: 40px;
   height: 40px;
   background-color: var(--tertiary-color);
 }
-
 .btn-primary {
   background-color: var(--primary-color);
   border-color: var(--primary-color);
   transition: all 0.3s ease;
 }
-
 .btn-primary:hover {
   background-color: #3935b8;
   border-color: #3935b8;
   transform: translateY(-2px);
   box-shadow: 0 4px 8px rgba(70, 64, 222, 0.2);
 }
-
 .btn-outline-secondary {
   transition: all 0.3s ease;
 }
-
 .btn-outline-secondary:hover {
   transform: translateY(-2px);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
-
 .text-primary {
   color: var(--primary-color) !important;
 }
-
 .bg-primary {
   background-color: var(--primary-color) !important;
 }
-
 .bg-secondary {
   background-color: var(--secondary-color) !important;
 }
-
 .bg-tertiary {
   background-color: var(--tertiary-color) !important;
 }
-
 .bg-primary-subtle {
   background-color: rgba(70, 64, 222, 0.1) !important;
 }
-
 .bg-warning-subtle {
   background-color: rgba(255, 184, 54, 0.1) !important;
 }
-
 .text-warning {
   color: var(--yellow-accent-color) !important;
 }
-
 .bg-success-subtle {
   background-color: rgba(86, 205, 173, 0.1) !important;
 }
-
 .text-success {
   color: var(--green-accent-color) !important;
 }
-
 .btn-primary {
   position: relative;
   overflow: hidden;
   transition: background-color 0.3s ease, transform 0.3s ease,
     box-shadow 0.3s ease;
 }
-
 .ripple-effect {
   position: absolute;
   border-radius: 50%;
@@ -756,53 +774,43 @@ onMounted(() => {
   transform: scale(0);
   pointer-events: none;
 }
-
 @keyframes ripple {
   to {
     transform: scale(4);
     opacity: 0;
   }
 }
-
 .job-header {
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
-
 .job-header:hover {
   transform: translateY(-2px);
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.05);
 }
-
 .badge {
   font-weight: 500;
   letter-spacing: 0.3px;
 }
-
 .breadcrumb-item + .breadcrumb-item::before {
   color: var(--primary-color);
 }
-
 .breadcrumb-item a {
   color: var(--primary-color);
   transition: color 0.3s ease;
 }
-
 .breadcrumb-item a:hover {
   color: #3935b8;
   text-decoration: underline !important;
 }
-
 @media (max-width: 768px) {
   .job-meta > div {
     flex-direction: column;
     align-items: flex-start;
   }
-
   .job-meta > div span:last-child {
     margin-top: 4px;
   }
 }
-
 .jobs-scroll-container {
   overflow-x: auto;
   overflow-y: hidden;
@@ -811,41 +819,34 @@ onMounted(() => {
   -ms-overflow-style: none;
   padding-bottom: 10px;
 }
-
 .jobs-scroll-container::-webkit-scrollbar {
   display: none;
 }
-
 .job-card-wrapper {
   flex: 0 0 auto;
   width: 100%;
   padding-right: 16px;
 }
-
 @media (min-width: 576px) {
   .job-card-wrapper {
     width: 80%;
   }
 }
-
 @media (min-width: 768px) {
   .job-card-wrapper {
     width: 50%;
   }
 }
-
 @media (min-width: 992px) {
   .job-card-wrapper {
     width: 33.333%;
   }
 }
-
 @media (min-width: 1200px) {
   .job-card-wrapper {
     width: 25%;
   }
 }
-
 .scroll-btn {
   width: 32px;
   height: 32px;
@@ -854,12 +855,10 @@ onMounted(() => {
   justify-content: center;
   transition: all 0.2s ease;
 }
-
 .scroll-btn:hover {
   background-color: var(--primary-color);
   color: white;
 }
-
 .scroll-btn:focus {
   box-shadow: 0 0 0 0.25rem rgba(70, 64, 222, 0.25);
 }

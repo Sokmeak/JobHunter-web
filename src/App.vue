@@ -1,106 +1,71 @@
 <template>
   <div>
-    <Loader v-if="isLoading" />
-    <RouterView v-else />
+    <Transition name="loader-fade" mode="out-in">
+      <Loader v-if="showLoader" :loading-duration="loaderDuration" />
+      <RouterView v-else />
+    </Transition>
   </div>
 </template>
 
-<script>
+<script setup>
+import { ref } from "vue";
 import Loader from "@/components/Loader.vue";
+import { useRouter } from "vue-router";
+import { useJobStore } from "@/stores/jobStore";
+import { useCompanyStore } from "@/stores/companyStore";
 
-export default {
-  name: "App",
-  components: {
-    Loader,
-  },
-  data() {
-    return {
-      isLoading: true, // You can control this based on actual loading state
-    };
-  },
-  mounted() {
-    // Example: simulate loading for 2 seconds
-    setTimeout(() => {
-      this.isLoading = false;
-    }, 3000);
-  },
+// State
+const showLoader = ref(true);
+const loaderDuration = ref(2000); // Default duration
+const router = useRouter();
+const jobStore = useJobStore();
+const companyStore = useCompanyStore();
+
+// Preload store data
+const preloadStores = () => {
+  jobStore
+    .fetchJobs()
+    .catch((error) => console.error("Failed to fetch jobs:", error));
+  companyStore
+    .fetchCompanies()
+    .catch((error) => console.error("Failed to fetch companies:", error));
 };
+
+// Initialize app
+const initApp = async () => {
+  const start = Date.now();
+  try {
+    await Promise.all([jobStore.fetchJobs(), companyStore.fetchCompanies()]);
+    if (!document.getElementById("toast-container")) {
+      const toastContainer = document.createElement("div");
+      toastContainer.id = "toast-container";
+      toastContainer.style.zIndex = "9500";
+      document.body.appendChild(toastContainer);
+    }
+  } catch (error) {
+    console.error("App initialization failed:", error);
+  } finally {
+    const elapsed = Date.now() - start;
+    loaderDuration.value = Math.max(800 - elapsed, 400); // Min 400ms, max 800ms
+    setTimeout(() => {
+      showLoader.value = false;
+    }, loaderDuration.value);
+  }
+};
+
+// Start preloading
+preloadStores();
+initApp();
+
+// Handle route changes
+router.beforeEach((to, from, next) => {
+  if (to.path !== from.path) {
+    showLoader.value = true;
+    loaderDuration.value = 600; // Fast for routes
+    setTimeout(() => {
+      showLoader.value = false;
+    }, loaderDuration.value);
+  }
+  next();
+});
 </script>
-
-<!--  
-<style scoped>
-/* .container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 100vh;
-  background-color: #f0f0f0;
-  font-family: "Arial", sans-serif;`
-} */
-/* h1 {
-  color: #42b983;
-  font-size: 2em;
-  text-align: center;
-  margin-top: 20px;
-  font-weight: bold;
-  text-transform: uppercase;
-  letter-spacing: 2px;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
-  transition: all 0.3s ease;
-}
-button {
-  background-color: #42b983;
-  color: white;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 5px;
-  font-size: 1.2em;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-button:hover {
-  background-color: #36a372;
-  transform: scale(1.05);
-}
-button a {
-  color: white;
-  text-decoration: none;
-} */
-</style>
--->
-<!-- 
-
-
-    <div class="body">
-      <div class="card" style="width: 18rem">
-        <img src="./assets/images/PP.png" class="card-img-top" alt="..." />
-        <div class="card-body">
-          <h5 class="card-title">Card title</h5>
-          <p class="card-text">
-            Some quick example text to build on the card title and make up the
-            bulk of the card's content.
-          </p>
-          <a
-            href="https://en.wikipedia.org/wiki/Phnom_Penh"
-            class="btn btn-primary"
-            >Learn more</a
-          >
-        </div>
-      </div>
-    </div>-->
-
-<!-- <div class="container">
-    <h1>Welcome to JobHunter platform.</h1>
-    <h2>Find your dream job with us!</h2>
-    <h3>Explore thousands of job listings.</h3>
-    <button class="btn btn-primary btn-lg">
-      <a
-        href="https://www.figma.com/proto/OxXC4tfeREC8IKuZfRcaBR/JobHunter----Website?page-id=0%3A1&node-id=1-5747&viewport=10915%2C-111%2C0.58&t=1QFxHa5Ft3VQyozW-1&scaling=min-zoom&content-scaling=fixed&starting-point-node-id=1%3A5827"
-        target="_blank"
-      >
-        Learn More</a
-      >
-    </button>
-  </div> -->

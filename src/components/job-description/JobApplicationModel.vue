@@ -428,16 +428,12 @@
     </div>
   </transition>
 </template>
-
 <script setup>
 import { ref, reactive, computed, onMounted, onUnmounted, watch } from "vue";
 
 // Props with default values
 const props = defineProps({
-  isVisible: {
-    type: Boolean,
-    default: false,
-  },
+  isVisible: { type: Boolean, default: false },
   job: {
     type: Object,
     default: () => ({
@@ -448,45 +444,21 @@ const props = defineProps({
       type: "Full-Time",
       companyLogo:
         "https://images.unsplash.com/photo-1580893246395-52aead8960dc?ixlib=rb-1.2.1&auto=format&fit=crop&w=64&h=64&q=80",
+      companyId: "default-company-id", // Added for clarity; adjust if not available
     }),
   },
-  formTitle: {
-    type: String,
-    default: "Submit your application",
-  },
+  formTitle: { type: String, default: "Submit your application" },
   formSubtitle: {
     type: String,
-    default:
-      "The following is required and will only be shared with the company",
+    default: "The following is required and will only be shared with the company",
   },
-  submitButtonText: {
-    type: String,
-    default: "Submit Application",
-  },
-  maxAdditionalInfoLength: {
-    type: Number,
-    default: 500,
-  },
-  acceptedFileTypes: {
-    type: String,
-    default: ".pdf,.doc,.docx",
-  },
-  acceptedFileTypesDisplay: {
-    type: String,
-    default: "PDF, DOC, DOCX",
-  },
-  termsUrl: {
-    type: String,
-    default: "#",
-  },
-  privacyUrl: {
-    type: String,
-    default: "#",
-  },
-  apiEndpoint: {
-    type: String,
-    default: "/api/applications",
-  },
+  submitButtonText: { type: String, default: "Submit Application" },
+  maxAdditionalInfoLength: { type: Number, default: 500 },
+  acceptedFileTypes: { type: String, default: ".pdf,.doc,.docx" },
+  acceptedFileTypesDisplay: { type: String, default: "PDF, DOC, DOCX" },
+  termsUrl: { type: String, default: "#" },
+  privacyUrl: { type: String, default: "#" },
+  apiEndpoint: { type: String, default: "/api/applications" },
   defaultCompanyLogo: {
     type: String,
     default:
@@ -495,13 +467,7 @@ const props = defineProps({
 });
 
 // Emits
-const emit = defineEmits([
-  "close",
-  "submit-success",
-  "submit-error",
-  "status-change",
-  "view-status",
-]);
+const emit = defineEmits(["close", "submit-success", "submit-error", "status-change", "view-status"]);
 
 // Reactive state
 const isDragging = ref(false);
@@ -529,12 +495,7 @@ const statusIconClass = ref("");
 const canDismissStatus = ref(false);
 
 // Application steps
-const applicationSteps = [
-  "Submit Application",
-  "Review",
-  "Interview",
-  "Decision",
-];
+const applicationSteps = ["Submit Application", "Review", "Interview", "Decision"];
 const stepStatus = reactive(["active", "pending", "pending", "pending"]);
 const currentStep = ref(0);
 
@@ -553,7 +514,6 @@ const statusProgress = computed(() => {
 });
 
 const stepperProgress = computed(() => {
-  // Calculate progress based on current step (0-3)
   return (currentStep.value / (applicationSteps.length - 1)) * 100;
 });
 
@@ -584,8 +544,6 @@ const updateStatusBar = (status) => {
       statusIcon.value = "bi bi-check-circle-fill";
       statusIconClass.value = "text-success";
       canDismissStatus.value = true;
-
-      // Update stepper
       stepStatus[0] = "completed";
       stepStatus[1] = "active";
       currentStep.value = 1;
@@ -593,8 +551,7 @@ const updateStatusBar = (status) => {
     case "error":
       showStatusBar.value = true;
       statusTitle.value = "Submission Failed";
-      statusMessage.value =
-        "There was an error submitting your application. Please try again.";
+      statusMessage.value = "There was an error submitting your application. Please try again.";
       statusIcon.value = "bi bi-exclamation-circle-fill";
       statusIconClass.value = "text-danger";
       canDismissStatus.value = true;
@@ -627,20 +584,15 @@ const handleFileUpload = (event) => {
 
 const handleFileDrop = (event) => {
   if (isSubmitting.value || applicationStatus.value === "submitted") return;
-
   isDragging.value = false;
   const file = event.dataTransfer.files[0];
-
-  // Check if file type is accepted
   const fileExtension = file.name.split(".").pop().toLowerCase();
   const acceptedExtensions = props.acceptedFileTypes
     .split(",")
     .map((ext) => ext.trim().replace(".", "").toLowerCase());
-
   if (file && acceptedExtensions.includes(fileExtension)) {
     form.resume = file;
   } else {
-    // Could add error handling here
     console.error("File type not accepted");
   }
 };
@@ -659,8 +611,6 @@ const submitApplication = async () => {
 
     // Create form data for file upload
     const formData = new FormData();
-
-    // Add all form fields to formData
     Object.keys(form).forEach((key) => {
       if (key === "resume" && form[key]) {
         formData.append(key, form[key]);
@@ -668,23 +618,49 @@ const submitApplication = async () => {
         formData.append(key, form[key]);
       }
     });
-
-    // Add job ID to formData
     formData.append("jobId", props.job.id);
 
-    // Simulate API call with delay
+    // Simulate API call
     await new Promise((resolve) => setTimeout(resolve, 2500));
-
-    // Generate a random application ID
     applicationId.value = `APP-${Date.now().toString().slice(-6)}`;
 
-    // Simulate successful submission
-    console.log("Application submitted:", Object.fromEntries(formData));
+    // Prepare log data
+    const logData = {
+      timestamp: new Date().toISOString(),
+      applicationId: applicationId.value,
+      job: {
+        id: props.job.id,
+        title: props.job.title,
+        company: props.job.company,
+        companyId: props.job.companyId || "unknown", // Use companyId if available
+        location: props.job.location,
+        type: props.job.type,
+        companyLogo: props.job.companyLogo,
+      },
+      applicant: {
+        fullName: form.fullName,
+        email: form.email,
+        phone: form.phone,
+        jobTitle: form.jobTitle,
+        linkedin: form.linkedin,
+        portfolio: form.portfolio,
+        additionalInfo: form.additionalInfo,
+        resume: form.resume ? {
+          name: form.resume.name,
+          size: form.resume.size,
+          type: form.resume.type,
+        } : null,
+      },
+      status: "submitted",
+    };
+
+    // Log the data
+    console.log("Application Submission:", JSON.stringify(logData, null, 2));
 
     // Update application status
     applicationStatus.value = "submitted";
 
-    // Emit success event with form data
+    // Emit success event
     emit("submit-success", {
       jobId: props.job.id,
       applicationId: applicationId.value,
@@ -694,7 +670,43 @@ const submitApplication = async () => {
       },
     });
   } catch (error) {
-    console.error("Error submitting application:", error);
+    // Prepare log data for error case
+    const logData = {
+      timestamp: new Date().toISOString(),
+      applicationId: applicationId.value || "not-generated",
+      job: {
+        id: props.job.id,
+        title: props.job.title,
+        company: props.job.company,
+        companyId: props.job.companyId || "unknown",
+        location: props.job.location,
+        type: props.job.type,
+        companyLogo: props.job.companyLogo,
+      },
+      applicant: {
+        fullName: form.fullName,
+        email: form.email,
+        phone: form.phone,
+        jobTitle: form.jobTitle,
+        linkedin: form.linkedin,
+        portfolio: form.portfolio,
+        additionalInfo: form.additionalInfo,
+        resume: form.resume ? {
+          name: form.resume.name,
+          size: form.resume.size,
+          type: form.resume.type,
+        } : null,
+      },
+      status: "error",
+      error: {
+        message: error.message,
+        stack: error.stack,
+      },
+    };
+
+    // Log the error data
+    console.error("Application Submission Failed:", JSON.stringify(logData, null, 2));
+
     applicationStatus.value = "error";
     emit("submit-error", error);
   } finally {
@@ -710,17 +722,12 @@ const resetForm = () => {
       form[key] = "";
     }
   });
-
   if (fileInput.value) {
     fileInput.value.value = "";
   }
-
-  // Reset application status
   applicationStatus.value = "idle";
   applicationId.value = null;
   showStatusBar.value = false;
-
-  // Reset stepper
   stepStatus.forEach((_, index) => {
     stepStatus[index] = index === 0 ? "active" : "pending";
   });
@@ -736,16 +743,12 @@ const viewApplicationStatus = () => {
 
 // Lifecycle hooks
 onMounted(() => {
-  // Handle escape key to close modal
   const handleEscKey = (event) => {
     if (event.key === "Escape" && props.isVisible) {
       close();
     }
   };
-
   window.addEventListener("keydown", handleEscKey);
-
-  // Cleanup
   onUnmounted(() => {
     window.removeEventListener("keydown", handleEscKey);
   });
@@ -755,16 +758,12 @@ onMounted(() => {
 watch(
   () => props.isVisible,
   (newValue) => {
-    if (newValue) {
-      // Don't reset if there's a submitted application
-      if (applicationStatus.value !== "submitted") {
-        resetForm();
-      }
+    if (newValue && applicationStatus.value !== "submitted") {
+      resetForm();
     }
   }
 );
 </script>
-
 <style scoped>
 .modal-backdrop {
   position: fixed;
