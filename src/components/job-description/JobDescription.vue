@@ -12,11 +12,11 @@
           >
         </li>
         <li class="breadcrumb-item">
-          <router-link
+          <router-link to="/company/1"> {{ currentJob.company }}</router-link>
+          <!-- <router-link
             :to="{ name: 'companyProfile' }"
             class="text-decoration-none"
-            >{{ currentJob.company }}</router-link
-          >
+            >{{ currentJob.company }}</router-link> -->
         </li>
         <li class="breadcrumb-item active" aria-current="page">
           {{ currentJob.title }}
@@ -519,12 +519,14 @@ const findSimilarJobs = async (currentJob) => {
 
   console.log("allJobs:", allJobs); // Debug
 
-  return allJobs.filter(
-    (job) =>
-      job.id !== currentJob.id &&
-      Array.isArray(job.tags) &&
-      job.tags.some((tag) => currentJob.tags.includes(tag))
-  ).slice(0,5);
+  return allJobs
+    .filter(
+      (job) =>
+        job.id !== currentJob.id &&
+        Array.isArray(job.tags) &&
+        job.tags.some((tag) => currentJob.tags.includes(tag))
+    )
+    .slice(0, 5);
 };
 
 // Modal control functions

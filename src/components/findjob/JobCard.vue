@@ -73,6 +73,10 @@ const handleHover = (id) => {
   // You can also emit or store the ID if needed
 };
 
+const jobId = (job) =>
+  computed(() => {
+    return typeof job.id === "number" ? job.id : job.job_id;
+  }).value;
 // In a real app, you would use actual company logos
 const getCompanyLogo = (company) => {
   const logos = {

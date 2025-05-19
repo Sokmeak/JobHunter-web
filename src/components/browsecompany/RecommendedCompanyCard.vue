@@ -1,5 +1,5 @@
 <template>
-  <RouterLink to="/company" class="link company-card">
+  <RouterLink to="/company/1" class="link company-card">
     <div class="company-header">
       <div
         class="company-logo"

@@ -31,7 +31,7 @@
 
       <div class="d-flex justify-content-between">
         <RouterLink
-          :to="{ name: 'JobDescription', params: { id: job.id } }"
+          :to="{ name: 'JobDescription', params: { id: jobId(job) } }"
           class="btn btn-outline-primary"
           >Apply</RouterLink
         >
@@ -46,6 +46,7 @@
 <script setup>
 import { ref } from "vue";
 import { RouterLink } from "vue-router";
+import { computed } from "vue";
 
 // Props definition
 const props = defineProps({
@@ -54,18 +55,16 @@ const props = defineProps({
     required: true,
   },
 });
-
+const jobId = (job) =>
+  computed(() => {
+    return typeof job.id === "number" ? job.id : job.job_id;
+  }).value;
 // Reactive state
 const bookmarked = ref(false);
 
 // Methods
 const toggleBookmark = () => {
   bookmarked.value = !bookmarked.value;
-  // Optional: Uncomment for persistence if needed
-  // const saved = JSON.parse(localStorage.getItem("bookmarkedJobs") || "[]");
-  // if (bookmarked.value) saved.push(props.job.id);
-  // else saved.splice(saved.indexOf(props.job.id), 1);
-  // localStorage.setItem("bookmarkedJobs", JSON.stringify(saved));
 };
 </script>
 
