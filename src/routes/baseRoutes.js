@@ -41,7 +41,7 @@ export default [
 
       {
         path: "all-companies",
-        name: "BrowseCompanies",
+        name: "all-companies",
         component: BrowseCompanies,
       },
       {

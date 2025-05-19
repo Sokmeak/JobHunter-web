@@ -47,7 +47,7 @@
             <li class="nav-item">
               <RouterLink
                 class="nav-link"
-                to="jobs"
+                :to="{ name: 'jobs' }"
                 :class="{ active: route.path.includes('jobs') }"
                 >Find Jobs</RouterLink
               >
@@ -55,7 +55,7 @@
             <li class="nav-item">
               <RouterLink
                 class="nav-link"
-                to="all-companies"
+                :to="{ name: 'all-companies' }"
                 :class="{ active: route.path.includes('all-companies') }"
                 >Browse Companies</RouterLink
               >

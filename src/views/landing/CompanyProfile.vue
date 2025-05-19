@@ -1,4 +1,3 @@
-```vue
 <template>
   <div class="container py-4">
     <!-- Company Header Card -->
@@ -835,4 +834,3 @@ defineProps({
   background-color: rgba(255, 184, 54, 0.1) !important;
 }
 </style>
-```

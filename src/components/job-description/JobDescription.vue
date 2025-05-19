@@ -12,7 +12,10 @@
           >
         </li>
         <li class="breadcrumb-item">
-          <router-link to="/company/1"> {{ currentJob.company }}</router-link>
+          <!-- :to="`/company/${currentJob.companyId}`" -->
+          <router-link to="/company/1" class="text-decoration-none">
+            {{ companyName || "Unknown Company" }}
+          </router-link>
           <!-- <router-link
             :to="{ name: 'companyProfile' }"
             class="text-decoration-none"
@@ -30,15 +33,10 @@
         <div class="col-md-8 d-flex align-items-center">
           <div
             class="company-logo rounded-3 d-flex align-items-center justify-content-center me-4"
-            :class="!currentJob.companyLogo ? 'bg-secondary text-primary' : ''"
           >
-            <span v-if="!currentJob.companyLogo" class="fs-4 fw-bold">{{
-              currentJob.company.charAt(0)
-            }}</span>
             <img
-              v-else
-              :src="currentJob.companyLogo"
-              :alt="`${currentJob.company} logo`"
+              :src="companyLogo"
+              :alt="`${currentJob.companyId} logo`"
               class="img-fluid rounded-3"
               width="60"
               height="60"
@@ -174,7 +172,7 @@
             <div
               class="company-logo-sm rounded-3 d-flex align-items-center justify-content-center me-3 bg-secondary text-primary"
             >
-              <span class="fw-bold">{{ currentJob.company.charAt(0) }}</span>
+              <span class="fw-bold">{{ currentJob.company }}</span>
             </div>
             <h2 class="fs-5 fw-bold mb-0">{{ currentJob.company }}</h2>
           </div>
@@ -378,7 +376,7 @@
 </template>
 
 <script setup>
-import { ref, reactive, onMounted } from "vue";
+import { ref, reactive, onMounted, computed } from "vue";
 import { useRoute } from "vue-router";
 import { useJobStore } from "../../stores/jobStore";
 // import JobCard from "../landing/JobCard.vue";
@@ -388,8 +386,21 @@ import JobApplicationModal from "./JobApplicationModel.vue";
 import { getApplicationStatus } from "../services/applicationService";
 import { showSuccessToast, showErrorToast } from "../services/toastService";
 import { RouterLink } from "vue-router";
+import { useCompanyStore } from "@/stores/companyStore"; // Import company store
 
 // State
+const companyStore = useCompanyStore(); // Initialize company store
+// Fetch company name based on companyId
+const companyName = computed(() => {
+  const company = companyStore.getCompanyById(Number(currentJob.companyId));
+  return company?.name || currentJob.company || "Unknown Company"; // Fallback to currentJob.company or default
+});
+
+const companyLogo = computed(() => {
+  const company = companyStore.getCompanyById(Number(currentJob.companyId));
+  return company?.logo || currentJob.company || "Unknown Company"; // Fallback to currentJob.company or default
+});
+
 const route = useRoute();
 const jobStore = useJobStore();
 const isModalVisible = ref(false);
@@ -413,7 +424,7 @@ async function fetchData() {
 const currentJob = reactive({
   id: "",
   title: "",
-  company: "",
+  companyId: "",
   location: "",
   type: "",
   companyLogo: "",
