@@ -408,7 +408,7 @@ export default {
   font-weight: 500;
   font-size: 14px;
   color: #202124;
-  text-truncate: ellipsis;
+  text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
 }
@@ -416,7 +416,7 @@ export default {
 .user-email {
   font-size: 12px;
   color: #5f6368;
-  text-truncate: ellipsis;
+  text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
 }

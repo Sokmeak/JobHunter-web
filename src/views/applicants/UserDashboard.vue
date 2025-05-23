@@ -2,7 +2,7 @@
   <div class="d-flex">
      <div class="container py-4">
 
-      <div class="container-fluid py-4">
+      <div class="container-fluid py-1">
         <GreetingSection :user-name="user.name" :date-range="dateRange" />
 
         <div class="row mt-4">

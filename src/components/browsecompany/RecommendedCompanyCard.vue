@@ -40,7 +40,12 @@ defineProps({
     },
   },
 });
-const countJobs = (company) => company.jobIds.length;
+
+// Fixed: Use jobCount instead of jobIds.length
+const countJobs = (company) => company.jobCount || 0;
+
+// Alternative: If you actually have jobIds array, use this instead:
+// const countJobs = (company) => company.jobIds?.length || 0;
 </script>
 
 <style scoped>

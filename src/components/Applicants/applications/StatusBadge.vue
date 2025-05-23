@@ -15,16 +15,22 @@ export default {
   },
   computed: {
     statusClass() {
-      const statusClasses = {
-        'In Review': 'in-review',
-        'Shortlisted': 'shortlisted',
-        'Offered': 'offered',
-        'Interviewing': 'interviewing',
-        'Unsuitable': 'unsuitable',
-        'Hired': 'hired',
-        'Assessment': 'assessment'
-      };
-      return statusClasses[this.status] || 'default';
+      switch(this.status) {
+        case 'In Review':
+          return 'status-review';
+        case 'Shortlisted':
+          return 'status-shortlisted';
+        case 'Offered':
+          return 'status-offered';
+        case 'Interviewing':
+          return 'status-interviewing';
+        case 'Unsuitable':
+          return 'status-unsuitable';
+        case 'Hired':
+          return 'status-hired';
+        default:
+          return '';
+      }
     }
   }
 };
@@ -32,59 +38,45 @@ export default {
 
 <style scoped>
 .status-badge {
-  padding: 4px 12px;
-  border-radius: 16px;
+  padding: 6px 12px;
+  border-radius: 20px;
   font-size: 12px;
   font-weight: 500;
-  text-transform: capitalize;
-  display: inline-block;
 }
 
-.status-badge.in-review {
-  background-color: #fff3cd;
-  color: #856404;
-  border: 1px solid #ffeaa7;
+.status-review {
+  background-color: #FFF8E6;
+  color: #B98900;
+  border: 1px solid #FFE7A0;
 }
 
-.status-badge.shortlisted {
-  background-color: #d1ecf1;
-  color: #0c5460;
-  border: 1px solid #bee5eb;
+.status-shortlisted {
+  background-color: #E6F7F0;
+  color: #027A48;
+  border: 1px solid #B8DBCA;
 }
 
-.status-badge.offered {
-  background-color: #d4edda;
-  color: #155724;
-  border: 1px solid #c3e6cb;
+.status-offered {
+  background-color: #EEE9FF;
+  color: #5925DC;
+  border: 1px solid #D9CFFF;
 }
 
-.status-badge.interviewing {
-  background-color: #fff3cd;
-  color: #856404;
-  border: 1px solid #ffeaa7;
+.status-interviewing {
+  background-color: #FFF8E6;
+  color: #B98900;
+  border: 1px solid #FFE7A0;
 }
 
-.status-badge.assessment {
-  background-color: #e2e3f1;
-  color: #383d41;
-  border: 1px solid #c6c8db;
+.status-unsuitable {
+  background-color: #FFF0ED;
+  color: #C4320A;
+  border: 1px solid #FFD6CC;
 }
 
-.status-badge.unsuitable {
-  background-color: #f8d7da;
-  color: #721c24;
-  border: 1px solid #f5c6cb;
-}
-
-.status-badge.hired {
-  background-color: #d4edda;
-  color: #155724;
-  border: 1px solid #c3e6cb;
-}
-
-.status-badge.default {
-  background-color: #e9ecef;
-  color: #495057;
-  border: 1px solid #ced4da;
+.status-hired {
+  background-color: #E6F7F0;
+  color: #027A48;
+  border: 1px solid #B8DBCA;
 }
 </style>

@@ -1,30 +1,22 @@
 <template>
   <div class="applications-table">
     <div class="table-header">
-      <div class="col-number">#</div>
-      <div class="col-company">Company Name</div>
-      <div class="col-role">Roles</div>
-      <div class="col-date">Date Applied</div>
-      <div class="col-status">Status</div>
-      <div class="col-actions"></div>
+      <div class="header-cell index-cell">#</div>
+      <div class="header-cell company-cell">Company Name</div>
+      <div class="header-cell role-cell">Roles</div>
+      <div class="header-cell date-cell">Date Applied</div>
+      <div class="header-cell status-cell">Status</div>
+      <div class="header-cell actions-cell"></div>
     </div>
 
-    <div class="table-body">
-      <ApplicationRow
-        v-for="(application, index) in applications"
-        :key="application.id"
-        :application="application"
-        :index="startIndex + index"
-        @view-details="$emit('view-details', $event)"
-        @follow-up="$emit('follow-up', $event)"
-        @withdraw="$emit('withdraw', $event)"
-      />
-    </div>
-
-    <div v-if="applications.length === 0" class="empty-state">
-      <i class="bi bi-file-earmark-text"></i>
-      <p>No applications found</p>
-    </div>
+    <ApplicationRow 
+      v-for="(application, index) in applications" 
+      :key="application.id"
+      :application="application"
+      :isOdd="index % 2 === 0"
+      @click="$emit('view-application', application)"
+      @action-menu="$emit('action-menu', application)"
+    />
   </div>
 </template>
 
@@ -32,7 +24,7 @@
 import ApplicationRow from './ApplicationRow.vue';
 
 export default {
-  name: 'ApplicationTable',
+  name: 'ApplicationsTable',
   components: {
     ApplicationRow
   },
@@ -40,10 +32,6 @@ export default {
     applications: {
       type: Array,
       required: true
-    },
-    startIndex: {
-      type: Number,
-      default: 0
     }
   }
 };
@@ -51,48 +39,62 @@ export default {
 
 <style scoped>
 .applications-table {
-  border: 1px solid #e8eaed;
-  border-radius: 12px;
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+  border-radius: 8px;
   overflow: hidden;
-  margin-bottom: 24px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
 }
 
 .table-header {
-  display: grid;
-  grid-template-columns: 60px 1fr 1fr 120px 120px 60px;
-  gap: 16px;
-  padding: 16px 20px;
-  background-color: #f8f9fa;
-  border-bottom: 1px solid #e8eaed;
+  display: flex;
+  background-color: #f9fafb;
+  border-bottom: 1px solid #e0e0e0;
+  font-weight: 500;
+  color: #6b7280;
+}
+
+.header-cell {
+  padding: 16px;
+  text-align: left;
   font-size: 14px;
-  font-weight: 600;
-  color: #5f6368;
 }
 
-.table-body {
-  background-color: #ffffff;
+.index-cell {
+  width: 5%;
+  justify-content: center;
 }
 
-.empty-state {
-  padding: 48px 20px;
-  text-align: center;
-  color: #9aa0a6;
+.company-cell {
+  width: 25%;
 }
 
-.empty-state i {
-  font-size: 48px;
-  margin-bottom: 16px;
-  display: block;
+.role-cell {
+  width: 25%;
 }
 
-.empty-state p {
-  font-size: 16px;
-  margin: 0;
+.date-cell {
+  width: 20%;
+}
+
+.status-cell {
+  width: 20%;
+}
+
+.actions-cell {
+  width: 5%;
+  justify-content: center;
 }
 
 @media (max-width: 768px) {
+  .applications-table {
+    overflow-x: auto;
+    display: block;
+  }
+  
   .table-header {
-    display: none;
+    width: 800px;
   }
 }
 </style>

@@ -79,7 +79,10 @@ export default {
       this.pageTitle = this.routeTitles[to.path] || 'Dashboard';
       
       // Determine if back button should be shown based on navigation depth
-      this.showBackButton = to.meta.showBackButton || to.path !== '/applicant/dashboard';
+      // Force showBackButton to true for all routes except dashboard
+      this.showBackButton = to.path !== '/applicant/dashboard';
+      
+      console.log('Route changed, showBackButton set to:', this.showBackButton);
       
       // Close mobile menu when route changes
       if (this.isMobileMenuOpen) {
@@ -96,6 +99,10 @@ export default {
     
     // Set initial page title based on current route
     this.pageTitle = this.routeTitles[this.$route.path] || 'Dashboard';
+    
+    // Set initial back button state
+    this.showBackButton = this.$route.path !== '/applicant/dashboard';
+    console.log('Initial showBackButton state:', this.showBackButton);
     
     // Add event listener for screen size changes
     window.addEventListener('resize', this.handleResize);
@@ -117,6 +124,7 @@ export default {
     
     updateBackButton(show) {
       this.showBackButton = show;
+      console.log('updateBackButton called, new value:', show);
     },
 
     toggleSidebar() {
@@ -181,7 +189,7 @@ export default {
   flex: 1;
   padding: 24px;
   overflow-y: auto;
-  background-color: #f8f9fa;
+  background-color: #ffffff;
 }
 
 /* Page transitions */
