@@ -2,6 +2,7 @@
   <div
     class="floating-stats-card"
     :class="{ show: isVisible }"
+    :aria-hidden="!isVisible"
     aria-label="Company statistics"
     role="region"
   >
@@ -55,7 +56,7 @@
         </div>
         <div class="col-auto ms-md-3">
           <RouterLink
-            to="/jobDes"
+            :to="jobRoute"
             class="btn btn-apply"
             :style="{
               backgroundColor: 'var(--bg-primary-color)',
@@ -71,13 +72,15 @@
 </template>
 
 <script setup>
-import { ref, onMounted, onUnmounted } from "vue";
+import { ref, computed, onMounted, onUnmounted } from "vue";
+import { throttle } from "lodash"; // Optional: Use lodash for throttling
 
-defineProps({
+const props = defineProps({
   company: {
     type: Object,
     required: true,
     default: () => ({
+      id: 1,
       name: "Unknown Company",
       logoInitial: "?",
       jobs: 0,
@@ -86,6 +89,7 @@ defineProps({
     }),
     validator: (company) => {
       return (
+        typeof company.id === "number" &&
         typeof company.name === "string" &&
         typeof company.logoInitial === "string" &&
         (typeof company.jobs === "number" ||
@@ -97,12 +101,21 @@ defineProps({
   },
 });
 
-const isVisible = ref(false);
-const scrollThreshold = 300; // Show after scrolling this many pixels
+// Compute the RouterLink destination
+const jobRoute = computed(() => {
+  // Assuming the route requires a company id (e.g., /jobDes/:companyId)
+  return props.company.id
+    ? { name: "JobDescription", params: { companyId: company.id } }
+    : { path: "/jobs" }; // Fallback route if id is missing
+});
 
-const handleScroll = () => {
+const isVisible = ref(false);
+const scrollThreshold = 300; // Show after scrolling 300px
+
+// Throttle scroll handler for performance
+const handleScroll = throttle(() => {
   isVisible.value = window.scrollY > scrollThreshold;
-};
+}, 100);
 
 onMounted(() => {
   window.addEventListener("scroll", handleScroll);
@@ -110,6 +123,7 @@ onMounted(() => {
 
 onUnmounted(() => {
   window.removeEventListener("scroll", handleScroll);
+  handleScroll.cancel(); // Clean up throttle
 });
 </script>
 
@@ -135,11 +149,12 @@ onUnmounted(() => {
   background-color: #ffffff;
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
   padding: 16px 0;
-  z-index: 1000;
+  z-index: 1050; /* Increased to avoid overlap */
   transform: translateY(-100%);
   transition: transform 0.4s ease-in-out, opacity 0.4s ease-in-out;
   opacity: 0;
   border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  min-height: 72px; /* Prevent content jump */
 }
 
 .floating-stats-card.show {
@@ -225,6 +240,7 @@ onUnmounted(() => {
 @media (max-width: 767.98px) {
   .floating-stats-card {
     padding: 12px 0;
+    min-height: 150px; /* Adjust for stacked layout */
   }
 
   .floating-stats-card .row {

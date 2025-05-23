@@ -39,57 +39,122 @@
   </section>
 </template>
 
+<style lang="scss" scoped>
+@use "@/style/variables.css" as *;
+.primary-color {
+  color: var(--primary-color);
+}
+.companies-by-category {
+  margin: 3rem 0;
+}
+
+.section-title {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #1e293b;
+  margin-bottom: 1.5rem;
+}
+
+.categories-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+@media (min-width: 640px) {
+  .categories-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .categories-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.results-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.results-count {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.results-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #4f46e5;
+  width: 1rem;
+  height: 1rem;
+}
+
+.results-text {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #1e293b;
+}
+
+.companies-results-grid {
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+@media (min-width: 640px) {
+  .companies-results-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .companies-results-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.view-more {
+  display: flex;
+  justify-content: flex-start;
+  margin-top: 1rem;
+}
+
+.view-more-link {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  color: #4f46e5;
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.view-more-icon {
+  font-size: 1rem;
+}
+</style>
+
 <script setup>
-import { ref, computed } from "vue";
+import { ref, computed, onMounted } from "vue";
 import CategoryCard from "./CategoryCard.vue";
 import CompanyResultCard from "./CompanyResultCard.vue";
+// State for loading and error
+const isLoading = ref(true);
+const error = ref(null);
+import { useCategoryStore } from "@/stores/categoryStore";
+const { categories, fetchCategories } = useCategoryStore();
 
-// Categories data (icon field now contains only the icon-specific class)
-const categories = ref([
-  { id: 1, name: "Design", icon: "bi-palette", jobCount: "235 jobs available" },
-  {
-    id: 2,
-    name: "Sales",
-    icon: "bi bi-graph-up",
-    jobCount: "340 jobs available",
-  },
-  {
-    id: 3,
-    name: "Marketing",
-    icon: "bi bi-megaphone",
-    jobCount: "120 jobs available",
-  },
-  {
-    id: 4,
-    name: "Finance",
-    icon: "bi bi-cash-coin",
-    jobCount: "80 jobs available",
-  },
-  {
-    id: 5,
-    name: "Technology",
-    icon: "bi bi-pc-display",
-    jobCount: "320 jobs available",
-  },
-  {
-    id: 6,
-    name: "Engineering",
-    icon: "bi bi-code-slash",
-    jobCount: "170 jobs available",
-  },
-  {
-    id: 7,
-    name: "Business",
-    icon: "bi bi-briefcase",
-    jobCount: "210 jobs available",
-  },
-  {
-    id: 8,
-    name: "Human Resources",
-    icon: "bi bi-people",
-    jobCount: "75 jobs available",
-  },
-]);
+// Fetch categories when the component is mounted
+onMounted(() => {
+  fetchCategories();
+});
 
 // Companies data
 const companies = ref([
@@ -513,6 +578,25 @@ const companies = ref([
 // Active category state
 const activeCategory = ref(1);
 
+// Fetch categories with loading and error handling
+const loadCategories = async () => {
+  try {
+    isLoading.value = true;
+    error.value = null;
+    await fetchCategories();
+    
+  } catch (err) {
+    error.value = err.message || "An error occurred while fetching categories.";
+  } finally {
+    isLoading.value = false;
+  }
+};
+
+// Trigger fetch on mount
+onMounted(() => {
+  loadCategories();
+});
+
 // Set active category
 const setActiveCategory = (categoryId) => {
   activeCategory.value = categoryId;
@@ -527,125 +611,18 @@ const filteredCompanies = computed(() => {
 
 // Get active category name
 const getActiveCategoryName = () => {
-  const category = categories.value.find(
-    (cat) => cat.id === activeCategory.value
-  );
-  return category ? category.name : "";
+  const category = categories.find((cat) => cat.id === activeCategory.value);
+  return category ? category.name : "Unknown";
 };
 
 // Get active category icon
 const getActiveCategoryIcon = () => {
-  const category = categories.value.find(
-    (cat) => cat.id === activeCategory.value
-  );
-  return category ? category.icon : "";
+  const category = categories.find((cat) => cat.id === activeCategory.value);
+  return category ? category.icon : "bi-question";
 };
 
 // View company details
 const viewCompanyDetails = (companyId) => {
   console.log("View company details:", companyId);
-  // Navigate to company details page or show modal
 };
 </script>
-
-<style lang="scss" scoped>
-@use "@/style/variables.css" as *;
-.primary-color {
-  color: var(--primary-color);
-}
-.companies-by-category {
-  margin: 3rem 0;
-}
-
-.section-title {
-  font-size: 1.75rem;
-  font-weight: 700;
-  color: #1e293b;
-  margin-bottom: 1.5rem;
-}
-
-.categories-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 1rem;
-  margin-bottom: 2rem;
-}
-
-@media (min-width: 640px) {
-  .categories-grid {
-    grid-template-columns: repeat(3, 1fr);
-  }
-}
-
-@media (min-width: 1024px) {
-  .categories-grid {
-    grid-template-columns: repeat(4, 1fr);
-  }
-}
-
-.results-header {
-  display: flex;
-  align-items: center;
-  margin-bottom: 1.5rem;
-}
-
-.results-count {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.results-icon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #4f46e5;
-  width: 1rem;
-  height: 1rem;
-}
-
-.results-text {
-  font-size: 0.875rem;
-  font-weight: 600;
-  color: #1e293b;
-}
-
-.companies-results-grid {
-  display: grid;
-  grid-template-columns: repeat(1, 1fr);
-  gap: 1rem;
-  margin-bottom: 1.5rem;
-}
-
-@media (min-width: 640px) {
-  .companies-results-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-@media (min-width: 1024px) {
-  .companies-results-grid {
-    grid-template-columns: repeat(4, 1fr);
-  }
-}
-
-.view-more {
-  display: flex;
-  justify-content: flex-start;
-  margin-top: 1rem;
-}
-
-.view-more-link {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  font-size: 0.875rem;
-  color: #4f46e5;
-  font-weight: 500;
-  text-decoration: none;
-}
-
-.view-more-icon {
-  font-size: 1rem;
-}
-</style>

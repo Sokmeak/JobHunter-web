@@ -6,8 +6,6 @@ import FindJobs from "@/views/landing/FindJobs.vue";
 import BrowseCompanies from "@/views/landing/BrowseCompanies.vue";
 import Layout from "@/views/Layout.vue";
 export default [
-
-   
   {
     path: "/",
     component: Layout,
@@ -43,14 +41,19 @@ export default [
 
       {
         path: "all-companies",
-        name: "BrowseCompanies",
+        name: "all-companies",
         component: BrowseCompanies,
       },
-
       {
-        path: "company",
+        path: "/company/:id",
+        name: "CompanyProfile",
         component: CompanyProfile,
-        name: "companyProfile",
+        beforeEnter: (to, from, next) => {
+          if (!to.params.id) {
+            return next({ name: "LandingPage" }); // Redirect to home or error page
+          }
+          next();
+        },
       },
     ],
   },

@@ -1,5 +1,5 @@
 <template>
-  <RouterLink to="/company" class="link">
+  <RouterLink to="/company/1" class="link">
     <div class="company-result-card" @click="$emit('click', company.id)">
       <div
         class="company-result-logo"
@@ -35,7 +35,7 @@ defineEmits(["click"]);
 </script>
 
 <style scoped>
-.link{
+.link {
   text-decoration: none;
 }
 .company-result-card {

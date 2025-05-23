@@ -1,5 +1,5 @@
 <template>
-  <RouterLink to="/company" class="link company-card">
+  <RouterLink to="/company/1" class="link company-card">
     <div class="company-header">
       <div
         class="company-logo"
@@ -7,7 +7,7 @@
       >
         <img :src="company.logo" :alt="company.name + ' logo'" />
       </div>
-      <div class="job-count">{{ company.jobCount }} Jobs</div>
+      <div class="job-count">{{ countJobs(company) }} Jobs</div>
     </div>
 
     <h3 class="company-name">{{ company.name }}</h3>
@@ -40,6 +40,7 @@ defineProps({
     },
   },
 });
+const countJobs = (company) => company.jobIds.length;
 </script>
 
 <style scoped>

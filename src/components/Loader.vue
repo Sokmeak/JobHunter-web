@@ -55,12 +55,10 @@
       </div>
     </Transition>
 
-    <!-- Main content (hidden during loading) -->
-    <Transition name="content-fade">
-      <div v-show="!isLoading" class="content">
-        <slot></slot>
-      </div>
-    </Transition>
+    <!-- Main content (always visible) -->
+    <div class="content">
+      <slot></slot>
+    </div>
 
     <!-- Demo controls (for testing) -->
     <div class="demo-controls" v-if="isDemoMode">
@@ -73,7 +71,6 @@
 
 <script setup>
 import { ref, computed, onMounted } from "vue";
-import PrimaryLogo from "./sharecomponents/PrimaryLogo.vue";
 
 const props = defineProps({
   isDemoMode: {
@@ -93,7 +90,6 @@ const props = defineProps({
 const isLoading = ref(true);
 const loadingProgress = ref(0);
 const logoColor = computed(() => {
-  // Logo color transitions from transparent to solid as loading progresses
   const opacity = 0.4 + (loadingProgress.value / 100) * 0.6;
   return `rgba(0, 0, 0, ${opacity})`;
 });
@@ -115,7 +111,6 @@ const startLoading = () => {
     if (progress < 100) {
       requestAnimationFrame(updateProgress);
     } else {
-      // Add a small delay before hiding the loader
       setTimeout(() => {
         isLoading.value = false;
       }, 300);
@@ -142,15 +137,17 @@ onMounted(() => {
 /* Loading overlay */
 .loading-overlay {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: white;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  padding: 24px;
+
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 9999;
+
+  backdrop-filter: blur(4px); /* Subtle blur for modern look */
 }
 
 /* Logo container with animation */
@@ -194,7 +191,6 @@ onMounted(() => {
   position: fixed;
   bottom: 20px;
   right: 20px;
-  z-index: 100;
 }
 
 .control-button {
@@ -224,19 +220,6 @@ onMounted(() => {
 
 .fade-enter-from,
 .fade-leave-to {
-  opacity: 0;
-}
-
-.content-fade-enter-active {
-  transition: opacity 0.5s ease 0.3s;
-}
-
-.content-fade-leave-active {
-  transition: opacity 0.3s ease;
-}
-
-.content-fade-enter-from,
-.content-fade-leave-to {
   opacity: 0;
 }
 </style>

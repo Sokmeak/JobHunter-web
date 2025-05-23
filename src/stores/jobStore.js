@@ -18,9 +18,8 @@ const mockApi = {
       {
         id: 1,
         title: "Social Media Assistant",
-        company: "Nomad",
+        companyId: 1,
         location: "Paris, France",
-        companyLogo: "https://nomadlist.com/assets/logo.png",
         type: "Full-Time",
         description:
           "Nomad is seeking a Social Media Assistant to enhance our brand presence across digital platforms. You will create engaging content, manage community interactions, and analyze performance metrics to drive growth.",
@@ -75,9 +74,8 @@ const mockApi = {
       {
         id: 2,
         title: "Brand Designer",
-        company: "Dropbox",
+        companyId: 2,
         location: "San Francisco, USA",
-        companyLogo: "/company-logos/dropbox.png",
         type: "Full-Time",
         description:
           "Dropbox is looking for a Brand Designer to shape our visual identity. You will design marketing materials, ensure brand consistency, and collaborate with cross-functional teams to elevate our brand.",
@@ -132,10 +130,8 @@ const mockApi = {
       {
         id: 3,
         title: "Interactive Developer",
-        company: "Terraform",
+        companyId: 3,
         location: "Hamburg, Germany",
-        companyLogo:
-          "https://upload.wikimedia.org/wikipedia/commons/7/78/Dropbox_Icon.svg",
         type: "Full-Time",
         description:
           "Terraform seeks an Interactive Developer to build engaging web experiences. You will code interactive features, optimize performance, and work with designers to bring ideas to life.",
@@ -190,10 +186,8 @@ const mockApi = {
       {
         id: 4,
         title: "Email Marketing",
-        company: "Revolut",
+        companyId: 4,
         location: "Madrid, Spain",
-        companyLogo:
-          "https://upload.wikimedia.org/wikipedia/commons/5/5e/Revolut_logo.svg",
         type: "Full-Time",
         description:
           "Revolut is hiring an Email Marketing specialist to drive customer engagement. You will design email campaigns, analyze performance, and optimize for conversions.",
@@ -248,11 +242,8 @@ const mockApi = {
       {
         id: 5,
         title: "Lead Engineer",
-        company: "Canva",
+        companyId: 5,
         location: "Ankara, Turkey",
-        companyLogo:
-          "https://upload.wikimedia.org/wikipedia/commons/0/08/Canva_Icon_2021.svg",
-
         type: "Full-Time",
         description:
           "Canva is seeking a Lead Engineer to oversee development projects. You will lead a team, architect solutions, and ensure high-quality code delivery.",
@@ -307,10 +298,8 @@ const mockApi = {
       {
         id: 6,
         title: "Product Designer",
-        company: "ClassPass",
+        companyId: 6,
         location: "Berlin, Germany",
-        companyLogo:
-          "https://upload.wikimedia.org/wikipedia/commons/4/4b/ClassPass_logo.svg",
         type: "Full-Time",
         description:
           "ClassPass is looking for a Product Designer to craft user-centric experiences. You will design interfaces, conduct user research, and collaborate with developers.",
@@ -365,9 +354,8 @@ const mockApi = {
       {
         id: 7,
         title: "Customer Manager",
-        company: "Pitch",
+        companyId: 7,
         location: "Berlin, Germany",
-        companyLogo: "https://pitch.com/favicon.ico",
         type: "Full-Time",
         description:
           "Pitch seeks a Customer Manager to support our clients. You will handle inquiries, provide solutions, and ensure customer satisfaction.",
@@ -422,10 +410,8 @@ const mockApi = {
       {
         id: 8,
         title: "UI/UX Designer",
-        company: "Figma",
+        companyId: 8,
         location: "New York, USA",
-        companyLogo:
-          "https://upload.wikimedia.org/wikipedia/commons/3/33/Figma-logo.svg",
         type: "Remote",
         description:
           "Figma is hiring a UI/UX Designer to create seamless user experiences. You will design interfaces, conduct research, and collaborate remotely with global teams.",
@@ -480,10 +466,8 @@ const mockApi = {
       {
         id: 9,
         title: "Frontend Developer",
-        company: "Vercel",
+        companyId: 9,
         location: "Amsterdam, Netherlands",
-        companyLogo:
-          "https://upload.wikimedia.org/wikipedia/commons/5/5e/Vercel_logo_black.svg",
         type: "Full-Time",
         description:
           "Vercel is seeking a Frontend Developer to build high-performance web applications. You will work on our platform, optimize user interfaces, and ensure scalability.",
@@ -538,10 +522,8 @@ const mockApi = {
       {
         id: 10,
         title: "Community Manager",
-        company: "Notion",
+        companyId: 10,
         location: "Toronto, Canada",
-        companyLogo:
-          "https://upload.wikimedia.org/wikipedia/commons/e/e9/Notion-logo.svg",
         type: "Part-Time",
         description:
           "Notion is looking for a Community Manager to engage our user base. You will moderate forums, organize events, and foster a vibrant community.",
@@ -556,7 +538,7 @@ const mockApi = {
           "Organize virtual and in-person events",
           "Gather user feedback for product teams",
           "Create engaging community content",
-          "Build relationships with community leaders",
+          "Build campagna with community leaders",
         ],
         whoYouAre: [
           "Outgoing and empathetic",
@@ -596,10 +578,8 @@ const mockApi = {
       {
         id: 11,
         title: "DevOps Engineer",
-        company: "GitLab",
+        companyId: 11,
         location: "Remote",
-        companyLogo:
-          "https://upload.wikimedia.org/wikipedia/commons/1/15/GitLab_logo.svg",
         type: "Remote",
         description:
           "GitLab is hiring a DevOps Engineer to enhance our CI/CD pipelines. You will automate infrastructure, monitor systems, and ensure reliability.",
@@ -654,10 +634,8 @@ const mockApi = {
       {
         id: 12,
         title: "Content Writer",
-        company: "Buffer",
+        companyId: 12,
         location: "London, UK",
-        companyLogo:
-          "https://upload.wikimedia.org/wikipedia/commons/7/7e/Buffer_Logo.svg",
         type: "Freelance",
         description:
           "Buffer is seeking a Content Writer to create engaging blog posts and social media content. You will craft stories that resonate with our audience.",
@@ -712,11 +690,8 @@ const mockApi = {
       {
         id: 13,
         title: "QA Tester",
-        company: "Trello",
+        companyId: 13,
         location: "Rome, Italy",
-        companyLogo:
-          "https://upload.wikimedia.org/wikipedia/commons/7/7c/Trello-logo-blue.svg",
-
         type: "Full-Time",
         description:
           "Trello is hiring a QA Tester to ensure product quality. You will test features, report bugs, and collaborate with developers to maintain high standards.",
@@ -771,10 +746,8 @@ const mockApi = {
       {
         id: 14,
         title: "Growth Marketer",
-        company: "Zapier",
+        companyId: 14,
         location: "Sydney, Australia",
-        companyLogo:
-          "https://upload.wikimedia.org/wikipedia/commons/7/7d/Zapier_logo.svg",
         type: "Full-Time",
         description:
           "Zapier is seeking a Growth Marketer to drive user acquisition. You will design campaigns, analyze data, and optimize for growth.",
@@ -829,10 +802,8 @@ const mockApi = {
       {
         id: 15,
         title: "Support Specialist",
-        company: "Slack",
+        companyId: 15,
         location: "Lisbon, Portugal",
-        companyLogo:
-          "https://upload.wikimedia.org/wikipedia/commons/d/d5/Slack_icon_2019.svg",
         type: "Remote",
         description:
           "Slack is hiring a Support Specialist to assist users. You will troubleshoot issues, provide guidance, and ensure a positive user experience.",
@@ -887,16 +858,14 @@ const mockApi = {
       {
         id: 16,
         title: "Data Analyst",
-        company: "Klarna",
+        companyId: 16,
         location: "Stockholm, Sweden",
-        companyLogo:
-          "https://upload.wikimedia.org/wikipedia/commons/5/5c/Klarna_Logo_2022.svg",
         type: "Full-Time",
         description:
           "Klarna is seeking a Data Analyst to derive insights from financial data. You will analyze trends, create reports, and support strategic decisions.",
         salary: "SEK 600k-SEK 800k",
         postedDate: "2025-04-10",
-        deadline: "2025-06-10",
+        deadlineSHIP: "2025-06-10",
         applied: 7,
         capacity: 10,
         tags: ["Data"],
@@ -945,10 +914,8 @@ const mockApi = {
       {
         id: 17,
         title: "Motion Designer",
-        company: "Adobe",
+        companyId: 17,
         location: "Tokyo, Japan",
-        companyLogo:
-          "https://upload.wikimedia.org/wikipedia/commons/4/4b/Adobe_2020_Logo.svg",
         type: "Full-Time",
         description:
           "Adobe is hiring a Motion Designer to create dynamic visuals. You will produce animations, design motion graphics, and enhance our creative tools.",
@@ -1003,10 +970,8 @@ const mockApi = {
       {
         id: 18,
         title: "Tech Recruiter",
-        company: "LinkedIn",
+        companyId: 18,
         location: "Dublin, Ireland",
-        companyLogo:
-          "https://upload.wikimedia.org/wikipedia/commons/c/ca/LinkedIn_logo_initials.png",
         type: "Full-Time",
         description:
           "LinkedIn is seeking a Tech Recruiter to source top talent. You will manage hiring pipelines, conduct interviews, and build candidate relationships.",
@@ -1061,10 +1026,8 @@ const mockApi = {
       {
         id: 19,
         title: "Mobile Developer",
-        company: "Spotify",
+        companyId: 19,
         location: "Oslo, Norway",
-        companyLogo:
-          "https://upload.wikimedia.org/wikipedia/commons/1/19/Spotify_logo_without_text.svg",
         type: "Full-Time",
         description:
           "Spotify is hiring a Mobile Developer to enhance our app. You will build features, optimize performance, and ensure a seamless user experience.",
@@ -1119,10 +1082,8 @@ const mockApi = {
       {
         id: 20,
         title: "AI Research Intern",
-        company: "DeepMind",
+        companyId: 20,
         location: "London, UK",
-        companyLogo:
-          "https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg",
         type: "Internship",
         description:
           "DeepMind is seeking an AI Research Intern to contribute to cutting-edge projects. You will assist in experiments, analyze data, and support research efforts.",
@@ -1174,20 +1135,17 @@ const mockApi = {
           },
         ],
       },
-
       {
         id: 21,
         title: "Email Marketing Manager",
-        company: "Figma",
+        companyId: 8,
         location: "San Francisco, CA",
-        companyLogo:
-          "https://upload.wikimedia.org/wikipedia/commons/3/33/Figma-logo.svg",
         type: "Full-Time",
         description:
           "Figma is seeking a mid-level Email Marketing Manager to join our team. You will design and execute email campaigns to engage our user base and drive product adoption.",
         salary: "$80k-$100k",
         postedDate: "2025-03-15",
-        deadline: "2025-06-15",
+        deadline: "2025-06-劳动",
         applied: 12,
         capacity: 20,
         tags: ["Marketing"],
@@ -1236,10 +1194,8 @@ const mockApi = {
       {
         id: 22,
         title: "Brand Designer",
-        company: "Dropbox",
+        companyId: 2,
         location: "San Francisco, CA",
-        companyLogo:
-          "https://upload.wikimedia.org/wikipedia/commons/thumb/7/78/Dropbox_Icon.svg/1200px-Dropbox_Icon.svg.png",
         type: "Full-Time",
         description:
           "Dropbox is looking for a Brand Designer to help with our rebrand. You will create visual assets to strengthen our brand identity across all platforms.",
@@ -1294,10 +1250,8 @@ const mockApi = {
       {
         id: 23,
         title: "Email Marketing Manager",
-        company: "Webflow",
+        companyId: 21,
         location: "San Francisco, CA",
-        companyLogo:
-          "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAMAAABF0y+mAAAAaVBMVEUUbvUAaPUAa/UMbPWTs/mOsPmSsvlfkfdEg/ZIhfYAZ/VmlvdMh/b///+owPoAV/Ti6/11n/htmviyx/uEqfnv9P5wnfjr8P4AX/Qnd/b2+f/V4f00e/Y7fvbE1fy7zvsAY/QccfWfu/qWWPS4AAAAm0lEQVR4Ad2MAQ7CIAxFSwtDkU6nm0Onyrz/IaWJMjCeYC/Ja5qXfFgdKoFAyQQoDxVRG9NYtdFGb92uMUb7XIk40e4PyZ1jAZeI8uuj2J7EvYI6mkF8Fo0BoJ4dOdsiFBVVuFz5yxSgjOHW8sKdyob84SF6RvgX7SAuU47TrOW8XB1JFm2YWYgENb2PEcl3CY/wg0IxqQTCGnkDnMkKhb6wqhEAAAAASUVORK5CYII=",
         type: "Full-Time",
         description:
           "Webflow is seeking a mid-level Email Marketing Manager to join our team. You will craft email strategies to nurture leads and enhance customer engagement.",
@@ -1352,10 +1306,8 @@ const mockApi = {
       {
         id: 24,
         title: "Visual Designer",
-        company: "Spotify",
+        companyId: 19,
         location: "New York, NY",
-        companyLogo:
-          "https://upload.wikimedia.org/wikipedia/commons/8/84/Spotify_icon.svg",
         type: "Full-Time",
         description:
           "Spotify is looking for a Visual Designer to join our team. You will create compelling visuals to enhance our user experience and brand presence.",
@@ -1410,10 +1362,8 @@ const mockApi = {
       {
         id: 25,
         title: "Product Designer",
-        company: "Shopify",
+        companyId: 22,
         location: "Remote",
-        companyLogo:
-          "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAMAAABF0y+mAAAAn1BMVEX////1+PGuzoGawk+ixmPk7dX7/Pnx9uuQvCygxV2QvDrP4bX8/fybwlfp8d/s8+O404/K3qzC2Z7S47ve6sumyGqpyHra4taVv0eTvkGQukZIgyi+15iVv0hcjD5ViS5xmlhik07k6uKUv0dejj5JgxvK18WtzXeuwqSEtgq00ISOrnuKuR+PuzVfjkC50456oWhBgAi8zbSctosfcwAVHUP+AAABXElEQVR4AW3ShWLCMBAA0HahIYS6bBdWF7SC/f+3LckS/KD6aifGPcwvNLOw8THmxDIXhC4/me24BvJ8a+Z+wCA0wqURRHHy/fNq2LFxYs99oGz1+6pWasSIvzLLYJUXZVU/3pgmiDSQAQDHtu3WN4o3jApgrFFYbLWZO8aF0mS/nylsDxrdHrilpnjG8I9jqTEmACr5iUrkYesUB2AbUaM5dhqFnalwYjDEhpFSyk2jzjUBIB7fsEyn8pALyiSa+wFuqHPBNAMaiL2I3rA9ql71In9L7C6HTOFYqTQFNvJejDS2BZYYEQBGMyIy3TCNp1piSAE2S9YH8sP1Y1Uum0Z8j+mJKrP7Y88SF5mogYyUgsb2Is/IZgUmv89/SGWUuWCScaUEoUGaxlGg1/c9zWTAA7adzAXP4zBBpCeskRdwHMe8uD6MEXbjNIG+Hxo+YKfieNb2eEk0JQcNf/qmMR8K5c7QAAAAAElFTkSuQmCC",
         type: "Full-Time",
         description:
           "Shopify is seeking a Product Designer to join our team. You will design intuitive interfaces to empower merchants on our platform.",
@@ -1468,7 +1418,7 @@ const mockApi = {
       {
         id: 26,
         title: "Lead Designer",
-        company: "Dribbble",
+        companyId: 23,
         location: "Remote",
         companyLogo:
           "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAMAAABF0y+mAAAAUVBMVEX/q+fYe72zSJS3T5m4UJq1TJfkisr/r+v/sezafsD6peHBXaSyR5T/rOjTdbj/renGY6nnjs3fhMTwmdf0ntv/ruq/WqLPcLTslNO8VZ7La69lEsuzAAABPklEQVR4AWWRB5aFMAhFI4Ehk2rU6Nf9L3TANt/js+Klay51YBGRfvi03S/hDdkHEBo7p1biDHhDtbsoFDqJLakXdkMVV6VxYDciIVprHnQEja1Z61uazENtp0R6m30xraS7amE3KJCwuOj37uPZOWbHbap5PRl+WN0JgObQ92EFebO4i3wzqt1xFx5BWpEy7/ByPgDEvv4KjT4pXGZNp2ekkKtxrUlJ6lghu+LHj2jyze2tN+2YGrdjhFRE6R6pKNx6BPNScr7XBcn1QjxucPT4gm7qIx2E4Jm2FF35kZIWX54/ZSVFsG4WaeNHyiFaRXN1I6GdvyEvoJWwckleXql8sU0ZLElnb/IeTfpnpCmrOyz18xfkDNrk1E5ztQjTCXlQhtr8C5ZJmb3ZI20TR/E82bOh1hEiVb7ZMUozf5iDED8WsD32AAAAAElFTkSuQmCC",
@@ -1526,7 +1476,7 @@ const mockApi = {
       {
         id: 27,
         title: "Brand Strategist",
-        company: "Behance",
+        companyId: 24,
         location: "New York, NY",
         companyLogo:
           "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAMAAABF0y+mAAAAeFBMVEUFWP8AVv8ATP8ASv8AUf+lt/+ywf9lhf8ARv8AU/8AQP/y9f////91kv/q8P8ARP/S2v9ujf/l7P8ASP8yZv8ATv+5xv9nh//M1f+Spv/BzP/Y3/+4xP+ZrP+su/8AJv8AN/8APf/f5v8AL/8oX/88af9Qd/+Kof8IPKxZAAAAvUlEQVR4Ac3RRQKDMAAAwZLgLO5ab///w7qgZxZnLpHNcspsa0UhHwl1CqWmP9IM8/5hPfpD2+GVLlX38fT8P/QIQteNIFYUVUnSB/1h5qdmDqq6KYDS76Mt0oratqBuoBX/yCMnjjuq7S6BHkZZljkQR9RVlYGh/mG2l7ENbYQXRdEhynvoq+rRoykoj/bxdB5OJdShzME4lSDHi1Cbfseji/pF2WWPOuM+vfjcdldVnVl4KxXp8patFhe6ATwRD2y5uYPGAAAAAElFTkSuQmCC",
@@ -1584,7 +1534,7 @@ const mockApi = {
       {
         id: 28,
         title: "Data Analyst",
-        company: "Twitter",
+        companyId: 25,
         location: "San Francisco, CA",
         companyLogo:
           "data:image/png;base64,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",
