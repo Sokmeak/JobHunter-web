@@ -1,8 +1,7 @@
 <template>
   <div class="sd-flex">
     <!-- Header -->
-    <div class="flex-grow-1 vh-100 overflow-auto">
-      <DashboardHeader title="Help Center" />
+      <div class="container py-4">
 
     <div class="row">
       <!-- Left Column - Topics and Search -->
@@ -288,7 +287,8 @@ export default {
 };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+@use "@/style/variables.css" as *;
 .help-center-container {
   padding: 20px;
   background-color: #fff;

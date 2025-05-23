@@ -1,29 +1,44 @@
 <template>
-  <nav aria-label="Page navigation">
-    <ul class="pagination justify-content-center">
-      <li class="page-item">
-        <a class="page-link" href="#" aria-label="Previous">
-          <span aria-hidden="true">&laquo;</span>
-        </a>
-      </li>
-      <li class="page-item" :class="{ active: currentPage === 1 }">
-        <a class="page-link" href="#">1</a>
-      </li>
-      <li class="page-item"><a class="page-link" href="#">2</a></li>
-      <li class="page-item"><a class="page-link" href="#">3</a></li>
-      <li class="page-item"><a class="page-link" href="#">4</a></li>
-      <li class="page-item"><a class="page-link" href="#">5</a></li>
-      <li class="page-item">
-        <a class="page-link" href="#">...</a>
-      </li>
-      <li class="page-item"><a class="page-link" href="#">{{ totalPages }}</a></li>
-      <li class="page-item">
-        <a class="page-link" href="#" aria-label="Next">
-          <span aria-hidden="true">&raquo;</span>
-        </a>
-      </li>
-    </ul>
-  </nav>
+  <div class="pagination-wrapper">
+    <nav class="pagination">
+      <button 
+        class="page-btn prev" 
+        @click="previousPage" 
+        :disabled="currentPage === 1"
+      >
+        <i class="bi bi-chevron-left"></i>
+      </button>
+      
+      <button 
+        v-for="page in visiblePages" 
+        :key="page"
+        class="page-btn"
+        :class="{ active: page === currentPage }"
+        @click="goToPage(page)"
+      >
+        {{ page }}
+      </button>
+      
+      <span v-if="showEllipsis" class="page-ellipsis">...</span>
+      
+      <button 
+        v-if="showLastPage"
+        class="page-btn"
+        :class="{ active: totalPages === currentPage }"
+        @click="goToPage(totalPages)"
+      >
+        {{ totalPages }}
+      </button>
+      
+      <button 
+        class="page-btn next" 
+        @click="nextPage" 
+        :disabled="currentPage === totalPages"
+      >
+        <i class="bi bi-chevron-right"></i>
+      </button>
+    </nav>
+  </div>
 </template>
 
 <script>
@@ -37,30 +52,99 @@ export default {
     totalPages: {
       type: Number,
       required: true
+    },
+    maxVisiblePages: {
+      type: Number,
+      default: 5
+    }
+  },
+  computed: {
+    visiblePages() {
+      const pages = [];
+      const start = Math.max(1, this.currentPage - Math.floor(this.maxVisiblePages / 2));
+      const end = Math.min(this.totalPages, start + this.maxVisiblePages - 1);
+      
+      for (let i = start; i <= end; i++) {
+        pages.push(i);
+      }
+      return pages;
+    },
+    showEllipsis() {
+      return this.totalPages > this.maxVisiblePages && 
+             this.visiblePages[this.visiblePages.length - 1] < this.totalPages - 1;
+    },
+    showLastPage() {
+      return this.totalPages > this.maxVisiblePages && 
+             this.visiblePages[this.visiblePages.length - 1] < this.totalPages;
+    }
+  },
+  methods: {
+    goToPage(page) {
+      if (page !== this.currentPage) {
+        this.$emit('page-changed', page);
+      }
+    },
+    previousPage() {
+      if (this.currentPage > 1) {
+        this.$emit('page-changed', this.currentPage - 1);
+      }
+    },
+    nextPage() {
+      if (this.currentPage < this.totalPages) {
+        this.$emit('page-changed', this.currentPage + 1);
+      }
     }
   }
-}
+};
 </script>
 
 <style scoped>
+.pagination-wrapper {
+  display: flex;
+  justify-content: center;
+  margin-top: 24px;
+}
+
 .pagination {
-  margin-top: 20px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
-.page-link {
-  color: #6c757d;
-  border: none;
-  padding: 8px 12px;
+.page-btn {
+  width: 36px;
+  height: 36px;
+  border: 1px solid #e8eaed;
+  background-color: #ffffff;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: 500;
+  color: #5f6368;
+  cursor: pointer;
+  transition: all 0.2s ease;
 }
 
-.page-item.active .page-link {
-  background-color: #5138ee;
-  color: white;
-  border-radius: 5px;
-}
-
-.page-item:not(.active) .page-link:hover {
+.page-btn:hover:not(:disabled) {
   background-color: #f8f9fa;
-  border-radius: 5px;
+  border-color: #4640DE;
+}
+
+.page-btn.active {
+  background-color: #4640DE;
+  border-color: #4640DE;
+  color: #ffffff;
+}
+
+.page-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.page-ellipsis {
+  padding: 0 8px;
+  color: #5f6368;
 }
 </style>

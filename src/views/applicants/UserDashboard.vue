@@ -1,7 +1,6 @@
 <template>
   <div class="d-flex">
-    <div class="flex-grow-1 vh-100 overflow-auto">
-      <DashboardHeader title="Dashboard" />
+     <div class="container py-4">
 
       <div class="container-fluid py-4">
         <GreetingSection :user-name="user.name" :date-range="dateRange" />

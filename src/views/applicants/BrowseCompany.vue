@@ -1,7 +1,6 @@
 <template>
   <div class="d-flex">
-    <div class="flex-grow-1 vh-100 overflow-auto">
-      <DashboardHeader title="BrowseCompany" />
+     <div class="container py-4">
       <!-- <HeroSection
         ref="heroSection"
         :title="title"
@@ -131,14 +130,14 @@ function updateUrl() {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+@use "@/style/variables.css" as *;
 .browse-companies {
   background-color: white;
   border-radius: 8px;
   padding: 24px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
-
 .popular-tag {
   display: inline-block;
   margin-right: 8px;

@@ -1,8 +1,7 @@
 <template>
   <div class="d-flex">
-  <!-- <div class="container py-4"> -->
-  <div class="flex-grow-1 vh-100 overflow-auto">
-     <DashboardHeader title="My Profile" />
+  <div class="container py-4">
+  <!-- <div class="flex-grow-1 vh-100 overflow-auto"> -->
     <div class="row">
       <div class="col-md-8">
      <profile-header :profile="profile" @update-profile="updateProfile" />
@@ -131,6 +130,8 @@ export default {
 </script>
 
 <style>
+@import "bootstrap/dist/css/bootstrap.min.css";
+@import "bootstrap-icons/font/bootstrap-icons.css";
 .card {
   border-radius: 8px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);

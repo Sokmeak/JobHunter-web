@@ -1,8 +1,7 @@
 <template>
     <div class="d-flex">
   <!-- <div class="container py-4"> -->
-  <div class="flex-grow-1 vh-100 overflow-auto">
-    <DashboardHeader title="Findjob" />
+    <div class="container py-4">
     <SearchJob
       v-model="searchValue"
       :placeholder="placeholder"
@@ -499,7 +498,8 @@ onMounted(() => {
 });
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+@use "@/style/variables.css" as *;
 .find-jobs {
   background-color: white;
   border-radius: 8px;

@@ -47,6 +47,7 @@ export default [
         name: "Settings",
         component: Settings,
       },
+
       {
         path: "help",
         name: "Help",

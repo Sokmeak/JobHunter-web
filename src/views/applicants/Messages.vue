@@ -1,9 +1,7 @@
 <template>
   <div class="d-flex">
     <!-- Header -->
-     <div class="flex-grow-1 vh-100 overflow-auto">
-      <DashboardHeader title="Messages" />
-
+   <div class="container py-4">
     <div class="row h-100">
       <!-- Left Column - Conversations List -->
       <div class="col-md-4 col-lg-3">
@@ -55,7 +53,6 @@
 </template>
 
 <script>
-import DashboardHeader from "@/components/Applicants/layout/DashboardHeader.vue";
 import ConversationList from '@/components/Applicants/messaging/ConversationList.vue';
 import * as bootstrap from 'bootstrap';
 import MessageThread from '@/components/Applicants/messaging/MessageThread.vue';
@@ -66,7 +63,6 @@ export default {
   components: {
     ConversationList,
     MessageThread,
-    DashboardHeader,
     NewMessageModal
   },
   data() {
@@ -376,7 +372,8 @@ export default {
 };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+@use "@/style/variables.css" as *;
 .messaging-container {
   padding: 20px;
   background-color: #fff;
