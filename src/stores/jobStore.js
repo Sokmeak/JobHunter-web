@@ -1,5 +1,3 @@
-import JobFiltersVue from "@/components/Applicants/FindJob/JobFilters.vue";
-import { data } from "autoprefixer";
 import { defineStore } from "pinia";
 import { ref, computed } from "vue";
 
@@ -1654,7 +1652,9 @@ export const useJobStore = defineStore("jobStore", () => {
   const jobLevels = ref([]);
   const salaryRanges = ref([]);
   const isLoading = ref(false);
-  const error = ref(null);
+  const error = ref(false);
+
+  
 
   // Computed properties
   const totalJobs = computed(() => applyFilters(jobs.value).length);
@@ -1775,8 +1775,10 @@ export const useJobStore = defineStore("jobStore", () => {
     try {
       const data = await mockApi.fetchJobs();
       jobs.value = data;
+      console.log("Fetched jobs for high demand and high salary:", jobs.value);
+
       highDemandJobs.value = data.filter((job) => {
-        const isHighDemand = job.applied > 10;
+        const isHighDemand = job.applied > 5;
         console.log(
           `Job ${job.id}: applied=${job.applied}, isHighDemand=${isHighDemand}`
         );
@@ -1787,8 +1789,9 @@ export const useJobStore = defineStore("jobStore", () => {
       error.value = err.message || "Failed to fetch jobs";
       console.error("Fetch error:", error.value);
     } finally {
-      isLoading.value = false; // Ensure this runs
+      isLoading.value = false; // Reset loading state
       console.log("Loading state set to false");
+      console.log("High demand jobs:", highDemandJobs.value);
     }
   }
 

@@ -18,7 +18,7 @@
       <div v-if="error" class="error text-center">
         {{ error }}
       </div>
-      <div v-else-if="!filteredJobs.length" class="no-jobs text-center">
+      <div v-else-if="!highDemandJobs.length" class="no-jobs text-center">
         No featured jobs available.
       </div>
       <div v-else class="row g-4">
@@ -35,30 +35,42 @@
     </template>
   </div>
 </template>
-
 <script setup>
 import { RouterLink } from "vue-router";
 import JobCard from "./JobCard.vue";
-
 import { useJobStore } from "@/stores/jobStore";
 import { computed, onMounted } from "vue";
 
 const jobStore = useJobStore();
-
 // Computed properties for better reactivity
-const filteredJobs = computed(() => jobStore.highDemandJobs);
+const highDemandJobs = computed(() => jobStore.highDemandJobs);
+const latestJobs = computed(() => jobStore.latestJobs);
 const isLoading = computed(() => jobStore.isLoading);
 const error = computed(() => jobStore.error);
 
-// Only display first 8 jobs for better performance
-const displayedJobs = computed(() => filteredJobs.value.slice(0, 8));
+// Combine high-demand and latest jobs, ensuring uniqueness
+const displayedJobs = computed(() => {
+  const combined = [
+    ...highDemandJobs.value.slice(0, 4), // Limit to 4 high-demand jobs
+    ...latestJobs.value.slice(0, 4), // Limit to 4 latest jobs
+  ];
+  // Remove duplicates by job ID
+  const uniqueJobs = Array.from(
+    new Map(combined.map((job) => [job.id, job])).values()
+  );
+  return uniqueJobs.slice(0, 8); // Limit to 8 total jobs
+});
 
-// Fetch jobs on component mount
+// Fetch both job types on component mount
 onMounted(() => {
   if (!jobStore.jobs.length) {
-    // Only fetch if not already loaded
-    jobStore.fetchHighDemandHighSalaryJobs();
+    Promise.all([
+      jobStore.fetchHighDemandHighSalaryJobs(),
+      jobStore.fetchLatestJobs(),
+    ]);
   }
+  console.log("High demand jobs:", highDemandJobs.value);
+  console.log("Latest jobs:", latestJobs.value);
 });
 </script>
 
