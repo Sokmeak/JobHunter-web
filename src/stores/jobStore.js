@@ -1654,8 +1654,6 @@ export const useJobStore = defineStore("jobStore", () => {
   const isLoading = ref(false);
   const error = ref(false);
 
-  
-
   // Computed properties
   const totalJobs = computed(() => applyFilters(jobs.value).length);
   const totalPages = computed(() =>
@@ -1692,7 +1690,6 @@ export const useJobStore = defineStore("jobStore", () => {
       results = results.filter((job) => {
         const matchesKeyword = keyword
           ? job.title.toLowerCase().includes(keyword) ||
-            job.company.toLowerCase().includes(keyword) ||
             job.tags.some((tag) => tag.toLowerCase().includes(keyword))
           : true;
         const matchesLocation = location

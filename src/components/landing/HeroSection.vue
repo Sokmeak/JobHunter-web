@@ -34,7 +34,7 @@
               to="/jobs"
               class="btn button-primary-color btn-primary px-4 py-2"
             >
-              Find Jobs
+              Find Job
             </RouterLink>
             <RouterLink
               to="/signup"
