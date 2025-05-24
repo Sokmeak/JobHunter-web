@@ -1,8 +1,6 @@
 <template>
   <div class="d-flex">
-    <div class="flex-grow-1 vh-100 overflow-auto contianer py-4">
-      <DashboardHeader title="BrowseCompany" />
-
+     <div class="container py-4">
       <!-- <HeroSection
         ref="heroSection"
         :title="title"
@@ -33,7 +31,8 @@
 
 <script setup>
 import { ref } from "vue";
-import DashboardHeader from "@/components/Applicants/layout/DashboardHeader.vue";import SearchJob from "@/components/sharecomponents/SearchJob.vue";
+import DashboardHeader from "@/components/Applicants/layout/DashboardHeader.vue";
+import SearchJob from "@/components/sharecomponents/SearchJob.vue";
 import SearchResultsPage from "@/components/browsecompany/SearchResultsPage.vue";
 
 // const companies = [
@@ -131,14 +130,14 @@ function updateUrl() {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+@use "@/style/variables.css" as *;
 .browse-companies {
   background-color: white;
   border-radius: 8px;
   padding: 24px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
-
 .popular-tag {
   display: inline-block;
   margin-right: 8px;

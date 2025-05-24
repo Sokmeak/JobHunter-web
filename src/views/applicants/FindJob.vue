@@ -1,7 +1,7 @@
 <template>
-  <div class="container py-4">
-    <DashboardHeader title="Findjob" />
-
+    <div class="d-flex">
+  <!-- <div class="container py-4"> -->
+    <div class="container py-4">
     <SearchJob
       v-model="searchValue"
       :placeholder="placeholder"
@@ -96,6 +96,7 @@
             @page-change="updatePage"
             @per-page-change="updatePerPage"
           />
+          </div>
         </div>
       </div>
     </div>
@@ -497,7 +498,8 @@ onMounted(() => {
 });
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+@use "@/style/variables.css" as *;
 .find-jobs {
   background-color: white;
   border-radius: 8px;

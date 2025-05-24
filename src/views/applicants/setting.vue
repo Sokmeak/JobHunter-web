@@ -1,8 +1,7 @@
 <template>
   <div class="sd-flex">
     <!-- Header -->
-    <div class="flex-grow-1 vh-100 overflow-auto">
-      <DashboardHeader title="Setting" />
+      <div class="container py-4">
 
     <!-- Tabs -->
     <ul class="nav nav-tabs mb-4">
@@ -130,7 +129,8 @@ export default {
 };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+@use "@/style/variables.css" as *;
 .settings-container {
   padding: 20px;
   background-color: #fff;

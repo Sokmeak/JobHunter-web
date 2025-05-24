@@ -1,13 +1,7 @@
 <template>
-  <div class="messaging-container">
+  <div class="d-flex">
     <!-- Header -->
-    <div class="d-flex justify-content-between align-items-center mb-4">
-      <h2 class="mb-0">Messages</h2>
-      <button class="btn btn-outline-primary">
-        Back to homepage
-      </button>
-    </div>
-
+   <div class="container py-4">
     <div class="row h-100">
       <!-- Left Column - Conversations List -->
       <div class="col-md-4 col-lg-3">
@@ -54,6 +48,7 @@
       :contacts="contacts"
       @create-conversation="createNewConversation"
     />
+     </div>
   </div>
 </template>
 
@@ -377,7 +372,8 @@ export default {
 };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+@use "@/style/variables.css" as *;
 .messaging-container {
   padding: 20px;
   background-color: #fff;

@@ -13,7 +13,7 @@
         <div class="col-lg-10 g-5">
           <span class="typed-text-container">
             <h1 class="display-5 fw-bold mb-3" aria-live="polite">
-              <span id="typed-text"></span>
+              <span ref="typedElement"></span>
             </h1>
           </span>
 
@@ -53,6 +53,7 @@
 // No additional script needed
 import SearchJob from "../sharecomponents/SearchJob.vue";
 import Typed from "typed.js";
+import { ref, onMounted } from "vue";
 
 export default {
   name: "HeroSection",
@@ -60,38 +61,43 @@ export default {
     SearchJob,
   },
 
-  mounted() {
-    // Initialize Typed.js
-    this.typedInstance = new Typed("#typed-text", {
-      strings: [
-        "Discover<br/><span style='color: #26a4ff; font-weight: 600;'>5000+ job opportunities</span>.",
-        "Unlock<br/><span style='color: #26a4ff; font-weight: 600;'>your dream career</span> today.",
-        "Explore<br/><span style='color: #26a4ff; font-weight: 600;'>5000+ open positions</span> now.",
-        "Start<br/><span style='color: #26a4ff; font-weight: 600;'>your professional journey</span> with us.",
-        "Browse<br/><span style='color: #26a4ff; font-weight: 600;'>thousands of active listings</span>.",
-        "Apply<br/><span style='color: #26a4ff; font-weight: 600;'>anytime, anywhere</span>.",
-        "Connect<br/><span style='color: #26a4ff; font-weight: 600;'>with top employers</span> easily.",
-        "Find<br/><span style='color: #26a4ff; font-weight: 600;'>5000+ careers</span> waiting for you.",
-        "Take<br/><span style='color: #26a4ff; font-weight: 600;'>your skills to the next level</span>.",
-        "Join<br/><span style='color: #26a4ff; font-weight: 600;'>our growing job platform</span> today.",
-      ],
-      typeSpeed: 100,
-      backSpeed: 100,
-      backDelay: 1000,
-      startDelay: 500,
-      loop: true,
-      smartBackspace: true, // only erase what's necessary
-      loopCount: Infinity,
-      showCursor: true,
-      cursorChar: "|",
-      html: true, // Enable HTML rendering
+  setup() {
+    const typedElement = ref(null);
+
+    onMounted(() => {
+      if (typedElement.value) {
+        new Typed(typedElement.value, {
+          strings: [
+            "Discover<br/><span style='color: #26a4ff; font-weight: 600;'>5000+ job opportunities</span>.",
+            "Unlock<br/><span style='color: #26a4ff; font-weight: 600;'>your dream career</span> today.",
+            "Explore<br/><span style='color: #26a4ff; font-weight: 600;'>5000+ open positions</span> now.",
+            "Start<br/><span style='color: #26a4ff; font-weight: 600;'>your professional journey</span> with us.",
+            "Browse<br/><span style='color: #26a4ff; font-weight: 600;'>thousands of active listings</span>.",
+            "Apply<br/><span style='color: #26a4ff; font-weight: 600;'>anytime, anywhere</span>.",
+            "Connect<br/><span style='color: #26a4ff; font-weight: 600;'>with top employers</span> easily.",
+            "Find<br/><span style='color: #26a4ff; font-weight: 600;'>5000+ careers</span> waiting for you.",
+            "Take<br/><span style='color: #26a4ff; font-weight: 600;'>your skills to the next level</span>.",
+            "Join<br/><span style='color: #26a4ff; font-weight: 600;'>our growing job platform</span> today.",
+          ],
+          typeSpeed: 100,
+          backSpeed: 100,
+          backDelay: 1000,
+          startDelay: 500,
+          loop: true,
+          smartBackspace: true,
+          loopCount: Infinity,
+          showCursor: true,
+          cursorChar: "|",
+          html: true,
+        });
+      } else {
+        console.warn("Typed element not found");
+      }
     });
-  },
-  beforeUnmount() {
-    // Clean up Typed instance when component is destroyed
-    if (this.typedInstance) {
-      this.typedInstance.destroy();
-    }
+
+    return {
+      typedElement,
+    };
   },
 };
 </script>

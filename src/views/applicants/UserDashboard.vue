@@ -1,20 +1,16 @@
 <template>
   <div class="d-flex">
-    <!-- Sidebar -->
-    <!-- <SidebarNavigation :user="user" /> -->
-
-    <!-- Main Content -->
-    <div class="flex-grow-1 vh-100 overflow-auto">
-      <DashboardHeader title="Dashboard" />
+     <div class="container py-4">
 
       <div class="container-fluid py-4">
         <GreetingSection :user-name="user.name" :date-range="dateRange" />
+
         <div class="row mt-4">
           <div class="col-md-3">
             <div class="col mb-4">
               <StatCard
                 title="Total Jobs Applied"
-                :value="45"
+                :value="totalJobsApplied"
                 icon="file-text"
                 icon-color="text-secondary"
               />
@@ -22,19 +18,22 @@
             <div class="col mb-4">
               <StatCard
                 title="Interviewed"
-                :value="18"
+                :value="interviewedCount"
                 icon="question-circle"
                 icon-color="text-secondary"
               />
             </div>
           </div>
-          <div class="col mb-4">
+
+          <div class="col-md-5 mb-4">
             <ApplicationStatusChart :status-data="applicationStatus" />
           </div>
-          <div class="col mb-4">
+
+          <div class="col-md-4 mb-4">
             <UpcomingInterviews :interviews="upcomingInterviews" />
           </div>
         </div>
+
         <div class="row mt-2">
           <div class="col-12">
             <ApplicationHistory :applications="recentApplications" />
@@ -46,6 +45,7 @@
 </template>
 
 <script>
+import { ref, computed } from "vue";
 import DashboardHeader from "@/components/Applicants/layout/DashboardHeader.vue";
 import GreetingSection from "@/components/Applicants/applications/GreetingSection.vue";
 import StatCard from "@/components/Applicants/dashboard/StatCard.vue";
@@ -55,51 +55,34 @@ import ApplicationHistory from "@/components/Applicants/dashboard/ApplicationHis
 
 export default {
   name: "UserDashboard",
-
+  components: {
+    DashboardHeader,
+    GreetingSection,
+    StatCard,
+    ApplicationStatusChart,
+    UpcomingInterviews,
+    ApplicationHistory,
+  },
   setup() {
-    const user = {
+    const user = ref({
       name: "Jake",
       email: "jakegyll@email.com",
       fullName: "Jake Gyll",
-    };
+    });
 
-    const dateRange = {
+    const dateRange = ref({
       start: "Jul 19",
       end: "Jul 25",
-    };
+    });
 
-    const applicationStatus = [
-      { name: "Unsuitable", value: 60, color: "#6610f2" },
-      { name: "Interviewed", value: 40, color: "#dee2e6" },
-    ];
-
-    const upcomingInterviews = [
-      {
-        time: "10:00 AM",
-        isEmpty: true,
-      },
-      {
-        time: "10:30 AM",
-        isEmpty: false,
-        interviewer: {
-          name: "Joe Bartmann",
-          position: "HR Manager at Divvy",
-        },
-      },
-      {
-        time: "11:00 AM",
-        isEmpty: true,
-      },
-    ];
-
-    const recentApplications = [
+    const recentApplications = ref([
       {
         id: 1,
         position: "Social Media Assistant",
         company: "Nomad",
         location: "Paris, France",
         type: "Full-Time",
-        dateApplied: "24 July 2021",
+        dateApplied: "2021-07-24",
         status: "In Review",
         statusClass: "warning",
         logoColor: "success",
@@ -110,7 +93,7 @@ export default {
         company: "Udacity",
         location: "New York, USA",
         type: "Full-Time",
-        dateApplied: "23 July 2021",
+        dateApplied: "2021-07-23",
         status: "Shortlisted",
         statusClass: "primary",
         logoColor: "primary",
@@ -121,12 +104,38 @@ export default {
         company: "Packer",
         location: "Madrid, Spain",
         type: "Full-Time",
-        dateApplied: "22 July 2021",
+        dateApplied: "2021-07-22",
         status: "Declined",
         statusClass: "danger",
         logoColor: "danger",
       },
-    ];
+    ]);
+
+    const applicationStatus = ref([
+      { name: "Unsuitable", value: 0, color: "#6610f2" },
+      { name: "Interviewed", value: 0, color: "#dee2e6" },
+    ]);
+
+    const upcomingInterviews = ref([
+      { time: "10:00 AM", isEmpty: true },
+      {
+        time: "10:30 AM",
+        isEmpty: false,
+        interviewer: {
+          name: "Joe Bartmann",
+          position: "HR Manager at Divvy",
+        },
+      },
+      { time: "11:00 AM", isEmpty: true },
+    ]);
+
+    const totalJobsApplied = computed(() => recentApplications.value.length);
+
+    const interviewedCount = computed(() =>
+      recentApplications.value.filter(
+        (app) => app.status.toLowerCase() === "interviewed"
+      ).length
+    );
 
     return {
       user,
@@ -134,16 +143,9 @@ export default {
       applicationStatus,
       upcomingInterviews,
       recentApplications,
+      totalJobsApplied,
+      interviewedCount,
     };
-  },
-
-  components: {
-    DashboardHeader,
-    GreetingSection,
-    StatCard,
-    ApplicationStatusChart,
-    UpcomingInterviews,
-    ApplicationHistory,
   },
 };
 </script>
