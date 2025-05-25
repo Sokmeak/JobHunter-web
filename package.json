@@ -4,7 +4,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "dev": "vite --host",
     "build": "vite build",
     "preview": "vite preview",
     "build:sass": "sass --quiet-deps -q -I node_modules src/assets/custom.scss dist/custom.cs"

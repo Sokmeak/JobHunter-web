@@ -14,14 +14,14 @@
         v-for="item in items"
         :key="item.id"
         class="flex items-center justify-between border-b gap-x-3"
-      >                                                                                                                                                                                                                                                   
+      >
         <input
           type="checkbox"
           :id="item.id"
           :value="item.id"
           :checked="selectedItems.includes(item.id)"
           @change="toggleItem(item.id)"
-          class="h-4 w-4  rounded border-gray-300 me-2 focus:ring-purple-500"
+          class="h-4 w-4 rounded border-gray-300 me-2 focus:ring-purple-500"
         />
         <label :for="item.id" class="ml-2 text-sm text-gray-700 flex-1">
           {{ item.label }}
@@ -48,6 +48,7 @@ const isOpen = ref(true);
 
 const toggleItem = (itemId) => {
   const newSelectedItems = [...props.selectedItems];
+
   const index = newSelectedItems.indexOf(itemId);
 
   if (index === -1) {

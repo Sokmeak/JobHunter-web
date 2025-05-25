@@ -196,6 +196,7 @@ function clearSearch() {
 }
 
 function updateFilters(filterType, value) {
+  
   jobStore.updateFilters(filterType, value);
 }
 

@@ -20,7 +20,7 @@
     <!-- Show search results when there is a search query -->
     <template v-else>
       <SearchResultsPage
-        :initial-search-query="searchQuery.keyword"
+        :initial-search-query="searchQuery"
         @clear-search="clearSearch"
       />
     </template>
@@ -28,7 +28,7 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
 import HeroSection from "@/components/sharecomponents/HeroSection.vue";
 import RecommendedCompanyCardSection from "@/components/browsecompany/RecommendedCompanyCardSection.vue";
 import CompaniesByCategorySection from "@/components/browsecompany/CompaniesByCategorySection.vue";
@@ -36,34 +36,42 @@ import SearchResultsPage from "@/components/browsecompany/SearchResultsPage.vue"
 
 // Props
 defineProps({
-  initialSearchQuery: String,
+  initialSearchQuery: {
+    type: Object,
+    default: () => ({ keyword: "", location: "" }),
+  },
 });
 
 // Refs
-
 const searchQuery = ref({ keyword: "", location: "" });
 
-const title = ref("dream companies");
+const title = ref("Dream Companies");
 const subtitle = ref("Find the dream companies you dream work for!");
 const popularTags = ref(["Twitter", "Microsoft", "Apple", "Facebook"]);
 const companyPlaceholder = ref("Company or Organization name...");
 const heroSection = ref(null);
 
-// Event Handlers
-function handleSearch(query) {
-  searchQuery.value.keyword = query;
-  console.log("Search query:", searchQuery.value);
+// Initialize search query from URL on mount
+onMounted(() => {
+  const urlParams = new URLSearchParams(window.location.search);
+  const keyword = urlParams.get("keyword") || "";
+  const location = urlParams.get("location") || "";
+  if (keyword || location) {
+    searchQuery.value = { keyword, location };
+  }
+});
 
-  // Update URL with search query
-  const url = new URL(window.location);
-  url.searchParams.set("q", query);
-  window.history.pushState({}, "", url);
+// Event Handlers
+function handleSearch({ keyword, location }) {
+  searchQuery.value = { keyword, location };
+  console.log("Search query:", searchQuery.value);
+  updateUrl();
 }
 
 function clearSearch() {
   searchQuery.value = { keyword: "", location: "" };
+  console.log("Clear search triggered");
   updateUrl();
-  console.log("Clear is trigger : ");
   heroSection.value?.clearSearch(); // Programmatically clear search inputs
 }
 
@@ -79,10 +87,17 @@ function updateUrl() {
   } else {
     url.searchParams.delete("location");
   }
+  // Remove legacy 'q' parameter
+  url.searchParams.delete("q");
   window.history.pushState({}, "", url);
 }
 </script>
 
 <style lang="scss" scoped>
-@use "@/style/variables.css" as *; // Import your SCSS variables
+@use "@/style/variables.css" as *;
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
 </style>

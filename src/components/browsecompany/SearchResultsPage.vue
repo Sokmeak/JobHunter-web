@@ -1,180 +1,74 @@
-<template>
-  <div class="search-results-page">
-    <!-- Main content area with filters and results -->
-    <div class="row mt-4">
-      <!-- Left sidebar with filters -->
-      <div class="col-md-3">
-        <FilterCompanySidebar
-          :initial-industries="selectedIndustries"
-          :initial-sizes="selectedSizes"
-          @filter-change="handleFilterChange"
-        />
-      </div>
-
-      <!-- Right side with results and pagination -->
-      <div class="col-md-9">
-        <!-- Empty state when no results found -->
-        <div v-if="filteredCompanies.length === 0" class="text-center py-5">
-          <div class="mb-4">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="64"
-              height="64"
-              fill="currentColor"
-              class="bi bi-search text-muted"
-              viewBox="0 0 16 16"
-            >
-              <path
-                d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"
-              />
-            </svg>
-          </div>
-          <h3 class="fs-4 fw-bold">No results found</h3>
-          <p class="text-muted">
-            We couldn't find any companies matching "{{ searchQuery.keyword }}"
-          </p>
-        </div>
-
-        <!-- Results when companies are found -->
-        <template v-else>
-          <div class="d-flex justify-content-end mt-3">
-            <button class="btn btn-danger" @click="clearSearch">
-              Clear search
-            </button>
-          </div>
-          <CompanyResults
-            :companies="paginatedCompanies"
-            :total-results="filteredCompanies.length"
-            :initial-view-mode="viewMode"
-            :initial-sort-option="sortBy"
-            @view-change="handleViewChange"
-            @sort-change="handleSortChange"
-          />
-
-          <Pagination
-            :total-items="filteredCompanies.length"
-            :initial-page="currentPage"
-            :initial-per-page="itemsPerPage"
-            @page-change="handlePageChange"
-            @per-page-change="handlePerPageChange"
-          />
-        </template>
-      </div>
-    </div>
-  </div>
-</template>
-
 <script setup>
 import { ref, computed, onMounted, watch } from "vue";
+import { useCompanyStore } from "../../stores/companyStore";
 import FilterCompanySidebar from "./FilterCompanySidebar.vue";
 import CompanyResults from "./CompanyResultsPage.vue";
 import Pagination from "../sharecomponents/Pagination.vue";
 
+const companyStore = useCompanyStore();
+
 const props = defineProps({
   initialSearchQuery: {
-    type: String,
-    default: "",
+    type: Object,
+    default: () => ({ keyword: "", location: "" }),
   },
 });
 
 const emit = defineEmits(["clear-search"]);
 
-// Search and filter state
-const searchQuery = ref(props.initialSearchQuery);
+// Filter and view state
 const viewMode = ref("grid");
 const currentPage = ref(1);
-const itemsPerPage = ref(6); // 6 items per page (3x2 grid)
+const itemsPerPage = ref(6);
 const sortBy = ref("relevant");
 const selectedIndustries = ref([]);
 const selectedSizes = ref([]);
+const isLoading = ref(false);
+const error = ref(null);
 
-// Watch for prop changes
+// Sync store's searchQuery with prop
 watch(
   () => props.initialSearchQuery,
   (newVal) => {
-    searchQuery.value = newVal;
-  }
+    companyStore.setSearchQuery(newVal);
+  },
+  { deep: true }
 );
 
-// Sample companies data - expanded with more companies including Google
-const companies = ref([
-  {
-    id: 1,
-    name: "Nomad",
-    logo: "https://logo.clearbit.com/nomadproject.io",
-    logoBg: "#e7f5f0",
-    jobCount: 3,
-    description:
-      "Nomad is located in Paris, France. Nomad has generated $128,000 in sales (USD).",
-    tags: ["Business Service"],
-  },
-  {
-    id: 2,
-    name: "Discord",
-    logo: "https://logo.clearbit.com/discord.com",
-    logoBg: "#5865f2",
-    jobCount: 3,
-    description:
-      "We'd love to work with someone like you. We care about creating a delightful experience.",
-    tags: ["Business Service"],
-  },
-  {
-    id: 3,
-    name: "Google",
-    logo: "https://logo.clearbit.com/google.com",
-    logoBg: "#4285f4",
-    jobCount: 5,
-    description:
-      "Google is based in Mountain View, California. It generates over $200 billion in revenue annually.",
-    tags: ["Tech", "Search Engine"],
-  },
-  {
-    id: 4,
-    name: "Apple",
-    logo: "https://logo.clearbit.com/apple.com",
-    logoBg: "#f1f1f1",
-    jobCount: 10,
-    description:
-      "Apple is a leading technology company known for its innovation in consumer electronics and software.",
-    tags: ["Tech", "Consumer Electronics"],
-  },
-  {
-    id: 5,
-    name: "Spotify",
-    logo: "https://logo.clearbit.com/spotify.com",
-    logoBg: "#1db954",
-    jobCount: 7,
-    description:
-      "Spotify is a popular streaming service offering a vast library of music and podcasts.",
-    tags: ["Music", "Streaming"],
-  },
-  {
-    id: 6,
-    name: "Tesla",
-    logo: "https://logo.clearbit.com/tesla.com",
-    logoBg: "#e82127",
-    jobCount: 4,
-    description:
-      "Tesla, Inc. is an electric vehicle and clean energy company based in Palo Alto, California.",
-    tags: ["Tech", "Electric Vehicles"],
-  },
-]);
+// Fetch companies on mount
+onMounted(async () => {
+  isLoading.value = true;
+  try {
+    await companyStore.fetchCompanies();
+    if (props.initialSearchQuery.keyword || props.initialSearchQuery.location) {
+      companyStore.setSearchQuery(props.initialSearchQuery);
+    } else {
+      const urlParams = new URLSearchParams(window.location.search);
+      const keyword = urlParams.get("keyword") || "";
+      const location = urlParams.get("location") || "";
+      if (keyword || location) {
+        companyStore.setSearchQuery({ keyword, location });
+      }
+    }
+  } catch (err) {
+    error.value = err.message;
+  } finally {
+    isLoading.value = false;
+  }
+});
 
-// // Event handlers
-// function handleSearch(query) {
-//   searchQuery.value = query;
-//   currentPage.value = 1; // Reset to first page on new search
-// }
+// Event handlers
+function handleSearch({ keyword, location }) {
+  companyStore.setSearchQuery({ keyword, location });
+  currentPage.value = 1;
+}
 
 function handleFilterChange(filters) {
   selectedIndustries.value = filters.industries;
-
-  // Destructure the first industry
-  const [firstIndustry] = selectedIndustries.value || [];
-  console.log("First industry:", firstIndustry); // Output: "advertising"
-
+  console.log("Selected industries:", filters.industries);
   selectedSizes.value = filters.sizes;
-  currentPage.value = 1; // Reset to first page on filter change
+  console.log("Selected sizes:", filters.sizes);
+  currentPage.value = 1;
 }
 
 function handleViewChange(mode) {
@@ -183,63 +77,53 @@ function handleViewChange(mode) {
 
 function handleSortChange(option) {
   sortBy.value = option;
-  currentPage.value = 1; // Reset to first page on sort change
+  currentPage.value = 1;
 }
 
 function handlePageChange(page) {
   currentPage.value = page;
-  // Scroll to top of results
   window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
 function handlePerPageChange(perPage) {
   itemsPerPage.value = perPage;
-  currentPage.value = 1; // Reset to first page when changing items per page
+  currentPage.value = 1;
 }
 
 function clearSearch() {
-  console.log("trigger clear in company page");
+  console.log("Clear search triggered");
+  companyStore.setSearchQuery({ keyword: "", location: "" });
+  selectedIndustries.value = [];
+  selectedSizes.value = [];
   emit("clear-search");
 }
 
 // Computed properties
 const filteredCompanies = computed(() => {
-  let result = companies.value;
+  let result = companyStore.searchedCompanies || [];
+  console.log("Initial searched companies:", result.length);
 
-  // Filter by search query
-  if (searchQuery.value) {
-    // filter only keyword
-    console.log("query", searchQuery.value.keyword);
-    const searchTerms = searchQuery.value.keyword.toLowerCase().split(" ");
-
-    result = result.filter((company) => {
-      // Check if any search term matches company name, description, or tags
-      return searchTerms.some(
-        (term) =>
-          company.name.toLowerCase().includes(term) ||
-          company.description.toLowerCase().includes(term) ||
-          company.tags.some((tag) => tag.toLowerCase().includes(term))
-      );
-    });
+  if (!result || result.length === 0) {
+    console.log("No companies after search filter");
+    return [];
   }
 
-  // Apply industry filter with case-insensitive matching
+  // Apply industry filter
   if (selectedIndustries.value.length > 0) {
     const lowerCaseIndustries = selectedIndustries.value.map((industry) =>
       industry.toLowerCase()
     );
-    result = result.filter((company) => {
-      return company.tags.some((tag) =>
+    result = result.filter((company) =>
+      company.tags.some((tag) =>
         lowerCaseIndustries.includes(tag.toLowerCase())
-      );
-    });
+      )
+    );
+    console.log("After industry filter:", result.length);
   }
-  // Apply size filter if any selected
+
+  // Apply size filter (placeholder logic)
   if (selectedSizes.value.length > 0) {
-    // In a real app, you would filter by company size here
-    // For demo purposes, we'll just filter randomly based on the company ID
     result = result.filter((company) => {
-      // This is just a placeholder logic - replace with actual size filtering
       if (selectedSizes.value.includes("1-50") && company.id % 6 === 0)
         return true;
       if (selectedSizes.value.includes("51-150") && company.id % 6 === 1)
@@ -254,27 +138,24 @@ const filteredCompanies = computed(() => {
         return true;
       return false;
     });
+    console.log("After size filter:", result.length);
   }
 
   // Apply sorting
   if (sortBy.value === "newest") {
-    // Sort by ID descending (assuming newer companies have higher IDs)
     result = [...result].sort((a, b) => b.id - a.id);
   } else if (sortBy.value === "oldest") {
-    // Sort by ID ascending
     result = [...result].sort((a, b) => a.id - b.id);
-  } else {
-    // For 'relevant' sorting, prioritize exact matches in name
-    if (searchQuery.value) {
-      const query = searchQuery.value.keyword.toLowerCase();
-      result = [...result].sort((a, b) => {
-        const aNameMatch = a.name.toLowerCase().includes(query) ? 1 : 0;
-        const bNameMatch = b.name.toLowerCase().includes(query) ? 1 : 0;
-        return bNameMatch - aNameMatch;
-      });
-    }
+  } else if (sortBy.value === "relevant" && companyStore.searchQuery.keyword) {
+    const query = companyStore.searchQuery.keyword.toLowerCase();
+    result = [...result].sort((a, b) => {
+      const aNameMatch = a.name.toLowerCase().includes(query) ? 1 : 0;
+      const bNameMatch = b.name.toLowerCase().includes(query) ? 1 : 0;
+      return bNameMatch - aNameMatch;
+    });
   }
 
+  console.log("Final filtered companies:", result.length);
   return result;
 });
 
@@ -283,19 +164,101 @@ const paginatedCompanies = computed(() => {
   const end = start + itemsPerPage.value;
   return filteredCompanies.value.slice(start, end);
 });
-
-// Set initial search query from URL if present
-onMounted(() => {
-  if (props.initialSearchQuery) {
-    searchQuery.value = props.initialSearchQuery;
-  } else {
-    const urlParams = new URLSearchParams(window.location.search);
-    const queryParam = urlParams.get("q");
-    if (queryParam) {
-      searchQuery.value = queryParam;
-    }
-  }
-});
 </script>
 
-<style scoped></style>
+<template>
+  <div class="company-page">
+    <!-- <div v-else-if="error" class="error">Error: {{ error }}</div> -->
+    <div class="content-wrapper">
+      <div class="sidebar">
+        <FilterCompanySidebar
+          :search-query="companyStore.searchQuery"
+          :initial-industries="selectedIndustries"
+          :initial-sizes="selectedSizes"
+          @search="handleSearch"
+          @filter-change="handleFilterChange"
+        />
+      </div>
+      <div class="main-content">
+        <div class="results">
+          <CompanyResults
+            :companies="paginatedCompanies"
+            :total-results="filteredCompanies.length"
+            :view-mode="viewMode"
+            @view-change="handleViewChange"
+            @sort-change="handleSortChange"
+            @clear-search="clearSearch"
+          />
+        </div>
+        <div class="pagination">
+          <Pagination
+            :current-page="currentPage"
+            :total-items="filteredCompanies.length"
+            :items-per-page="itemsPerPage"
+            @page-change="handlePageChange"
+            @per-page-change="handlePerPageChange"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<style scoped>
+.company-page {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  padding: 20px;
+}
+
+.content-wrapper {
+  display: flex;
+  flex-direction: row;
+  flex: 1;
+  gap: 20px;
+}
+
+.sidebar {
+  flex: 0 0 25%; /* 25% width for sidebar */
+  max-width: 300px; /* Optional: cap the width */
+}
+
+.main-content {
+  flex: 1; /* Take remaining space */
+  display: flex;
+  flex-direction: column;
+}
+
+.results {
+  flex: 1; /* Allow results to grow */
+}
+
+.pagination {
+  margin-top: 20px;
+  width: 100%;
+}
+
+.loading,
+.error {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  font-size: 1.2rem;
+  color: #666;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .content-wrapper {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    flex: none;
+    max-width: none;
+    width: 100%;
+  }
+}
+</style>
