@@ -185,7 +185,7 @@ export default {
           {
             id: 1,
             companyName: "Nomad",
-            companyLogo: "https://v0.dev/placeholder.svg?height=40&width=40",
+            companyLogo: "https://logo.clearbit.com/twitter.com",
             logoBackground: "#e6f7f0",
             role: "Social Media Assistant",
             dateApplied: "24 July 2021",

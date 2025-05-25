@@ -65,7 +65,7 @@ export default {
 }
 
 .odd-row {
-  background-color: #f9fafb;
+  background-color: #F8F8FD;
 }
 
 .odd-row:hover {

@@ -32,3 +32,9 @@
     }
   })
   </script>
+  <style scoped>
+  .card-body{
+    border:1px solid #D6DDEB;
+    transition: transform 0.2s ease;
+  }
+  </style>
