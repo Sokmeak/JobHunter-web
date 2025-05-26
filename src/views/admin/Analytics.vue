@@ -110,7 +110,7 @@
   
   <style scoped>
   .analytics-page {
-    padding: 0;
+   padding: 1rem 1rem;
   }
   
   .page-header {

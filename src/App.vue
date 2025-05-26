@@ -1,13 +1,11 @@
 <template>
-  <div>
-    <Transition name="loader-fade" mode="out-in">
-      <Loader
-        v-if="showLoader && appStore.isFirst"
-        :loading-duration="loaderDuration"
-      />
-    </Transition>
-    <RouterView />
-  </div>
+  <Transition name="loader-fade" mode="out-in">
+    <Loader
+      v-if="showLoader && appStore.isFirst"
+      :loading-duration="loaderDuration"
+    />
+  </Transition>
+  <RouterView />
 </template>
 
 <script setup>
