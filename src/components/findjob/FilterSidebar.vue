@@ -54,6 +54,7 @@ const updateSelected = (filterType, selectedItems) => {
 <style lang="scss" scoped>
 @use "@/style/variables.css" as *; /* <-- important */
 
+
 .primary-color {
   color: var(--primary-color);
 }
