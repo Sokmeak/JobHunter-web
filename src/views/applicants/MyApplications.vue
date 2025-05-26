@@ -29,7 +29,7 @@
 
       <!-- Applications Table Component -->
       <ApplicationsTable
-        :applications="filteredApplications"
+        :applications="paginatedApplications"
         @view-application="openApplicationDetails"
         @action-menu="openActionMenu"
       />
@@ -73,6 +73,13 @@ import EmptyState from "@/components/Applicants/applications/EmptyState.vue";
 import LoadingSpinner from "@/components/Applicants/comon/LoadingSpinner.vue";
 import Pagination from "@/components/Applicants/applications/Pagination.vue";
 
+// Import shared data
+import { 
+  applicationsData, 
+  getApplicationsByStatus, 
+  getStatusCounts, 
+  searchApplications 
+} from "@/stores/Applications.js";
 
 export default {
   name: "ApplicationsHistory",
@@ -106,14 +113,19 @@ export default {
       isLoading: false,
       showDetailsModal: false,
       showFilters: false,
+      showBanner: true,
       selectedApplication: null,
       statusTabs: [
         { status: "all", label: "All", count: 0 },
         { status: "in-review", label: "In Review", count: 0 },
         { status: "interviewing", label: "Interviewing", count: 0 },
+        { status: "shortlisted", label: "Shortlisted", count: 0 },
+        { status: "interviewed", label: "Interviewed", count: 0 },
         { status: "assessment", label: "Assessment", count: 0 },
         { status: "offered", label: "Offered", count: 0 },
         { status: "hired", label: "Hired", count: 0 },
+        { status: "declined", label: "Declined", count: 0 },
+        { status: "unsuitable", label: "Unsuitable", count: 0 },
       ],
       applications: [],
     };
@@ -124,28 +136,28 @@ export default {
 
       // Filter by active tab
       if (this.activeTab !== "all") {
-        const statusMap = {
-          "in-review": "In Review",
-          interviewing: "Interviewing",
-          assessment: "Assessment",
-          offered: "Offered",
-          hired: "Hired",
-          unsuitable: "Unsuitable",
-        };
-
-        filtered = filtered.filter(
-          (app) => app.status === statusMap[this.activeTab]
-        );
+        filtered = getApplicationsByStatus(this.activeTab);
       }
 
       // Filter by search query
       if (this.searchQuery.trim() !== "") {
-        const query = this.searchQuery.toLowerCase();
-        filtered = filtered.filter(
-          (app) =>
-            app.companyName.toLowerCase().includes(query) ||
-            app.role.toLowerCase().includes(query)
-        );
+        filtered = searchApplications(this.searchQuery).filter(app => {
+          if (this.activeTab === "all") return true;
+          
+          const statusMap = {
+            "in-review": "In Review",
+            "interviewing": "Interviewing",
+            "shortlisted": "Shortlisted", 
+            "interviewed": "Interviewed",
+            "assessment": "Assessment",
+            "offered": "Offered",
+            "hired": "Hired",
+            "declined": "Declined",
+            "unsuitable": "Unsuitable",
+          };
+          
+          return app.status === statusMap[this.activeTab];
+        });
       }
 
       return filtered;
@@ -180,469 +192,9 @@ export default {
 
       // Simulate API delay
       setTimeout(() => {
-        // In a real app, this would be an API call
-        this.applications = [
-          {
-            id: 1,
-            companyName: "Nomad",
-            companyLogo: "https://logo.clearbit.com/twitter.com",
-            logoBackground: "#e6f7f0",
-            role: "Social Media Assistant",
-            dateApplied: "24 July 2021",
-            status: "In Review",
-            location: "Remote",
-            employmentType: "Full-time",
-            salaryRange: "$40,000 - $60,000",
-            jobDescription:
-              "We are looking for a creative and enthusiastic Social Media Assistant to join our marketing team. You will be responsible for creating engaging content, managing social media accounts, and analyzing performance metrics.",
-            requirements: [
-              "Bachelor's degree in Marketing, Communications, or related field",
-              "2+ years of experience in social media management",
-              "Proficiency in social media platforms (Instagram, Facebook, Twitter, LinkedIn)",
-              "Strong written and verbal communication skills",
-              "Experience with social media analytics tools",
-            ],
-            timeline: [
-              {
-                title: "Application Submitted",
-                date: "24 July 2021",
-                description:
-                  "Your application has been successfully submitted.",
-                completed: true,
-              },
-              {
-                title: "Application Under Review",
-                date: "25 July 2021",
-                description:
-                  "Our team is currently reviewing your application.",
-                completed: true,
-              },
-              {
-                title: "Phone Screening",
-                date: "Pending",
-                description: "Initial phone screening with HR team.",
-                completed: false,
-              },
-              {
-                title: "Technical Interview",
-                date: "Pending",
-                description: "Technical interview with the hiring manager.",
-                completed: false,
-              },
-            ],
-            recruiter: {
-              name: "Sarah Johnson",
-              role: "HR Manager",
-              email: "sarah.johnson@nomad.com",
-              avatar: "https://v0.dev/placeholder.svg?height=50&width=50",
-            },
-          },
-          {
-            id: 2,
-            companyName: "Udacity",
-            companyLogo: "https://v0.dev/placeholder.svg?height=40&width=40",
-            logoBackground: "#e6f7ff",
-            role: "Social Media Assistant",
-            dateApplied: "20 July 2021",
-            status: "Shortlisted",
-            location: "San Francisco, CA",
-            employmentType: "Full-time",
-            salaryRange: "$45,000 - $65,000",
-            jobDescription:
-              "Join our dynamic marketing team as a Social Media Assistant. You'll help create compelling content and manage our social media presence across multiple platforms.",
-            requirements: [
-              "Bachelor's degree in Marketing or related field",
-              "1-3 years of social media experience",
-              "Creative mindset with attention to detail",
-              "Knowledge of content creation tools",
-              "Understanding of social media trends",
-            ],
-            timeline: [
-              {
-                title: "Application Submitted",
-                date: "20 July 2021",
-                description:
-                  "Your application has been successfully submitted.",
-                completed: true,
-              },
-              {
-                title: "Application Reviewed",
-                date: "22 July 2021",
-                description:
-                  "Your application has been reviewed and shortlisted.",
-                completed: true,
-              },
-              {
-                title: "First Interview Scheduled",
-                date: "28 July 2021",
-                description: "First round interview scheduled.",
-                completed: false,
-              },
-            ],
-            recruiter: {
-              name: "Mike Chen",
-              role: "Talent Acquisition Specialist",
-              email: "mike.chen@udacity.com",
-              avatar: "https://v0.dev/placeholder.svg?height=50&width=50",
-            },
-          },
-          {
-            id: 3,
-            companyName: "Packer",
-            companyLogo: "https://v0.dev/placeholder.svg?height=40&width=40",
-            logoBackground: "#fff0f5",
-            role: "Social Media Assistant",
-            dateApplied: "16 July 2021",
-            status: "Offered",
-            location: "Remote",
-            employmentType: "Full-time",
-            salaryRange: "$50,000 - $70,000",
-            jobDescription:
-              "We are hiring a Social Media Assistant to create content, run ad campaigns, and build our online community.",
-            requirements: [
-              "Bachelor's in Communications or related",
-              "3+ years of social media experience",
-              "Creativity and eye for design",
-              "Familiarity with paid ad strategies",
-              "Team collaboration skills",
-            ],
-            timeline: [
-              {
-                title: "Application Submitted",
-                date: "16 July 2021",
-                description: "Application submitted to Packer.",
-                completed: true,
-              },
-              {
-                title: "Offer Extended",
-                date: "20 July 2021",
-                description: "You have received a job offer.",
-                completed: true,
-              },
-            ],
-            recruiter: {
-              name: "James Lee",
-              role: "Hiring Manager",
-              email: "james.lee@packer.com",
-              avatar: "https://v0.dev/placeholder.svg?height=50&width=50",
-            },
-          },
-          {
-            id: 4,
-            companyName: "Divvy",
-            companyLogo: "https://v0.dev/placeholder.svg?height=40&width=40",
-            logoBackground: "#fffbe6",
-            role: "Social Media Assistant",
-            dateApplied: "14 July 2021",
-            status: "Unsuitable",
-            location: "Remote",
-            employmentType: "Full-time",
-            salaryRange: "$48,000 - $68,000",
-            jobDescription:
-              "Join our team to lead community engagement and manage our social media strategy across platforms.",
-            requirements: [
-              "Bachelor's degree in a related field",
-              "2+ years experience managing brand channels",
-              "Ability to run A/B tests and evaluate impact",
-              "Creative and analytical thinker",
-              "Excellent time management skills",
-            ],
-            timeline: [
-              {
-                title: "Application Submitted",
-                date: "14 July 2021",
-                description: "You applied for the Social Media Assistant role.",
-                completed: true,
-              },
-              {
-                title: "Interview Scheduled",
-                date: "16 July 2021",
-                description: "Interview scheduled with the marketing team.",
-                completed: true,
-              },
-            ],
-            recruiter: {
-              name: "Anna Wells",
-              role: "Recruiter",
-              email: "anna.wells@divvy.com",
-              avatar: "https://v0.dev/placeholder.svg?height=50&width=50",
-            },
-          },
-
-          {
-            id: 5,
-            companyName: "Buffer",
-            companyLogo: "https://v0.dev/placeholder.svg?height=40&width=40",
-            logoBackground: "#e0f7fa",
-            role: "Social Media Assistant",
-            dateApplied: "25 July 2021",
-            status: "In Review",
-            location: "Remote",
-            employmentType: "Full-time",
-            salaryRange: "$45,000 - $65,000",
-            jobDescription:
-              "Help plan and execute social media strategies to boost engagement and brand awareness.",
-            requirements: [
-              "Bachelor’s in Communications or similar",
-              "Experience with Buffer tools",
-              "Strong analytical skills",
-              "Creativity in content creation",
-            ],
-            timeline: [],
-            recruiter: {
-              name: "John Smith",
-              role: "Talent Acquisition",
-              email: "john@buffer.com",
-              avatar: "https://v0.dev/placeholder.svg?height=50&width=50",
-            },
-          },
-          {
-            id: 6,
-            companyName: "Zapier",
-            companyLogo: "https://v0.dev/placeholder.svg?height=40&width=40",
-            logoBackground: "#fce4ec",
-            role: "Social Media Assistant",
-            dateApplied: "22 July 2021",
-            status: "Shortlisted",
-            location: "Remote",
-            employmentType: "Part-time",
-            salaryRange: "$30,000 - $45,000",
-            jobDescription:
-              "Assist with the creation and scheduling of social media posts, reporting directly to the marketing team.",
-            requirements: [
-              "Experience in social content scheduling",
-              "Basic design skills",
-              "Knowledge of automation tools",
-              "Effective communication skills",
-            ],
-            timeline: [],
-            recruiter: {
-              name: "Maria Lopez",
-              role: "HR Coordinator",
-              email: "maria@zapier.com",
-              avatar: "https://v0.dev/placeholder.svg?height=50&width=50",
-            },
-          },
-          {
-            id: 7,
-            companyName: "Canva",
-            companyLogo: "https://v0.dev/placeholder.svg?height=40&width=40",
-            logoBackground: "#ede7f6",
-            role: "Social Media Assistant",
-            dateApplied: "18 July 2021",
-            status: "Interviewing",
-            location: "Sydney, Australia",
-            employmentType: "Contract",
-            salaryRange: "$50,000 - $70,000",
-            jobDescription:
-              "Create visual content and assist with community engagement campaigns.",
-            requirements: [
-              "Expertise in Canva tools",
-              "Creative storytelling",
-              "Community management experience",
-              "Strong time management skills",
-            ],
-            timeline: [],
-            recruiter: {
-              name: "Liam Chen",
-              role: "Recruiter",
-              email: "liam@canva.com",
-              avatar: "https://v0.dev/placeholder.svg?height=50&width=50",
-            },
-          },
-          {
-            id: 8,
-            companyName: "HubSpot",
-            companyLogo: "https://v0.dev/placeholder.svg?height=40&width=40",
-            logoBackground: "#f1f8e9",
-            role: "Social Media Assistant",
-            dateApplied: "15 July 2021",
-            status: "Offered",
-            location: "Cambridge, MA",
-            employmentType: "Full-time",
-            salaryRange: "$55,000 - $75,000",
-            jobDescription:
-              "Support the social media manager in executing campaigns across platforms.",
-            requirements: [
-              "Bachelor’s degree",
-              "3+ years of social media experience",
-              "HubSpot CRM knowledge",
-              "Excellent writing skills",
-            ],
-            timeline: [],
-            recruiter: {
-              name: "Karen Wu",
-              role: "Talent Partner",
-              email: "karen@hubspot.com",
-              avatar: "https://v0.dev/placeholder.svg?height=50&width=50",
-            },
-          },
-          {
-            id: 9,
-            companyName: "Notion",
-            companyLogo: "https://v0.dev/placeholder.svg?height=40&width=40",
-            logoBackground: "#fbe9e7",
-            role: "Social Media Assistant",
-            dateApplied: "12 July 2021",
-            status: "Rejected",
-            location: "San Francisco, CA",
-            employmentType: "Internship",
-            salaryRange: "$20/hr",
-            jobDescription:
-              "Create engaging posts and support product marketing efforts.",
-            requirements: [
-              "Knowledge of Notion tools",
-              "Social platform familiarity",
-              "Strong communication skills",
-              "Interest in productivity tech",
-            ],
-            timeline: [],
-            recruiter: {
-              name: "Alex Kim",
-              role: "Hiring Manager",
-              email: "alex@notion.so",
-              avatar: "https://v0.dev/placeholder.svg?height=50&width=50",
-            },
-          },
-          {
-            id: 10,
-            companyName: "Grammarly",
-            companyLogo: "https://v0.dev/placeholder.svg?height=40&width=40",
-            logoBackground: "#e8f5e9",
-            role: "Social Media Assistant",
-            dateApplied: "11 July 2021",
-            status: "Pending",
-            location: "Remote",
-            employmentType: "Full-time",
-            salaryRange: "$48,000 - $66,000",
-            jobDescription:
-              "Manage engagement across platforms and support branding strategy.",
-            requirements: [
-              "Excellent grammar skills",
-              "Engaging content writing",
-              "Analytics experience",
-              "Self-driven and organized",
-            ],
-            timeline: [],
-            recruiter: {
-              name: "Nina Reyes",
-              role: "HR Specialist",
-              email: "nina@grammarly.com",
-              avatar: "https://v0.dev/placeholder.svg?height=50&width=50",
-            },
-          },
-          {
-            id: 11,
-            companyName: "Trello",
-            companyLogo: "https://v0.dev/placeholder.svg?height=40&width=40",
-            logoBackground: "#f9fbe7",
-            role: "Social Media Assistant",
-            dateApplied: "10 July 2021",
-            status: "Shortlisted",
-            location: "New York, NY",
-            employmentType: "Part-time",
-            salaryRange: "$35,000 - $50,000",
-            jobDescription:
-              "Build social calendars and develop campaign ideas for productivity audiences.",
-            requirements: [
-              "Organized and creative",
-              "Experience with Trello boards",
-              "Social content strategy knowledge",
-              "Passion for teamwork tools",
-            ],
-            timeline: [],
-            recruiter: {
-              name: "Oliver Stone",
-              role: "HR Lead",
-              email: "oliver@trello.com",
-              avatar: "https://v0.dev/placeholder.svg?height=50&width=50",
-            },
-          },
-          {
-            id: 12,
-            companyName: "Hootsuite",
-            companyLogo: "https://v0.dev/placeholder.svg?height=40&width=40",
-            logoBackground: "#e1f5fe",
-            role: "Social Media Assistant",
-            dateApplied: "08 July 2021",
-            status: "Interviewing",
-            location: "Vancouver, Canada",
-            employmentType: "Full-time",
-            salaryRange: "$50,000 - $70,000",
-            jobDescription:
-              "Manage publishing tools and report on performance insights.",
-            requirements: [
-              "Strong Hootsuite tool experience",
-              "Excellent organizational skills",
-              "Collaborative mindset",
-              "Experience with performance metrics",
-            ],
-            timeline: [],
-            recruiter: {
-              name: "Ella Nash",
-              role: "People Ops",
-              email: "ella@hootsuite.com",
-              avatar: "https://v0.dev/placeholder.svg?height=50&width=50",
-            },
-          },
-          {
-            id: 13,
-            companyName: "Slack",
-            companyLogo: "https://v0.dev/placeholder.svg?height=40&width=40",
-            logoBackground: "#f3e5f5",
-            role: "Social Media Assistant",
-            dateApplied: "06 July 2021",
-            status: "Assessment",
-            location: "Remote",
-            employmentType: "Contract",
-            salaryRange: "$55,000 - $68,000",
-            jobDescription:
-              "Help create memes, tips, and community content across multiple platforms.",
-            requirements: [
-              "Sense of humor",
-              "Slack product familiarity",
-              "Content marketing experience",
-              "Understanding of brand tone",
-            ],
-            timeline: [],
-            recruiter: {
-              name: "Bryce Thomas",
-              role: "Recruiter",
-              email: "bryce@slack.com",
-              avatar: "https://v0.dev/placeholder.svg?height=50&width=50",
-            },
-          },
-          {
-            id: 14,
-            companyName: "Asana",
-            companyLogo: "https://v0.dev/placeholder.svg?height=40&width=40",
-            logoBackground: "#fff3e0",
-            role: "Social Media Assistant",
-            dateApplied: "05 July 2021",
-            status: "Hired",
-            location: "San Francisco, CA",
-            employmentType: "Full-time",
-            salaryRange: "$60,000 - $75,000",
-            jobDescription:
-              "Support the marketing team with social publishing and team productivity campaigns.",
-            requirements: [
-              "Familiarity with Asana app",
-              "Strong collaboration skills",
-              "Excellent grammar and voice",
-              "Attention to branding",
-            ],
-            timeline: [],
-            recruiter: {
-              name: "Maya Patel",
-              role: "Talent Recruiter",
-              email: "maya@asana.com",
-              avatar: "https://v0.dev/placeholder.svg?height=50&width=50",
-            },
-          },
-
-          // Add more application objects as needed
-        ];
-
+        // Use shared data instead of hardcoded data
+        this.applications = [...applicationsData];
+        
         // Update status counts after loading applications
         this.updateStatusCounts();
         this.isLoading = false;
@@ -650,20 +202,9 @@ export default {
     },
 
     updateStatusCounts() {
-      // Count applications by status
-      const statusCounts = {
-        all: this.applications.length,
-      };
-
-      // Count each status
-      this.applications.forEach((app) => {
-        const statusKey = this.getStatusKey(app.status);
-        if (!statusCounts[statusKey]) {
-          statusCounts[statusKey] = 0;
-        }
-        statusCounts[statusKey]++;
-      });
-
+      // Get counts from shared data utility
+      const statusCounts = getStatusCounts();
+      
       // Update tab counts
       this.statusTabs.forEach((tab) => {
         tab.count = statusCounts[tab.status] || 0;
@@ -717,6 +258,15 @@ export default {
       );
       if (index !== -1) {
         this.applications[index].status = "Withdrawn";
+        
+        // Also update the shared data
+        const sharedIndex = applicationsData.findIndex(
+          (app) => app.id === this.selectedApplication.id
+        );
+        if (sharedIndex !== -1) {
+          applicationsData[sharedIndex].status = "Withdrawn";
+        }
+        
         this.updateStatusCounts();
       }
       this.closeDetailsModal();

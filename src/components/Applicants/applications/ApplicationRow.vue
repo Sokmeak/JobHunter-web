@@ -54,7 +54,7 @@ export default {
 <style scoped>
 .table-row {
   display: flex;
-  border-bottom: 1px solid #e0e0e0;
+  /* border-bottom: 1px solid #e0e0e0; */
   background-color: white;
   cursor: pointer;
   transition: background-color 0.2s ease;
@@ -112,9 +112,9 @@ export default {
 }
 
 .company-logo {
-  width: 40px;
-  height: 40px;
-  border-radius: 8px;
+  width: 50px;
+  height: 50px;
+  /* border-radius: 8px; */
   display: flex;
   align-items: center;
   justify-content: center;
