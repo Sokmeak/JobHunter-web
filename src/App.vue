@@ -9,7 +9,7 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
 import Loader from "@/components/Loader.vue";
 
 import { useJobStore } from "@/stores/jobStore";
@@ -49,18 +49,17 @@ const initApp = async () => {
 };
 
 // Start preloading
-
-initApp();
-
-// // Handle route changes
-// router.beforeEach((to, from, next) => {
-//   if (to.path !== from.path) {
-//     showLoader.value = true;
-//     loaderDuration.value = 600; // Fast for routes
-//     setTimeout(() => {
-//       showLoader.value = false;
-//     }, loaderDuration.value);
-//   }
-//   next();
-// });
+onMounted(initApp);
 </script>
+
+<style>
+.loader-fade-enter-active,
+.loader-fade-leave-active {
+  transition: opacity 0.3s ease;
+}
+
+.loader-fade-enter-from,
+.loader-fade-leave-to {
+  opacity: 0;
+}
+</style>

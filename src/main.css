@@ -1,62 +1,144 @@
-@import url("/src/css/clash-display.css");
+/* Import Bootstrap Icons first */
+@import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css");
 
-
-#app {
-  font-family: "Epilogue", sans-serif;
-}
-* {
-  box-sizing: border-box;
+/* Custom styles */
+body {
   margin: 0;
-  padding: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-/* 
-.primary-color {
-  color: #4640de;
-}
-.secondary-color {
-  color: #ccccf5;
-}
-.teriary-color {
-  color: #e7f6fd;
+/* Custom Bootstrap overrides */
+.btn-primary {
+  background-color: #6366f1;
+  border-color: #6366f1;
 }
 
-.cyan-accent-color {
-  color: #26a4ff;
+.btn-primary:hover {
+  background-color: #5855eb;
+  border-color: #5855eb;
 }
 
-.red-accent-color {
-  color: #ff6550;
-}
-.green-accent-color {
-  color: #56cdad;
-}
-.purple-accent-color {
-  color: #7b61ff;
+.text-primary {
+  color: #6366f1 !important;
 }
 
-.yellow-accent-color {
-  color: #ffb836;
-}
-.neutral-color {
-  color: #25324b;
-} */
-
-/* #app {
-  font-family: ClashDisplay-medium;
-} */
-
-/*
-h1 {
-  font-family: ClashDisplay-Bold;
+.bg-primary {
+  background-color: #6366f1 !important;
 }
 
-p {
-  font-family: ClashDisplay-Regular;
-} */
+.border-primary {
+  border-color: #6366f1 !important;
+}
 
-h1 {
-  font-family: "ClashDisplay-Semibold", sans-serif;
-  font-size: 2.5rem;
-  color: #333;
+/* Custom utility classes */
+.bg-primary-subtle {
+  background-color: rgba(99, 102, 241, 0.1);
+}
+
+.text-success {
+  color: #10b981 !important;
+}
+
+.bg-success {
+  background-color: #10b981 !important;
+}
+
+/* Sidebar styles */
+.sidebar {
+  width: 280px;
+  min-height: 100vh;
+  background-color: #ffffff;
+  border-right: 1px solid #e5e7eb;
+}
+
+/* Calendar specific styles */
+.mini-calendar .mini-day:hover {
+  background-color: #f3f4f6;
+}
+
+.mini-calendar .mini-day.has-events::after {
+  content: "";
+  position: absolute;
+  bottom: 2px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 4px;
+  height: 4px;
+  background-color: #6366f1;
+  border-radius: 50%;
+}
+
+/* Notification styles */
+.notification-dropdown {
+  animation: fadeIn 0.2s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.notification-item:hover {
+  background-color: #f8f9fa !important;
+}
+
+/* Card hover effects */
+.card:hover {
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  transition: box-shadow 0.2s ease-in-out;
+}
+
+/* Progress bar custom colors */
+.progress-bar.bg-success {
+  background-color: #10b981 !important;
+}
+
+/* Badge custom styles */
+.badge.bg-warning {
+  background-color: #f59e0b !important;
+}
+
+.badge.bg-info {
+  background-color: #06b6d4 !important;
+}
+
+/* Form focus styles */
+.form-control:focus {
+  border-color: #6366f1;
+  box-shadow: 0 0 0 0.2rem rgba(99, 102, 241, 0.25);
+}
+
+/* Button group custom styles */
+.btn-group .btn.btn-primary {
+  background-color: #6366f1;
+  border-color: #6366f1;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8;
 }

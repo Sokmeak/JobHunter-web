@@ -1,12 +1,14 @@
 import { createRouter, createWebHistory } from "vue-router";
 
-import authRoutes from "./authRoutes";
-import testRoutes from "./testRoutes";
-import applicantRoutes from "./applicantRoutes";
-import baseRoutes from "./baseRoutes";
-import adminRoutes from "./adminRoutes";
+import authRoutes from "../routes/authRoutes";
+import testRoutes from "../routes/testRoutes";
+import applicantRoutes from "../routes/applicantRoutes";
+import baseRoutes from "../routes/baseRoutes";
+import adminRoutes from "../routes/adminRoutes";
+import companyRoutes from "../routes/companyRoutes";
 
 const routes = [
+  ...companyRoutes,
   ...authRoutes,
   ...testRoutes,
   ...applicantRoutes,
@@ -18,7 +20,5 @@ const router = createRouter({
   history: createWebHistory(),
   routes,
 });
-
-
 
 export default router;
