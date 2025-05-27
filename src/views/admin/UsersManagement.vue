@@ -406,12 +406,12 @@ const toggleActionsMenu = (userId) => {
 };
 
 const viewUser = (userId) => {
-  router.push(`/users/${userId}`);
+  router.push(`/admin/users/${userId}/profile`);
   activeActionsMenu.value = null;
 };
 
 const editUser = (userId) => {
-  router.push(`/users/${userId}/edit`);
+  router.push(`/admin/users/${userId}/edit`);
   activeActionsMenu.value = null;
 };
 
