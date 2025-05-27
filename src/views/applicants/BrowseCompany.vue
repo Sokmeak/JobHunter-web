@@ -31,7 +31,6 @@
 
 <script setup>
 import { ref } from "vue";
-import DashboardHeader from "@/components/Applicants/layout/DashboardHeader.vue";
 import SearchJob from "@/components/sharecomponents/SearchJob.vue";
 import SearchResultsPage from "@/components/browsecompany/SearchResultsPage.vue";
 

@@ -1,43 +1,44 @@
 <template>
-  <div class="pagination-wrapper">
-    <nav class="pagination">
-      <button 
-        class="page-btn prev" 
-        @click="previousPage" 
-        :disabled="currentPage === 1"
-      >
-        <i class="bi bi-chevron-left"></i>
-      </button>
-      
-      <button 
-        v-for="page in visiblePages" 
-        :key="page"
-        class="page-btn"
-        :class="{ active: page === currentPage }"
-        @click="goToPage(page)"
-      >
-        {{ page }}
-      </button>
-      
-      <span v-if="showEllipsis" class="page-ellipsis">...</span>
-      
-      <button 
-        v-if="showLastPage"
-        class="page-btn"
-        :class="{ active: totalPages === currentPage }"
-        @click="goToPage(totalPages)"
-      >
-        {{ totalPages }}
-      </button>
-      
-      <button 
-        class="page-btn next" 
-        @click="nextPage" 
-        :disabled="currentPage === totalPages"
-      >
-        <i class="bi bi-chevron-right"></i>
-      </button>
-    </nav>
+  <div class="pagination">
+    <button 
+      class="pagination-button prev" 
+      @click="prevPage"
+      :disabled="currentPage === 1"
+    >
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="15 18 9 12 15 6"></polyline>
+      </svg>
+    </button>
+    
+    <button 
+      v-for="page in visiblePages" 
+      :key="page" 
+      class="pagination-button page-number" 
+      :class="{ 'active': currentPage === page }"
+      @click="$emit('update:page', page)"
+    >
+      {{ page }}
+    </button>
+    
+    <span v-if="showEllipsis" class="pagination-ellipsis">...</span>
+    
+    <button 
+      v-if="showLastPage" 
+      class="pagination-button page-number"
+      @click="$emit('update:page', totalPages)"
+    >
+      {{ totalPages }}
+    </button>
+    
+    <button 
+      class="pagination-button next" 
+      @click="nextPage"
+      :disabled="currentPage === totalPages"
+    >
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="9 18 15 12 9 6"></polyline>
+      </svg>
+    </button>
   </div>
 </template>
 
@@ -52,46 +53,53 @@ export default {
     totalPages: {
       type: Number,
       required: true
-    },
-    maxVisiblePages: {
-      type: Number,
-      default: 5
     }
   },
   computed: {
     visiblePages() {
-      const pages = [];
-      const start = Math.max(1, this.currentPage - Math.floor(this.maxVisiblePages / 2));
-      const end = Math.min(this.totalPages, start + this.maxVisiblePages - 1);
-      
-      for (let i = start; i <= end; i++) {
-        pages.push(i);
+      // Show first 5 pages or less if totalPages < 5
+      if (this.totalPages <= 5) {
+        return Array.from({ length: this.totalPages }, (_, i) => i + 1);
       }
-      return pages;
+      
+      // If current page is among first 3 pages
+      if (this.currentPage <= 3) {
+        return [1, 2, 3, 4, 5];
+      }
+      
+      // If current page is among last 3 pages
+      if (this.currentPage > this.totalPages - 3) {
+        return Array.from(
+          { length: 5 }, 
+          (_, i) => this.totalPages - 4 + i
+        );
+      }
+      
+      // Otherwise show 2 pages before and after current page
+      return [
+        this.currentPage - 2,
+        this.currentPage - 1,
+        this.currentPage,
+        this.currentPage + 1,
+        this.currentPage + 2
+      ];
     },
     showEllipsis() {
-      return this.totalPages > this.maxVisiblePages && 
-             this.visiblePages[this.visiblePages.length - 1] < this.totalPages - 1;
+      return this.totalPages > 5 && this.currentPage < this.totalPages - 2;
     },
     showLastPage() {
-      return this.totalPages > this.maxVisiblePages && 
-             this.visiblePages[this.visiblePages.length - 1] < this.totalPages;
+      return this.totalPages > 5 && this.currentPage < this.totalPages - 2;
     }
   },
   methods: {
-    goToPage(page) {
-      if (page !== this.currentPage) {
-        this.$emit('page-changed', page);
-      }
-    },
-    previousPage() {
+    prevPage() {
       if (this.currentPage > 1) {
-        this.$emit('page-changed', this.currentPage - 1);
+        this.$emit('update:page', this.currentPage - 1);
       }
     },
     nextPage() {
       if (this.currentPage < this.totalPages) {
-        this.$emit('page-changed', this.currentPage + 1);
+        this.$emit('update:page', this.currentPage + 1);
       }
     }
   }
@@ -99,52 +107,39 @@ export default {
 </script>
 
 <style scoped>
-.pagination-wrapper {
-  display: flex;
-  justify-content: center;
-  margin-top: 24px;
-}
-
 .pagination {
   display: flex;
+  justify-content: center;
   align-items: center;
   gap: 8px;
+  margin-top: 30px;
 }
 
-.page-btn {
-  width: 36px;
-  height: 36px;
-  border: 1px solid #e8eaed;
-  background-color: #ffffff;
-  border-radius: 6px;
+.pagination-button {
+  width: 40px;
+  height: 40px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 14px;
-  font-weight: 500;
-  color: #5f6368;
+  border: 1px solid #e0e0e0;
+  border-radius: 6px;
+  background-color: white;
+  color: #6b7280;
   cursor: pointer;
-  transition: all 0.2s ease;
 }
 
-.page-btn:hover:not(:disabled) {
-  background-color: #f8f9fa;
-  border-color: #4640DE;
-}
-
-.page-btn.active {
-  background-color: #4640DE;
-  border-color: #4640DE;
-  color: #ffffff;
-}
-
-.page-btn:disabled {
+.pagination-button:disabled {
   opacity: 0.5;
   cursor: not-allowed;
 }
 
-.page-ellipsis {
-  padding: 0 8px;
-  color: #5f6368;
+.pagination-button.active {
+  background-color: #4640DE;
+  color: white;
+  border-color: #4640DE;
+}
+
+.pagination-ellipsis {
+  color: #6b7280;
 }
 </style>
