@@ -8,19 +8,12 @@
       }"
     >
       <div class="sidebar-header">
-        <div v-if="!isCollapsed || isMobileMenuOpen" class="logo-full">
-          <PrimaryLogo />
-        </div>
-        <div v-else class="logo-icon">
-          <img
-            src="@/assets/images/jobhuntericon.svg"
-            alt="JobHunter Icon"
-            class="logo-mini"
-          />
-        </div>
+        <PrimaryLogo />
+
+        <!-- <div class="logo-icon"></div> -->
 
         <!-- Collapse toggle button (desktop only) -->
-        <button
+        <!-- <button
           v-if="!isMobileMenuOpen"
           class="btn btn-sm btn-light ms-auto d-none d-lg-flex align-items-center justify-content-center collapse-btn"
           @click="toggleCollapse"
@@ -32,7 +25,7 @@
               isCollapsed ? 'bi-chevron-right' : 'bi-chevron-left',
             ]"
           ></i>
-        </button>
+        </button> -->
       </div>
 
       <div class="nav-items">
@@ -141,11 +134,7 @@
             </li>
             <li><hr class="dropdown-divider" /></li>
             <li>
-              <router-link
-                class="dropdown-item text-danger"
-                to="/signin"
-                @click.prevent="logout"
-              >
+              <router-link class="dropdown-item text-danger" to="/signin">
                 <i class="bi bi-box-arrow-right me-2"></i> Log out
               </router-link>
             </li>
@@ -208,7 +197,7 @@ export default {
           name: "Messages",
           href: "/applicant/messages",
           icon: "chat",
-          badge: "1",
+          // badge: "1",
         },
         {
           name: "My Applications",
@@ -251,7 +240,7 @@ export default {
     },
     logout() {
       console.log("Logging out...");
-      this.$router.push("/login");
+      this.$router.push("/signin");
     },
   },
 };
@@ -260,17 +249,18 @@ export default {
 <style scoped>
 .sidebar {
   position: fixed;
+  padding-left: 0.8rem;
   top: 0;
   left: 0;
-  width: 220px;
+  width: 15rem;
   height: 100vh;
   background-color: #f8f8fd;
   border-right: 1px solid #e8eaed;
   display: flex;
   flex-direction: column;
   transition: width 0.3s ease-in-out;
-  z-index: 1040;
-  overflow-y: auto;
+  /* z-index: 1040; */
+  overflow-y: none;
 }
 
 .sidebar.collapsed {
@@ -374,6 +364,7 @@ export default {
 .nav-item.active {
   background-color: #f0f0ff;
   color: #5138ee;
+  font-weight: 500;
   border-left: 3px solid #5138ee;
 }
 
