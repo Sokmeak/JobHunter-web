@@ -79,8 +79,7 @@ import {
   getApplicationsByStatus, 
   getStatusCounts, 
   searchApplications 
-} from "@/stores/Applications.js";
-
+} from "@/stores/ApplicantStore/Applications.js";
 export default {
   name: "ApplicationsHistory",
   components: {
@@ -215,8 +214,7 @@ export default {
       // Convert status to key format (lowercase with hyphens)
       return status.toLowerCase().replace(/\s+/g, "-");
     },
-
-    getStatusLabel(statusKey) {
+        getStatusLabel(statusKey) {
       // Find the tab with the matching status key and return its label
       const tab = this.statusTabs.find((t) => t.status === statusKey);
       return tab ? tab.label : statusKey;

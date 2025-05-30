@@ -1,6 +1,6 @@
 <template>
-  <div class="container my-4">
-    <div class="card shadow">
+  <div class="container my-1">
+    <div class="card ">
       <!-- Banner Section -->
       <div class="banner-section position-relative"
            :style="{ 
@@ -8,13 +8,13 @@
              background: currentBanner ? `url(${currentBanner}) center/cover` : (editableProfile.bannerGradient || profile.bannerGradient)
            }">
         <!-- Edit Button -->
-        <div class="position-absolute top-0 end-0 m-3" style="z-index: 2;">
-          <button class="btn btn-light btn-sm rounded-circle p-2"
+        <!-- <div class="position-absolute top-0 end-0 m-3" style="z-index: 2;">
+          <button class="btn  btn-sm  p-2"
                   @click="toggleEditMode"
                   :title="isEditing ? 'Save Changes' : 'Edit Profile'">
             <i class="bi" :class="isEditing ? 'bi-check-lg' : 'bi-pencil'"></i>
           </button>
-        </div>
+        </div> -->
         
         <!-- Banner Upload Overlay (Edit Mode) -->
         <div v-if="isEditing" 
@@ -76,8 +76,7 @@
             <div v-if="!isEditing" class="h1 mb-1">{{ profile.name }}</div>
             <input v-else type="text" class="form-control form-control-lg mb-2"
                    v-model="editableProfile.name" placeholder="Your Name">
-
-            <!-- Position and Company -->
+                               <!-- Position and Company -->
             <div v-if="!isEditing" class="h4 text-muted mb-0">
               {{ profile.position }} at <span class="text-dark">{{ profile.company }}</span>
             </div>
@@ -204,8 +203,7 @@ export default {
       this.uploadError = null;
 
       if (!this.validateFile(file)) return;
-
-      const reader = new FileReader();
+            const reader = new FileReader();
       reader.onload = (e) => {
         this.editableProfile.avatar = e.target.result;
         this.currentAvatar = e.target.result;

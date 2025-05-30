@@ -3,15 +3,6 @@
     class="dashboard-header container py-2 d-flex align-items-center justify-content-between"
   >
     <div class="d-flex align-items-center">
-      <!-- Mobile menu toggle -->
-      <button
-        class="btn btn-sm btn-light d-lg-none me-3"
-        @click="$emit('toggle-sidebar')"
-        aria-label="Toggle mobile menu"
-      >
-        <i class="bi bi-list"></i>
-      </button>
-
       <!-- Page title with animation -->
       <transition name="fade" mode="out-in">
         <h1 :key="title" class="page-title mb-0">{{ title }}</h1>
@@ -64,7 +55,6 @@
     </div>
   </div>
 </template>
-
 <script>
 import Notifications from "@/views/applicants/notifications.vue";
 export default {
@@ -229,7 +219,6 @@ export default {
   text-decoration: none;
   transform: translateX(-2px);
 }
-
 /* New notification button styling to match the image */
 .notification-button {
   width: 44px;

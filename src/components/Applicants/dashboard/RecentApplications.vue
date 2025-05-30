@@ -76,7 +76,6 @@
               class="dropdown-menu"
               :class="{ show: activeMenu === application.id }"
             >
-              
               <button
                 class="dropdown-item danger"
                 @click="deleteApplication(application)"
@@ -93,7 +92,7 @@
         <router-link
           to="/applicant/my-applications"
           class="view-all-link"
-          @click="viewAllApplications"
+          @click.native="viewAllApplications"
         >
           View all applications history
           <i class="bi bi-arrow-up-right"></i>
@@ -105,7 +104,6 @@
 
 <script>
 import StatusBadge from "../applications/StatusBadge.vue";
-
 export default {
   name: "RecentApplications",
   components: {
@@ -155,9 +153,9 @@ export default {
       this.$emit("delete-application", application);
       this.activeMenu = null;
     },
-    viewAllApplications() {
-      this.$emit("view-all-applications");
-    },
+    // viewAllApplications() {
+    //   this.$emit("view-all-applications");
+    // },
   },
   mounted() {
     // Close dropdown when clicking outside
@@ -172,6 +170,7 @@ export default {
   },
 };
 </script>
+
 
 <style scoped>
 .applications-card {
@@ -225,19 +224,18 @@ export default {
   align-items: center;
   padding: 20px 20px 20px 24px;
   transition: background-color 0.2s ease;
-   border-radius: 8px;
+  border-radius: 8px;
   position: relative;
 }
 
 .application-item.even-item {
-  background-color: #F8F8FD;
+  background-color: #f8f8fd;
 }
 
 /* Odd items (1, 3, 5...) - gray background */
 .application-item.odd-item {
   background-color: white;
 }
-
 
 .application-item.border-bottom {
   border-bottom: 1px solid #f3f4f6;
@@ -344,7 +342,6 @@ export default {
   background-color: #f3f4f6;
   color: #6b7280;
 }
-
 .dropdown-menu {
   position: absolute;
   top: 100%;

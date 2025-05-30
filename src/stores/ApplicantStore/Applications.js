@@ -1,4 +1,3 @@
-// sharedApplicationsData.js - Shared data store for applications
 export const applicationsData = [
   {
     id: 1,
@@ -7,7 +6,7 @@ export const applicationsData = [
     logoBackground: "#e6f7f0",
     role: "Social Media Assistant",
     jobTitle: "Social Media Assistant", // Added for dashboard compatibility
-    dateApplied: "24 July 2021",
+    dateApplied: "24 May 2025",
     status: "In Review",
     location: "Remote",
     employmentType: "Full-time",
@@ -25,13 +24,13 @@ export const applicationsData = [
     timeline: [
       {
         title: "Application Submitted",
-        date: "24 July 2021",
+        date: "24 May 2025",
         description: "Your application has been successfully submitted.",
         completed: true,
       },
       {
         title: "Application Under Review",
-        date: "25 July 2021",
+        date: "25 May 2025",
         description: "Our team is currently reviewing your application.",
         completed: true,
       },
@@ -62,7 +61,7 @@ export const applicationsData = [
     logoBackground: "#e6f7ff",
     role: "Frontend Developer",
     jobTitle: "Frontend Developer",
-    dateApplied: "23 July 2021",
+    dateApplied: "23 May 2025",
     status: "Shortlisted",
     location: "San Francisco, CA",
     employmentType: "Full-time",
@@ -80,19 +79,19 @@ export const applicationsData = [
     timeline: [
       {
         title: "Application Submitted",
-        date: "23 July 2021",
+        date: "23 May 2025",
         description: "Your application has been successfully submitted.",
         completed: true,
       },
       {
         title: "Application Reviewed",
-        date: "24 July 2021",
+        date: "24 May 2025",
         description: "Your application has been reviewed and shortlisted.",
         completed: true,
       },
       {
         title: "Technical Interview Scheduled",
-        date: "28 July 2021",
+        date: "28 May 2025",
         description: "Technical interview scheduled.",
         completed: false,
       },
@@ -111,7 +110,7 @@ export const applicationsData = [
     logoBackground: "#fff0f5",
     role: "UI/UX Designer",
     jobTitle: "UI/UX Designer",
-    dateApplied: "22 July 2021",
+    dateApplied: "22 May 2025",
     status: "Declined",
     location: "Madrid, Spain",
     employmentType: "Full-time",
@@ -129,19 +128,19 @@ export const applicationsData = [
     timeline: [
       {
         title: "Application Submitted",
-        date: "22 July 2021",
+        date: "22 May 2025",
         description: "Application submitted to Packer.",
         completed: true,
       },
       {
         title: "Portfolio Review",
-        date: "23 July 2021",
+        date: "23 May 2025",
         description: "Design portfolio reviewed by the team.",
         completed: true,
       },
       {
         title: "Application Declined",
-        date: "24 July 2021",
+        date: "24 May 2025",
         description: "Application was not selected for this position.",
         completed: true,
       },
@@ -160,7 +159,7 @@ export const applicationsData = [
     logoBackground: "#fffbe6",
     role: "Product Manager",
     jobTitle: "Product Manager",
-    dateApplied: "21 July 2021",
+    dateApplied: "21 May 2025",
     status: "Interviewed",
     location: "Remote",
     employmentType: "Full-time",
@@ -180,19 +179,19 @@ export const applicationsData = [
     timeline: [
       {
         title: "Application Submitted",
-        date: "21 July 2021",
+        date: "21 May 2025",
         description: "You applied for the Product Manager role.",
         completed: true,
       },
       {
         title: "Phone Interview",
-        date: "23 July 2021",
+        date: "23 May 2025",
         description: "Initial phone interview completed.",
         completed: true,
       },
       {
         title: "Final Interview Scheduled",
-        date: "28 July 2021",
+        date: "28 May 2025",
         description: "Final interview with leadership team.",
         completed: false,
       },
@@ -211,7 +210,7 @@ export const applicationsData = [
     logoBackground: "#e0f7fa",
     role: "Backend Developer",
     jobTitle: "Backend Developer",
-    dateApplied: "20 July 2021",
+    dateApplied: "20 May 2025",
     status: "In Review",
     location: "San Francisco, CA",
     employmentType: "Full-time",
@@ -231,13 +230,13 @@ export const applicationsData = [
     timeline: [
       {
         title: "Application Submitted",
-        date: "20 July 2021",
+        date: "20 May 2025",
         description: "Your application has been successfully submitted.",
         completed: true,
       },
       {
         title: "Initial Review",
-        date: "21 July 2021",
+        date: "21 May 2025",
         description: "Application is being reviewed by our technical team.",
         completed: true,
       },
@@ -256,7 +255,7 @@ export const applicationsData = [
     logoBackground: "#fffbe6",
     role: "Social Media Assistant",
     jobTitle: "Social Media Assistant",
-    dateApplied: "19 July 2021",
+    dateApplied: "19 May 2025",
     status: "Unsuitable",
     location: "Remote",
     employmentType: "Full-time",
@@ -274,19 +273,19 @@ export const applicationsData = [
     timeline: [
       {
         title: "Application Submitted",
-        date: "19 July 2021",
+        date: "19 May 2025",
         description: "You applied for the Social Media Assistant role.",
         completed: true,
       },
       {
         title: "Interview Scheduled",
-        date: "20 July 2021",
+        date: "20 May 2025",
         description: "Interview scheduled with the marketing team.",
         completed: true,
       },
       {
         title: "Application Declined",
-        date: "22 July 2021",
+        date: "22 May 2025",
         description: "Application was not suitable for this position.",
         completed: true,
       },
@@ -306,7 +305,7 @@ export const applicationsData = [
     logoBackground: "#e0f7fa",
     role: "Social Media Assistant",
     jobTitle: "Social Media Assistant",
-    dateApplied: "18 July 2021",
+    dateApplied: "18 May 2025",
     status: "In Review",
     location: "Remote",
     employmentType: "Full-time",
@@ -335,7 +334,7 @@ export const applicationsData = [
     logoBackground: "#fce4ec",
     role: "Social Media Assistant",
     jobTitle: "Social Media Assistant",
-    dateApplied: "17 July 2021",
+    dateApplied: "17 May 2025",
     status: "Shortlisted",
     location: "Remote",
     employmentType: "Part-time",
@@ -364,7 +363,7 @@ export const applicationsData = [
     logoBackground: "#ede7f6",
     role: "Social Media Assistant",
     jobTitle: "Social Media Assistant",
-    dateApplied: "16 July 2021",
+    dateApplied: "16 May 2025",
     status: "Interviewing",
     location: "Sydney, Australia",
     employmentType: "Contract",
@@ -393,7 +392,7 @@ export const applicationsData = [
     logoBackground: "#f1f8e9",
     role: "Social Media Assistant",
     jobTitle: "Social Media Assistant",
-    dateApplied: "15 July 2021",
+    dateApplied: "15 May 2025",
     status: "Offered",
     location: "Cambridge, MA",
     employmentType: "Full-time",
@@ -416,6 +415,29 @@ export const applicationsData = [
     },
   },
 ];
+
+// Date range configuration - ADD THIS TO YOUR STORE
+export const dateRange = {
+  start: "Jul 15",
+  end: "Jul 25",
+};
+
+// Function to update date range - ADD THIS TOO
+export const updateDateRange = (newDateRange) => {
+  dateRange.start = newDateRange.start;
+  dateRange.end = newDateRange.end;
+};
+
+// Function to get applications within date range - OPTIONAL
+export const getApplicationsInDateRange = (startDate, endDate) => {
+  const start = new Date(startDate);
+  const end = new Date(endDate);
+
+  return applicationsData.filter((app) => {
+    const appDate = new Date(app.dateApplied);
+    return appDate >= start && appDate <= end;
+  });
+};
 
 // Utility functions for data manipulation
 export const getRecentApplications = (maxItems = 5) => {

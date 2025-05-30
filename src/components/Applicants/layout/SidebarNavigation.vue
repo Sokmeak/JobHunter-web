@@ -2,30 +2,10 @@
   <div>
     <div
       class="sidebar"
-      :class="{
-        show: isMobileMenuOpen,
-        collapsed: isCollapsed && !isMobileMenuOpen,
-      }"
+      
     >
       <div class="sidebar-header">
         <PrimaryLogo />
-
-        <!-- <div class="logo-icon"></div> -->
-
-        <!-- Collapse toggle button (desktop only) -->
-        <!-- <button
-          v-if="!isMobileMenuOpen"
-          class="btn btn-sm btn-light ms-auto d-none d-lg-flex align-items-center justify-content-center collapse-btn"
-          @click="toggleCollapse"
-          aria-label="Toggle sidebar collapse"
-        >
-          <i
-            :class="[
-              'bi',
-              isCollapsed ? 'bi-chevron-right' : 'bi-chevron-left',
-            ]"
-          ></i>
-        </button> -->
       </div>
 
       <div class="nav-items">
@@ -35,21 +15,20 @@
           :to="item.href"
           class="nav-item"
           active-class="active"
-          @click="handleNavigation"
-          :title="isCollapsed && !isMobileMenuOpen ? item.name : ''"
+          :title="isCollapsed ? item.name : ''"
         >
           <i :class="['bi', `bi-${item.icon}`, 'nav-icon']"></i>
-          <span v-if="!isCollapsed || isMobileMenuOpen" class="nav-text">{{
+          <span v-if="!isCollapsed" class="nav-text">{{
             item.name
           }}</span>
           <span
-            v-if="item.badge && (!isCollapsed || isMobileMenuOpen)"
+            v-if="item.badge && !isCollapsed"
             class="badge rounded-pill bg-primary ms-auto nav-badge"
           >
             {{ item.badge }}
           </span>
           <span
-            v-else-if="item.badge && isCollapsed && !isMobileMenuOpen"
+            v-else-if="item.badge && isCollapsed"
             class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-primary badge-collapsed"
           >
             {{ item.badge }}
@@ -58,7 +37,7 @@
       </div>
 
       <div class="settings-section">
-        <div class="settings-header" v-if="!isCollapsed || isMobileMenuOpen">
+        <div class="settings-header" v-if="!isCollapsed">
           SETTINGS
         </div>
 
@@ -68,11 +47,10 @@
           :to="item.href"
           class="nav-item"
           active-class="active"
-          @click="handleNavigation"
-          :title="isCollapsed && !isMobileMenuOpen ? item.name : ''"
+          :title="isCollapsed ? item.name : ''"
         >
           <i :class="['bi', `bi-${item.icon}`, 'nav-icon']"></i>
-          <span v-if="!isCollapsed || isMobileMenuOpen" class="nav-text">{{
+          <span v-if="!isCollapsed" class="nav-text">{{
             item.name
           }}</span>
         </router-link>
@@ -84,7 +62,7 @@
           <button
             class="btn btn-user w-100 d-flex align-items-center gap-2 p-3"
             :class="{
-              'justify-content-center': isCollapsed && !isMobileMenuOpen,
+              'justify-content-center': isCollapsed,
             }"
             data-bs-toggle="dropdown"
             aria-expanded="false"
@@ -102,14 +80,14 @@
               ></span>
             </div>
             <div
-              v-if="!isCollapsed || isMobileMenuOpen"
+              v-if="!isCollapsed"
               class="text-start flex-grow-1 overflow-hidden"
             >
               <div class="user-name">{{ user.name }}</div>
               <div class="user-email">{{ user.email }}</div>
             </div>
             <i
-              v-if="!isCollapsed || isMobileMenuOpen"
+              v-if="!isCollapsed"
               class="bi bi-chevron-up text-muted"
             ></i>
           </button>
@@ -142,19 +120,11 @@
         </div>
       </div>
     </div>
-
-    <!-- Backdrop for mobile -->
-    <div
-      v-if="isMobileMenuOpen"
-      class="sidebar-backdrop"
-      @click="closeMobileMenu"
-    ></div>
   </div>
 </template>
 
 <script>
 import PrimaryLogo from "@/components/sharecomponents/PrimaryLogo.vue";
-
 export default {
   name: "SidebarNavigation",
   components: {
@@ -170,13 +140,9 @@ export default {
         avatar: "",
       }),
     },
-    isMobileMenuOpen: {
-      type: Boolean,
-      default: false,
-    },
     isCollapsed: {
       type: Boolean,
-      default: false,
+      default: false, // Default to expanded state
     },
   },
   computed: {
@@ -188,16 +154,15 @@ export default {
         .join("");
     },
   },
-  emits: ["close-mobile-menu", "toggle-collapse"],
+  emits: ["toggle-collapse"],
   data() {
     return {
       navigation: [
         { name: "Dashboard", href: "/applicant/dashboard", icon: "house" },
         {
-          name: "Messages",
+          name: "Messages", // This was missing in your original nav
           href: "/applicant/messages",
           icon: "chat",
-          // badge: "1",
         },
         {
           name: "My Applications",
@@ -227,14 +192,6 @@ export default {
     };
   },
   methods: {
-    handleNavigation() {
-      if (window.innerWidth < 992) {
-        this.closeMobileMenu();
-      }
-    },
-    closeMobileMenu() {
-      this.$emit("close-mobile-menu");
-    },
     toggleCollapse() {
       this.$emit("toggle-collapse");
     },
@@ -259,8 +216,8 @@ export default {
   display: flex;
   flex-direction: column;
   transition: width 0.3s ease-in-out;
-  /* z-index: 1040; */
-  overflow-y: none;
+  overflow-y: auto;
+  z-index: 1000;
 }
 
 .sidebar.collapsed {
@@ -274,60 +231,6 @@ export default {
   border-bottom: 1px solid #e8eaed;
   min-height: 70px;
   background-color: #f8f8fd;
-}
-
-.logo-icon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-}
-
-.logo-mini {
-  width: 32px;
-  height: 32px;
-}
-
-.collapse-btn {
-  width: 28px;
-  height: 28px;
-  border: 1px solid #e8eaed;
-  background-color: #ffffff;
-  color: #6c757d;
-}
-
-.collapse-btn:hover {
-  background-color: #f8f9fa;
-  border-color: #d0d7de;
-}
-
-/* Mobile responsiveness */
-@media (max-width: 991.98px) {
-  .sidebar {
-    transform: translateX(-100%);
-    width: 220px !important;
-  }
-
-  .sidebar.show {
-    transform: translateX(0);
-  }
-}
-
-.sidebar-backdrop {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-  z-index: 1039;
-  display: none;
-}
-
-@media (max-width: 991.98px) {
-  .sidebar-backdrop {
-    display: block;
-  }
 }
 
 .nav-items {
@@ -345,7 +248,6 @@ export default {
   transition: all 0.2s ease;
   position: relative;
   margin: 2px 8px;
-
   font-size: 15px;
   font-weight: 400;
 }
@@ -377,11 +279,13 @@ export default {
   width: 20px;
   text-align: center;
   color: #6c757d;
+  flex-shrink: 0;
 }
 
 .nav-text {
   margin-left: 12px;
   font-size: 15px;
+  white-space: nowrap;
 }
 
 .nav-badge {
@@ -430,7 +334,7 @@ export default {
 }
 
 .btn-user:hover {
-  background-color: #f8f8fd;
+  background-color: #f0f0ff;
 }
 
 .user-avatar {
@@ -438,11 +342,10 @@ export default {
   height: 32px;
   object-fit: cover;
 }
-
 .user-initials {
   width: 32px;
   height: 32px;
-  color: #4640de;
+  background-color: #4640de;
   color: white;
   border-radius: 50%;
   display: flex;
@@ -475,7 +378,7 @@ export default {
 }
 
 .user-dropdown {
-  border: 1px solid #f8f8fd;
+  border: 1px solid #e8eaed;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   border-radius: 8px;
 }
@@ -487,5 +390,15 @@ export default {
 .user-dropdown .dropdown-item.text-danger:hover {
   background-color: #f8f8fd;
   color: #dc2626;
+}
+
+/* Ensure content doesn't get hidden behind sidebar */
+.main-content {
+  margin-left: 15rem;
+  transition: margin-left 0.3s ease-in-out;
+}
+
+.main-content.sidebar-collapsed {
+  margin-left: 80px;
 }
 </style>

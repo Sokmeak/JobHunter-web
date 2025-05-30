@@ -56,6 +56,7 @@ import PortfolioSection from "@/components/Applicants/Profile/PortfolioSection.v
 import AdditionalDetails from "@/components/Applicants/Profile/AdditionalDetails.vue";
 import SocialLinks from "@/components/Applicants/Profile/SocialLinks.vue";
 import DashboardHeader from "@/components/Applicants/layout/DashboardHeader.vue";
+import { userStore } from "@/stores/ApplicantStore/userProfile.js";
 
 export default {
   name: "App",
@@ -73,115 +74,38 @@ export default {
 
   data() {
     return {
-      profile: {
-        name: "Jake Gyll",
-        title: "Product Designer",
-        company: "Twitter",
-        location: "Manchester, UK",
-        avatar: "https://randomuser.me/api/portraits/men/32.jpg",
-        about:
-          "I'm a product designer + filmmaker currently working remotely at Twitter from beautiful Manchester, United Kingdom. I'm passionate about designing digital products that have a positive impact on the world.\n\nFor 10 years, I've specialised in interface, experience & interaction design as well as working in user research and product strategy for product agencies, big tech companies & start-ups.",
-        email: "jakegyll@email.com",
-        phone: "+44 1245 572 135",
-        languages: ["English", "French"],
-        socialLinks: [
-          { platform: "Instagram", url: "instagram.com/jakegyll" },
-          { platform: "Twitter", url: "twitter.com/jakegyll" },
-          { platform: "Website", url: "www.jakegyll.com" },
-        ],
-        experiences: [
-          {
-            title: "Product Designer",
-            company: "Twitter",
-            type: "Full-Time",
-            period: "Jun 2019 - Present (1y 1m)",
-            location: "Manchester, UK",
-            logo: "https://logo.clearbit.com/twitter.com",
-            description:
-              "Created and executed social media plan for 10 brands utilizing multiple features and content types to increase brand outreach, engagement, and leads.",
-          },
-          {
-            title: "Growth Marketing Designer",
-            company: "GoDaddy",
-            type: "Full-Time",
-            period: "Jun 2011 - May 2019 (8y)",
-            location: "Manchester, UK",
-            logo: "https://logo.clearbit.com/godaddy.com",
-            description:
-              "Developed digital marketing strategies, activation plans, proposals, contests and promotions for client initiatives",
-          },
-        ],
-        moreExperiences: 3,
-        education: [
-          {
-            id: 1,
-            university: "Harvard University",
-            degree: "Postgraduate degree, Applied Psychology",
-            years: "2010 - 2012",
-            logo: "https://logo.clearbit.com/harvard.edu",
-            description:
-              "As an Applied Psychologist in the field of Consumer and Society, I am specialized in creating business opportunities by observing, analysing, researching and changing behaviour.",
-          },
-          {
-            id: 2,
-            university: "University of Toronto",
-            degree: "Bachelor of Arts, Visual Communication",
-            years: "2005 - 2009",
-            logo: "https://logo.clearbit.com/utoronto.ca",
-            description: "",
-          },
-        ],
-        moreEducation: 2,
-        skills: [
-          "Communication",
-          "Analytics",
-          "Facebook Ads",
-          "Content Planning",
-          "Community Manager",
-        ],
-        portfolios: [
-          {
-            title: "Clinically - clinic & health care website",
-            image: "https://via.placeholder.com/150/e8e8ff/333333?text=Health",
-          },
-          {
-            title: "Growthy - SaaS Analytics & Sales Website",
-            image: "https://via.placeholder.com/150/d8d8ff/333333?text=SaaS",
-          },
-          {
-            title: "Planna - Project Management App",
-            image: "https://via.placeholder.com/150/c8c8ff/333333?text=PM",
-          },
-          {
-            title: "Furnio - furniture ecommerce",
-            image: "https://via.placeholder.com/150/b8b8ff/333333?text=Ecom",
-          },
-        ],
-      },
+      profile: userStore.getUserProfile(),
     };
-  }, // Fixed: Added missing comma here
+  },
 
   methods: {
     updateProfile(updatedProfile) {
       this.profile = { ...this.profile, ...updatedProfile };
+      userStore.updateUserProfile(this.profile);
     },
+
     handleAddEducation(educationData) {
       this.profile.education.unshift(educationData);
+      userStore.updateUserProfile(this.profile);
       console.log("Added education:", educationData);
     },
+
     handleUpdateEducation(index, educationData) {
       this.profile.education.splice(index, 1, educationData);
+      userStore.updateUserProfile(this.profile);
       console.log("Updated education at index", index, ":", educationData);
     },
+
     handleDeleteEducation(index) {
       this.profile.education.splice(index, 1);
+      userStore.updateUserProfile(this.profile);
       console.log("Deleted education at index:", index);
     },
 
-    // Skills management methods
     handleAddSkill(skill) {
       if (!this.profile.skills.includes(skill)) {
         this.profile.skills.push(skill);
+        userStore.updateUserProfile(this.profile);
         console.log("Added skill:", skill);
       }
     },
@@ -189,50 +113,52 @@ export default {
     handleRemoveSkill(index) {
       if (index >= 0 && index < this.profile.skills.length) {
         const removedSkill = this.profile.skills.splice(index, 1)[0];
+        userStore.updateUserProfile(this.profile);
         console.log("Removed skill:", removedSkill);
       }
     },
-
-    // Portfolio management methods
-    handleAddPortfolio(portfolioData) {
+        handleAddPortfolio(portfolioData) {
       this.profile.portfolios.unshift(portfolioData);
+      userStore.updateUserProfile(this.profile);
       console.log("Added portfolio:", portfolioData);
     },
 
     handleEditPortfolio(index) {
-      // You can implement inline editing or open a modal
       console.log(
         "Edit portfolio at index:",
         index,
         this.profile.portfolios[index]
       );
-      // For now, just log - you can expand this later
     },
 
     handleDeletePortfolio(index) {
       if (index >= 0 && index < this.profile.portfolios.length) {
         const removedPortfolio = this.profile.portfolios.splice(index, 1)[0];
+        userStore.updateUserProfile(this.profile);
         console.log("Removed portfolio:", removedPortfolio);
       }
     },
+
     handleSocialLinksSave(updatedLinks) {
-      // Save to database or update parent state
       this.profile.socialLinks = updatedLinks;
+      userStore.updateUserProfile(this.profile);
     },
 
-    // Add to your parent component methods
     handleAddExperience(experienceData) {
       this.profile.experiences.unshift(experienceData);
+      userStore.updateUserProfile(this.profile);
       console.log("Added experience:", experienceData);
     },
 
     handleUpdateExperience(index, experienceData) {
       this.profile.experiences.splice(index, 1, experienceData);
+      userStore.updateUserProfile(this.profile);
       console.log("Updated experience at index", index, ":", experienceData);
     },
 
     handleDeleteExperience(index) {
       this.profile.experiences.splice(index, 1);
+      userStore.updateUserProfile(this.profile);
       console.log("Deleted experience at index:", index);
     },
   },
