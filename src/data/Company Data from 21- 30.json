@@ -1,0 +1,1326 @@
+[
+    {
+      "id": 21,
+      "name": "Saffron Brand Consultants",
+      "logoInitial": "S",
+      "jobs": 5,
+      "employees": "11-50",
+      "employeeId": 21,
+      "locations": "4 Countries",
+      "website": "https://www.saffron-consultants.com",
+      "founded": "2001",
+      "industry": "Design and Branding",
+      "profile": "Saffron Brand Consultants is a global branding agency known for creating bold, distinctive identities for clients like Vueling and YouTube. With a focus on strategy, design, and digital experiences, Saffron helps businesses transform their brand perception and market presence across industries.",
+      "contacts": [
+        {
+          "icon": "twitter",
+          "url": "https://twitter.com/SaffronBrand",
+          "label": "twitter.com/SaffronBrand"
+        },
+        {
+          "icon": "facebook",
+          "url": "https://facebook.com/SaffronBrand",
+          "label": "facebook.com/SaffronBrand"
+        },
+        {
+          "icon": "envelope",
+          "url": "mailto:info@saffron-consultants.com",
+          "label": "info@saffron-consultants.com"
+        }
+      ],
+      "photos": [
+        {
+          "url": "https://images.unsplash.com/photo-1497366210541-8b783781e3e2?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+          "alt": "Saffron office"
+        },
+        {
+          "url": "https://images.unsplash.com/photo-1516321318423-3b7a17f4f6c6?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+          "alt": "Saffron team"
+        },
+        {
+          "url": "https://images.unsplash.com/photo-1503428593588-4f8c88a7f830?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+          "alt": "Saffron office"
+        },
+        {
+          "url": "https://images.unsplash.com/photo-1556740714-7a3a6b6e7e4b?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+          "alt": "Saffron meeting"
+        }
+      ],
+      "teamMembers": [
+        {
+          "name": "Jacob Benbunan",
+          "position": "CEO",
+          "photo": "https://randomuser.me/api/portraits/men/50.jpg",
+          "social": {
+            "linkedin": "#",
+            "twitter": "#"
+          }
+        },
+        {
+          "name": "Clara Gaggero",
+          "position": "Creative Director",
+          "photo": "https://randomuser.me/api/portraits/women/40.jpg",
+          "social": {
+            "linkedin": "#",
+            "twitter": "#"
+          }
+        }
+      ],
+      "techStack": [
+        {
+          "name": "Figma",
+          "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/figma/figma-original.svg"
+        },
+        {
+          "name": "Adobe XD",
+          "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/xd/xd-original.svg"
+        },
+        {
+          "name": "JavaScript",
+          "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg"
+        }
+      ],
+      "officeLocations": [
+        {
+          "country": "United Kingdom",
+          "flag": "https://flagcdn.com/w40/gb.png"
+        },
+        {
+          "country": "Spain",
+          "flag": "https://flagcdn.com/w40/es.png"
+        },
+        {
+          "country": "United States",
+          "flag": "https://flagcdn.com/w40/us.png"
+        },
+        {
+          "country": "Austria",
+          "flag": "https://flagcdn.com/w40/at.png"
+        }
+      ],
+      "benefits": [
+        {
+          "title": "Health Coverage",
+          "description": "Comprehensive health plans for employees.",
+          "icon": "bi-heart-fill"
+        },
+        {
+          "title": "Flexible PTO",
+          "description": "Generous paid time off to promote balance.",
+          "icon": "bi-cloud-sun-fill"
+        },
+        {
+          "title": "Remote Work",
+          "description": "Flexible remote work options available.",
+          "icon": "bi-house-fill"
+        }
+      ],
+      "openJobs": [
+        {
+          "job_id": 39,
+          "company_id": 21,
+          "title": "Brand Designer",
+          "location": "London, UK",
+          "type": "Full Time",
+          "logo": "https://logo.clearbit.com/saffron-consultants.com",
+          "description": "Seeking a Brand Designer to create innovative visual identities.",
+          "tags": ["Design"]
+        },
+        {
+          "job_id": 40,
+          "company_id": 21,
+          "title": "Strategy Consultant",
+          "location": "Remote",
+          "type": "Full Time",
+          "logo": "https://logo.clearbit.com/saffron-consultants.com",
+          "description": "Looking for a Strategy Consultant to develop brand strategies.",
+          "tags": ["Strategy"]
+        }
+      ]
+    },
+    {
+      "id": 22,
+      "name": "Mucho",
+      "logoInitial": "M",
+      "jobs": 3,
+      "employees": "1-10",
+      "employeeId": 22,
+      "locations": "2 Countries",
+      "website": "https://www.wearemucho.com",
+      "founded": "2002",
+      "industry": "Design and Branding",
+      "profile": "Mucho is a boutique design studio specializing in brand identity and packaging. With a focus on simplicity and clarity, Mucho has worked with clients like Google and Nespresso, delivering visually striking and strategically sound designs.",
+      "contacts": [
+        {
+          "icon": "twitter",
+          "url": "https://twitter.com/WeAreMucho",
+          "label": "twitter.com/WeAreMucho"
+        },
+        {
+          "icon": "facebook",
+          "url": "https://facebook.com/WeAreMucho",
+          "label": "facebook.com/WeAreMucho"
+        },
+        {
+          "icon": "envelope",
+          "url": "mailto:info@wearemucho.com",
+          "label": "info@wearemucho.com"
+        }
+      ],
+      "photos": [
+        {
+          "url": "https://images.unsplash.com/photo-1497366754035-1c882e89a5c9?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+          "alt": "Mucho office"
+        },
+        {
+          "url": "https://images.unsplash.com/photo-1517248135467-2c7b7b6f7e4b?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+          "alt": "Mucho team"
+        },
+        {
+          "url": "https://images.unsplash.com/photo-1503428593588-4f8c88a7f830?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+          "alt": "Mucho office"
+        },
+        {
+          "url": "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+          "alt": "Mucho meeting"
+        }
+      ],
+      "teamMembers": [
+        {
+          "name": "Marc Català",
+          "position": "Co-Founder",
+          "photo": "https://randomuser.me/api/portraits/men/45.jpg",
+          "social": {
+            "linkedin": "#",
+            "twitter": "#"
+          }
+        },
+        {
+          "name": "Pablo Juncadella",
+          "position": "Co-Founder",
+          "photo": "https://randomuser.me/api/portraits/men/50.jpg",
+          "social": {
+            "linkedin": "#",
+            "twitter": "#"
+          }
+        }
+      ],
+      "techStack": [
+        {
+          "name": "Figma",
+          "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/figma/figma-original.svg"
+        },
+        {
+          "name": "Adobe Illustrator",
+          "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/illustrator/illustrator-plain.svg"
+        },
+        {
+          "name": "Sketch",
+          "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/sketch/sketch-original.svg"
+        }
+      ],
+      "officeLocations": [
+        {
+          "country": "Spain",
+          "flag": "https://flagcdn.com/w40/es.png"
+        },
+        {
+          "country": "United States",
+          "flag": "https://flagcdn.com/w40/us.png"
+        }
+      ],
+      "benefits": [
+        {
+          "title": "Health Benefits",
+          "description": "Basic health coverage for employees.",
+          "icon": "bi-heart-fill"
+        },
+        {
+          "title": "Flexible Work Hours",
+          "description": "Flexible schedules to support employee needs.",
+          "icon": "bi-clock-fill"
+        },
+        {
+          "title": "Remote Work",
+          "description": "Fully remote work environment.",
+          "icon": "bi-house-fill"
+        }
+      ],
+      "openJobs": [
+        {
+          "job_id": 41,
+          "company_id": 22,
+          "title": "Graphic Designer",
+          "location": "Remote",
+          "type": "Full Time",
+          "logo": "https://logo.clearbit.com/wearemucho.com",
+          "description": "Seeking a Graphic Designer to create compelling brand visuals.",
+          "tags": ["Design"]
+        }
+      ]
+    },
+    {
+      "id": 23,
+      "name": "Anagrama",
+      "logoInitial": "A",
+      "jobs": 4,
+      "employees": "11-50",
+      "employeeId": 23,
+      "locations": "2 Countries",
+      "website": "https://www.anagrama.com",
+      "founded": "2010",
+      "industry": "Design and Branding",
+      "profile": "Anagrama is an international branding firm crafting sophisticated visual identities and digital experiences. Known for its work with luxury and lifestyle brands, Anagrama combines strategy and creativity to elevate client presence.",
+      "contacts": [
+        {
+          "icon": "twitter",
+          "url": "https://twitter.com/AnagramaStudio",
+          "label": "twitter.com/AnagramaStudio"
+        },
+        {
+          "icon": "facebook",
+          "url": "https://facebook.com/AnagramaStudio",
+          "label": "facebook.com/AnagramaStudio"
+        },
+        {
+          "icon": "envelope",
+          "url": "mailto:info@anagrama.com",
+          "label": "info@anagrama.com"
+        }
+      ],
+      "photos": [
+        {
+          "url": "https://images.unsplash.com/photo-1497366210541-8b783781e3e2?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+          "alt": "Anagrama office"
+        },
+        {
+          "url": "https://images.unsplash.com/photo-1516321318423-3b7a17f4f6c6?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+          "alt": "Anagrama team"
+        },
+        {
+          "url": "https://images.unsplash.com/photo-1503428593588-4f8c88a7f830?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+          "alt": "Anagrama office"
+        },
+        {
+          "url": "https://images.unsplash.com/photo-1556740714-7a3a6b6e7e4b?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+          "alt": "Anagrama meeting"
+        }
+      ],
+      "teamMembers": [
+        {
+          "name": "Sebastian Padilla",
+          "position": "Creative Director",
+          "photo": "https://randomuser.me/api/portraits/men/55.jpg",
+          "social": {
+            "linkedin": "#",
+            "twitter": "#"
+          }
+        },
+        {
+          "name": "Ana Gomez",
+          "position": "Brand Strategist",
+          "photo": "https://randomuser.me/api/portraits/women/45.jpg",
+          "social": {
+            "linkedin": "#",
+            "twitter": "#"
+          }
+        }
+      ],
+      "techStack": [
+        {
+          "name": "Figma",
+          "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/figma/figma-original.svg"
+        },
+        {
+          "name": "Adobe XD",
+          "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/xd/xd-original.svg"
+        },
+        {
+          "name": "React",
+          "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg"
+        }
+      ],
+      "officeLocations": [
+        {
+          "country": "Mexico",
+          "flag": "https://flagcdn.com/w40/mx.png"
+        },
+        {
+          "country": "United States",
+          "flag": "https://flagcdn.com/w40/us.png"
+        }
+      ],
+      "benefits": [
+        {
+          "title": "Health Coverage",
+          "description": "Comprehensive health plans for employees.",
+          "icon": "bi-heart-fill"
+        },
+        {
+          "title": "Flexible PTO",
+          "description": "Generous paid time off to promote balance.",
+          "icon": "bi-cloud-sun-fill"
+        },
+        {
+          "title": "Remote Work",
+          "description": "Flexible remote work options available.",
+          "icon": "bi-house-fill"
+        }
+      ],
+      "openJobs": [
+        {
+          "job_id": 42,
+          "company_id": 23,
+          "title": "UI/UX Designer",
+          "location": "Mexico City, Mexico",
+          "type": "Full Time",
+          "logo": "https://logo.clearbit.com/anagrama.com",
+          "description": "Seeking a UI/UX Designer to craft digital brand experiences.",
+          "tags": ["Design"]
+        },
+        {
+          "job_id": 43,
+          "company_id": 23,
+          "title": "Brand Strategist",
+          "location": "Remote",
+          "type": "Full Time",
+          "logo": "https://logo.clearbit.com/anagrama.com",
+          "description": "Looking for a Brand Strategist to develop client strategies.",
+          "tags": ["Strategy"]
+        }
+      ]
+    },
+    {
+      "id": 24,
+      "name": "Base Design",
+      "logoInitial": "B",
+      "jobs": 4,
+      "employees": "11-50",
+      "employeeId": 24,
+      "locations": "3 Countries",
+      "website": "https://www.basedesign.com",
+      "founded": "1997",
+      "industry": "Design and Branding",
+      "profile": "Base Design creates iconic brand identities and experiences for clients like MoMA and Chanel. With studios in New York, Brussels, and Geneva, Base combines strategic insight with bold design to build lasting brand connections.",
+      "contacts": [
+        {
+          "icon": "twitter",
+          "url": "https://twitter.com/BaseDesign",
+          "label": "twitter.com/BaseDesign"
+        },
+        {
+          "icon": "facebook",
+          "url": "https://facebook.com/BaseDesign",
+          "label": "facebook.com/BaseDesign"
+        },
+        {
+          "icon": "envelope",
+          "url": "mailto:info@basedesign.com",
+          "label": "info@basedesign.com"
+        }
+      ],
+      "photos": [
+        {
+          "url": "https://images.unsplash.com/photo-1497366754035-1c882e89a5c9?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+          "alt": "Base Design office"
+        },
+        {
+          "url": "https://images.unsplash.com/photo-1517248135467-2c7b7b6f7e4b?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+          "alt": "Base Design team"
+        },
+        {
+          "url": "https://images.unsplash.com/photo-1503428593588-4f8c88a7f830?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+          "alt": "Base Design office"
+        },
+        {
+          "url": "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+          "alt": "Base Design meeting"
+        }
+      ],
+      "teamMembers": [
+        {
+          "name": "Thierry Brunfaut",
+          "position": "Creative Director",
+          "photo": "https://randomuser.me/api/portraits/men/60.jpg",
+          "social": {
+            "linkedin": "#",
+            "twitter": "#"
+          }
+        },
+        {
+          "name": "Julien De Smedt",
+          "position": "Design Director",
+          "photo": "https://randomuser.me/api/portraits/men/50.jpg",
+          "social": {
+            "linkedin": "#",
+            "twitter": "#"
+          }
+        }
+      ],
+      "techStack": [
+        {
+          "name": "Figma",
+          "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/figma/figma-original.svg"
+        },
+        {
+          "name": "Adobe Illustrator",
+          "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/illustrator/illustrator-plain.svg"
+        },
+        {
+          "name": "JavaScript",
+          "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg"
+        }
+      ],
+      "officeLocations": [
+        {
+          "country": "United States",
+          "flag": "https://flagcdn.com/w40/us.png"
+        },
+        {
+          "country": "Belgium",
+          "flag": "https://flagcdn.com/w40/be.png"
+        },
+        {
+          "country": "Switzerland",
+          "flag": "https://flagcdn.com/w40/ch.png"
+        }
+      ],
+      "benefits": [
+        {
+          "title": "Health Coverage",
+          "description": "Comprehensive health plans for employees.",
+          "icon": "bi-heart-fill"
+        },
+        {
+          "title": "Flexible PTO",
+          "description": "Generous paid time off to promote balance.",
+          "icon": "bi-cloud-sun-fill"
+        },
+        {
+          "title": "Remote Work",
+          "description": "Flexible remote work options available.",
+          "icon": "bi-house-fill"
+        }
+      ],
+      "openJobs": [
+        {
+          "job_id": 44,
+          "company_id": 24,
+          "title": "Brand Designer",
+          "location": "New York, NY",
+          "type": "Full Time",
+          "logo": "https://logo.clearbit.com/basedesign.com",
+          "description": "Seeking a Brand Designer to create iconic visual identities.",
+          "tags": ["Design"]
+        },
+        {
+          "job_id": 45,
+          "company_id": 24,
+          "title": "Digital Designer",
+          "location": "Remote",
+          "type": "Full Time",
+          "logo": "https://logo.clearbit.com/basedesign.com",
+          "description": "Looking for a Digital Designer to craft online experiences.",
+          "tags": ["Design"]
+        }
+      ]
+    },
+    {
+      "id": 25,
+      "name": "Moving Brands",
+      "logoInitial": "M",
+      "jobs": 4,
+      "employees": "11-50",
+      "employeeId": 25,
+      "locations": "3 Countries",
+      "website": "https://www.movingbrands.com",
+      "founded": "1998",
+      "industry": "Design and Branding",
+      "profile": "Moving Brands is a global creative agency specializing in brand strategy, identity, and digital innovation. With clients like Netflix and Sony, it delivers transformative designs that blend storytelling and technology.",
+      "contacts": [
+        {
+          "icon": "twitter",
+          "url": "https://twitter.com/Moving_Brands",
+          "label": "twitter.com/Moving_Brands"
+        },
+        {
+          "icon": "facebook",
+          "url": "https://facebook.com/MovingBrands",
+          "label": "facebook.com/MovingBrands"
+        },
+        {
+          "icon": "envelope",
+          "url": "mailto:info@movingbrands.com",
+          "label": "info@movingbrands.com"
+        }
+      ],
+      "photos": [
+        {
+          "url": "https://images.unsplash.com/photo-1497366210541-8b783781e3e2?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+          "alt": "Moving Brands office"
+        },
+        {
+          "url": "https://images.unsplash.com/photo-1516321318423-3b7a17f4f6c6?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+          "alt": "Moving Brands team"
+        },
+        {
+          "url": "https://images.unsplash.com/photo-1503428593588-4f8c88a7f830?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+          "alt": "Moving Brands office"
+        },
+        {
+          "url": "https://images.unsplash.com/photo-1556740714-7a3a6b6e7e4b?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+          "alt": "Moving Brands meeting"
+        }
+      ],
+      "teamMembers": [
+        {
+          "name": "Mat Heinl",
+          "position": "CEO",
+          "photo": "https://randomuser.me/api/portraits/men/50.jpg",
+          "social": {
+            "linkedin": "#",
+            "twitter": "#"
+          }
+        },
+        {
+          "name": "Sarah Jones",
+          "position": "Creative Director",
+          "photo": "https://randomuser.me/api/portraits/women/40.jpg",
+          "social": {
+            "linkedin": "#",
+            "twitter": "#"
+          }
+        }
+      ],
+      "techStack": [
+        {
+          "name": "Figma",
+          "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/figma/figma-original.svg"
+        },
+        {
+          "name": "React",
+          "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg"
+        },
+        {
+          "name": "JavaScript",
+          "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg"
+        }
+      ],
+      "officeLocations": [
+        {
+          "country": "United Kingdom",
+          "flag": "https://flagcdn.com/w40/gb.png"
+        },
+        {
+          "country": "United States",
+          "flag": "https://flagcdn.com/w40/us.png"
+        },
+        {
+          "country": "Switzerland",
+          "flag": "https://flagcdn.com/w40/ch.png"
+        }
+      ],
+      "benefits": [
+        {
+          "title": "Health Coverage",
+          "description": "Comprehensive health plans for employees.",
+          "icon": "bi-heart-fill"
+        },
+        {
+          "title": "Flexible PTO",
+          "description": "Generous paid time off to promote balance.",
+          "icon": "bi-cloud-sun-fill"
+        },
+        {
+          "title": "Remote Work",
+          "description": "Flexible remote work options available.",
+          "icon": "bi-house-fill"
+        }
+      ],
+      "openJobs": [
+        {
+          "job_id": 46,
+          "company_id": 25,
+          "title": "Motion Designer",
+          "location": "London, UK",
+          "type": "Full Time",
+          "logo": "https://logo.clearbit.com/movingbrands.com",
+          "description": "Seeking a Motion Designer to create dynamic brand visuals.",
+          "tags": ["Design"]
+        },
+        {
+          "job_id": 47,
+          "company_id": 25,
+          "title": "Brand Strategist",
+          "location": "Remote",
+          "type": "Full Time",
+          "logo": "https://logo.clearbit.com/movingbrands.com",
+          "description": "Looking for a Brand Strategist to shape client narratives.",
+          "tags": ["Strategy"]
+        }
+      ]
+    },
+    {
+      "id": 26,
+      "name": "Red Antler",
+      "logoInitial": "R",
+      "jobs": 5,
+      "employees": "51-200",
+      "employeeId": 26,
+      "locations": "1 Country",
+      "website": "https://www.redantler.com",
+      "founded": "2007",
+      "industry": "Design and Branding",
+      "profile": "Red Antler is a Brooklyn-based branding agency known for launching startups like Casper and Allbirds. It specializes in creating brand identities, digital experiences, and campaigns that resonate with modern consumers.",
+      "contacts": [
+        {
+          "icon": "twitter",
+          "url": "https://twitter.com/RedAntler",
+          "label": "twitter.com/RedAntler"
+        },
+        {
+          "icon": "facebook",
+          "url": "https://facebook.com/RedAntler",
+          "label": "facebook.com/RedAntler"
+        },
+        {
+          "icon": "envelope",
+          "url": "mailto:info@redantler.com",
+          "label": "info@redantler.com"
+        }
+      ],
+      "photos": [
+        {
+          "url": "https://images.unsplash.com/photo-1497366210541-8b783781e3e2?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+          "alt": "Red Antler office"
+        },
+        {
+          "url": "https://images.unsplash.com/photo-1516321318423-3b7a17f4f6c6?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+          "alt": "Red Antler team"
+        },
+        {
+          "url": "https://images.unsplash.com/photo-1503428593588-4f8c88a7f830?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+          "alt": "Red Antler office"
+        },
+        {
+          "url": "https://images.unsplash.com/photo-1556740714-7a3a6b6e7e4b?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+          "alt": "Red Antler meeting"
+        }
+      ],
+      "teamMembers": [
+        {
+          "name": "Emily Heyward",
+          "position": "Co-Founder",
+          "photo": "https://randomuser.me/api/portraits/women/50.jpg",
+          "social": {
+            "linkedin": "#",
+            "twitter": "#"
+          }
+        },
+        {
+          "name": "JB Osborne",
+          "position": "Co-Founder",
+          "photo": "https://randomuser.me/api/portraits/men/45.jpg",
+          "social": {
+            "linkedin": "#",
+            "twitter": "#"
+          }
+        }
+      ],
+      "techStack": [
+        {
+          "name": "Figma",
+          "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/figma/figma-original.svg"
+        },
+        {
+          "name": "Adobe XD",
+          "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/xd/xd-original.svg"
+        },
+        {
+          "name": "React",
+          "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg"
+        }
+      ],
+      "officeLocations": [
+        {
+          "country": "United States",
+          "flag": "https://flagcdn.com/w40/us.png"
+        }
+      ],
+      "benefits": [
+        {
+          "title": "Health Coverage",
+          "description": "Comprehensive health plans for employees.",
+          "icon": "bi-heart-fill"
+        },
+        {
+          "title": "Flexible PTO",
+          "description": "Generous paid time off to promote balance.",
+          "icon": "bi-cloud-sun-fill"
+        },
+        {
+          "title": "Remote Work",
+          "description": "Flexible remote work options available.",
+          "icon": "bi-house-fill"
+        }
+      ],
+      "openJobs": [
+        {
+          "job_id": 48,
+          "company_id": 26,
+          "title": "Brand Designer",
+          "location": "Brooklyn, NY",
+          "type": "Full Time",
+          "logo": "https://logo.clearbit.com/redantler.com",
+          "description": "Seeking a Brand Designer to create startup brand identities.",
+          "tags": ["Design"]
+        },
+        {
+          "job_id": 49,
+          "company_id": 26,
+          "title": "Copywriter",
+          "location": "Remote",
+          "type": "Full Time",
+          "logo": "https://logo.clearbit.com/redantler.com",
+          "description": "Looking for a Copywriter to craft compelling brand stories.",
+          "tags": ["Creative"]
+        }
+      ]
+    },
+    {
+      "id": 27,
+      "name": "Studio Dumbar",
+      "logoInitial": "S",
+      "jobs": 3,
+      "employees": "1-10",
+      "employeeId": 27,
+      "locations": "2 Countries",
+      "website": "https://www.studiodumbar.com",
+      "founded": "1977",
+      "industry": "Design and Branding",
+      "profile": "Studio Dumbar is a legendary Dutch design studio known for its bold, experimental approach to branding. With clients like Nike and the Dutch government, it creates visually striking identities and digital solutions.",
+      "contacts": [
+        {
+          "icon": "twitter",
+          "url": "https://twitter.com/StudioDumbar",
+          "label": "twitter.com/StudioDumbar"
+        },
+        {
+          "icon": "facebook",
+          "url": "https://facebook.com/StudioDumbar",
+          "label": "facebook.com/StudioDumbar"
+        },
+        {
+          "icon": "envelope",
+          "url": "mailto:info@studiodumbar.com",
+          "label": "info@studiodumbar.com"
+        }
+      ],
+      "photos": [
+        {
+          "url": "https://images.unsplash.com/photo-1497366754035-1c882e89a5c9?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+          "alt": "Studio Dumbar office"
+        },
+        {
+          "url": "https://images.unsplash.com/photo-1517248135467-2c7b7b6f7e4b?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+          "alt": "Studio Dumbar team"
+        },
+        {
+          "url": "https://images.unsplash.com/photo-1503428593588-4f8c88a7f830?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+          "alt": "Studio Dumbar office"
+        },
+        {
+          "url": "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+          "alt": "Studio Dumbar meeting"
+        }
+      ],
+      "teamMembers": [
+        {
+          "name": "Liza Enebeis",
+          "position": "Creative Director",
+          "photo": "https://randomuser.me/api/portraits/women/50.jpg",
+          "social": {
+            "linkedin": "#",
+            "twitter": "#"
+          }
+        },
+        {
+          "name": "Tom Dorresteijn",
+          "position": "Managing Director",
+          "photo": "https://randomuser.me/api/portraits/men/45.jpg",
+          "social": {
+            "linkedin": "#",
+            "twitter": "#"
+          }
+        }
+      ],
+      "techStack": [
+        {
+          "name": "Figma",
+          "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/figma/figma-original.svg"
+        },
+        {
+          "name": "Adobe Illustrator",
+          "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/illustrator/illustrator-plain.svg"
+        },
+        {
+          "name": "Sketch",
+          "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/sketch/sketch-original.svg"
+        }
+      ],
+      "officeLocations": [
+        {
+          "country": "Netherlands",
+          "flag": "https://flagcdn.com/w40/nl.png"
+        },
+        {
+          "country": "China",
+          "flag": "https://flagcdn.com/w40/cn.png"
+        }
+      ],
+      "benefits": [
+        {
+          "title": "Health Benefits",
+          "description": "Basic health coverage for employees.",
+          "icon": "bi-heart-fill"
+        },
+        {
+          "title": "Flexible Work Hours",
+          "description": "Flexible schedules to support employee needs.",
+          "icon": "bi-clock-fill"
+        },
+        {
+          "title": "Remote Work",
+          "description": "Fully remote work environment.",
+          "icon": "bi-house-fill"
+        }
+      ],
+      "openJobs": [
+        {
+          "job_id": 50,
+          "company_id": 27,
+          "title": "Visual Designer",
+          "location": "Rotterdam, Netherlands",
+          "type": "Full Time",
+          "logo": "https://logo.clearbit.com/studiodumbar.com",
+          "description": "Seeking a Visual Designer to create experimental brand visuals.",
+          "tags": ["Design"]
+        }
+      ]
+    },
+    {
+      "id": 28,
+      "name": "FutureBrand",
+      "logoInitial": "F",
+      "jobs": 4,
+      "employees": "51-200",
+      "employeeId": 28,
+      "locations": "6 Countries",
+      "website": "https://www.futurebrand.com",
+      "founded": "1999",
+      "industry": "Design and Branding",
+      "profile": "FutureBrand is a global brand consultancy creating transformative strategies and designs for clients like American Airlines and Nestlé. It combines foresight, creativity, and innovation to build future-proof brands.",
+      "contacts": [
+        {
+          "icon": "twitter",
+          "url": "https://twitter.com/FutureBrand",
+          "label": "twitter.com/FutureBrand"
+        },
+        {
+          "icon": "facebook",
+          "url": "https://facebook.com/FutureBrand",
+          "label": "facebook.com/FutureBrand"
+        },
+        {
+          "icon": "envelope",
+          "url": "mailto:info@futurebrand.com",
+          "label": "info@futurebrand.com"
+        }
+      ],
+      "photos": [
+        {
+          "url": "https://images.unsplash.com/photo-1497366210541-8b783781e3e2?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+          "alt": "FutureBrand office"
+        },
+        {
+          "url": "https://images.unsplash.com/photo-1516321318423-3b7a17f4f6c6?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+          "alt": "FutureBrand team"
+        },
+        {
+          "url": "https://images.unsplash.com/photo-1503428593588-4f8c88a7f830?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+          "alt": "FutureBrand office"
+        },
+        {
+          "url": "https://images.unsplash.com/photo-1556740714-7a3a6b6e7e4b?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+          "alt": "FutureBrand meeting"
+        }
+      ],
+      "teamMembers": [
+        {
+          "name": "Patrick Smith",
+          "position": "Global CEO",
+          "photo": "https://randomuser.me/api/portraits/men/55.jpg",
+          "social": {
+            "linkedin": "#",
+            "twitter": "#"
+          }
+        },
+        {
+          "name": "Laura Davis",
+          "position": "Creative Director",
+          "photo": "https://randomuser.me/api/portraits/women/45.jpg",
+          "social": {
+            "linkedin": "#",
+            "twitter": "#"
+          }
+        }
+      ],
+      "techStack": [
+        {
+          "name": "Figma",
+          "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/figma/figma-original.svg"
+        },
+        {
+          "name": "Adobe XD",
+          "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/xd/xd-original.svg"
+        },
+        {
+          "name": "React",
+          "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg"
+        }
+      ],
+      "officeLocations": [
+        {
+          "country": "United States",
+          "flag": "https://flagcdn.com/w40/us.png"
+        },
+        {
+          "country": "United Kingdom",
+          "flag": "https://flagcdn.com/w40/gb.png"
+        },
+        {
+          "country": "Australia",
+          "flag": "https://flagcdn.com/w40/au.png"
+        },
+        {
+          "country": "China",
+          "flag": "https://flagcdn.com/w40/cn.png"
+        },
+        {
+          "country": "Brazil",
+          "flag": "https://flagcdn.com/w40/br.png"
+        },
+        {
+          "country": "Singapore",
+          "flag": "https://flagcdn.com/w40/sg.png"
+        }
+      ],
+      "benefits": [
+        {
+          "title": "Health Coverage",
+          "description": "Comprehensive health plans for employees.",
+          "icon": "bi-heart-fill"
+        },
+        {
+          "title": "Flexible PTO",
+          "description": "Generous paid time off to promote balance.",
+          "icon": "bi-cloud-sun-fill"
+        },
+        {
+          "title": "Remote Work",
+          "description": "Flexible remote work options available.",
+          "icon": "bi-house-fill"
+        }
+      ],
+      "openJobs": [
+        {
+          "job_id": 51,
+          "company_id": 28,
+          "title": "Brand Strategist",
+          "location": "New York, NY",
+          "type": "Full Time",
+          "logo": "https://logo.clearbit.com/futurebrand.com",
+          "description": "Seeking a Brand Strategist to develop future-focused strategies.",
+          "tags": ["Strategy"]
+        },
+        {
+          "job_id": 52,
+          "company_id": 28,
+          "title": "UI Designer",
+          "location": "Remote",
+          "type": "Full Time",
+          "logo": "https://logo.clearbit.com/futurebrand.com",
+          "description": "Looking for a UI Designer to create digital brand interfaces.",
+          "tags": ["Design"]
+        }
+      ]
+    },
+    {
+      "id": 29,
+      "name": "Lippincott",
+      "logoInitial": "L",
+      "jobs": 3,
+      "employees": "51-200",
+      "employeeId": 29,
+      "locations": "3 Countries",
+      "website": "https://www.lippincott.com",
+      "founded": "1943",
+      "industry": "Design and Branding",
+      "profile": "Lippincott is a pioneering branding agency with a legacy of creating iconic brands like Starbucks and Delta. It specializes in brand strategy, identity, and customer experience design for global corporations.",
+      "contacts": [
+        {
+          "icon": "twitter",
+          "url": "https://twitter.com/LippincottBrand",
+          "label": "twitter.com/LippincottBrand"
+        },
+        {
+          "icon": "facebook",
+          "url": "https://facebook.com/LippincottBrand",
+          "label": "facebook.com/LippincottBrand"
+        },
+        {
+          "icon": "envelope",
+          "url": "mailto:info@lippincott.com",
+          "label": "info@lippincott.com"
+        }
+      ],
+      "photos": [
+        {
+          "url": "https://images.unsplash.com/photo-1497366210541-8b783781e3e2?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+          "alt": "Lippincott office"
+        },
+        {
+          "url": "https://images.unsplash.com/photo-1516321318423-3b7a17f4f6c6?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+          "alt": "Lippincott team"
+        },
+        {
+          "url": "https://images.unsplash.com/photo-1503428593588-4f8c88a7f830?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+          "alt": "Lippincott office"
+        },
+        {
+          "url": "https://images.unsplash.com/photo-1556740714-7a3a6b6e7e4b?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+          "alt": "Lippincott meeting"
+        }
+      ],
+      "teamMembers": [
+        {
+          "name": "Rick Wise",
+          "position": "CEO",
+          "photo": "https://randomuser.me/api/portraits/men/50.jpg",
+          "social": {
+            "linkedin": "#",
+            "twitter": "#"
+          }
+        },
+        {
+          "name": "Susan Avarde",
+          "position": "Chief Brand Officer",
+          "photo": "https://randomuser.me/api/portraits/women/40.jpg",
+          "social": {
+            "linkedin": "#",
+            "twitter": "#"
+          }
+        }
+      ],
+      "techStack": [
+        {
+          "name": "Figma",
+          "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/figma/figma-original.svg"
+        },
+        {
+          "name": "Adobe XD",
+          "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/xd/xd-original.svg"
+        },
+        {
+          "name": "JavaScript",
+          "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg"
+        }
+      ],
+      "officeLocations": [
+        {
+          "country": "United States",
+          "flag": "https://flagcdn.com/w40/us.png"
+        },
+        {
+          "country": "United Kingdom",
+          "flag": "https://flagcdn.com/w40/gb.png"
+        },
+        {
+          "country": "China",
+          "flag": "https://flagcdn.com/w40/cn.png"
+        }
+      ],
+      "benefits": [
+        {
+          "title": "Health Coverage",
+          "description": "Comprehensive health plans for employees.",
+          "icon": "bi-heart-fill"
+        },
+        {
+          "title": "Flexible PTO",
+          "description": "Generous paid time off to promote balance.",
+          "icon": "bi-cloud-sun-fill"
+        },
+        {
+          "title": "Remote Work",
+          "description": "Flexible remote work options available.",
+          "icon": "bi-house-fill"
+        }
+      ],
+      "openJobs": [
+        {
+          "job_id": 53,
+          "company_id": 29,
+          "title": "Brand Consultant",
+          "location": "New York, NY",
+          "type": "Full Time",
+          "logo": "https://logo.clearbit.com/lippincott.com",
+          "description": "Seeking a Brand Consultant to shape corporate brand strategies.",
+          "tags": ["Strategy"]
+        }
+      ]
+    },
+    {
+      "id": 30,
+      "name": "R/GA",
+      "logoInitial": "R",
+      "jobs": 5,
+      "employees": "501+",
+      "employeeId": 30,
+      "locations": "10 Countries",
+      "website": "https://www.rga.com",
+      "founded": "1977",
+      "industry": "Design and Branding",
+      "profile": "R/GA is a global innovation agency blending design, technology, and branding to create transformative experiences. With clients like Nike and Verizon, R/GA delivers award-winning campaigns, products, and brand identities.",
+      "contacts": [
+        {
+          "icon": "twitter",
+          "url": "https://twitter.com/RGA",
+          "label": "twitter.com/RGA"
+        },
+        {
+          "icon": "facebook",
+          "url": "https://facebook.com/RGA",
+          "label": "facebook.com/RGA"
+        },
+        {
+          "icon": "envelope",
+          "url": "mailto:info@rga.com",
+          "label": "info@rga.com"
+        }
+      ],
+      "photos": [
+        {
+          "url": "https://images.unsplash.com/photo-1497366210541-8b783781e3e2?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+          "alt": "R/GA office"
+        },
+        {
+          "url": "https://images.unsplash.com/photo-1516321318423-3b7a17f4f6c6?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+          "alt": "R/GA team"
+        },
+        {
+          "url": "https://images.unsplash.com/photo-1503428593588-4f8c88a7f830?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+          "alt": "R/GA office"
+        },
+        {
+          "url": "https://images.unsplash.com/photo-1556740714-7a3a6b6e7e4b?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+          "alt": "R/GA meeting"
+        }
+      ],
+      "teamMembers": [
+        {
+          "name": "Sean Lyons",
+          "position": "Global CEO",
+          "photo": "https://randomuser.me/api/portraits/men/50.jpg",
+          "social": {
+            "linkedin": "#",
+            "twitter": "#"
+          }
+        },
+        {
+          "name": "Tiffany Rolfe",
+          "position": "Global Chief Creative Officer",
+          "photo": "https://randomuser.me/api/portraits/women/40.jpg",
+          "social": {
+            "linkedin": "#",
+            "twitter": "#"
+          }
+        }
+      ],
+      "techStack": [
+        {
+          "name": "Figma",
+          "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/figma/figma-original.svg"
+        },
+        {
+          "name": "React",
+          "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg"
+        },
+        {
+          "name": "Node.js",
+          "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg"
+        }
+      ],
+      "officeLocations": [
+        {
+          "country": "United States",
+          "flag": "https://flagcdn.com/w40/us.png"
+        },
+        {
+          "country": "United Kingdom",
+          "flag": "https://flagcdn.com/w40/gb.png"
+        },
+        {
+          "country": "Australia",
+          "flag": "https://flagcdn.com/w40/au.png"
+        },
+        {
+          "country": "Singapore",
+          "flag": "https://flagcdn.com/w40/sg.png"
+        },
+        {
+          "country": "Brazil",
+          "flag": "https://flagcdn.com/w40/br.png"
+        }
+      ],
+      "benefits": [
+        {
+          "title": "Health Coverage",
+          "description": "Comprehensive health plans for employees.",
+          "icon": "bi-heart-fill"
+        },
+        {
+          "title": "Flexible PTO",
+          "description": "Generous paid time off to promote balance.",
+          "icon": "bi-cloud-sun-fill"
+        },
+        {
+          "title": "Remote Work",
+          "description": "Flexible remote work options available.",
+          "icon": "bi-house-fill"
+        }
+      ],
+      "openJobs": [
+        {
+          "job_id": 54,
+          "company_id": 30,
+          "title": "Experience Designer",
+          "location": "New York, NY",
+          "type": "Full Time",
+          "logo": "https://logo.clearbit.com/rga.com",
+          "description": "Seeking an Experience Designer to craft innovative digital experiences.",
+          "tags": ["Design"]
+        },
+        {
+          "job_id": 55,
+          "company_id": 30,
+          "title": "Frontend Developer",
+          "location": "Remote",
+          "type": "Full Time",
+          "logo": "https://logo.clearbit.com/rga.com",
+          "description": "Looking for a Frontend Developer to build brand interfaces.",
+          "tags": ["Technology"]
+        }
+      ]
+    }
+  ]
