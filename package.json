@@ -10,9 +10,12 @@
     "build:sass": "sass --quiet-deps -q -I node_modules src/assets/custom.scss dist/custom.cs"
   },
   "dependencies": {
+    "@vuepic/vue-datepicker": "^11.0.2",
     "axios": "^1.8.4",
     "bootstrap": "^5.3.5",
     "bootstrap-icons": "^1.11.3",
+    "html2canvas": "^1.4.1",
+    "jspdf": "^3.0.1",
     "lodash": "^4.17.21",
     "lucide-vue-next": "^0.503.0",
     "pinia": "^3.0.2",
