@@ -1,5 +1,6 @@
 import { defineStore } from "pinia";
 import { ref, computed } from "vue";
+import { useCompanyStore } from "./companyStore";
 
 // Mock API functions to simulate backend calls
 const mockApi = {
@@ -21,7 +22,7 @@ const mockApi = {
         type: "Full-Time",
         description:
           "Nomad is seeking a Social Media Assistant to enhance our brand presence across digital platforms. You will create engaging content, manage community interactions, and analyze performance metrics to drive growth.",
-        salary: "€60k-€75k",
+        salary: "$500 - $1000",
         postedDate: "2025-04-01",
         deadline: "2025-05-30",
         applied: 5,
@@ -68,6 +69,7 @@ const mockApi = {
             icon: "bi-people-fill",
           },
         ],
+        level: "Entry Level",
       },
       {
         id: 2,
@@ -77,7 +79,7 @@ const mockApi = {
         type: "Full-Time",
         description:
           "Dropbox is looking for a Brand Designer to shape our visual identity. You will design marketing materials, ensure brand consistency, and collaborate with cross-functional teams to elevate our brand.",
-        salary: "$90k-$120k",
+        salary: "$1500 - $2000",
         postedDate: "2025-03-15",
         deadline: "2025-06-15",
         applied: 2,
@@ -124,6 +126,7 @@ const mockApi = {
             icon: "bi-mortarboard-fill",
           },
         ],
+        level: "Senior Level",
       },
       {
         id: 3,
@@ -133,7 +136,7 @@ const mockApi = {
         type: "Full-Time",
         description:
           "Terraform seeks an Interactive Developer to build engaging web experiences. You will code interactive features, optimize performance, and work with designers to bring ideas to life.",
-        salary: "€80k-€100k",
+        salary: "$1500 - $2000",
         postedDate: "2025-04-10",
         deadline: "2025-06-10",
         applied: 8,
@@ -180,6 +183,7 @@ const mockApi = {
             icon: "bi-people-fill",
           },
         ],
+        level: "Junior",
       },
       {
         id: 4,
@@ -189,7 +193,7 @@ const mockApi = {
         type: "Full-Time",
         description:
           "Revolut is hiring an Email Marketing specialist to drive customer engagement. You will design email campaigns, analyze performance, and optimize for conversions.",
-        salary: "€65k-€80k",
+        salary: "$1500 - $2000",
         postedDate: "2025-04-20",
         deadline: "2025-06-20",
         applied: 0,
@@ -236,6 +240,7 @@ const mockApi = {
             icon: "bi-mortarboard-fill",
           },
         ],
+        level: "Entry Level",
       },
       {
         id: 5,
@@ -245,7 +250,7 @@ const mockApi = {
         type: "Full-Time",
         description:
           "Canva is seeking a Lead Engineer to oversee development projects. You will lead a team, architect solutions, and ensure high-quality code delivery.",
-        salary: "₺500k-₺650k",
+        salary: "$500 - $1000",
         postedDate: "2025-03-25",
         deadline: "2025-05-25",
         applied: 5,
@@ -292,6 +297,7 @@ const mockApi = {
             icon: "bi-people-fill",
           },
         ],
+        level: "Manager",
       },
       {
         id: 6,
@@ -301,7 +307,7 @@ const mockApi = {
         type: "Full-Time",
         description:
           "ClassPass is looking for a Product Designer to craft user-centric experiences. You will design interfaces, conduct user research, and collaborate with developers.",
-        salary: "€75k-€95k",
+        salary: "$1500 - $2000",
         postedDate: "2025-04-05",
         deadline: "2025-06-05",
         applied: 5,
@@ -348,6 +354,7 @@ const mockApi = {
             icon: "bi-people-fill",
           },
         ],
+        level: "Entry Level",
       },
       {
         id: 7,
@@ -357,7 +364,7 @@ const mockApi = {
         type: "Full-Time",
         description:
           "Pitch seeks a Customer Manager to support our clients. You will handle inquiries, provide solutions, and ensure customer satisfaction.",
-        salary: "€60k-€80k",
+        salary: "$1500 - $2000",
         postedDate: "2025-05-15",
         deadline: "2025-06-15",
         applied: 5,
@@ -404,6 +411,7 @@ const mockApi = {
             icon: "bi-mortarboard-fill",
           },
         ],
+        level: "Entry Level",
       },
       {
         id: 8,
@@ -413,7 +421,7 @@ const mockApi = {
         type: "Remote",
         description:
           "Figma is hiring a UI/UX Designer to create seamless user experiences. You will design interfaces, conduct research, and collaborate remotely with global teams.",
-        salary: "$100k-$130k",
+        salary: "$3000 - $3500",
         postedDate: "2025-04-01",
         deadline: "2025-05-31",
         applied: 3,
@@ -460,6 +468,7 @@ const mockApi = {
             icon: "bi-mortarboard-fill",
           },
         ],
+        level: "Senior Level",
       },
       {
         id: 9,
@@ -469,7 +478,7 @@ const mockApi = {
         type: "Full-Time",
         description:
           "Vercel is seeking a Frontend Developer to build high-performance web applications. You will work on our platform, optimize user interfaces, and ensure scalability.",
-        salary: "€85k-€110k",
+        salary: "$1500 - $2000",
         postedDate: "2025-05-10",
         deadline: "2025-06-10",
         applied: 4,
@@ -516,6 +525,7 @@ const mockApi = {
             icon: "bi-people-fill",
           },
         ],
+        level: "Entry Level",
       },
       {
         id: 10,
@@ -525,7 +535,7 @@ const mockApi = {
         type: "Part-Time",
         description:
           "Notion is looking for a Community Manager to engage our user base. You will moderate forums, organize events, and foster a vibrant community.",
-        salary: "CA$40k-$50k",
+        salary: "$1500 - $2000",
         postedDate: "2025-04-05",
         deadline: "2025-06-05",
         applied: 6,
@@ -572,6 +582,7 @@ const mockApi = {
             icon: "bi-laptop",
           },
         ],
+        level: "Entry Level",
       },
       {
         id: 11,
@@ -581,7 +592,7 @@ const mockApi = {
         type: "Remote",
         description:
           "GitLab is hiring a DevOps Engineer to enhance our CI/CD pipelines. You will automate infrastructure, monitor systems, and ensure reliability.",
-        salary: "$110k-$140k",
+        salary: "$1500 - $2000",
         postedDate: "2025-04-01",
         deadline: "2025-05-31",
         applied: 2,
@@ -628,16 +639,17 @@ const mockApi = {
             icon: "bi-mortarboard-fill",
           },
         ],
+        level: "Senior Level",
       },
       {
         id: 12,
         title: "Content Writer",
-        companyId: 12,
+        companyId: 3,
         location: "London, UK",
         type: "Freelance",
         description:
           "Buffer is seeking a Content Writer to create engaging blog posts and social media content. You will craft stories that resonate with our audience.",
-        salary: "£30k-£40k",
+        salary: "$1500 - $2000",
         postedDate: "2025-04-15",
         deadline: "2025-06-15",
         applied: 1,
@@ -684,6 +696,7 @@ const mockApi = {
             icon: "bi-people-fill",
           },
         ],
+        level: "Entry Level",
       },
       {
         id: 13,
@@ -693,7 +706,7 @@ const mockApi = {
         type: "Full-Time",
         description:
           "Trello is hiring a QA Tester to ensure product quality. You will test features, report bugs, and collaborate with developers to maintain high standards.",
-        salary: "€55k-€70k",
+        salary: "$1500-$2000",
         postedDate: "2025-04-10",
         deadline: "2025-06-10",
         applied: 4,
@@ -740,6 +753,7 @@ const mockApi = {
             icon: "bi-laptop",
           },
         ],
+        level: "Entry Level",
       },
       {
         id: 14,
@@ -749,7 +763,7 @@ const mockApi = {
         type: "Full-Time",
         description:
           "Zapier is seeking a Growth Marketer to drive user acquisition. You will design campaigns, analyze data, and optimize for growth.",
-        salary: "A$100k-A$130k",
+        salary: "$1500-$2000",
         postedDate: "2025-04-05",
         deadline: "2025-06-05",
         applied: 3,
@@ -796,6 +810,7 @@ const mockApi = {
             icon: "bi-mortarboard-fill",
           },
         ],
+        level: "Entry Level",
       },
       {
         id: 15,
@@ -805,7 +820,7 @@ const mockApi = {
         type: "Remote",
         description:
           "Slack is hiring a Support Specialist to assist users. You will troubleshoot issues, provide guidance, and ensure a positive user experience.",
-        salary: "€50k-€65k",
+        salary: "$1500-$2000",
         postedDate: "2025-04-01",
         deadline: "2025-05-31",
         applied: 2,
@@ -852,6 +867,7 @@ const mockApi = {
             icon: "bi-laptop",
           },
         ],
+        level: "Entry Level",
       },
       {
         id: 16,
@@ -861,7 +877,7 @@ const mockApi = {
         type: "Full-Time",
         description:
           "Klarna is seeking a Data Analyst to derive insights from financial data. You will analyze trends, create reports, and support strategic decisions.",
-        salary: "SEK 600k-SEK 800k",
+        salary: "$500-$1000",
         postedDate: "2025-04-10",
         deadlineSHIP: "2025-06-10",
         applied: 7,
@@ -908,6 +924,7 @@ const mockApi = {
             icon: "bi-people-fill",
           },
         ],
+        level: "Entry Level",
       },
       {
         id: 17,
@@ -917,7 +934,7 @@ const mockApi = {
         type: "Full-Time",
         description:
           "Adobe is hiring a Motion Designer to create dynamic visuals. You will produce animations, design motion graphics, and enhance our creative tools.",
-        salary: "¥10M-¥13M",
+        salary: "$1500-$2000",
         postedDate: "2025-04-05",
         deadline: "2025-06-05",
         applied: 2,
@@ -964,6 +981,7 @@ const mockApi = {
             icon: "bi-people-fill",
           },
         ],
+        level: "Entry Level",
       },
       {
         id: 18,
@@ -973,7 +991,7 @@ const mockApi = {
         type: "Full-Time",
         description:
           "LinkedIn is seeking a Tech Recruiter to source top talent. You will manage hiring pipelines, conduct interviews, and build candidate relationships.",
-        salary: "€70k-€90k",
+        salary: "$1500-$2000",
         postedDate: "2025-04-15",
         deadline: "2025-06-15",
         applied: 6,
@@ -1020,6 +1038,7 @@ const mockApi = {
             icon: "bi-mortarboard-fill",
           },
         ],
+        level: "Entry Level",
       },
       {
         id: 19,
@@ -1029,7 +1048,7 @@ const mockApi = {
         type: "Full-Time",
         description:
           "Spotify is hiring a Mobile Developer to enhance our app. You will build features, optimize performance, and ensure a seamless user experience.",
-        salary: "NOK 800k-NOK 1M",
+        salary: "$1500 - $2000",
         postedDate: "2025-04-01",
         deadline: "2025-05-31",
         applied: 5,
@@ -1076,6 +1095,7 @@ const mockApi = {
             icon: "bi-people-fill",
           },
         ],
+        level: "Entry Level",
       },
       {
         id: 20,
@@ -1085,7 +1105,7 @@ const mockApi = {
         type: "Internship",
         description:
           "DeepMind is seeking an AI Research Intern to contribute to cutting-edge projects. You will assist in experiments, analyze data, and support research efforts.",
-        salary: "£25k-£30k (pro-rated)",
+        salary: "$1500 - $2000",
         postedDate: "2025-04-10",
         deadline: "2025-05-10",
         applied: 10,
@@ -1132,6 +1152,7 @@ const mockApi = {
             icon: "bi-clock-fill",
           },
         ],
+        level: "Entry Level",
       },
       {
         id: 21,
@@ -1141,7 +1162,7 @@ const mockApi = {
         type: "Full-Time",
         description:
           "Figma is seeking a mid-level Email Marketing Manager to join our team. You will design and execute email campaigns to engage our user base and drive product adoption.",
-        salary: "$80k-$100k",
+        salary: "$1500 - $2000",
         postedDate: "2025-03-15",
         deadline: "2025-06-劳动",
         applied: 12,
@@ -1188,6 +1209,7 @@ const mockApi = {
             icon: "bi-bicycle",
           },
         ],
+        level: "Manager",
       },
       {
         id: 22,
@@ -1197,7 +1219,7 @@ const mockApi = {
         type: "Full-Time",
         description:
           "Dropbox is looking for a Brand Designer to help with our rebrand. You will create visual assets to strengthen our brand identity across all platforms.",
-        salary: "$90k-$110k",
+        salary: "$1500 - $2000",
         postedDate: "2025-03-20",
         deadline: "2025-06-20",
         applied: 12,
@@ -1244,6 +1266,7 @@ const mockApi = {
             icon: "bi-people-fill",
           },
         ],
+        level: "Entry Level",
       },
       {
         id: 23,
@@ -1253,7 +1276,7 @@ const mockApi = {
         type: "Full-Time",
         description:
           "Webflow is seeking a mid-level Email Marketing Manager to join our team. You will craft email strategies to nurture leads and enhance customer engagement.",
-        salary: "$85k-$105k",
+        salary: "$3000 - $3500",
         postedDate: "2025-04-01",
         deadline: "2025-07-01",
         applied: 11,
@@ -1300,16 +1323,17 @@ const mockApi = {
             icon: "bi-mortarboard-fill",
           },
         ],
+        level: "Manager",
       },
       {
         id: 24,
         title: "Visual Designer",
-        companyId: 19,
+        companyId: 10,
         location: "New York, NY",
         type: "Full-Time",
         description:
           "Spotify is looking for a Visual Designer to join our team. You will create compelling visuals to enhance our user experience and brand presence.",
-        salary: "$95k-$115k",
+        salary: "$1500 - $2000",
         postedDate: "2025-05-18",
         deadline: "2025-07-05",
         applied: 15,
@@ -1356,6 +1380,7 @@ const mockApi = {
             icon: "bi-globe",
           },
         ],
+        level: "Entry Level",
       },
       {
         id: 25,
@@ -1365,7 +1390,7 @@ const mockApi = {
         type: "Full-Time",
         description:
           "Shopify is seeking a Product Designer to join our team. You will design intuitive interfaces to empower merchants on our platform.",
-        salary: "$100k-$120k",
+        salary: "$1500 - $2000",
         postedDate: "2025-04-10",
         deadline: "2025-07-10",
         applied: 20,
@@ -1412,18 +1437,19 @@ const mockApi = {
             icon: "bi-mortarboard-fill",
           },
         ],
+        level: "Entry Level",
       },
       {
         id: 26,
         title: "Lead Designer",
-        companyId: 23,
+        companyId: 3,
         location: "Remote",
         companyLogo:
           "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAMAAABF0y+mAAAAUVBMVEX/q+fYe72zSJS3T5m4UJq1TJfkisr/r+v/sezafsD6peHBXaSyR5T/rOjTdbj/renGY6nnjs3fhMTwmdf0ntv/ruq/WqLPcLTslNO8VZ7La69lEsuzAAABPklEQVR4AWWRB5aFMAhFI4Ehk2rU6Nf9L3TANt/js+Klay51YBGRfvi03S/hDdkHEBo7p1biDHhDtbsoFDqJLakXdkMVV6VxYDciIVprHnQEja1Z61uazENtp0R6m30xraS7amE3KJCwuOj37uPZOWbHbap5PRl+WN0JgObQ92EFebO4i3wzqt1xFx5BWpEy7/ByPgDEvv4KjT4pXGZNp2ekkKtxrUlJ6lghu+LHj2jyze2tN+2YGrdjhFRE6R6pKNx6BPNScr7XBcn1QjxucPT4gm7qIx2E4Jm2FF35kZIWX54/ZSVFsG4WaeNHyiFaRXN1I6GdvyEvoJWwckleXql8sU0ZLElnb/IeTfpnpCmrOyz18xfkDNrk1E5ztQjTCXlQhtr8C5ZJmb3ZI20TR/E82bOh1hEiVb7ZMUozf5iDED8WsD32AAAAAElFTkSuQmCC",
         type: "Full-Time",
         description:
           "Dribbble is looking for a Lead Designer to join our team. You will oversee design projects and mentor a team of designers to elevate our platform’s creative direction.",
-        salary: "$110k-$130k",
+        salary: "$1500 - $2000",
         postedDate: "2025-05-17",
         deadline: "2025-07-15",
         applied: 11,
@@ -1470,6 +1496,7 @@ const mockApi = {
             icon: "bi-people-fill",
           },
         ],
+        level: "Manager",
       },
       {
         id: 27,
@@ -1481,7 +1508,7 @@ const mockApi = {
         type: "Full-Time",
         description:
           "Behance is seeking a Brand Strategist to join our team. You will develop strategies to elevate our brand and engage our creative community.",
-        salary: "$85k-$105k",
+        salary: "$1500 - $2000",
         postedDate: "2025-04-20",
         deadline: "2025-05-20",
         applied: 12,
@@ -1528,6 +1555,7 @@ const mockApi = {
             icon: "bi-people-fill",
           },
         ],
+        level: "Entry Level",
       },
       {
         id: 28,
@@ -1535,11 +1563,11 @@ const mockApi = {
         companyId: 25,
         location: "San Francisco, CA",
         companyLogo:
-          "data:image/png;base64,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",
+          "data:image/png;base64,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",
         type: "Full-Time",
         description:
           "Twitter is looking for a Data Analyst to join our team. You will analyze user data to provide insights that drive platform improvements and engagement.",
-        salary: "$90k-$110k",
+        salary: "$1500 - $2000",
         postedDate: "2025-05-17",
         deadline: "2025-07-25",
         applied: 18,
@@ -1586,6 +1614,7 @@ const mockApi = {
             icon: "bi-mortarboard-fill",
           },
         ],
+        level: "Entry Level",
       },
     ];
   },
@@ -1618,14 +1647,14 @@ const mockApi = {
         { id: "technology", label: "Technology", count: 5 },
       ],
       jobLevels: [
-        { id: "entry", label: "Entry Level", count: 57 },
+        { id: "entry level", label: "Entry Level", count: 57 },
         { id: "junior", label: "Junior", count: 3 },
-        { id: "senior", label: "Senior Level", count: 5 },
+        { id: "senior level", label: "Senior Level", count: 5 },
         { id: "manager", label: "Manager", count: 12 },
       ],
       salaryRanges: [
-        { id: "range1", label: "$700 - $1000", count: 4 },
-        { id: "range2", label: "$100 - $1500", count: 6 },
+        { id: "range1", label: "$500 - $1000", count: 4 },
+        { id: "range2", label: "$1000 - $1500", count: 6 },
         { id: "range3", label: "$1500 - $2000", count: 10 },
         { id: "range4", label: "$3000 or above", count: 4 },
       ],
@@ -1653,8 +1682,6 @@ export const useJobStore = defineStore("jobStore", () => {
   const salaryRanges = ref([]);
   const isLoading = ref(false);
   const error = ref(false);
-
-  
 
   // Computed properties
   const totalJobs = computed(() => applyFilters(jobs.value).length);
@@ -1692,7 +1719,6 @@ export const useJobStore = defineStore("jobStore", () => {
       results = results.filter((job) => {
         const matchesKeyword = keyword
           ? job.title.toLowerCase().includes(keyword) ||
-            job.company.toLowerCase().includes(keyword) ||
             job.tags.some((tag) => tag.toLowerCase().includes(keyword))
           : true;
         const matchesLocation = location
@@ -1708,23 +1734,60 @@ export const useJobStore = defineStore("jobStore", () => {
 
     // Apply sidebar filters
 
+    // Apply sidebar filters
     if (employmentTypes.length > 0) {
       results = results.filter((job) =>
-        job.tags.some((tag) => employmentTypes.includes(tag.toLowerCase()))
+        employmentTypes.includes(job.type.toLowerCase())
       );
+      console.log("result from employmentTypes filter: " + results.length);
     }
+
     if (categories.length > 0) {
       results = results.filter((job) =>
         job.tags.some((tag) => categories.includes(tag.toLowerCase()))
       );
+      console.log("result from categories filter: " + results.length);
     }
+
     if (jobLevels.length > 0) {
+      console.log("job levels label : " + jobLevels);
+      // Assuming jobLevels are not in tags and need to be added to job data
+      // If jobLevels are in tags, use the same logic as categories
       results = results.filter((job) =>
-        job.tags.some((tag) => jobLevels.includes(tag.toLowerCase()))
+        jobLevels.includes(job.level.toLowerCase())
       );
+      console.log("result from jobLevels filter: " + results.length);
     }
     if (salaryRanges.length > 0) {
-      // Placeholder: Implement salary range filtering if job data includes salary
+      console.log("salary range label : " + salaryRanges);
+
+      // map salaryRanges to their corresponding ranges
+      //e.g salaryRanges = "range1" => "$500 - $1000", "range2" => "$1000 - $1500", etc.
+      const salaryRangeMap = {
+        range1: { min: 500, max: 1000 },
+        range2: { min: 1000, max: 1500 },
+        range3: { min: 1500, max: 2000 },
+        range4: { min: 3000, max: Infinity }, // Assuming $3000 or above
+      };
+      results = results.filter((job) => {
+        const salary = job.salary
+          .replace(/[^0-9-]/g, "") // Remove non-numeric characters
+          .split("-")
+          .map(Number); // Convert to numbers
+
+        console.log("salary: " + salary);
+        if (salary.length === 2) {
+          const [minSalary, maxSalary] = salary;
+          return salaryRanges.some((range) => {
+            const { min, max } = salaryRangeMap[range];
+            return minSalary >= min && maxSalary <= max;
+          });
+        }
+        return false; // If salary format is unexpected, exclude the job
+      });
+      console.log("result from salaryRanges filter: " + results.length);
+
+      // salary range label : range2
     }
 
     return results;
@@ -1733,15 +1796,53 @@ export const useJobStore = defineStore("jobStore", () => {
   // Actions
 
   async function fetchJobs() {
+    const companyStore = useCompanyStore();
     isLoading.value = true;
     error.value = null;
+
     try {
+      // Ensure companies are loaded
+      console.log("Initial companyStore.companies:", companyStore.companies); // Debug
+      if (!companyStore.companies || companyStore.companies.length === 0) {
+        console.log("Fetching companies...");
+        await companyStore.fetchCompanies();
+        console.log(
+          "Post-fetch companyStore.companies:",
+          companyStore.companies
+        ); // Debug
+      }
+
       const data = await mockApi.fetchJobs();
-      jobs.value = data;
+      // Map jobs to include companyName and optionally other company fields
+      jobs.value = data.map((job) => {
+        const company = Array.isArray(companyStore.recommendedCompanies)
+          ? companyStore.recommendedCompanies.find((c) => c.id == job.companyId)
+          : null;
+        console.log(
+          `Job ${job.id}: companyId=${job.companyId}, found company=`,
+          company
+        ); // Debug
+        if (!company) {
+          console.warn(
+            `No company found for job ${job.id} with companyId ${job.companyId}`
+          );
+        }
+        return {
+          ...job,
+          companyName: company ? company.name : "Unknown Company",
+          // Optionally add other company fields
+          companyLogo: company ? company.logo : null,
+          companyLocation: company ? company.location : null,
+        };
+      });
+
+      console.log("Fetched jobs with company data:", jobs.value);
     } catch (err) {
-      error.value = err.message;
+      error.value = err.message || "Failed to fetch jobs";
+      console.error("Fetch error:", error.value);
     } finally {
       isLoading.value = false;
+      console.log("Loading state set to false");
     }
   }
 
@@ -1770,35 +1871,75 @@ export const useJobStore = defineStore("jobStore", () => {
   }
 
   async function fetchHighDemandHighSalaryJobs() {
+    const companyStore = useCompanyStore();
     isLoading.value = true;
     error.value = null;
+
     try {
+      console.log("Initial companyStore.companies:", companyStore.companies); // Debug
+      if (!companyStore.companies || companyStore.companies.length === 0) {
+        console.log("Fetching companies...");
+        await companyStore.fetchCompanies();
+        console.log(
+          "Post-fetch companyStore.companies:",
+          companyStore.companies
+        ); // Debug
+      }
+
       const data = await mockApi.fetchJobs();
       jobs.value = data;
       console.log("Fetched jobs for high demand and high salary:", jobs.value);
 
-      highDemandJobs.value = data.filter((job) => {
-        const isHighDemand = job.applied > 5;
-        console.log(
-          `Job ${job.id}: applied=${job.applied}, isHighDemand=${isHighDemand}`
-        );
-        return isHighDemand;
-      });
+      highDemandJobs.value = data
+        .filter((job) => {
+          const isHighDemand = job.applied > 5;
+          console.log(
+            `Job ${job.id}: applied=${job.applied}, isHighDemand=${isHighDemand}`
+          );
+          return isHighDemand;
+        })
+        .map((job) => {
+          const company = Array.isArray(companyStore.recommendedCompanies)
+            ? companyStore.recommendedCompanies.find(
+                (c) => c.id === job.companyId
+              )
+            : null;
+          console.log(
+            `Job ${job.id}: companyId=${job.companyId}, found company=`,
+            company
+          ); // Debug
+          return {
+            ...job,
+            companyName: company ? company.name : "Unknown Company",
+          };
+        });
       console.log("Fetch completed, highDemandJobs:", highDemandJobs.value);
     } catch (err) {
       error.value = err.message || "Failed to fetch jobs";
       console.error("Fetch error:", error.value);
     } finally {
-      isLoading.value = false; // Reset loading state
+      isLoading.value = false;
       console.log("Loading state set to false");
       console.log("High demand jobs:", highDemandJobs.value);
     }
   }
-
   async function fetchLatestJobs() {
+    const companyStore = useCompanyStore();
     isLoading.value = true;
     error.value = null;
+
     try {
+      // Ensure companies are loaded
+      console.log("Initial companyStore.companies:", companyStore.companies); // Debug
+      if (!companyStore.companies || companyStore.companies.length === 0) {
+        console.log("Fetching companies...");
+        await companyStore.fetchCompanies();
+        console.log(
+          "Post-fetch companyStore.companies:",
+          companyStore.companies
+        ); // Debug
+      }
+
       const data = await mockApi.fetchJobs();
       jobs.value = data;
 
@@ -1807,8 +1948,25 @@ export const useJobStore = defineStore("jobStore", () => {
         (a, b) => new Date(b.postedDate) - new Date(a.postedDate)
       );
 
-      // Get the most recent jobs (e.g., last 5 or 10)
-      latestJobs.value = sortedJobs.slice(0, 4); // Adjust the number as needed
+      // Get the most recent jobs and add companyName
+      latestJobs.value = sortedJobs.slice(0, 4).map((job) => {
+        const company = Array.isArray(companyStore.recommendedCompanies)
+          ? companyStore.recommendedCompanies.find((c) => c.id == job.companyId)
+          : null;
+        console.log(
+          `Job ${job.id}: companyId=${job.companyId}, found company=`,
+          company
+        ); // Debug
+        if (!company) {
+          console.warn(
+            `No company found for job ${job.id} with companyId ${job.companyId}`
+          );
+        }
+        return {
+          ...job,
+          companyName: company ? company.name : "Unknown Company",
+        };
+      });
 
       console.log("Fetch completed, latestJobs:", latestJobs.value);
     } catch (err) {
@@ -1817,6 +1975,7 @@ export const useJobStore = defineStore("jobStore", () => {
     } finally {
       isLoading.value = false;
       console.log("Loading state set to false");
+      console.log("Latest jobs:", latestJobs.value);
     }
   }
 

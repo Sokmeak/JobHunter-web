@@ -1,104 +1,55 @@
 <template>
-  <div class="search-filter">
-    <div class="search-box">
-      <i class="bi bi-search"></i>
-      <input 
-        type="text" 
-        :placeholder="placeholder"
-        :value="searchQuery"
-        @input="updateSearch"
-      >
-    </div>
-    <button class="filter-btn" @click="toggleFilter">
-      <i class="bi bi-funnel"></i>
-      Filter
-    </button>
+  <div class="search-button">
+    <input 
+      type="text" 
+      placeholder="Search" 
+      :value="modelValue"
+      @input="$emit('update:modelValue', $event.target.value)" 
+    />
+    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="search-icon">
+      <circle cx="11" cy="11" r="8"></circle>
+      <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+    </svg>
+    
   </div>
 </template>
 
 <script>
 export default {
-  name: 'SearchFilter',
+  name: 'SearchInput',
   props: {
-    searchQuery: {
+    modelValue: {
       type: String,
       default: ''
-    },
-    placeholder: {
-      type: String,
-      default: 'Search'
-    }
-  },
-  methods: {
-    updateSearch(event) {
-      this.$emit('search-changed', event.target.value);
-    },
-    toggleFilter() {
-      this.$emit('filter-clicked');
     }
   }
 };
 </script>
 
 <style scoped>
-.search-filter {
-  display: flex;
-  gap: 12px;
-  align-items: center;
-}
-
-.search-box {
+.search-button {
   position: relative;
-  display: flex;
-  align-items: center;
+  width: 200px;
 }
 
-.search-box i {
+.search-button input {
+  width: 100%;
+  padding: 10px 16px 10px 40px;
+  border: 1px solid #e0e0e0;
+  border-radius: 6px;
+  font-size: 14px;
+}
+
+.search-icon {
   position: absolute;
   left: 12px;
-  color: #5f6368;
-  font-size: 16px;
-}
-
-.search-box input {
-  padding: 8px 12px 8px 36px;
-  border: 1px solid #e8eaed;
-  border-radius: 8px;
-  font-size: 14px;
-  width: 200px;
-  transition: border-color 0.2s ease;
-}
-
-.search-box input:focus {
-  outline: none;
-  border-color: #4285f4;
-}
-
-.filter-btn {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 8px 16px;
-  background-color: #f8f9fa;
-  border: 1px solid #e8eaed;
-  border-radius: 8px;
-  font-size: 14px;
-  color: #5f6368;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
-}
-
-.filter-btn:hover {
-  background-color: #f1f3f4;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #6b7280;
 }
 
 @media (max-width: 768px) {
-  .search-filter {
-    flex-direction: column;
-    align-items: stretch;
-  }
-  
-  .search-box input {
+  .search-button {
     width: 100%;
   }
 }

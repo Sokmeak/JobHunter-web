@@ -1,28 +1,31 @@
 <template>
-  <div class="table-row">
-    <div class="col-number">{{ index + 1 }}</div>
-    <div class="col-company">
+  <div 
+    class="table-row"
+    :class="{ 'odd-row': isOdd }"
+    @click="$emit('click')"
+  >
+    <div class="cell index-cell">{{ application.id }}</div>
+    <div class="cell company-cell">
       <div class="company-info">
-        <img :src="application.companyLogo" :alt="application.companyName" class="company-logo">
-        <span class="company-name">{{ application.companyName }}</span>
+        <div class="company-logo" :style="{ backgroundColor: application.logoBackground }">
+          <img :src="application.companyLogo" :alt="application.companyName" />
+        </div>
+        <span>{{ application.companyName }}</span>
       </div>
     </div>
-    <div class="col-role">{{ application.role }}</div>
-    <div class="col-date">{{ formattedDate }}</div>
-    <div class="col-status">
+    <div class="cell role-cell">{{ application.role }}</div>
+    <div class="cell date-cell">{{ application.dateApplied }}</div>
+    <div class="cell status-cell">
       <StatusBadge :status="application.status" />
     </div>
-    <div class="col-actions">
-      <div class="dropdown">
-        <button class="action-btn" data-bs-toggle="dropdown">
-          <i class="bi bi-three-dots"></i>
-        </button>
-        <ul class="dropdown-menu">
-          <li><a class="dropdown-item" href="#" @click.prevent="viewDetails">View Details</a></li>
-          <li v-if="canFollowUp"><a class="dropdown-item" href="#" @click.prevent="followUp">Follow Up</a></li>
-          <li><a class="dropdown-item" href="#" @click.prevent="withdraw">Withdraw</a></li>
-        </ul>
-      </div>
+    <div class="cell actions-cell">
+      <button class="action-button" @click.stop="$emit('action-menu')">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="1"></circle>
+          <circle cx="19" cy="12" r="1"></circle>
+          <circle cx="5" cy="12" r="1"></circle>
+        </svg>
+      </button>
     </div>
   </div>
 </template>
@@ -40,33 +43,9 @@ export default {
       type: Object,
       required: true
     },
-    index: {
-      type: Number,
-      required: true
-    }
-  },
-  computed: {
-    formattedDate() {
-      const date = new Date(this.application.dateApplied);
-      return date.toLocaleDateString('en-US', { 
-        day: 'numeric', 
-        month: 'short', 
-        year: 'numeric' 
-      });
-    },
-    canFollowUp() {
-      return this.application.status === 'In Review';
-    }
-  },
-  methods: {
-    viewDetails() {
-      this.$emit('view-details', this.application);
-    },
-    followUp() {
-      this.$emit('follow-up', this.application);
-    },
-    withdraw() {
-      this.$emit('withdraw', this.application);
+    isOdd: {
+      type: Boolean,
+      default: false
     }
   }
 };
@@ -74,27 +53,56 @@ export default {
 
 <style scoped>
 .table-row {
-  display: grid;
-  grid-template-columns: 60px 1fr 1fr 120px 120px 60px;
-  gap: 16px;
-  padding: 16px 20px;
-  border-bottom: 1px solid #f1f3f4;
-  align-items: center;
+  display: flex;
+  /* border-bottom: 1px solid #e0e0e0; */
+  background-color: white;
+  cursor: pointer;
   transition: background-color 0.2s ease;
 }
 
 .table-row:hover {
-  background-color: #f8f9fa;
+  background-color: #f8fafc;
 }
 
-.table-row:last-child {
-  border-bottom: none;
+.odd-row {
+  background-color: #F8F8FD;
 }
 
-.col-number {
+.odd-row:hover {
+  background-color: #f1f5f9;
+}
+
+.cell {
+  padding: 16px;
+  display: flex;
+  align-items: center;
   font-size: 14px;
-  color: #5f6368;
-  font-weight: 500;
+}
+
+.index-cell {
+  width: 5%;
+  justify-content: center;
+}
+
+.company-cell {
+  width: 25%;
+}
+
+.role-cell {
+  width: 25%;
+}
+
+.date-cell {
+  width: 20%;
+}
+
+.status-cell {
+  width: 20%;
+}
+
+.actions-cell {
+  width: 5%;
+  justify-content: center;
 }
 
 .company-info {
@@ -104,71 +112,31 @@ export default {
 }
 
 .company-logo {
-  width: 32px;
-  height: 32px;
-  border-radius: 6px;
-  object-fit: cover;
-}
-
-.company-name {
-  font-size: 14px;
-  font-weight: 500;
-  color: #202124;
-}
-
-.col-role {
-  font-size: 14px;
-  color: #5f6368;
-}
-
-.col-date {
-  font-size: 14px;
-  color: #5f6368;
-}
-
-.action-btn {
-  width: 32px;
-  height: 32px;
-  border: none;
-  background: none;
-  border-radius: 6px;
+  width: 50px;
+  height: 50px;
+  /* border-radius: 8px; */
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #5f6368;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
+  overflow: hidden;
 }
 
-.action-btn:hover {
-  background-color: #f1f3f4;
+.company-logo img {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+}
+
+.action-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #6b7280;
 }
 
 @media (max-width: 768px) {
   .table-row {
-    grid-template-columns: 1fr;
-    gap: 12px;
-    padding: 16px;
-    border: 1px solid #e8eaed;
-    border-radius: 8px;
-    margin-bottom: 12px;
-  }
-  
-  .table-row > div {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  
-  .col-number::before { content: "No: "; }
-  .col-company::before { content: "Company: "; }
-  .col-role::before { content: "Role: "; }
-  .col-date::before { content: "Applied: "; }
-  .col-status::before { content: "Status: "; }
-  
-  .table-row > div::before {
-    font-weight: 600;
-    color: #5f6368;
+    width: 800px;
   }
 }
 </style>

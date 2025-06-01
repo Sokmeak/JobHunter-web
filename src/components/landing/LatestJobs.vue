@@ -41,7 +41,7 @@
                   <div class="flex-grow-1">
                     <h5 class="card-title mb-1">{{ job.title }}</h5>
                     <p class="text-muted small mb-2">
-                      {{ job.company }} • {{ job.location }}
+                      {{ job.companyName }} • {{ job.location }}
                     </p>
 
                     <div class="d-flex flex-wrap gap-2 mb-3">

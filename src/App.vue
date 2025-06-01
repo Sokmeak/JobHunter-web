@@ -1,32 +1,20 @@
 <template>
-  <div>
-    <Transition name="loader-fade" mode="out-in">
-      <Loader
-        v-if="showLoader && appStore.isFirst"
-        :loading-duration="loaderDuration"
-      />
-    </Transition>
-    <RouterView />
-  </div>
+  <Transition name="loader-fade" mode="out-in">
+    <Loader v-if="showLoader" :loading-duration="loaderDuration" />
+  </Transition>
+  <RouterView />
 </template>
 
 <script setup>
 import { ref } from "vue";
 import Loader from "@/components/Loader.vue";
 
-import { useJobStore } from "@/stores/jobStore";
-import { useCompanyStore } from "@/stores/companyStore";
-import { useAppStore } from "@/stores/appStore"; // Import the new app store
-
 // State
 const showLoader = ref(true);
 
-const appStore = useAppStore(); // Use the app store for global state management
+// const appStore = useAppStore(); // Use the app store for global state management
 
 const loaderDuration = ref(2000); // Default duration
-
-const jobStore = useJobStore();
-const companyStore = useCompanyStore();
 
 // Initialize app
 const initApp = async () => {

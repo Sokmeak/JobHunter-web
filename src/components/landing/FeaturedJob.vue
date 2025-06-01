@@ -27,9 +27,7 @@
           v-for="job in displayedJobs"
           :key="job.id"
         >
-          <RouterLink :to="`/jobs/${job.id}`" class="job-link">
-            <JobCard :job="job" />
-          </RouterLink>
+          <JobCard :job="job" />
         </div>
       </div>
     </template>
@@ -51,8 +49,7 @@ const error = computed(() => jobStore.error);
 // Combine high-demand and latest jobs, ensuring uniqueness
 const displayedJobs = computed(() => {
   const combined = [
-    ...highDemandJobs.value.slice(0, 4), // Limit to 4 high-demand jobs
-    ...latestJobs.value.slice(0, 4), // Limit to 4 latest jobs
+    ...highDemandJobs.value.slice(0, 8), // Limit to 8 high-demand jobs // Limit to 4 latest jobs
   ];
   // Remove duplicates by job ID
   const uniqueJobs = Array.from(
@@ -66,7 +63,7 @@ onMounted(() => {
   if (!jobStore.jobs.length) {
     Promise.all([
       jobStore.fetchHighDemandHighSalaryJobs(),
-      jobStore.fetchLatestJobs(),
+      // jobStore.fetchLatestJobs(),
     ]);
   }
   console.log("High demand jobs:", highDemandJobs.value);
