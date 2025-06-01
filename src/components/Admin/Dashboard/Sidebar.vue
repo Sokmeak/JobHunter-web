@@ -7,9 +7,7 @@
         </router-link>
       </div> -->
     <div class="admin-content">
-      <div class="logo-container">
-        <PrimaryLogo></PrimaryLogo>
-      </div>
+      <PrimaryLogo :context="'/admin'" />
 
       <nav class="nav-menu">
         <ul>

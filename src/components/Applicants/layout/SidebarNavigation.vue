@@ -2,7 +2,7 @@
   <div>
     <div class="sidebar">
       <div class="sidebar-header">
-        <PrimaryLogo />
+        <PrimaryLogo :context="'/applicant'" />
       </div>
 
       <div class="nav-items">

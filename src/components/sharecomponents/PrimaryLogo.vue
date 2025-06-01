@@ -1,6 +1,6 @@
 <template>
   <router-link
-    to="/"
+    :to="context"
     class="d-flex align-items-center text-dark text-decoration-none gap-2"
   >
     <svg
@@ -56,6 +56,10 @@ export default {
   name: "PrimaryLogo",
   props: {
     brandColor: String,
+    context: {
+      type: String,
+      default: "/", // 'default' or 'dark'
+    },
   },
 };
 </script>

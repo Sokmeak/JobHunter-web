@@ -50,7 +50,7 @@
             </defs>
           </svg>
         </div>
-        <PrimaryLogo v-else class="ms-2" />
+        <PrimaryLogo v-else class="ms-2" :context="'/company'" />
       </div>
     </div>
 
