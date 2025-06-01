@@ -39,17 +39,17 @@ export default [
       },
       {
         path: "profile",
-        name: "Profile",
+        name: "Applicant-Profile",
         component: Profile,
       },
       {
-        path: "settings",
-        name: "Settings",
+        path: "applicant-settings",
+        name: "Applicant-Settings",
         component: Settings,
       },
 
       {
-        path: "help",
+        path: "applicant-help",
         name: "Help",
         component: HelpCenter,
 

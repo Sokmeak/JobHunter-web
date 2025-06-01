@@ -1,9 +1,6 @@
 <template>
   <div>
-    <div
-      class="sidebar"
-      
-    >
+    <div class="sidebar">
       <div class="sidebar-header">
         <PrimaryLogo />
       </div>
@@ -18,9 +15,7 @@
           :title="isCollapsed ? item.name : ''"
         >
           <i :class="['bi', `bi-${item.icon}`, 'nav-icon']"></i>
-          <span v-if="!isCollapsed" class="nav-text">{{
-            item.name
-          }}</span>
+          <span v-if="!isCollapsed" class="nav-text">{{ item.name }}</span>
           <span
             v-if="item.badge && !isCollapsed"
             class="badge rounded-pill bg-primary ms-auto nav-badge"
@@ -37,9 +32,7 @@
       </div>
 
       <div class="settings-section">
-        <div class="settings-header" v-if="!isCollapsed">
-          SETTINGS
-        </div>
+        <div class="settings-header" v-if="!isCollapsed">SETTINGS</div>
 
         <router-link
           v-for="item in bottomNavigation"
@@ -50,9 +43,7 @@
           :title="isCollapsed ? item.name : ''"
         >
           <i :class="['bi', `bi-${item.icon}`, 'nav-icon']"></i>
-          <span v-if="!isCollapsed" class="nav-text">{{
-            item.name
-          }}</span>
+          <span v-if="!isCollapsed" class="nav-text">{{ item.name }}</span>
         </router-link>
       </div>
 
@@ -86,10 +77,7 @@
               <div class="user-name">{{ user.name }}</div>
               <div class="user-email">{{ user.email }}</div>
             </div>
-            <i
-              v-if="!isCollapsed"
-              class="bi bi-chevron-up text-muted"
-            ></i>
+            <i v-if="!isCollapsed" class="bi bi-chevron-up text-muted"></i>
           </button>
 
           <ul class="dropdown-menu w-100 user-dropdown">
@@ -101,12 +89,16 @@
             </li>
             <li><hr class="dropdown-divider" /></li>
             <li>
-              <router-link class="dropdown-item" to="/applicant/settings"
+              <router-link
+                class="dropdown-item"
+                to="/applicant/applicant-settings"
                 ><i class="bi bi-person me-2"></i> My Profile</router-link
               >
             </li>
             <li>
-              <router-link class="dropdown-item" to="/applicant/settings"
+              <router-link
+                class="dropdown-item"
+                to="/applicant/applicant-settings"
                 ><i class="bi bi-gear me-2"></i> Settings</router-link
               >
             </li>
@@ -176,16 +168,20 @@ export default {
           icon: "building",
         },
         {
-          name: "My Public Profile",
+          name: "Profile",
           href: "/applicant/profile",
           icon: "person",
         },
       ],
       bottomNavigation: [
-        { name: "Settings", href: "/applicant/settings", icon: "gear" },
+        {
+          name: "Settings",
+          href: "/applicant/applicant-settings",
+          icon: "gear",
+        },
         {
           name: "Help Center",
-          href: "/applicant/help",
+          href: "/applicant/applicant-help",
           icon: "question-circle",
         },
       ],
