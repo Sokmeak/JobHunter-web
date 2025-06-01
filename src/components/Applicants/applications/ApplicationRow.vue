@@ -7,7 +7,7 @@
     <div class="cell index-cell">{{ application.id }}</div>
     <div class="cell company-cell">
       <div class="company-info">
-        <div class="company-logo" :style="{ backgroundColor: application.logoBackground }">
+        <div class="company-logo">
           <img :src="application.companyLogo" :alt="application.companyName" />
         </div>
         <span>{{ application.companyName }}</span>
@@ -122,8 +122,8 @@ export default {
 }
 
 .company-logo img {
-  width: 24px;
-  height: 24px;
+  width: 100%;
+  height: 100%;
   object-fit: contain;
 }
 

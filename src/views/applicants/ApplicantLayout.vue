@@ -3,9 +3,7 @@
     <!-- Sidebar -->
     <SidebarNavigation
       :user="user"
-      :is-mobile-menu-open="isMobileMenuOpen"
       :is-collapsed="isSidebarCollapsed"
-      @close-mobile-menu="closeMobileMenu"
       @toggle-collapse="toggleSidebarCollapse"
     />
 
@@ -22,17 +20,23 @@
         :show-back-button="showBackButton"
         :notification-count="notificationCount"
         :user="user"
-        @toggle-sidebar="toggleSidebar"
         @toggle-collapse="toggleSidebarCollapse"
       />
       <div class="content-wrapper">
-        <transition name="fade" mode="out-in">
-          <router-view
-            @update-page-title="updatePageTitle"
-            @update-back-button="updateBackButton"
-            :key="$route.fullPath"
-          />
-        </transition>
+        <router-view
+          v-slot="{ Component }"
+          @update-page-title="updatePageTitle"
+          @update-back-button="updateBackButton"
+        >
+          <transition name="fade" mode="out-in">
+            <component
+              :is="Component"
+              :key="$route.fullPath"
+              @update-page-title="updatePageTitle"
+              @update-back-button="updateBackButton"
+            />
+          </transition>
+        </router-view>
       </div>
     </div>
   </div>
@@ -58,8 +62,7 @@ export default {
       pageTitle: "Dashboard",
       showBackButton: false,
       notificationCount: 2,
-      isMobileMenuOpen: false,
-      isSidebarCollapsed: false,
+      isSidebarCollapsed: false, // Set to false to start expanded
       routeTitles: {
         "/applicant/dashboard": "Dashboard",
         "/applicant/messages": "Messages",
@@ -83,19 +86,15 @@ export default {
       this.showBackButton = to.path !== "/applicant/dashboard";
 
       console.log("Route changed, showBackButton set to:", this.showBackButton);
-
-      // Close mobile menu when route changes
-      if (this.isMobileMenuOpen) {
-        this.closeMobileMenu();
-      }
     },
   },
   mounted() {
-    // Load saved sidebar state from localStorage
-    const savedState = localStorage.getItem("sidebarCollapsed");
-    if (savedState !== null) {
-      this.isSidebarCollapsed = savedState === "true";
-    }
+    // Load saved sidebar state from localStorage (optional)
+    // Comment out if you want it to always start expanded
+    // const savedState = localStorage.getItem("sidebarCollapsed");
+    // if (savedState !== null) {
+    //   this.isSidebarCollapsed = savedState === "true";
+    // }
 
     // Set initial page title based on current route
     this.pageTitle = this.routeTitles[this.$route.path] || "Dashboard";
@@ -104,16 +103,8 @@ export default {
     this.showBackButton = this.$route.path !== "/applicant/dashboard";
     console.log("Initial showBackButton state:", this.showBackButton);
 
-    // Add event listener for screen size changes
-    window.addEventListener("resize", this.handleResize);
-    this.handleResize();
-
     // Load notifications (simulated)
     this.loadNotifications();
-  },
-  beforeUnmount() {
-    // Remove event listener
-    window.removeEventListener("resize", this.handleResize);
   },
   methods: {
     updatePageTitle(title) {
@@ -127,28 +118,12 @@ export default {
       console.log("updateBackButton called, new value:", show);
     },
 
-    toggleSidebar() {
-      this.isMobileMenuOpen = !this.isMobileMenuOpen;
-    },
-
-    closeMobileMenu() {
-      this.isMobileMenuOpen = false;
-    },
-
     toggleSidebarCollapse() {
       this.isSidebarCollapsed = !this.isSidebarCollapsed;
-      // Save state to localStorage
+      // Save state to localStorage (optional)
       localStorage.setItem("sidebarCollapsed", this.isSidebarCollapsed);
     },
-
-    handleResize() {
-      // Auto-close mobile menu on larger screens
-      if (window.innerWidth >= 992 && this.isMobileMenuOpen) {
-        this.isMobileMenuOpen = false;
-      }
-    },
-
-    loadNotifications() {
+        loadNotifications() {
       // Simulated API call to load notifications
       // In a real app, you would fetch this from your backend
       setTimeout(() => {
@@ -177,18 +152,18 @@ export default {
   min-width: 0; /* Prevents flex item from overflowing */
 }
 
-/* Sidebar states */
+/* Fixed sidebar states to match actual sidebar widths */
 .main-content.sidebar-expanded {
-  margin-left: 220px;
+  margin-left: 15rem; /* Match sidebar width: 15rem = 240px */
 }
 
 .main-content.sidebar-collapsed {
-  margin-left: 80px;
+  margin-left: 80px; /* Match collapsed sidebar width */
 }
 
 .content-wrapper {
   flex: 1;
-  padding: 24px;
+  padding: 24px 24px 24px 0px;
   overflow-y: auto;
   background-color: #ffffff;
 }
@@ -204,11 +179,19 @@ export default {
   opacity: 0;
 }
 
-/* Mobile responsiveness */
-@media (max-width: 991.98px) {
-  .main-content.sidebar-expanded,
-  .main-content.sidebar-collapsed {
-    margin-left: 0 !important;
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  // .main-content.sidebar-expanded,
+  // .main-content.sidebar-collapsed {
+  //   margin-left: 0;
+  // }
+  
+  .sidebar {
+    transform: translateX(-100%);
+  }
+  
+  .sidebar.show {
+    transform: translateX(0);
   }
 }
 </style>
