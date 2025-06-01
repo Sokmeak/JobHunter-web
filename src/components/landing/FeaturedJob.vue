@@ -1,5 +1,5 @@
 <template>
-  <div class="container py-5">
+  <div v-if="jobStore" class="container py-5">
     <div class="d-flex justify-content-between align-items-center mb-4">
       <h2 class="mb-0">Featured <span class="cyan-accent-color">jobs</span></h2>
       <RouterLink to="/jobs" class="text-decoration-none primary-color">
@@ -37,9 +37,9 @@
 import { RouterLink } from "vue-router";
 import JobCard from "./JobCard.vue";
 import { useJobStore } from "@/stores/jobStore";
-import { computed, onMounted } from "vue";
+import { computed, onMounted, ref } from "vue";
 
-const jobStore = useJobStore();
+const jobStore = ref(null);
 // Computed properties for better reactivity
 const highDemandJobs = computed(() => jobStore.highDemandJobs);
 const latestJobs = computed(() => jobStore.latestJobs);
@@ -60,6 +60,8 @@ const displayedJobs = computed(() => {
 
 // Fetch both job types on component mount
 onMounted(() => {
+  jobStore.value = useJobStore();
+
   if (!jobStore.jobs.length) {
     Promise.all([
       jobStore.fetchHighDemandHighSalaryJobs(),
