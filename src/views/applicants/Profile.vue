@@ -1,30 +1,36 @@
 <template>
   <div class="d-flex">
     <div class="container py-4">
-      <div class="row">
+      <div v-if="error" class="alert alert-danger">
+        {{ error }}
+      </div>
+      <div v-else-if="selectedProfile" class="row">
         <div class="col-md-8">
-          <profile-header :profile="profile" @update-profile="updateProfile" />
-          <about-me :about="profile.about" />
+          <profile-header
+            :profile="selectedProfile"
+            @update-profile="updateProfile"
+          />
+          <about-me :about="selectedProfile?.about" />
           <experience-section
-            :experiences="profile.experiences"
-            :more-count="profile.moreExperiences"
+            :experiences="selectedProfile?.experiences"
+            :more-count="selectedProfile?.moreExperiences"
             @add-experience="handleAddExperience"
             @update-experience="handleUpdateExperience"
             @delete-experience="handleDeleteExperience"
           />
           <education-section
-            :education="profile.education"
+            :education="selectedProfile?.education"
             @add-education="handleAddEducation"
             @update-education="handleUpdateEducation"
             @delete-education="handleDeleteEducation"
           />
           <skills-section
-            :skills="profile.skills"
+            :skills="selectedProfile?.skills"
             @add-skill="handleAddSkill"
             @remove-skill="handleRemoveSkill"
           />
           <portfolio-section
-            :portfolios="profile.portfolios"
+            :portfolios="selectedProfile?.portfolios"
             @add-portfolio="handleAddPortfolio"
             @edit-portfolio="handleEditPortfolio"
             @delete-portfolio="handleDeletePortfolio"
@@ -32,12 +38,12 @@
         </div>
         <div class="col-md-4">
           <additional-details
-            :email="profile.email"
-            :phone="profile.phone"
-            :languages="profile.languages"
+            :email="selectedProfile?.email"
+            :phone="selectedProfile?.phone"
+            :languages="selectedProfile?.languages"
           />
-          <SocialLinks
-            :social-links="profile.socialLinks"
+          <social-links
+            :social-links="selectedProfile?.socialLinks"
             @save-social-links="handleSocialLinksSave"
           />
         </div>
@@ -55,15 +61,13 @@ import SkillsSection from "@/components/Applicants/Profile/SkillsSection.vue";
 import PortfolioSection from "@/components/Applicants/Profile/PortfolioSection.vue";
 import AdditionalDetails from "@/components/Applicants/Profile/AdditionalDetails.vue";
 import SocialLinks from "@/components/Applicants/Profile/SocialLinks.vue";
-import DashboardHeader from "@/components/Applicants/layout/DashboardHeader.vue";
-import { userStore } from "@/stores/ApplicantStore/userProfile.js";
+import { useUserProfileStore } from "@/stores/ApplicantStore/userProfile";
 
 export default {
   name: "App",
   components: {
     ProfileHeader,
     AboutMe,
-    DashboardHeader,
     ExperienceSection,
     EducationSection,
     SkillsSection,
@@ -72,94 +76,341 @@ export default {
     SocialLinks,
   },
 
-  data() {
-    return {
-      profile: userStore.getUserProfile(),
-    };
+  setup() {
+    const userProfileStore = useUserProfileStore();
+    return { userProfileStore };
+  },
+
+  async created() {
+    await this.userProfileStore.fetchAllProfiles();
+    if (this.userProfileStore.userProfiles.length > 0) {
+      await this.userProfileStore.fetchProfileByUserId(
+        this.userProfileStore.userProfiles[0].userId
+      );
+      console.log("Fetched profile:", this.userProfileStore.selectedProfile);
+    } else {
+      console.warn("No profiles available");
+      this.userProfileStore.error =
+        "No profiles available. Please add a profile.";
+    }
+  },
+
+  computed: {
+    selectedProfile() {
+      return this.userProfileStore.selectedProfile;
+    },
+    error() {
+      return this.userProfileStore.error;
+    },
   },
 
   methods: {
-    updateProfile(updatedProfile) {
-      this.profile = { ...this.profile, ...updatedProfile };
-      userStore.updateUserProfile(this.profile);
-    },
-
-    handleAddEducation(educationData) {
-      this.profile.education.unshift(educationData);
-      userStore.updateUserProfile(this.profile);
-      console.log("Added education:", educationData);
-    },
-
-    handleUpdateEducation(index, educationData) {
-      this.profile.education.splice(index, 1, educationData);
-      userStore.updateUserProfile(this.profile);
-      console.log("Updated education at index", index, ":", educationData);
-    },
-
-    handleDeleteEducation(index) {
-      this.profile.education.splice(index, 1);
-      userStore.updateUserProfile(this.profile);
-      console.log("Deleted education at index:", index);
-    },
-
-    handleAddSkill(skill) {
-      if (!this.profile.skills.includes(skill)) {
-        this.profile.skills.push(skill);
-        userStore.updateUserProfile(this.profile);
-        console.log("Added skill:", skill);
+    async updateProfile(updatedProfile) {
+      if (this.selectedProfile?.userId) {
+        const success = await this.userProfileStore.updateUserProfile(
+          this.selectedProfile.userId,
+          updatedProfile
+        );
+        if (success) {
+          console.log("Updated profile:", updatedProfile);
+        } else {
+          console.error(
+            "Failed to update profile:",
+            this.userProfileStore.error
+          );
+        }
       }
     },
 
-    handleRemoveSkill(index) {
-      if (index >= 0 && index < this.profile.skills.length) {
-        const removedSkill = this.profile.skills.splice(index, 1)[0];
-        userStore.updateUserProfile(this.profile);
-        console.log("Removed skill:", removedSkill);
-      }
-    },
-        handleAddPortfolio(portfolioData) {
-      this.profile.portfolios.unshift(portfolioData);
-      userStore.updateUserProfile(this.profile);
-      console.log("Added portfolio:", portfolioData);
-    },
-
-    handleEditPortfolio(index) {
-      console.log(
-        "Edit portfolio at index:",
-        index,
-        this.profile.portfolios[index]
-      );
-    },
-
-    handleDeletePortfolio(index) {
-      if (index >= 0 && index < this.profile.portfolios.length) {
-        const removedPortfolio = this.profile.portfolios.splice(index, 1)[0];
-        userStore.updateUserProfile(this.profile);
-        console.log("Removed portfolio:", removedPortfolio);
+    async handleAddEducation(educationData) {
+      if (this.selectedProfile?.userId) {
+        const updatedEducation = [
+          ...(this.selectedProfile.education || []),
+          { ...educationData, id: Date.now() },
+        ];
+        const success = await this.userProfileStore.updateUserProfile(
+          this.selectedProfile.userId,
+          {
+            education: updatedEducation,
+          }
+        );
+        if (success) {
+          console.log("Added education:", educationData);
+        } else {
+          console.error(
+            "Failed to add education:",
+            this.userProfileStore.error
+          );
+        }
       }
     },
 
-    handleSocialLinksSave(updatedLinks) {
-      this.profile.socialLinks = updatedLinks;
-      userStore.updateUserProfile(this.profile);
+    async handleUpdateEducation(index, educationData) {
+      if (
+        this.selectedProfile?.userId &&
+        index >= 0 &&
+        index < this.selectedProfile.education.length
+      ) {
+        const updatedEducation = [...this.selectedProfile.education];
+        updatedEducation.splice(index, 1, educationData);
+        const success = await this.userProfileStore.updateUserProfile(
+          this.selectedProfile.userId,
+          {
+            education: updatedEducation,
+          }
+        );
+        if (success) {
+          console.log("Updated education at index", index, ":", educationData);
+        } else {
+          console.error(
+            "Failed to update education:",
+            this.userProfileStore.error
+          );
+        }
+      }
     },
 
-    handleAddExperience(experienceData) {
-      this.profile.experiences.unshift(experienceData);
-      userStore.updateUserProfile(this.profile);
-      console.log("Added experience:", experienceData);
+    async handleDeleteEducation(index) {
+      if (
+        this.selectedProfile?.userId &&
+        index >= 0 &&
+        index < this.selectedProfile.education.length
+      ) {
+        const updatedEducation = [...this.selectedProfile.education];
+        updatedEducation.splice(index, 1);
+        const success = await this.userProfileStore.updateUserProfile(
+          this.selectedProfile.userId,
+          {
+            education: updatedEducation,
+          }
+        );
+        if (success) {
+          console.log("Deleted education at index:", index);
+        } else {
+          console.error(
+            "Failed to delete education:",
+            this.userProfileStore.error
+          );
+        }
+      }
     },
 
-    handleUpdateExperience(index, experienceData) {
-      this.profile.experiences.splice(index, 1, experienceData);
-      userStore.updateUserProfile(this.profile);
-      console.log("Updated experience at index", index, ":", experienceData);
+    async handleAddSkill(skill) {
+      if (
+        this.selectedProfile?.userId &&
+        skill &&
+        !this.selectedProfile.skills.includes(skill)
+      ) {
+        const updatedSkills = [...(this.selectedProfile.skills || []), skill];
+        const success = await this.userProfileStore.updateUserProfile(
+          this.selectedProfile.userId,
+          {
+            skills: updatedSkills,
+          }
+        );
+        if (success) {
+          console.log("Added skill:", skill);
+        } else {
+          console.error("Failed to add skill:", this.userProfileStore.error);
+        }
+      }
     },
 
-    handleDeleteExperience(index) {
-      this.profile.experiences.splice(index, 1);
-      userStore.updateUserProfile(this.profile);
-      console.log("Deleted experience at index:", index);
+    async handleRemoveSkill(index) {
+      if (
+        this.selectedProfile?.userId &&
+        Number.isInteger(index) &&
+        index >= 0 &&
+        index < this.selectedProfile.skills.length
+      ) {
+        const updatedSkills = [...this.selectedProfile.skills];
+        const removedSkill = updatedSkills.splice(index, 1)[0];
+        const success = await this.userProfileStore.updateUserProfile(
+          this.selectedProfile.userId,
+          {
+            skills: updatedSkills,
+          }
+        );
+        if (success) {
+          console.log("Removed skill:", removedSkill);
+        } else {
+          console.error("Failed to remove skill:", this.userProfileStore.error);
+        }
+      } else {
+        console.error("Invalid skill index or no profile selected:", index);
+        this.userProfileStore.error =
+          "Cannot remove skill: Invalid index or no profile selected";
+      }
+    },
+
+    async handleAddPortfolio(portfolioData) {
+      if (this.selectedProfile?.userId) {
+        const updatedPortfolios = [
+          ...(this.selectedProfile.portfolios || []),
+          { ...portfolioData, id: Date.now() },
+        ];
+        const success = await this.userProfileStore.updateUserProfile(
+          this.selectedProfile.userId,
+          {
+            portfolios: updatedPortfolios,
+          }
+        );
+        if (success) {
+          console.log("Added portfolio:", portfolioData);
+        } else {
+          console.error(
+            "Failed to add portfolio:",
+            this.userProfileStore.error
+          );
+        }
+      }
+    },
+
+    async handleEditPortfolio(index, portfolioData) {
+      if (
+        this.selectedProfile?.userId &&
+        index >= 0 &&
+        index < this.selectedProfile.portfolios.length
+      ) {
+        const updatedPortfolios = [...this.selectedProfile.portfolios];
+        updatedPortfolios.splice(index, 1, portfolioData);
+        const success = await this.userProfileStore.updateUserProfile(
+          this.selectedProfile.userId,
+          {
+            portfolios: updatedPortfolios,
+          }
+        );
+        if (success) {
+          console.log("Updated portfolio at index:", index, portfolioData);
+        } else {
+          console.error(
+            "Failed to update portfolio:",
+            this.userProfileStore.error
+          );
+        }
+      }
+    },
+
+    async handleDeletePortfolio(index) {
+      if (
+        this.selectedProfile?.userId &&
+        index >= 0 &&
+        index < this.selectedProfile.portfolios.length
+      ) {
+        const updatedPortfolios = [...this.selectedProfile.portfolios];
+        const removedPortfolio = updatedPortfolios.splice(index, 1)[0];
+        const success = await this.userProfileStore.updateUserProfile(
+          this.selectedProfile.userId,
+          {
+            portfolios: updatedPortfolios,
+          }
+        );
+        if (success) {
+          console.log("Deleted portfolio:", removedPortfolio);
+        } else {
+          console.error(
+            "Failed to delete portfolio:",
+            this.userProfileStore.error
+          );
+        }
+      }
+    },
+
+    async handleSocialLinksSave(updatedLinks) {
+      if (this.selectedProfile?.userId) {
+        const success = await this.userProfileStore.updateUserProfile(
+          this.selectedProfile.userId,
+          {
+            socialLinks: updatedLinks,
+          }
+        );
+        if (success) {
+          console.log("Updated social links:", updatedLinks);
+        } else {
+          console.error(
+            "Failed to update social links:",
+            this.userProfileStore.error
+          );
+        }
+      }
+    },
+
+    async handleAddExperience(experienceData) {
+      if (this.selectedProfile?.userId) {
+        const updatedExperiences = [
+          ...(this.selectedProfile.experiences || []),
+          { ...experienceData, id: Date.now() },
+        ];
+        const success = await this.userProfileStore.updateUserProfile(
+          this.selectedProfile.userId,
+          {
+            experiences: updatedExperiences,
+          }
+        );
+        if (success) {
+          console.log("Added experience:", experienceData);
+        } else {
+          console.error(
+            "Failed to add experience:",
+            this.userProfileStore.error
+          );
+        }
+      }
+    },
+
+    async handleUpdateExperience(index, experienceData) {
+      if (
+        this.selectedProfile?.userId &&
+        index >= 0 &&
+        index < this.selectedProfile.experiences.length
+      ) {
+        const updatedExperiences = [...this.selectedProfile.experiences];
+        updatedExperiences.splice(index, 1, experienceData);
+        const success = await this.userProfileStore.updateUserProfile(
+          this.selectedProfile.userId,
+          {
+            experiences: updatedExperiences,
+          }
+        );
+        if (success) {
+          console.log(
+            "Updated experience at index",
+            index,
+            ":",
+            experienceData
+          );
+        } else {
+          console.error(
+            "Failed to update experience:",
+            this.userProfileStore.error
+          );
+        }
+      }
+    },
+
+    async handleDeleteExperience(index) {
+      if (
+        this.selectedProfile?.userId &&
+        index >= 0 &&
+        index < this.selectedProfile.experiences.length
+      ) {
+        const updatedExperiences = [...this.selectedProfile.experiences];
+        updatedExperiences.splice(index, 1);
+        const success = await this.userProfileStore.updateUserProfile(
+          this.selectedProfile.userId,
+          {
+            experiences: updatedExperiences,
+          }
+        );
+        if (success) {
+          console.log("Deleted experience at index:", index);
+        } else {
+          console.error(
+            "Failed to delete experience:",
+            this.userProfileStore.error
+          );
+        }
+      }
     },
   },
 };

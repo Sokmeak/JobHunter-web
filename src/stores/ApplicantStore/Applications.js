@@ -1,16 +1,23 @@
-export const applicationsData = [
+// import { ref, defineStore } from "vue";
+
+// Mock application data
+
+import { ref } from "vue";
+import { defineStore } from "pinia";
+const mockApplications = [
   {
+    userId: 0,
     id: 1,
     companyName: "Nomad",
     companyLogo: "https://logo.clearbit.com/nomadlist.com",
     logoBackground: "#e6f7f0",
     role: "Social Media Assistant",
-    jobTitle: "Social Media Assistant", // Added for dashboard compatibility
+    jobTitle: "Social Media Assistant",
     dateApplied: "24 May 2025",
-    status: "In Review",
+    status: "Interviewed",
     location: "Remote",
     employmentType: "Full-time",
-    jobType: "Full-Time", // Added for dashboard compatibility
+    jobType: "Full-Time",
     salaryRange: "$40,000 - $60,000",
     jobDescription:
       "We are looking for a creative and enthusiastic Social Media Assistant to join our marketing team. You will be responsible for creating engaging content, managing social media accounts, and analyzing performance metrics.",
@@ -55,177 +62,27 @@ export const applicationsData = [
     },
   },
   {
+    userId: 0,
     id: 2,
-    companyName: "Udacity",
-    companyLogo: "https://logo.clearbit.com/udacity.com",
-    logoBackground: "#e6f7ff",
-    role: "Frontend Developer",
-    jobTitle: "Frontend Developer",
-    dateApplied: "23 May 2025",
-    status: "Shortlisted",
+    companyName: "TechTrend Innovations",
+    companyLogo: "https://logo.clearbit.com/techtrend.com",
+    logoBackground: "#f0e6f7",
+    role: "Software Engineer",
+    jobTitle: "Software Engineer",
+    dateApplied: "20 May 2025",
+    status: "Interviewing",
     location: "San Francisco, CA",
     employmentType: "Full-time",
     jobType: "Full-Time",
-    salaryRange: "$45,000 - $65,000",
+    salaryRange: "$90,000 - $120,000",
     jobDescription:
-      "Join our dynamic development team as a Frontend Developer. You'll help create compelling user interfaces and manage our web applications.",
+      "Join our engineering team to develop cutting-edge software solutions. You will design, code, and test applications to meet client needs and improve system efficiency.",
     requirements: [
       "Bachelor's degree in Computer Science or related field",
-      "3+ years of frontend development experience",
-      "Proficiency in React, Vue.js, or Angular",
-      "Knowledge of modern JavaScript (ES6+)",
-      "Understanding of responsive design principles",
-    ],
-    timeline: [
-      {
-        title: "Application Submitted",
-        date: "23 May 2025",
-        description: "Your application has been successfully submitted.",
-        completed: true,
-      },
-      {
-        title: "Application Reviewed",
-        date: "24 May 2025",
-        description: "Your application has been reviewed and shortlisted.",
-        completed: true,
-      },
-      {
-        title: "Technical Interview Scheduled",
-        date: "28 May 2025",
-        description: "Technical interview scheduled.",
-        completed: false,
-      },
-    ],
-    recruiter: {
-      name: "Mike Chen",
-      role: "Talent Acquisition Specialist",
-      email: "mike.chen@udacity.com",
-      avatar: "https://v0.dev/placeholder.svg?height=50&width=50",
-    },
-  },
-  {
-    id: 3,
-    companyName: "Packer",
-    companyLogo: "https://logo.clearbit.com/packer.io",
-    logoBackground: "#fff0f5",
-    role: "UI/UX Designer",
-    jobTitle: "UI/UX Designer",
-    dateApplied: "22 May 2025",
-    status: "Declined",
-    location: "Madrid, Spain",
-    employmentType: "Full-time",
-    jobType: "Full-Time",
-    salaryRange: "$50,000 - $70,000",
-    jobDescription:
-      "We are hiring a UI/UX Designer to create intuitive and beautiful user experiences for our products.",
-    requirements: [
-      "Bachelor's in Design or related field",
-      "3+ years of UI/UX design experience",
-      "Proficiency in Figma, Sketch, or Adobe XD",
-      "Strong portfolio demonstrating design skills",
-      "Understanding of user-centered design principles",
-    ],
-    timeline: [
-      {
-        title: "Application Submitted",
-        date: "22 May 2025",
-        description: "Application submitted to Packer.",
-        completed: true,
-      },
-      {
-        title: "Portfolio Review",
-        date: "23 May 2025",
-        description: "Design portfolio reviewed by the team.",
-        completed: true,
-      },
-      {
-        title: "Application Declined",
-        date: "24 May 2025",
-        description: "Application was not selected for this position.",
-        completed: true,
-      },
-    ],
-    recruiter: {
-      name: "James Lee",
-      role: "Design Manager",
-      email: "james.lee@packer.com",
-      avatar: "https://v0.dev/placeholder.svg?height=50&width=50",
-    },
-  },
-  {
-    id: 4,
-    companyName: "Stripe",
-    companyLogo: "https://logo.clearbit.com/stripe.com",
-    logoBackground: "#fffbe6",
-    role: "Product Manager",
-    jobTitle: "Product Manager",
-    dateApplied: "21 May 2025",
-    status: "Interviewed",
-    location: "Remote",
-    employmentType: "Full-time",
-    jobType: "Full-Time",
-    salaryRange: "$80,000 - $100,000",
-    salary: "$80,000 - $100,000",
-    priority: "high",
-    jobDescription:
-      "Lead product strategy and development for our payment solutions platform.",
-    requirements: [
-      "Bachelor's degree in Business or related field",
-      "5+ years of product management experience",
-      "Experience with fintech or payment systems",
-      "Strong analytical and strategic thinking skills",
-      "Excellent communication and leadership abilities",
-    ],
-    timeline: [
-      {
-        title: "Application Submitted",
-        date: "21 May 2025",
-        description: "You applied for the Product Manager role.",
-        completed: true,
-      },
-      {
-        title: "Phone Interview",
-        date: "23 May 2025",
-        description: "Initial phone interview completed.",
-        completed: true,
-      },
-      {
-        title: "Final Interview Scheduled",
-        date: "28 May 2025",
-        description: "Final interview with leadership team.",
-        completed: false,
-      },
-    ],
-    recruiter: {
-      name: "Anna Wells",
-      role: "Senior Recruiter",
-      email: "anna.wells@stripe.com",
-      avatar: "https://v0.dev/placeholder.svg?height=50&width=50",
-    },
-  },
-  {
-    id: 5,
-    companyName: "GitHub",
-    companyLogo: "https://logo.clearbit.com/github.com",
-    logoBackground: "#e0f7fa",
-    role: "Backend Developer",
-    jobTitle: "Backend Developer",
-    dateApplied: "20 May 2025",
-    status: "In Review",
-    location: "San Francisco, CA",
-    employmentType: "Full-time",
-    jobType: "Full-Time",
-    salaryRange: "$85,000 - $110,000",
-    salary: "$85,000 - $110,000",
-    priority: "medium",
-    jobDescription:
-      "Build and maintain scalable backend systems for millions of developers worldwide.",
-    requirements: [
-      "Bachelor's in Computer Science or equivalent",
-      "4+ years of backend development experience",
-      "Proficiency in Node.js, Python, or Go",
-      "Experience with databases and microservices",
-      "Knowledge of cloud platforms (AWS, GCP, Azure)",
+      "3+ years of experience in software development",
+      "Proficiency in JavaScript, Python, and React",
+      "Experience with cloud platforms (AWS, Azure)",
+      "Strong problem-solving skills",
     ],
     timeline: [
       {
@@ -235,220 +92,530 @@ export const applicationsData = [
         completed: true,
       },
       {
-        title: "Initial Review",
+        title: "Application Under Review",
         date: "21 May 2025",
-        description: "Application is being reviewed by our technical team.",
+        description: "Our team is currently reviewing your application.",
         completed: true,
+      },
+      {
+        title: "Phone Screening",
+        date: "28 May 2025",
+        description: "Initial phone screening with HR team.",
+        completed: true,
+      },
+      {
+        title: "Technical Interview",
+        date: "2 Jun 2025",
+        description: "Technical interview with the hiring manager.",
+        completed: false,
       },
     ],
     recruiter: {
-      name: "John Smith",
-      role: "Technical Recruiter",
-      email: "john@github.com",
+      name: "Michael Lee",
+      role: "Recruitment Specialist",
+      email: "michael.lee@techtrend.com",
       avatar: "https://v0.dev/placeholder.svg?height=50&width=50",
     },
   },
   {
-    id: 6,
-    companyName: "Divvy",
-    companyLogo: "https://v0.dev/placeholder.svg?height=40&width=40",
-    logoBackground: "#fffbe6",
-    role: "Social Media Assistant",
-    jobTitle: "Social Media Assistant",
-    dateApplied: "19 May 2025",
-    status: "Unsuitable",
+    userId: 0,
+    id: 3,
+    companyName: "GreenWave Solutions",
+    companyLogo: "https://logo.clearbit.com/greenwave.com",
+    logoBackground: "#e6f0e8",
+    role: "Data Analyst",
+    jobTitle: "Data Analyst",
+    dateApplied: "15 May 2025",
+    status: "Offered",
+    location: "New York, NY",
+    employmentType: "Full-time",
+    jobType: "Full-Time",
+    salaryRange: "$70,000 - $90,000",
+    jobDescription:
+      "Analyze large datasets to provide actionable insights for business growth. Collaborate with teams to develop reports and dashboards for strategic decision-making.",
+    requirements: [
+      "Bachelor's degree in Statistics, Data Science, or related field",
+      "2+ years of experience in data analysis",
+      "Proficiency in SQL, Python, and Tableau",
+      "Strong analytical and communication skills",
+      "Experience with data visualization tools",
+    ],
+    timeline: [
+      {
+        title: "Application Submitted",
+        date: "15 May 2025",
+        description: "Your application has been successfully submitted.",
+        completed: true,
+      },
+      {
+        title: "Application Under Review",
+        date: "16 May 2025",
+        description: "Our team is currently reviewing your application.",
+        completed: true,
+      },
+      {
+        title: "Phone Screening",
+        date: "20 May 2025",
+        description: "Initial phone screening with HR team.",
+        completed: true,
+      },
+      {
+        title: "Offer Extended",
+        date: "28 May 2025",
+        description: "An offer has been extended for your consideration.",
+        completed: true,
+      },
+    ],
+    recruiter: {
+      name: "Emily Davis",
+      role: "HR Coordinator",
+      email: "emily.davis@greenwave.com",
+      avatar: "https://v0.dev/placeholder.svg?height=50&width=50",
+    },
+  },
+  {
+    userId: 0,
+    id: 4,
+    companyName: "CloudPeak Inc.",
+    companyLogo: "https://logo.clearbit.com/cloudpeak.com",
+    logoBackground: "#f7f0e6",
+    role: "DevOps Engineer",
+    jobTitle: "DevOps Engineer",
+    dateApplied: "10 May 2025",
+    status: "In Review",
     location: "Remote",
     employmentType: "Full-time",
     jobType: "Full-Time",
-    salaryRange: "$48,000 - $68,000",
+    salaryRange: "$100,000 - $130,000",
     jobDescription:
-      "Join our team to lead community engagement and manage our social media strategy across platforms.",
+      "Support our infrastructure by automating deployments and managing cloud environments. Work with development teams to ensure smooth and reliable releases.",
     requirements: [
-      "Bachelor's degree in a related field",
-      "2+ years experience managing brand channels",
-      "Ability to run A/B tests and evaluate impact",
-      "Creative and analytical thinker",
-      "Excellent time management skills",
+      "Bachelor's degree in Computer Science or related field",
+      "3+ years of experience in DevOps or systems engineering",
+      "Proficiency in Docker, Kubernetes, and AWS",
+      "Experience with CI/CD pipelines",
+      "Strong scripting skills (Bash, Python)",
+    ],
+    timeline: [
+      {
+        title: "Application Submitted",
+        date: "10 May 2025",
+        description: "Your application has been successfully submitted.",
+        completed: true,
+      },
+      {
+        title: "Application Under Review",
+        date: "11 May 2025",
+        description: "Our team is currently reviewing your application.",
+        completed: true,
+      },
+      {
+        title: "Phone Screening",
+        date: "Pending",
+        description: "Initial phone screening with HR team.",
+        completed: false,
+      },
+      {
+        title: "Technical Interview",
+        date: "Pending",
+        description: "Technical interview with the hiring manager.",
+        completed: false,
+      },
+    ],
+    recruiter: {
+      name: "James Carter",
+      role: "Senior Recruiter",
+      email: "james.carter@cloudpeak.com",
+      avatar: "https://v0.dev/placeholder.svg?height=50&width=50",
+    },
+  },
+  {
+    userId: 0,
+    id: 5,
+    companyName: "BrightFuture Tech",
+    companyLogo: "https://logo.clearbit.com/brightfuture.com",
+    logoBackground: "#e6e9f7",
+    role: "UX Designer",
+    jobTitle: "UX Designer",
+    dateApplied: "18 May 2025",
+    status: "Hired",
+    location: "Austin, TX",
+    employmentType: "Full-time",
+    jobType: "Full-Time",
+    salaryRange: "$80,000 - $100,000",
+    jobDescription:
+      "Design user-friendly interfaces for web and mobile applications. Conduct user research and create wireframes to enhance user experience.",
+    requirements: [
+      "Bachelor's degree in Design, HCI, or related field",
+      "3+ years of experience in UX design",
+      "Proficiency in Figma, Sketch, and Adobe XD",
+      "Experience with user research and usability testing",
+      "Strong portfolio of design projects",
+    ],
+    timeline: [
+      {
+        title: "Application Submitted",
+        date: "18 May 2025",
+        description: "Your application has been successfully submitted.",
+        completed: true,
+      },
+      {
+        title: "Application Under Review",
+        date: "19 May 2025",
+        description: "Our team is currently reviewing your application.",
+        completed: true,
+      },
+      {
+        title: "Application Rejected",
+        date: "25 May 2025",
+        description:
+          "We regret to inform you that your application was not selected.",
+        completed: true,
+      },
+    ],
+    recruiter: {
+      name: "Lisa Nguyen",
+      role: "HR Manager",
+      email: "lisa.nguyen@brightfuture.com",
+      avatar: "https://v0.dev/placeholder.svg?height=50&width=50",
+    },
+  },
+  {
+    userId: 0,
+    id: 6,
+    companyName: "EcoEnergy Corp",
+    companyLogo: "https://logo.clearbit.com/ecoenergy.com",
+    logoBackground: "#e6f7e9",
+    role: "Project Manager",
+    jobTitle: "Project Manager",
+    dateApplied: "22 May 2025",
+    status: "Hired",
+    location: "Chicago, IL",
+    employmentType: "Full-time",
+    jobType: "Full-Time",
+    salaryRange: "$85,000 - $110,000",
+    jobDescription:
+      "Lead renewable energy projects from planning to execution. Coordinate with cross-functional teams to ensure timely delivery and budget compliance.",
+    requirements: [
+      "Bachelor's degree in Business, Engineering, or related field",
+      "5+ years of project management experience",
+      "PMP or similar certification preferred",
+      "Strong leadership and communication skills",
+      "Experience with project management tools (Jira, Trello)",
+    ],
+    timeline: [
+      {
+        title: "Application Submitted",
+        date: "22 May 2025",
+        description: "Your application has been successfully submitted.",
+        completed: true,
+      },
+      {
+        title: "Application Under Review",
+        date: "23 May 2025",
+        description: "Our team is currently reviewing your application.",
+        completed: true,
+      },
+      {
+        title: "Phone Screening",
+        date: "Pending",
+        description: "Initial phone screening with HR team.",
+        completed: false,
+      },
+      {
+        title: "Interview",
+        date: "Pending",
+        description: "Interview with the project management team.",
+        completed: false,
+      },
+    ],
+    recruiter: {
+      name: "Robert Kim",
+      role: "Recruitment Lead",
+      email: "robert.kim@ecoenergy.com",
+      avatar: "https://v0.dev/placeholder.svg?height=50&width=50",
+    },
+  },
+  {
+    userId: 0,
+    id: 7,
+    companyName: "HealthSync",
+    companyLogo: "https://logo.clearbit.com/healthsync.com",
+    logoBackground: "#f7e6e6",
+    role: "Product Manager",
+    jobTitle: "Product Manager",
+    dateApplied: "17 May 2025",
+    status: "Interviewing",
+    location: "Remote",
+    employmentType: "Full-time",
+    jobType: "Full-Time",
+    salaryRange: "$95,000 - $125,000",
+    jobDescription:
+      "Drive the development of healthcare software products. Collaborate with engineering, design, and marketing teams to deliver innovative solutions.",
+    requirements: [
+      "Bachelor's degree in Business, Computer Science, or related field",
+      "4+ years of product management experience",
+      "Experience in healthcare or SaaS products",
+      "Strong analytical and problem-solving skills",
+      "Proficiency in Agile methodologies",
+    ],
+    timeline: [
+      {
+        title: "Application Submitted",
+        date: "17 May 2025",
+        description: "Your application has been successfully submitted.",
+        completed: true,
+      },
+      {
+        title: "Application Under Review",
+        date: "18 May 2025",
+        description: "Our team is currently reviewing your application.",
+        completed: true,
+      },
+      {
+        title: "Phone Screening",
+        date: "22 May 2025",
+        description: "Initial phone screening with HR team.",
+        completed: true,
+      },
+      {
+        title: "Interview",
+        date: "31 May 2025",
+        description: "Interview with the product team.",
+        completed: false,
+      },
+    ],
+    recruiter: {
+      name: "Anna Patel",
+      role: "HR Specialist",
+      email: "anna.patel@healthsync.com",
+      avatar: "https://v0.dev/placeholder.svg?height=50&width=50",
+    },
+  },
+  {
+    userId: 0,
+    id: 8,
+    companyName: "FinTech Solutions",
+    companyLogo: "https://logo.clearbit.com/fintechsolutions.com",
+    logoBackground: "#e6f0f7",
+    role: "Financial Analyst",
+    jobTitle: "Financial Analyst",
+    dateApplied: "14 May 2025",
+    status: "Interviewed",
+    location: "Boston, MA",
+    employmentType: "Full-time",
+    jobType: "Full-Time",
+    salaryRange: "$65,000 - $85,000",
+    jobDescription:
+      "Analyze financial data to support strategic decisions. Prepare reports, forecasts, and models to guide investment and business planning.",
+    requirements: [
+      "Bachelor's degree in Finance, Economics, or related field",
+      "2+ years of experience in financial analysis",
+      "Proficiency in Excel and financial modeling",
+      "Strong analytical and communication skills",
+      "CFA or CPA certification is a plus",
+    ],
+    timeline: [
+      {
+        title: "Application Submitted",
+        date: "14 May 2025",
+        description: "Your application has been successfully submitted.",
+        completed: true,
+      },
+      {
+        title: "Application Under Review",
+        date: "15 May 2025",
+        description: "Our team is currently reviewing your application.",
+        completed: true,
+      },
+      {
+        title: "Phone Screening",
+        date: "Pending",
+        description: "Initial phone screening with HR team.",
+        completed: false,
+      },
+      {
+        title: "Interview",
+        date: "Pending",
+        description: "Interview with the finance team.",
+        completed: false,
+      },
+    ],
+    recruiter: {
+      name: "David Brown",
+      role: "Recruitment Manager",
+      email: "david.brown@fintechsolutions.com",
+      avatar: "https://v0.dev/placeholder.svg?height=50&width=50",
+    },
+  },
+  {
+    userId: 0,
+    id: 9,
+    companyName: "CreativeLabs",
+    companyLogo: "https://logo.clearbit.com/creativelabs.com",
+    logoBackground: "#f7e6f0",
+    role: "Graphic Designer",
+    jobTitle: "Graphic Designer",
+    dateApplied: "21 May 2025",
+    status: "In Review",
+    location: "Los Angeles, CA",
+    employmentType: "Contract",
+    jobType: "Contract",
+    salaryRange: "$50,000 - $70,000",
+    jobDescription:
+      "Create visually stunning graphics for marketing campaigns, websites, and branding materials. Collaborate with the creative team to bring concepts to life.",
+    requirements: [
+      "Bachelor's degree in Graphic Design or related field",
+      "3+ years of experience in graphic design",
+      "Proficiency in Adobe Creative Suite (Photoshop, Illustrator, InDesign)",
+      "Strong portfolio showcasing design skills",
+      "Ability to work under tight deadlines",
+    ],
+    timeline: [
+      {
+        title: "Application Submitted",
+        date: "21 May 2025",
+        description: "Your application has been successfully submitted.",
+        completed: true,
+      },
+      {
+        title: "Application Under Review",
+        date: "22 May 2025",
+        description: "Our team is currently reviewing your application.",
+        completed: true,
+      },
+      {
+        title: "Phone Screening",
+        date: "Pending",
+        description: "Initial phone screening with HR team.",
+        completed: false,
+      },
+      {
+        title: "Portfolio Review",
+        date: "Pending",
+        description: "Review of your design portfolio by the creative team.",
+        completed: false,
+      },
+    ],
+    recruiter: {
+      name: "Olivia Smith",
+      role: "HR Coordinator",
+      email: "olivia.smith@creativelabs.com",
+      avatar: "https://v0.dev/placeholder.svg?height=50&width=50",
+    },
+  },
+  {
+    userId: 0,
+    id: 10,
+    companyName: "DataCore Analytics",
+    companyLogo: "https://logo.clearbit.com/datacore.com",
+    logoBackground: "#e6e6f7",
+    role: "Machine Learning Engineer",
+    jobTitle: "Machine Learning Engineer",
+    dateApplied: "19 May 2025",
+    status: "Phone Screening",
+    location: "Remote",
+    employmentType: "Full-time",
+    jobType: "Full-Time",
+    salaryRange: "$110,000 - $140,000",
+    jobDescription:
+      "Develop and deploy machine learning models to solve complex data problems. Work with data scientists and engineers to optimize algorithms and systems.",
+    requirements: [
+      "Master's degree in Computer Science, Data Science, or related field",
+      "3+ years of experience in machine learning",
+      "Proficiency in Python, TensorFlow, and PyTorch",
+      "Experience with big data technologies (Hadoop, Spark)",
+      "Strong problem-solving and analytical skills",
     ],
     timeline: [
       {
         title: "Application Submitted",
         date: "19 May 2025",
-        description: "You applied for the Social Media Assistant role.",
+        description: "Your application has been successfully submitted.",
         completed: true,
       },
       {
-        title: "Interview Scheduled",
+        title: "Application Under Review",
         date: "20 May 2025",
-        description: "Interview scheduled with the marketing team.",
+        description: "Our team is currently reviewing your application.",
         completed: true,
       },
       {
-        title: "Application Declined",
-        date: "22 May 2025",
-        description: "Application was not suitable for this position.",
+        title: "Phone Screening",
+        date: "29 May 2025",
+        description: "Initial phone screening with HR team.",
         completed: true,
+      },
+      {
+        title: "Technical Interview",
+        date: "Pending",
+        description: "Technical interview with the engineering team.",
+        completed: false,
       },
     ],
     recruiter: {
-      name: "Anna Wells",
-      role: "Recruiter",
-      email: "anna.wells@divvy.com",
-      avatar: "https://v0.dev/placeholder.svg?height=50&width=50",
-    },
-  },
-  // Additional applications for comprehensive data
-  {
-    id: 7,
-    companyName: "Buffer",
-    companyLogo: "https://v0.dev/placeholder.svg?height=40&width=40",
-    logoBackground: "#e0f7fa",
-    role: "Social Media Assistant",
-    jobTitle: "Social Media Assistant",
-    dateApplied: "18 May 2025",
-    status: "In Review",
-    location: "Remote",
-    employmentType: "Full-time",
-    jobType: "Full-Time",
-    salaryRange: "$45,000 - $65,000",
-    jobDescription:
-      "Help plan and execute social media strategies to boost engagement and brand awareness.",
-    requirements: [
-      "Bachelor's in Communications or similar",
-      "Experience with Buffer tools",
-      "Strong analytical skills",
-      "Creativity in content creation",
-    ],
-    timeline: [],
-    recruiter: {
-      name: "John Smith",
-      role: "Talent Acquisition",
-      email: "john@buffer.com",
-      avatar: "https://v0.dev/placeholder.svg?height=50&width=50",
-    },
-  },
-  {
-    id: 8,
-    companyName: "Zapier",
-    companyLogo: "https://v0.dev/placeholder.svg?height=40&width=40",
-    logoBackground: "#fce4ec",
-    role: "Social Media Assistant",
-    jobTitle: "Social Media Assistant",
-    dateApplied: "17 May 2025",
-    status: "Shortlisted",
-    location: "Remote",
-    employmentType: "Part-time",
-    jobType: "Part-Time",
-    salaryRange: "$30,000 - $45,000",
-    jobDescription:
-      "Assist with the creation and scheduling of social media posts, reporting directly to the marketing team.",
-    requirements: [
-      "Experience in social content scheduling",
-      "Basic design skills",
-      "Knowledge of automation tools",
-      "Effective communication skills",
-    ],
-    timeline: [],
-    recruiter: {
-      name: "Maria Lopez",
-      role: "HR Coordinator",
-      email: "maria@zapier.com",
-      avatar: "https://v0.dev/placeholder.svg?height=50&width=50",
-    },
-  },
-  {
-    id: 9,
-    companyName: "Canva",
-    companyLogo: "https://v0.dev/placeholder.svg?height=40&width=40",
-    logoBackground: "#ede7f6",
-    role: "Social Media Assistant",
-    jobTitle: "Social Media Assistant",
-    dateApplied: "16 May 2025",
-    status: "Interviewing",
-    location: "Sydney, Australia",
-    employmentType: "Contract",
-    jobType: "Contract",
-    salaryRange: "$50,000 - $70,000",
-    jobDescription:
-      "Create visual content and assist with community engagement campaigns.",
-    requirements: [
-      "Expertise in Canva tools",
-      "Creative storytelling",
-      "Community management experience",
-      "Strong time management skills",
-    ],
-    timeline: [],
-    recruiter: {
-      name: "Liam Chen",
-      role: "Recruiter",
-      email: "liam@canva.com",
-      avatar: "https://v0.dev/placeholder.svg?height=50&width=50",
-    },
-  },
-  {
-    id: 10,
-    companyName: "HubSpot",
-    companyLogo: "https://v0.dev/placeholder.svg?height=40&width=40",
-    logoBackground: "#f1f8e9",
-    role: "Social Media Assistant",
-    jobTitle: "Social Media Assistant",
-    dateApplied: "15 May 2025",
-    status: "Offered",
-    location: "Cambridge, MA",
-    employmentType: "Full-time",
-    jobType: "Full-Time",
-    salaryRange: "$55,000 - $75,000",
-    jobDescription:
-      "Support the social media manager in executing campaigns across platforms.",
-    requirements: [
-      "Bachelor's degree",
-      "3+ years of social media experience",
-      "HubSpot CRM knowledge",
-      "Excellent writing skills",
-    ],
-    timeline: [],
-    recruiter: {
-      name: "Karen Wu",
-      role: "Talent Partner",
-      email: "karen@hubspot.com",
+      name: "Sophia Martinez",
+      role: "Senior Recruiter",
+      email: "sophia.martinez@datacore.com",
       avatar: "https://v0.dev/placeholder.svg?height=50&width=50",
     },
   },
 ];
 
-// Date range configuration - ADD THIS TO YOUR STORE
-export const dateRange = {
+// Mock API functions
+const mockApi = {
+  getApplications: async () => {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        resolve(JSON.parse(JSON.stringify(mockApplications)));
+      }, 500); // Simulate network delay
+    });
+  },
+  getApplicationById: async (id) => {
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        const application = mockApplications.find((app) => app.id === id);
+        if (application) {
+          resolve(JSON.parse(JSON.stringify(application)));
+        } else {
+          reject(new Error("Application not found"));
+        }
+      }, 500); // Simulate network delay
+    });
+  },
+};
+
+// Date range configuration
+const dateRange = ref({
   start: "Jul 15",
   end: "Jul 25",
+});
+
+// Function to update date range
+const updateDateRange = (newDateRange) => {
+  dateRange.value.start = newDateRange.start;
+  dateRange.value.end = newDateRange.end;
 };
 
-// Function to update date range - ADD THIS TOO
-export const updateDateRange = (newDateRange) => {
-  dateRange.start = newDateRange.start;
-  dateRange.end = newDateRange.end;
-};
-
-// Function to get applications within date range - OPTIONAL
-export const getApplicationsInDateRange = (startDate, endDate) => {
+// Function to get applications within date range
+const getApplicationsInDateRange = (startDate, endDate) => {
   const start = new Date(startDate);
   const end = new Date(endDate);
-
-  return applicationsData.filter((app) => {
+  return mockApplications.filter((app) => {
     const appDate = new Date(app.dateApplied);
     return appDate >= start && appDate <= end;
   });
 };
 
 // Utility functions for data manipulation
-export const getRecentApplications = (maxItems = 5) => {
-  return applicationsData
+const getRecentApplications = (maxItems = 5) => {
+  return mockApplications
     .sort((a, b) => new Date(b.dateApplied) - new Date(a.dateApplied))
     .slice(0, maxItems);
 };
 
-export const getApplicationsByStatus = (status) => {
-  if (status === "all") return applicationsData;
-
+const getApplicationsByStatus = (status) => {
+  if (status === "all") return mockApplications;
   const statusMap = {
     "in-review": "In Review",
     interviewing: "Interviewing",
@@ -460,33 +627,206 @@ export const getApplicationsByStatus = (status) => {
     shortlisted: "Shortlisted",
     interviewed: "Interviewed",
   };
-
-  return applicationsData.filter(
+  return mockApplications.filter(
     (app) =>
       app.status === statusMap[status] ||
       app.status.toLowerCase() === status.toLowerCase()
   );
 };
 
-export const getStatusCounts = () => {
-  const counts = { all: applicationsData.length };
+// const getStatusCounts = () => {
+//   const filteredApplications = getApplicationsInDateRange(
+//     dateRange.value.start,
+//     dateRange.value.end
+//   );
+//   const counts = { all: filteredApplications.length };
+//   filteredApplications.forEach((app) => {
+//     const statusKey = app.status.toLowerCase().replace(/\s+/g, "-");
+//     counts[statusKey] = (counts[statusKey] || 0) + 1;
+//   });
+//   return counts;
+// };
 
-  applicationsData.forEach((app) => {
-    const statusKey = app.status.toLowerCase().replace(/\s+/g, "-");
-    counts[statusKey] = (counts[statusKey] || 0) + 1;
+const getStatusCounts = () => {
+  const filteredApplications = getApplicationsInDateRange(
+    dateRange.value.start,
+    dateRange.value.end
+  );
+
+  const total = filteredApplications.length;
+
+  const counts = {
+    all: total,
+    hired: 0,
+    interviewed: 0,
+    percentage: {
+      hired: 0,
+      interviewed: 0,
+    },
+  };
+
+  filteredApplications.forEach((app) => {
+    const status = app.status.toLowerCase();
+    if (status === "hired") counts.hired += 1;
+    else if (status === "interviewed") counts.interviewed += 1;
   });
+
+  if (total > 0) {
+    counts.percentage.hired = Math.round((counts.hired / total) * 100);
+    counts.percentage.interviewed = Math.round(
+      (counts.interviewed / total) * 100
+    );
+  }
 
   return counts;
 };
 
-export const searchApplications = (query) => {
-  if (!query.trim()) return applicationsData;
-
+const searchApplications = (query) => {
+  if (!query.trim()) return mockApplications;
   const searchTerm = query.toLowerCase();
-  return applicationsData.filter(
+  return mockApplications.filter(
     (app) =>
       app.companyName.toLowerCase().includes(searchTerm) ||
       app.role.toLowerCase().includes(searchTerm) ||
       app.jobTitle.toLowerCase().includes(searchTerm)
   );
 };
+
+// Pinia store for applications
+export const useApplicationStore = defineStore("application", () => {
+  // Reactive state
+  const applications = ref([]);
+  const selectedApplication = ref(null);
+  const loading = ref(false);
+  const error = ref(null);
+
+  // Fetch all applications from mock API
+  const fetchApplications = async () => {
+    loading.value = true;
+    error.value = null;
+    try {
+      const apps = await mockApi.getApplications();
+      applications.value = apps;
+    } catch (err) {
+      error.value = err.message;
+    } finally {
+      loading.value = false;
+    }
+  };
+
+  // Fetch a single application by ID from mock API
+  const fetchApplicationById = async (id) => {
+    loading.value = true;
+    error.value = null;
+    try {
+      const app = await mockApi.getApplicationById(id);
+      selectedApplication.value = app;
+    } catch (err) {
+      error.value = err.message;
+    } finally {
+      loading.value = false;
+    }
+  };
+
+  // Update an application
+  const updateApplication = async (id, updatedApplication) => {
+    loading.value = true;
+    error.value = null;
+    try {
+      const index = mockApplications.findIndex((app) => app.id === id);
+      if (index !== -1) {
+        mockApplications[index] = {
+          ...mockApplications[index],
+          ...updatedApplication,
+        };
+        if (selectedApplication.value && selectedApplication.value.id === id) {
+          selectedApplication.value = {
+            ...selectedApplication.value,
+            ...updatedApplication,
+          };
+        }
+        applications.value = [...mockApplications];
+        saveToLocalStorage();
+      } else {
+        throw new Error("Application not found");
+      }
+    } catch (err) {
+      error.value = err.message;
+    } finally {
+      loading.value = false;
+    }
+  };
+
+  // Delete an application
+  const deleteApplication = async (id) => {
+    loading.value = true;
+    error.value = null;
+    try {
+      const index = mockApplications.findIndex((app) => app.id === id);
+      if (index !== -1) {
+        mockApplications.splice(index, 1);
+        if (selectedApplication.value && selectedApplication.value.id === id) {
+          selectedApplication.value = null;
+        }
+        applications.value = [...mockApplications];
+        saveToLocalStorage();
+      } else {
+        throw new Error("Application not found");
+      }
+    } catch (err) {
+      error.value = err.message;
+    } finally {
+      loading.value = false;
+    }
+  };
+
+  // Save to localStorage for persistence
+  const saveToLocalStorage = () => {
+    if (typeof localStorage !== "undefined") {
+      localStorage.setItem("applications", JSON.stringify(mockApplications));
+    }
+  };
+
+  // Load from localStorage
+  const loadFromLocalStorage = () => {
+    if (typeof localStorage !== "undefined") {
+      const stored = localStorage.getItem("applications");
+      if (stored) {
+        const parsed = JSON.parse(stored);
+        mockApplications.length = 0;
+        mockApplications.push(...parsed);
+        applications.value = [...mockApplications];
+      }
+    }
+  };
+
+  // Initialize the store
+  const init = () => {
+    loadFromLocalStorage();
+  };
+
+  // Run initialization
+  init();
+
+  // Return reactive state and methods
+  return {
+    applications,
+    selectedApplication,
+    loading,
+    error,
+    dateRange,
+    updateDateRange,
+    getApplicationsInDateRange,
+    getRecentApplications,
+    getApplicationsByStatus,
+    getStatusCounts,
+    searchApplications,
+    fetchApplications,
+    fetchApplicationById,
+    updateApplication,
+    deleteApplication,
+    saveToLocalStorage,
+    loadFromLocalStorage,
+    init,
+  };
+});
