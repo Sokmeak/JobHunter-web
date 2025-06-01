@@ -1,6 +1,5 @@
 @import url("/src/css/clash-display.css");
 
-
 #app {
   font-family: "Epilogue", sans-serif;
 }
@@ -59,4 +58,10 @@ h1 {
   font-family: "ClashDisplay-Semibold", sans-serif;
   font-size: 2.5rem;
   color: #333;
+}
+html,
+body,
+#app {
+  height: 100%;
+  margin: 0;
 }
