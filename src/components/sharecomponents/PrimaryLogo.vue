@@ -1,7 +1,7 @@
 <template>
   <router-link
     :to="context"
-    class="d-flex align-items-center text-dark text-decoration-none gap-2"
+    class="link d-flex align-items-center text-dark text-decoration-none gap-2"
   >
     <svg
       width="33"
