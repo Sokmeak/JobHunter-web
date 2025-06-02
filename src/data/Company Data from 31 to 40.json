@@ -1,0 +1,1372 @@
+[
+    {
+      "id": 31,
+      "name": "Accenture",
+      "logoInitial": "A",
+      "jobs": 20,
+      "employees": "501+",
+      "employeeId": 31,
+      "locations": "50+ Countries",
+      "website": "https://www.accenture.com",
+      "founded": "1989",
+      "industry": "Business Services",
+      "profile": "Accenture is a global professional services company specializing in consulting, technology, and outsourcing. It helps clients across industries like finance, healthcare, and retail transform their operations through digital innovation and strategic solutions.",
+      "contacts": [
+        {
+          "icon": "twitter",
+          "url": "https://twitter.com/Accenture",
+          "label": "twitter.com/Accenture"
+        },
+        {
+          "icon": "facebook",
+          "url": "https://facebook.com/Accenture",
+          "label": "facebook.com/Accenture"
+        },
+        {
+          "icon": "envelope",
+          "url": "mailto:info@accenture.com",
+          "label": "info@accenture.com"
+        }
+      ],
+      "photos": [
+        {
+          "url": "https://images.unsplash.com/photo-1497366210541-8b783781e3e2?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+          "alt": "Accenture office"
+        },
+        {
+          "url": "https://images.unsplash.com/photo-1516321318423-3b7a17f4f6c6?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+          "alt": "Accenture team"
+        },
+        {
+          "url": "https://images.unsplash.com/photo-1503428593588-4f8c88a7f830?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+          "alt": "Accenture office"
+        },
+        {
+          "url": "https://images.unsplash.com/photo-1556740714-7a3a6b6e7e4b?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+          "alt": "Accenture meeting"
+        }
+      ],
+      "teamMembers": [
+        {
+          "name": "Julie Sweet",
+          "position": "CEO",
+          "photo": "https://randomuser.me/api/portraits/women/50.jpg",
+          "social": {
+            "linkedin": "#",
+            "twitter": "#"
+          }
+        },
+        {
+          "name": "Paul Daugherty",
+          "position": "Chief Technology Officer",
+          "photo": "https://randomuser.me/api/portraits/men/45.jpg",
+          "social": {
+            "linkedin": "#",
+            "twitter": "#"
+          }
+        }
+      ],
+      "techStack": [
+        {
+          "name": "JavaScript",
+          "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg"
+        },
+        {
+          "name": "Python",
+          "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg"
+        },
+        {
+          "name": "Azure",
+          "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/azure/azure-original.svg"
+        }
+      ],
+      "officeLocations": [
+        {
+          "country": "United States",
+          "flag": "https://flagcdn.com/w40/us.png"
+        },
+        {
+          "country": "United Kingdom",
+          "flag": "https://flagcdn.com/w40/gb.png"
+        },
+        {
+          "country": "India",
+          "flag": "https://flagcdn.com/w40/in.png"
+        },
+        {
+          "country": "Germany",
+          "flag": "https://flagcdn.com/w40/de.png"
+        }
+      ],
+      "benefits": [
+        {
+          "title": "Health Coverage",
+          "description": "Comprehensive health plans for employees.",
+          "icon": "bi-heart-fill"
+        },
+        {
+          "title": "Flexible PTO",
+          "description": "Generous paid time off to promote balance.",
+          "icon": "bi-cloud-sun-fill"
+        },
+        {
+          "title": "Remote Work",
+          "description": "Flexible remote work options available.",
+          "icon": "bi-house-fill"
+        }
+      ],
+      "openJobs": [
+        {
+          "job_id": 56,
+          "company_id": 31,
+          "title": "Management Consultant",
+          "location": "New York, NY",
+          "type": "Full Time",
+          "logo": "https://logo.clearbit.com/accenture.com",
+          "description": "Seeking a Management Consultant to drive client transformations.",
+          "tags": ["Consulting"]
+        },
+        {
+          "job_id": 57,
+          "company_id": 31,
+          "title": "Cloud Architect",
+          "location": "Remote",
+          "type": "Full Time",
+          "logo": "https://logo.clearbit.com/accenture.com",
+          "description": "Looking for a Cloud Architect to design scalable solutions.",
+          "tags": ["Technology"]
+        }
+      ]
+    },
+    {
+      "id": 32,
+      "name": "PwC",
+      "logoInitial": "P",
+      "jobs": 18,
+      "employees": "501+",
+      "employeeId": 32,
+      "locations": "150+ Countries",
+      "website": "https://www.pwc.com",
+      "founded": "1998",
+      "industry": "Business Services",
+      "profile": "PwC (PricewaterhouseCoopers) is a global professional services firm offering audit, tax, and consulting services. It supports clients in industries like technology, finance, and healthcare with strategic and operational expertise.",
+      "contacts": [
+        {
+          "icon": "twitter",
+          "url": "https://twitter.com/PwC",
+          "label": "twitter.com/PwC"
+        },
+        {
+          "icon": "facebook",
+          "url": "https://facebook.com/PwC",
+          "label": "facebook.com/PwC"
+        },
+        {
+          "icon": "envelope",
+          "url": "mailto:info@pwc.com",
+          "label": "info@pwc.com"
+        }
+      ],
+      "photos": [
+        {
+          "url": "https://images.unsplash.com/photo-1497366754035-1c882e89a5c9?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+          "alt": "PwC office"
+        },
+        {
+          "url": "https://images.unsplash.com/photo-1517248135467-2c7b7b6f7e4b?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+          "alt": "PwC team"
+        },
+        {
+          "url": "https://images.unsplash.com/photo-1503428593588-4f8c88a7f830?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+          "alt": "PwC office"
+        },
+        {
+          "url": "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+          "alt": "PwC meeting"
+        }
+      ],
+      "teamMembers": [
+        {
+          "name": "Bob Moritz",
+          "position": "Global Chairman",
+          "photo": "https://randomuser.me/api/portraits/men/50.jpg",
+          "social": {
+            "linkedin": "#",
+            "twitter": "#"
+          }
+        },
+        {
+          "name": "Tim Ryan",
+          "position": "US Chairman",
+          "photo": "https://randomuser.me/api/portraits/men/45.jpg",
+          "social": {
+            "linkedin": "#",
+            "twitter": "#"
+          }
+        }
+      ],
+      "techStack": [
+        {
+          "name": "JavaScript",
+          "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg"
+        },
+        {
+          "name": "Python",
+          "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg"
+        },
+        {
+          "name": "SAP",
+          "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/sap/sap-original.svg"
+        }
+      ],
+      "officeLocations": [
+        {
+          "country": "United States",
+          "flag": "https://flagcdn.com/w40/us.png"
+        },
+        {
+          "country": "United Kingdom",
+          "flag": "https://flagcdn.com/w40/gb.png"
+        },
+        {
+          "country": "China",
+          "flag": "https://flagcdn.com/w40/cn.png"
+        },
+        {
+          "country": "Australia",
+          "flag": "https://flagcdn.com/w40/au.png"
+        }
+      ],
+      "benefits": [
+        {
+          "title": "Health Coverage",
+          "description": "Comprehensive health plans for employees.",
+          "icon": "bi-heart-fill"
+        },
+        {
+          "title": "Flexible PTO",
+          "description": "Generous paid time off to promote balance.",
+          "icon": "bi-cloud-sun-fill"
+        },
+        {
+          "title": "Remote Work",
+          "description": "Flexible remote work options available.",
+          "icon": "bi-house-fill"
+        }
+      ],
+      "openJobs": [
+        {
+          "job_id": 58,
+          "company_id": 32,
+          "title": "Tax Consultant",
+          "location": "London, UK",
+          "type": "Full Time",
+          "logo": "https://logo.clearbit.com/pwc.com",
+          "description": "Seeking a Tax Consultant to advise global clients.",
+          "tags": ["Consulting"]
+        },
+        {
+          "job_id": 59,
+          "company_id": 32,
+          "title": "Data Analyst",
+          "location": "Remote",
+          "type": "Full Time",
+          "logo": "https://logo.clearbit.com/pwc.com",
+          "description": "Looking for a Data Analyst to support client insights.",
+          "tags": ["Analytics"]
+        }
+      ]
+    },
+    {
+      "id": 33,
+      "name": "BCG",
+      "logoInitial": "B",
+      "jobs": 15,
+      "employees": "501+",
+      "employeeId": 33,
+      "locations": "50+ Countries",
+      "website": "https://www.bcg.com",
+      "founded": "1963",
+      "industry": "Business Services",
+      "profile": "Boston Consulting Group (BCG) is a global management consulting firm known for its strategic expertise. It partners with clients in sectors like energy, technology, and consumer goods to drive innovation and growth.",
+      "contacts": [
+        {
+          "icon": "twitter",
+          "url": "https://twitter.com/BCG",
+          "label": "twitter.com/BCG"
+        },
+        {
+          "icon": "facebook",
+          "url": "https://facebook.com/BCG",
+          "label": "facebook.com/BCG"
+        },
+        {
+          "icon": "envelope",
+          "url": "mailto:info@bcg.com",
+          "label": "info@bcg.com"
+        }
+      ],
+      "photos": [
+        {
+          "url": "https://images.unsplash.com/photo-1497366210541-8b783781e3e2?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+          "alt": "BCG office"
+        },
+        {
+          "url": "https://images.unsplash.com/photo-1516321318423-3b7a17f4f6c6?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+          "alt": "BCG team"
+        },
+        {
+          "url": "https://images.unsplash.com/photo-1503428593588-4f8c88a7f830?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+          "alt": "BCG office"
+        },
+        {
+          "url": "https://images.unsplash.com/photo-1556740714-7a3a6b6e7e4b?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+          "alt": "BCG meeting"
+        }
+      ],
+      "teamMembers": [
+        {
+          "name": "Rich Lesser",
+          "position": "Global CEO",
+          "photo": "https://randomuser.me/api/portraits/men/50.jpg",
+          "social": {
+            "linkedin": "#",
+            "twitter": "#"
+          }
+        },
+        {
+          "name": "Sharon Marcil",
+          "position": "Managing Director",
+          "photo": "https://randomuser.me/api/portraits/women/45.jpg",
+          "social": {
+            "linkedin": "#",
+            "twitter": "#"
+          }
+        }
+      ],
+      "techStack": [
+        {
+          "name": "Python",
+          "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg"
+        },
+        {
+          "name": "R",
+          "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/r/r-original.svg"
+        },
+        {
+          "name": "Tableau",
+          "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/tableau/tableau-original.svg"
+        }
+      ],
+      "officeLocations": [
+        {
+          "country": "United States",
+          "flag": "https://flagcdn.com/w40/us.png"
+        },
+        {
+          "country": "Germany",
+          "flag": "https://flagcdn.com/w40/de.png"
+        },
+        {
+          "country": "India",
+          "flag": "https://flagcdn.com/w40/in.png"
+        },
+        {
+          "country": "Singapore",
+          "flag": "https://flagcdn.com/w40/sg.png"
+        }
+      ],
+      "benefits": [
+        {
+          "title": "Health Coverage",
+          "description": "Comprehensive health plans for employees.",
+          "icon": "bi-heart-fill"
+        },
+        {
+          "title": "Flexible PTO",
+          "description": "Generous paid time off to promote balance.",
+          "icon": "bi-cloud-sun-fill"
+        },
+        {
+          "title": "Remote Work",
+          "description": "Flexible remote work options available.",
+          "icon": "bi-house-fill"
+        }
+      ],
+      "openJobs": [
+        {
+          "job_id": 60,
+          "company_id": 33,
+          "title": "Strategy Consultant",
+          "location": "Boston, MA",
+          "type": "Full Time",
+          "logo": "https://logo.clearbit.com/bcg.com",
+          "description": "Seeking a Strategy Consultant to drive client growth.",
+          "tags": ["Consulting"]
+        },
+        {
+          "job_id": 61,
+          "company_id": 33,
+          "title": "Data Scientist",
+          "location": "Remote",
+          "type": "Full Time",
+          "logo": "https://logo.clearbit.com/bcg.com",
+          "description": "Looking for a Data Scientist to analyze business trends.",
+          "tags": ["Analytics"]
+        }
+      ]
+    },
+    {
+      "id": 34,
+      "name": "Bain & Company",
+      "logoInitial": "B",
+      "jobs": 14,
+      "employees": "501+",
+      "employeeId": 34,
+      "locations": "40+ Countries",
+      "website": "https://www.bain.com",
+      "founded": "1973",
+      "industry": "Business Services",
+      "profile": "Bain & Company is a global consulting firm specializing in strategy, operations, and digital transformation. It works with clients in industries like retail, private equity, and technology to deliver measurable results.",
+      "contacts": [
+        {
+          "icon": "twitter",
+          "url": "https://twitter.com/BainandCompany",
+          "label": "twitter.com/BainandCompany"
+        },
+        {
+          "icon": "facebook",
+          "url": "https://facebook.com/BainandCompany",
+          "label": "facebook.com/BainandCompany"
+        },
+        {
+          "icon": "envelope",
+          "url": "mailto:info@bain.com",
+          "label": "info@bain.com"
+        }
+      ],
+      "photos": [
+        {
+          "url": "https://images.unsplash.com/photo-1497366754035-1c882e89a5c9?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+          "alt": "Bain office"
+        },
+        {
+          "url": "https://images.unsplash.com/photo-1517248135467-2c7b7b6f7e4b?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+          "alt": "Bain team"
+        },
+        {
+          "url": "https://images.unsplash.com/photo-1503428593588-4f8c88a7f830?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+          "alt": "Bain office"
+        },
+        {
+          "url": "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+          "alt": "Bain meeting"
+        }
+      ],
+      "teamMembers": [
+        {
+          "name": "Manny Maceda",
+          "position": "Worldwide Managing Partner",
+          "photo": "https://randomuser.me/api/portraits/men/50.jpg",
+          "social": {
+            "linkedin": "#",
+            "twitter": "#"
+          }
+        },
+        {
+          "name": "Karen Harris",
+          "position": "Managing Director",
+          "photo": "https://randomuser.me/api/portraits/women/45.jpg",
+          "social": {
+            "linkedin": "#",
+            "twitter": "#"
+          }
+        }
+      ],
+      "techStack": [
+        {
+          "name": "Python",
+          "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg"
+        },
+        {
+          "name": "SQL",
+          "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mysql/mysql-original.svg"
+        },
+        {
+          "name": "Tableau",
+          "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/tableau/tableau-original.svg"
+        }
+      ],
+      "officeLocations": [
+        {
+          "country": "United States",
+          "flag": "https://flagcdn.com/w40/us.png"
+        },
+        {
+          "country": "United Kingdom",
+          "flag": "https://flagcdn.com/w40/gb.png"
+        },
+        {
+          "country": "Brazil",
+          "flag": "https://flagcdn.com/w40/br.png"
+        },
+        {
+          "country": "Japan",
+          "flag": "https://flagcdn.com/w40/jp.png"
+        }
+      ],
+      "benefits": [
+        {
+          "title": "Health Coverage",
+          "description": "Comprehensive health plans for employees.",
+          "icon": "bi-heart-fill"
+        },
+        {
+          "title": "Flexible PTO",
+          "description": "Generous paid time off to promote balance.",
+          "icon": "bi-cloud-sun-fill"
+        },
+        {
+          "title": "Remote Work",
+          "description": "Flexible remote work options available.",
+          "icon": "bi-house-fill"
+        }
+      ],
+      "openJobs": [
+        {
+          "job_id": 62,
+          "company_id": 34,
+          "title": "Management Consultant",
+          "location": "San Francisco, CA",
+          "type": "Full Time",
+          "logo": "https://logo.clearbit.com/bain.com",
+          "description": "Seeking a Management Consultant to drive strategic initiatives.",
+          "tags": ["Consulting"]
+        },
+        {
+          "job_id": 63,
+          "company_id": 34,
+          "title": "Analytics Specialist",
+          "location": "Remote",
+          "type": "Full Time",
+          "logo": "https://logo.clearbit.com/bain.com",
+          "description": "Looking for an Analytics Specialist to support data-driven decisions.",
+          "tags": ["Analytics"]
+        }
+      ]
+    },
+    {
+      "id": 35,
+      "name": "KPMG",
+      "logoInitial": "K",
+      "jobs": 17,
+      "employees": "501+",
+      "employeeId": 35,
+      "locations": "140+ Countries",
+      "website": "https://www.kpmg.com",
+      "founded": "1987",
+      "industry": "Business Services",
+      "profile": "KPMG is a global network of professional firms providing audit, tax, and advisory services. It helps clients in sectors like financial services, manufacturing, and government navigate complex business challenges.",
+      "contacts": [
+        {
+          "icon": "twitter",
+          "url": "https://twitter.com/KPMG",
+          "label": "twitter.com/KPMG"
+        },
+        {
+          "icon": "facebook",
+          "url": "https://facebook.com/KPMG",
+          "label": "facebook.com/KPMG"
+        },
+        {
+          "icon": "envelope",
+          "url": "mailto:info@kpmg.com",
+          "label": "info@kpmg.com"
+        }
+      ],
+      "photos": [
+        {
+          "url": "https://images.unsplash.com/photo-1497366210541-8b783781e3e2?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+          "alt": "KPMG office"
+        },
+        {
+          "url": "https://images.unsplash.com/photo-1516321318423-3b7a17f4f6c6?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+          "alt": "KPMG team"
+        },
+        {
+          "url": "https://images.unsplash.com/photo-1503428593588-4f8c88a7f830?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+          "alt": "KPMG office"
+        },
+        {
+          "url": "https://images.unsplash.com/photo-1556740714-7a3a6b6e7e4b?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+          "alt": "KPMG meeting"
+        }
+      ],
+      "teamMembers": [
+        {
+          "name": "Bill Thomas",
+          "position": "Global Chairman",
+          "photo": "https://randomuser.me/api/portraits/men/50.jpg",
+          "social": {
+            "linkedin": "#",
+            "twitter": "#"
+          }
+        },
+        {
+          "name": "Laura Hay",
+          "position": "Global Head of Tax",
+          "photo": "https://randomuser.me/api/portraits/women/45.jpg",
+          "social": {
+            "linkedin": "#",
+            "twitter": "#"
+          }
+        }
+      ],
+      "techStack": [
+        {
+          "name": "JavaScript",
+          "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg"
+        },
+        {
+          "name": "Python",
+          "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg"
+        },
+        {
+          "name": "Microsoft Power BI",
+          "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/microsoftsqlserver/microsoftsqlserver-plain.svg"
+        }
+      ],
+      "officeLocations": [
+        {
+          "country": "United States",
+          "flag": "https://flagcdn.com/w40/us.png"
+        },
+        {
+          "country": "United Kingdom",
+          "flag": "https://flagcdn.com/w40/gb.png"
+        },
+        {
+          "country": "India",
+          "flag": "https://flagcdn.com/w40/in.png"
+        },
+        {
+          "country": "Canada",
+          "flag": "https://flagcdn.com/w40/ca.png"
+        }
+      ],
+      "benefits": [
+        {
+          "title": "Health Coverage",
+          "description": "Comprehensive health plans for employees.",
+          "icon": "bi-heart-fill"
+        },
+        {
+          "title": "Flexible PTO",
+          "description": "Generous paid time off to promote balance.",
+          "icon": "bi-cloud-sun-fill"
+        },
+        {
+          "title": "Remote Work",
+          "description": "Flexible remote work options available.",
+          "icon": "bi-house-fill"
+        }
+      ],
+      "openJobs": [
+        {
+          "job_id": 64,
+          "company_id": 35,
+          "title": "Audit Manager",
+          "location": "Toronto, Canada",
+          "type": "Full Time",
+          "logo": "https://logo.clearbit.com/kpmg.com",
+          "description": "Seeking an Audit Manager to oversee client engagements.",
+          "tags": ["Audit"]
+        },
+        {
+          "job_id": 65,
+          "company_id": 35,
+          "title": "Cybersecurity Consultant",
+          "location": "Remote",
+          "type": "Full Time",
+          "logo": "https://logo.clearbit.com/kpmg.com",
+          "description": "Looking for a Cybersecurity Consultant to enhance client security.",
+          "tags": ["Security"]
+        }
+      ]
+    },
+    {
+      "id": 36,
+      "name": "Adyen",
+      "logoInitial": "A",
+      "jobs": 8,
+      "employees": "501+",
+      "employeeId": 36,
+      "locations": "20+ Countries",
+      "website": "https://www.adyen.com",
+      "founded": "2006",
+      "industry": "Fintech/Payments",
+      "profile": "Adyen is a global payment platform that enables businesses to accept payments online, in-store, and on mobile. Trusted by clients like Uber and Spotify, Adyen offers seamless transaction processing and fraud prevention.",
+      "contacts": [
+        {
+          "icon": "twitter",
+          "url": "https://twitter.com/Adyen",
+          "label": "twitter.com/Adyen"
+        },
+        {
+          "icon": "facebook",
+          "url": "https://facebook.com/Adyen",
+          "label": "facebook.com/Adyen"
+        },
+        {
+          "icon": "envelope",
+          "url": "mailto:info@adyen.com",
+          "label": "info@adyen.com"
+        }
+      ],
+      "photos": [
+        {
+          "url": "https://images.unsplash.com/photo-1497366210541-8b783781e3e2?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+          "alt": "Adyen office"
+        },
+        {
+          "url": "https://images.unsplash.com/photo-1516321318423-3b7a17f4f6c6?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+          "alt": "Adyen team"
+        },
+        {
+          "url": "https://images.unsplash.com/photo-1503428593588-4f8c88a7f830?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+          "alt": "Adyen office"
+        },
+        {
+          "url": "https://images.unsplash.com/photo-1556740714-7a3a6b6e7e4b?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+          "alt": "Adyen meeting"
+        }
+      ],
+      "teamMembers": [
+        {
+          "name": "Pieter van der Does",
+          "position": "CEO",
+          "photo": "https://randomuser.me/api/portraits/men/50.jpg",
+          "social": {
+            "linkedin": "#",
+            "twitter": "#"
+          }
+        },
+        {
+          "name": "Ineke Scheffers",
+          "position": "CFO",
+          "photo": "https://randomuser.me/api/portraits/women/45.jpg",
+          "social": {
+            "linkedin": "#",
+            "twitter": "#"
+          }
+        }
+      ],
+      "techStack": [
+        {
+          "name": "Java",
+          "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/java/java-original.svg"
+        },
+        {
+          "name": "JavaScript",
+          "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg"
+        },
+        {
+          "name": "AWS",
+          "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/amazonwebservices/amazonwebservices-original.svg"
+        }
+      ],
+      "officeLocations": [
+        {
+          "country": "Netherlands",
+          "flag": "https://flagcdn.com/w40/nl.png"
+        },
+        {
+          "country": "United States",
+          "flag": "https://flagcdn.com/w40/us.png"
+        },
+        {
+          "country": "Singapore",
+          "flag": "https://flagcdn.com/w40/sg.png"
+        },
+        {
+          "country": "Brazil",
+          "flag": "https://flagcdn.com/w40/br.png"
+        }
+      ],
+      "benefits": [
+        {
+          "title": "Health Coverage",
+          "description": "Comprehensive health plans for employees.",
+          "icon": "bi-heart-fill"
+        },
+        {
+          "title": "Flexible PTO",
+          "description": "Generous paid time off to promote balance.",
+          "icon": "bi-cloud-sun-fill"
+        },
+        {
+          "title": "Remote Work",
+          "description": "Flexible remote work options available.",
+          "icon": "bi-house-fill"
+        }
+      ],
+      "openJobs": [
+        {
+          "job_id": 66,
+          "company_id": 36,
+          "title": "Payment Engineer",
+          "location": "Amsterdam, Netherlands",
+          "type": "Full Time",
+          "logo": "https://logo.clearbit.com/adyen.com",
+          "description": "Seeking a Payment Engineer to optimize transaction systems.",
+          "tags": ["Technology"]
+        },
+        {
+          "job_id": 67,
+          "company_id": 36,
+          "title": "Fraud Analyst",
+          "location": "Remote",
+          "type": "Full Time",
+          "logo": "https://logo.clearbit.com/adyen.com",
+          "description": "Looking for a Fraud Analyst to enhance payment security.",
+          "tags": ["Security"]
+        }
+      ]
+    },
+    {
+      "id": 37,
+      "name": "Flywheel",
+      "logoInitial": "F",
+      "jobs": 5,
+      "employees": "51-200",
+      "employeeId": 37,
+      "locations": "1 Country",
+      "website": "https://www.getflywheel.com",
+      "founded": "2012",
+      "industry": "Hosting",
+      "profile": "Flywheel is a managed WordPress hosting platform designed for designers and agencies. It offers fast, secure hosting with tools to streamline website management for creative professionals.",
+      "contacts": [
+        {
+          "icon": "twitter",
+          "url": "https://twitter.com/GetFlywheel",
+          "label": "twitter.com/GetFlywheel"
+        },
+        {
+          "icon": "facebook",
+          "url": "https://facebook.com/GetFlywheel",
+          "label": "facebook.com/GetFlywheel"
+        },
+        {
+          "icon": "envelope",
+          "url": "mailto:support@getflywheel.com",
+          "label": "support@getflywheel.com"
+        }
+      ],
+      "photos": [
+        {
+          "url": "https://images.unsplash.com/photo-1497366210541-8b783781e3e2?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+          "alt": "Flywheel office"
+        },
+        {
+          "url": "https://images.unsplash.com/photo-1516321318423-3b7a17f4f6c6?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+          "alt": "Flywheel team"
+        },
+        {
+          "url": "https://images.unsplash.com/photo-1503428593588-4f8c88a7f830?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+          "alt": "Flywheel office"
+        },
+        {
+          "url": "https://images.unsplash.com/photo-1556740714-7a3a6b6e7e4b?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+          "alt": "Flywheel meeting"
+        }
+      ],
+      "teamMembers": [
+        {
+          "name": "Dusty Davidson",
+          "position": "Co-Founder",
+          "photo": "https://randomuser.me/api/portraits/men/50.jpg",
+          "social": {
+            "linkedin": "#",
+            "twitter": "#"
+          }
+        },
+        {
+          "name": "Rick Knudtson",
+          "position": "Co-Founder",
+          "photo": "https://randomuser.me/api/portraits/men/45.jpg",
+          "social": {
+            "linkedin": "#",
+            "twitter": "#"
+          }
+        }
+      ],
+      "techStack": [
+        {
+          "name": "PHP",
+          "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/php/php-original.svg"
+        },
+        {
+          "name": "JavaScript",
+          "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg"
+        },
+        {
+          "name": "WordPress",
+          "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/wordpress/wordpress-plain.svg"
+        }
+      ],
+      "officeLocations": [
+        {
+          "country": "United States",
+          "flag": "https://flagcdn.com/w40/us.png"
+        }
+      ],
+      "benefits": [
+        {
+          "title": "Health Coverage",
+          "description": "Comprehensive health plans for employees.",
+          "icon": "bi-heart-fill"
+        },
+        {
+          "title": "Flexible PTO",
+          "description": "Generous paid time off to promote balance.",
+          "icon": "bi-cloud-sun-fill"
+        },
+        {
+          "title": "Remote Work",
+          "description": "Fully remote work environment.",
+          "icon": "bi-house-fill"
+        }
+      ],
+      "openJobs": [
+        {
+          "job_id": 68,
+          "company_id": 37,
+          "title": "DevOps Engineer",
+          "location": "Remote",
+          "type": "Full Time",
+          "logo": "https://logo.clearbit.com/getflywheel.com",
+          "description": "Seeking a DevOps Engineer to optimize hosting infrastructure.",
+          "tags": ["Technology"]
+        },
+        {
+          "job_id": 69,
+          "company_id": 37,
+          "title": "Customer Support Specialist",
+          "location": "Remote",
+          "type": "Full Time",
+          "logo": "https://logo.clearbit.com/getflywheel.com",
+          "description": "Looking for a Customer Support Specialist to assist clients.",
+          "tags": ["Support"]
+        }
+      ]
+    },
+    {
+      "id": 38,
+      "name": "Monzo",
+      "logoInitial": "M",
+      "jobs": 7,
+      "employees": "501+",
+      "employeeId": 38,
+      "locations": "3 Countries",
+      "website": "https://www.monzo.com",
+      "founded": "2015",
+      "industry": "Fintech/Payments",
+      "profile": "Monzo is a digital bank offering user-friendly mobile banking services. Known for its vibrant coral card, Monzo provides budgeting tools, instant notifications, and international transfers for millions of customers.",
+      "contacts": [
+        {
+          "icon": "twitter",
+          "url": "https://twitter.com/Monzo",
+          "label": "twitter.com/Monzo"
+        },
+        {
+          "icon": "facebook",
+          "url": "https://facebook.com/Monzo",
+          "label": "facebook.com/Monzo"
+        },
+        {
+          "icon": "envelope",
+          "url": "mailto:support@monzo.com",
+          "label": "support@monzo.com"
+        }
+      ],
+      "photos": [
+        {
+          "url": "https://images.unsplash.com/photo-1497366210541-8b783781e3e2?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+          "alt": "Monzo office"
+        },
+        {
+          "url": "https://images.unsplash.com/photo-1516321318423-3b7a17f4f6c6?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+          "alt": "Monzo team"
+        },
+        {
+          "url": "https://images.unsplash.com/photo-1503428593588-4f8c88a7f830?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+          "alt": "Monzo office"
+        },
+        {
+          "url": "https://images.unsplash.com/photo-1556740714-7a3a6b6e7e4b?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+          "alt": "Monzo meeting"
+        }
+      ],
+      "teamMembers": [
+        {
+          "name": "TS Anil",
+          "position": "CEO",
+          "photo": "https://randomuser.me/api/portraits/men/50.jpg",
+          "social": {
+            "linkedin": "#",
+            "twitter": "#"
+          }
+        },
+        {
+          "name": "Carol Nelson",
+          "position": "Chief Product Officer",
+          "photo": "https://randomuser.me/api/portraits/women/45.jpg",
+          "social": {
+            "linkedin": "#",
+            "twitter": "#"
+          }
+        }
+      ],
+      "techStack": [
+        {
+          "name": "Go",
+          "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/go/go-original.svg"
+        },
+        {
+          "name": "React",
+          "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg"
+        },
+        {
+          "name": "AWS",
+          "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/amazonwebservices/amazonwebservices-original.svg"
+        }
+      ],
+      "officeLocations": [
+        {
+          "country": "United Kingdom",
+          "flag": "https://flagcdn.com/w40/gb.png"
+        },
+        {
+          "country": "United States",
+          "flag": "https://flagcdn.com/w40/us.png"
+        },
+        {
+          "country": "Australia",
+          "flag": "https://flagcdn.com/w40/au.png"
+        }
+      ],
+      "benefits": [
+        {
+          "title": "Health Coverage",
+          "description": "Comprehensive health plans for employees.",
+          "icon": "bi-heart-fill"
+        },
+        {
+          "title": "Flexible PTO",
+          "description": "Generous paid time off to promote balance.",
+          "icon": "bi-cloud-sun-fill"
+        },
+        {
+          "title": "Remote Work",
+          "description": "Flexible remote work options available.",
+          "icon": "bi-house-fill"
+        }
+      ],
+      "openJobs": [
+        {
+          "job_id": 70,
+          "company_id": 38,
+          "title": "Mobile Developer",
+          "location": "London, UK",
+          "type": "Full Time",
+          "logo": "https://logo.clearbit.com/monzo.com",
+          "description": "Seeking a Mobile Developer to enhance banking app features.",
+          "tags": ["Technology"]
+        },
+        {
+          "job_id": 71,
+          "company_id": 38,
+          "title": "Product Manager",
+          "location": "Remote",
+          "type": "Full Time",
+          "logo": "https://logo.clearbit.com/monzo.com",
+          "description": "Looking for a Product Manager to drive banking innovations.",
+          "tags": ["Product"]
+        }
+      ]
+    },
+    {
+      "id": 39,
+      "name": "BigCommerce",
+      "logoInitial": "B",
+      "jobs": 6,
+      "employees": "501+",
+      "employeeId": 39,
+      "locations": "4 Countries",
+      "website": "https://www.bigcommerce.com",
+      "founded": "2009",
+      "industry": "Hosting",
+      "profile": "BigCommerce is a leading e-commerce platform that provides hosting and tools for businesses to build and scale online stores. It serves clients like Ben & Jerry’s and Skullcandy with robust, customizable solutions.",
+      "contacts": [
+        {
+          "icon": "twitter",
+          "url": "https://twitter.com/BigCommerce",
+          "label": "twitter.com/BigCommerce"
+        },
+        {
+          "icon": "facebook",
+          "url": "https://facebook.com/BigCommerce",
+          "label": "facebook.com/BigCommerce"
+        },
+        {
+          "icon": "envelope",
+          "url": "mailto:support@bigcommerce.com",
+          "label": "support@bigcommerce.com"
+        }
+      ],
+      "photos": [
+        {
+          "url": "https://images.unsplash.com/photo-1497366210541-8b783781e3e2?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+          "alt": "BigCommerce office"
+        },
+        {
+          "url": "https://images.unsplash.com/photo-1516321318423-3b7a17f4f6c6?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+          "alt": "BigCommerce team"
+        },
+        {
+          "url": "https://images.unsplash.com/photo-1503428593588-4f8c88a7f830?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+          "alt": "BigCommerce office"
+        },
+        {
+          "url": "https://images.unsplash.com/photo-1556740714-7a3a6b6e7e4b?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+          "alt": "BigCommerce meeting"
+        }
+      ],
+      "teamMembers": [
+        {
+          "name": "Brent Bellm",
+          "position": "CEO",
+          "photo": "https://randomuser.me/api/portraits/men/50.jpg",
+          "social": {
+            "linkedin": "#",
+            "twitter": "#"
+          }
+        },
+        {
+          "name": "Lisa Eggerton",
+          "position": "Chief Marketing Officer",
+          "photo": "https://randomuser.me/api/portraits/women/45.jpg",
+          "social": {
+            "linkedin": "#",
+            "twitter": "#"
+          }
+        }
+      ],
+      "techStack": [
+        {
+          "name": "PHP",
+          "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/php/php-original.svg"
+        },
+        {
+          "name": "JavaScript",
+          "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg"
+        },
+        {
+          "name": "React",
+          "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg"
+        }
+      ],
+      "officeLocations": [
+        {
+          "country": "United States",
+          "flag": "https://flagcdn.com/w40/us.png"
+        },
+        {
+          "country": "United Kingdom",
+          "flag": "https://flagcdn.com/w40/gb.png"
+        },
+        {
+          "country": "Australia",
+          "flag": "https://flagcdn.com/w40/au.png"
+        },
+        {
+          "country": "Mexico",
+          "flag": "https://flagcdn.com/w40/mx.png"
+        }
+      ],
+      "benefits": [
+        {
+          "title": "Health Coverage",
+          "description": "Comprehensive health plans for employees.",
+          "icon": "bi-heart-fill"
+        },
+        {
+          "title": "Flexible PTO",
+          "description": "Generous paid time off to promote balance.",
+          "icon": "bi-cloud-sun-fill"
+        },
+        {
+          "title": "Remote Work",
+          "description": "Flexible remote work options available.",
+          "icon": "bi-house-fill"
+        }
+      ],
+      "openJobs": [
+        {
+          "job_id": 72,
+          "company_id": 39,
+          "title": "Frontend Developer",
+          "location": "Austin, TX",
+          "type": "Full Time",
+          "logo": "https://logo.clearbit.com/bigcommerce.com",
+          "description": "Seeking a Frontend Developer to enhance e-commerce platforms.",
+          "tags": ["Technology"]
+        },
+        {
+          "job_id": 73,
+          "company_id": 39,
+          "title": "Customer Success Manager",
+          "location": "Remote",
+          "type": "Full Time",
+          "logo": "https://logo.clearbit.com/bigcommerce.com",
+          "description": "Looking for a Customer Success Manager to support clients.",
+          "tags": ["Support"]
+        }
+      ]
+    },
+    {
+      "id": 40,
+      "name": "Droga5",
+      "logoInitial": "D",
+      "jobs": 5,
+      "employees": "201-500",
+      "employeeId": 40,
+      "locations": "3 Countries",
+      "website": "https://www.droga5.com",
+      "founded": "2006",
+      "industry": "Design and Branding",
+      "profile": "Droga5 is an award-winning creative agency known for bold advertising and branding campaigns. With clients like The New York Times and Under Armour, it delivers culturally impactful work across media.",
+      "contacts": [
+        {
+          "icon": "twitter",
+          "url": "https://twitter.com/Droga5",
+          "label": "twitter.com/Droga5"
+        },
+        {
+          "icon": "facebook",
+          "url": "https://facebook.com/Droga5",
+          "label": "facebook.com/Droga5"
+        },
+        {
+          "icon": "envelope",
+          "url": "mailto:info@droga5.com",
+          "label": "info@droga5.com"
+        }
+      ],
+      "photos": [
+        {
+          "url": "https://images.unsplash.com/photo-1497366210541-8b783781e3e2?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+          "alt": "Droga5 office"
+        },
+        {
+          "url": "https://images.unsplash.com/photo-1516321318423-3b7a17f4f6c6?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+          "alt": "Droga5 team"
+        },
+        {
+          "url": "https://images.unsplash.com/photo-1503428593588-4f8c88a7f830?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+          "alt": "Droga5 office"
+        },
+        {
+          "url": "https://images.unsplash.com/photo-1556740714-7a3a6b6e7e4b?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+          "alt": "Droga5 meeting"
+        }
+      ],
+      "teamMembers": [
+        {
+          "name": "David Droga",
+          "position": "Founder",
+          "photo": "https://randomuser.me/api/portraits/men/50.jpg",
+          "social": {
+            "linkedin": "#",
+            "twitter": "#"
+          }
+        },
+        {
+          "name": "Sarah Thompson",
+          "position": "Global CEO",
+          "photo": "https://randomuser.me/api/portraits/women/45.jpg",
+          "social": {
+            "linkedin": "#",
+            "twitter": "#"
+          }
+        }
+      ],
+      "techStack": [
+        {
+          "name": "Figma",
+          "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/figma/figma-original.svg"
+        },
+        {
+          "name": "Adobe XD",
+          "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/xd/xd-original.svg"
+        },
+        {
+          "name": "JavaScript",
+          "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg"
+        }
+      ],
+      "officeLocations": [
+        {
+          "country": "United States",
+          "flag": "https://flagcdn.com/w40/us.png"
+        },
+        {
+          "country": "United Kingdom",
+          "flag": "https://flagcdn.com/w40/gb.png"
+        },
+        {
+          "country": "Japan",
+          "flag": "https://flagcdn.com/w40/jp.png"
+        }
+      ],
+      "benefits": [
+        {
+          "title": "Health Coverage",
+          "description": "Comprehensive health plans for employees.",
+          "icon": "bi-heart-fill"
+        },
+        {
+          "title": "Flexible PTO",
+          "description": "Generous paid time off to promote balance.",
+          "icon": "bi-cloud-sun-fill"
+        },
+        {
+          "title": "Remote Work",
+          "description": "Flexible remote work options available.",
+          "icon": "bi-house-fill"
+        }
+      ],
+      "openJobs": [
+        {
+          "job_id": 74,
+          "company_id": 40,
+          "title": "Creative Director",
+          "location": "New York, NY",
+          "type": "Full Time",
+          "logo": "https://logo.clearbit.com/droga5.com",
+          "description": "Seeking a Creative Director to lead impactful campaigns.",
+          "tags": ["Creative"]
+        },
+        {
+          "job_id": 75,
+          "company_id": 40,
+          "title": "Copywriter",
+          "location": "Remote",
+          "type": "Full Time",
+          "logo": "https://logo.clearbit.com/droga5.com",
+          "description": "Looking for a Copywriter to craft compelling brand narratives.",
+          "tags": ["Creative"]
+        }
+      ]
+    }
+  ]

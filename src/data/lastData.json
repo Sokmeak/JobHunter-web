@@ -1,0 +1,1907 @@
+[
+    {
+      "id": 45,
+      "name": "N26",
+      "logoInitial": "N",
+      "jobs": 8,
+      "employees": "501+",
+      "employeeId": 45,
+      "locations": "5 Countries",
+      "website": "https://www.n26.com",
+      "founded": "2013",
+      "industry": "Fintech/Payments",
+      "profile": "N26 is a German digital bank offering mobile banking with intuitive apps. Known for its transparent fees and real-time notifications, N26 serves millions of customers across Europe with personal and business accounts.",
+      "contacts": [
+        {
+          "icon": "twitter",
+          "url": "https://twitter.com/n26",
+          "label": "twitter.com/n26"
+        },
+        {
+          "icon": "facebook",
+          "url": "https://facebook.com/n26",
+          "label": "facebook.com/n26"
+        },
+        {
+          "icon": "envelope",
+          "url": "mailto:support@n26.com",
+          "label": "support@n26.com"
+        }
+      ],
+      "photos": [
+        {
+          "url": "https://images.unsplash.com/photo-1497366210541-8b783781e3e2?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+          "alt": "N26 office"
+        },
+        {
+          "url": "https://images.unsplash.com/photo-1516321318423-3b7a17f4f6c6?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+          "alt": "N26 team"
+        },
+        {
+          "url": "https://images.unsplash.com/photo-1503428593588-4f8c88a7f830?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+          "alt": "N26 office"
+        },
+        {
+          "url": "https://images.unsplash.com/photo-1556740714-7a3a6b6e7e4b?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+          "alt": "N26 meeting"
+        }
+      ],
+      "teamMembers": [
+        {
+          "name": "Valentin Stalf",
+          "position": "CEO",
+          "photo": "https://randomuser.me/api/portraits/men/50.jpg",
+          "social": {
+            "linkedin": "#",
+            "twitter": "#"
+          }
+        },
+        {
+          "name": "Maximilian Tayenthal",
+          "position": "Co-Founder",
+          "photo": "https://randomuser.me/api/portraits/men/45.jpg",
+          "social": {
+            "linkedin": "#",
+            "twitter": "#"
+          }
+        }
+      ],
+      "techStack": [
+        {
+          "name": "Go",
+          "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/go/go-original.svg"
+        },
+        {
+          "name": "React",
+          "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg"
+        },
+        {
+          "name": "AWS",
+          "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/amazonwebservices/amazonwebservices-original.svg"
+        }
+      ],
+      "officeLocations": [
+        {
+          "country": "Germany",
+          "flag": "https://flagcdn.com/w40/de.png"
+        },
+        {
+          "country": "United Kingdom",
+          "flag": "https://flagcdn.com/w40/gb.png"
+        },
+        {
+          "country": "Spain",
+          "flag": "https://flagcdn.com/w40/es.png"
+        },
+        {
+          "country": "United States",
+          "flag": "https://flagcdn.com/w40/us.png"
+        },
+        {
+          "country": "Austria",
+          "flag": "https://flagcdn.com/w40/at.png"
+        }
+      ],
+      "benefits": [
+        {
+          "title": "Health Coverage",
+          "description": "Comprehensive health plans for employees.",
+          "icon": "bi-heart-fill"
+        },
+        {
+          "title": "Flexible PTO",
+          "description": "Generous paid time off to promote balance.",
+          "icon": "bi-cloud-sun-fill"
+        },
+        {
+          "title": "Remote Work",
+          "description": "Flexible remote work options available.",
+          "icon": "bi-house-fill"
+        }
+      ],
+      "openJobs": [
+        {
+          "job_id": 76,
+          "company_id": 45,
+          "title": "Backend Engineer",
+          "location": "Berlin, Germany",
+          "type": "Full Time",
+          "logo": "https://logo.clearbit.com/n26.com",
+          "description": "Seeking a Backend Engineer to enhance banking services.",
+          "tags": ["Technology"]
+        },
+        {
+          "job_id": 77,
+          "company_id": 45,
+          "title": "Product Designer",
+          "location": "Remote",
+          "type": "Full Time",
+          "logo": "https://logo.clearbit.com/n26.com",
+          "description": "Looking for a Product Designer to improve user experiences.",
+          "tags": ["Design"]
+        }
+      ]
+    },
+    {
+      "id": 46,
+      "name": "Klarna",
+      "logoInitial": "K",
+      "jobs": 10,
+      "employees": "501+",
+      "employeeId": 46,
+      "locations": "15 Countries",
+      "website": "https://www.klarna.com",
+      "founded": "2005",
+      "industry": "Fintech/Payments",
+      "profile": "Klarna is a Swedish fintech company offering buy-now-pay-later services and smooth checkout experiences. It partners with retailers like H&M and Nike to provide flexible payment solutions for consumers.",
+      "contacts": [
+        {
+          "icon": "twitter",
+          "url": "https://twitter.com/Klarna",
+          "label": "twitter.com/Klarna"
+        },
+        {
+          "icon": "facebook",
+          "url": "https://facebook.com/Klarna",
+          "label": "facebook.com/Klarna"
+        },
+        {
+          "icon": "envelope",
+          "url": "mailto:info@klarna.com",
+          "label": "info@klarna.com"
+        }
+      ],
+      "photos": [
+        {
+          "url": "https://images.unsplash.com/photo-1497366754035-1c882e89a5c9?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+          "alt": "Klarna office"
+        },
+        {
+          "url": "https://images.unsplash.com/photo-1517248135467-2c7b7b6f7e4b?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+          "alt": "Klarna team"
+        },
+        {
+          "url": "https://images.unsplash.com/photo-1503428593588-4f8c88a7f830?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+          "alt": "Klarna office"
+        },
+        {
+          "url": "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+          "alt": "Klarna meeting"
+        }
+      ],
+      "teamMembers": [
+        {
+          "name": "Sebastian Siemiatkowski",
+          "position": "CEO",
+          "photo": "https://randomuser.me/api/portraits/men/50.jpg",
+          "social": {
+            "linkedin": "#",
+            "twitter": "#"
+          }
+        },
+        {
+          "name": "Koen Köppen",
+          "position": "CTO",
+          "photo": "https://randomuser.me/api/portraits/men/45.jpg",
+          "social": {
+            "linkedin": "#",
+            "twitter": "#"
+          }
+        }
+      ],
+      "techStack": [
+        {
+          "name": "Java",
+          "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/java/java-original.svg"
+        },
+        {
+          "name": "JavaScript",
+          "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg"
+        },
+        {
+          "name": "AWS",
+          "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/amazonwebservices/amazonwebservices-original.svg"
+        }
+      ],
+      "officeLocations": [
+        {
+          "country": "Sweden",
+          "flag": "https://flagcdn.com/w40/se.png"
+        },
+        {
+          "country": "United States",
+          "flag": "https://flagcdn.com/w40/us.png"
+        },
+        {
+          "country": "United Kingdom",
+          "flag": "https://flagcdn.com/w40/gb.png"
+        },
+        {
+          "country": "Germany",
+          "flag": "https://flagcdn.com/w40/de.png"
+        }
+      ],
+      "benefits": [
+        {
+          "title": "Health Coverage",
+          "description": "Comprehensive health plans for employees.",
+          "icon": "bi-heart-fill"
+        },
+        {
+          "title": "Flexible PTO",
+          "description": "Generous paid time off to promote balance.",
+          "icon": "bi-cloud-sun-fill"
+        },
+        {
+          "title": "Remote Work",
+          "description": "Flexible remote work options available.",
+          "icon": "bi-house-fill"
+        }
+      ],
+      "openJobs": [
+        {
+          "job_id": 78,
+          "company_id": 46,
+          "title": "Full-Stack Engineer",
+          "location": "Stockholm, Sweden",
+          "type": "Full Time",
+          "logo": "https://logo.clearbit.com/klarna.com",
+          "description": "Seeking a Full-Stack Engineer to build payment solutions.",
+          "tags": ["Technology"]
+        },
+        {
+          "job_id": 79,
+          "company_id": 46,
+          "title": "Risk Analyst",
+          "location": "Remote",
+          "type": "Full Time",
+          "logo": "https://logo.clearbit.com/klarna.com",
+          "description": "Looking for a Risk Analyst to assess payment risks.",
+          "tags": ["Analytics"]
+        }
+      ]
+    },
+    {
+      "id": 47,
+      "name": "Affirm",
+      "logoInitial": "A",
+      "jobs": 7,
+      "employees": "501+",
+      "employeeId": 47,
+      "locations": "3 Countries",
+      "website": "https://www.affirm.com",
+      "founded": "2012",
+      "industry": "Fintech/Payments",
+      "profile": "Affirm offers transparent buy-now-pay-later financing for consumers. Founded by PayPal co-founder Max Levchin, it partners with merchants like Walmart to provide flexible payment plans without hidden fees.",
+      "contacts": [
+        {
+          "icon": "twitter",
+          "url": "https://twitter.com/Affirm",
+          "label": "twitter.com/Affirm"
+        },
+        {
+          "icon": "facebook",
+          "url": "https://facebook.com/Affirm",
+          "label": "facebook.com/Affirm"
+        },
+        {
+          "icon": "envelope",
+          "url": "mailto:support@affirm.com",
+          "label": "support@affirm.com"
+        }
+      ],
+      "photos": [
+        {
+          "url": "https://images.unsplash.com/photo-1497366210541-8b783781e3e2?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+          "alt": "Affirm office"
+        },
+        {
+          "url": "https://images.unsplash.com/photo-1516321318423-3b7a17f4f6c6?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+          "alt": "Affirm team"
+        },
+        {
+          "url": "https://images.unsplash.com/photo-1503428593588-4f8c88a7f830?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+          "alt": "Affirm office"
+        },
+        {
+          "url": "https://images.unsplash.com/photo-1556740714-7a3a6b6e7e4b?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+          "alt": "Affirm meeting"
+        }
+      ],
+      "teamMembers": [
+        {
+          "name": "Max Levchin",
+          "position": "CEO",
+          "photo": "https://randomuser.me/api/portraits/men/50.jpg",
+          "social": {
+            "linkedin": "#",
+            "twitter": "#"
+          }
+        },
+        {
+          "name": "Libor Michalek",
+          "position": "President",
+          "photo": "https://randomuser.me/api/portraits/men/45.jpg",
+          "social": {
+            "linkedin": "#",
+            "twitter": "#"
+          }
+        }
+      ],
+      "techStack": [
+        {
+          "name": "Python",
+          "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg"
+        },
+        {
+          "name": "React",
+          "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg"
+        },
+        {
+          "name": "AWS",
+          "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/amazonwebservices/amazonwebservices-original.svg"
+        }
+      ],
+      "officeLocations": [
+        {
+          "country": "United States",
+          "flag": "https://flagcdn.com/w40/us.png"
+        },
+        {
+          "country": "Canada",
+          "flag": "https://flagcdn.com/w40/ca.png"
+        },
+        {
+          "country": "Poland",
+          "flag": "https://flagcdn.com/w40/pl.png"
+        }
+      ],
+      "benefits": [
+        {
+          "title": "Health Coverage",
+          "description": "Comprehensive health plans for employees.",
+          "icon": "bi-heart-fill"
+        },
+        {
+          "title": "Flexible PTO",
+          "description": "Generous paid time off to promote balance.",
+          "icon": "bi-cloud-sun-fill"
+        },
+        {
+          "title": "Remote Work",
+          "description": "Flexible remote work options available.",
+          "icon": "bi-house-fill"
+        }
+      ],
+      "openJobs": [
+        {
+          "job_id": 80,
+          "company_id": 47,
+          "title": "Data Engineer",
+          "location": "San Francisco, CA",
+          "type": "Full Time",
+          "logo": "https://logo.clearbit.com/affirm.com",
+          "description": "Seeking a Data Engineer to optimize payment analytics.",
+          "tags": ["Technology"]
+        },
+        {
+          "job_id": 81,
+          "company_id": 47,
+          "title": "Compliance Analyst",
+          "location": "Remote",
+          "type": "Full Time",
+          "logo": "https://logo.clearbit.com/affirm.com",
+          "description": "Looking for a Compliance Analyst to ensure regulatory adherence.",
+          "tags": ["Compliance"]
+        }
+      ]
+    },
+    {
+      "id": 48,
+      "name": "Brex",
+      "logoInitial": "B",
+      "jobs": 6,
+      "employees": "501+",
+      "employeeId": 48,
+      "locations": "4 Countries",
+      "website": "https://www.brex.com",
+      "founded": "2017",
+      "industry": "Fintech/Payments",
+      "profile": "Brex provides corporate credit cards and financial tools for startups and businesses. With features like expense tracking and rewards, Brex serves clients like Airbnb and DoorDash to simplify financial management.",
+      "contacts": [
+        {
+          "icon": "twitter",
+          "url": "https://twitter.com/BrexHQ",
+          "label": "twitter.com/BrexHQ"
+        },
+        {
+          "icon": "facebook",
+          "url": "https://facebook.com/BrexHQ",
+          "label": "facebook.com/BrexHQ"
+        },
+        {
+          "icon": "envelope",
+          "url": "mailto:support@brex.com",
+          "label": "support@brex.com"
+        }
+      ],
+      "photos": [
+        {
+          "url": "https://images.unsplash.com/photo-1497366210541-8b783781e3e2?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+          "alt": "Brex office"
+        },
+        {
+          "url": "https://images.unsplash.com/photo-1516321318423-3b7a17f4f6c6?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+          "alt": "Brex team"
+        },
+        {
+          "url": "https://images.unsplash.com/photo-1503428593588-4f8c88a7f830?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+          "alt": "Brex office"
+        },
+        {
+          "url": "https://images.unsplash.com/photo-1556740714-7a3a6b6e7e4b?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+          "alt": "Brex meeting"
+        }
+      ],
+      "teamMembers": [
+        {
+          "name": "Henrique Dubugras",
+          "position": "Co-CEO",
+          "photo": "https://randomuser.me/api/portraits/men/50.jpg",
+          "social": {
+            "linkedin": "#",
+            "twitter": "#"
+          }
+        },
+        {
+          "name": "Pedro Franceschi",
+          "position": "Co-CEO",
+          "photo": "https://randomuser.me/api/portraits/men/45.jpg",
+          "social": {
+            "linkedin": "#",
+            "twitter": "#"
+          }
+        }
+      ],
+      "techStack": [
+        {
+          "name": "Python",
+          "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg"
+        },
+        {
+          "name": "React",
+          "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg"
+        },
+        {
+          "name": "AWS",
+          "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/amazonwebservices/amazonwebservices-original.svg"
+        }
+      ],
+      "officeLocations": [
+        {
+          "country": "United States",
+          "flag": "https://flagcdn.com/w40/us.png"
+        },
+        {
+          "country": "Canada",
+          "flag": "https://flagcdn.com/w40/ca.png"
+        },
+        {
+          "country": "United Kingdom",
+          "flag": "https://flagcdn.com/w40/gb.png"
+        },
+        {
+          "country": "Israel",
+          "flag": "https://flagcdn.com/w40/il.png"
+        }
+      ],
+      "benefits": [
+        {
+          "title": "Health Coverage",
+          "description": "Comprehensive health plans for employees.",
+          "icon": "bi-heart-fill"
+        },
+        {
+          "title": "Flexible PTO",
+          "description": "Generous paid time off to promote balance.",
+          "icon": "bi-cloud-sun-fill"
+        },
+        {
+          "title": "Remote Work",
+          "description": "Flexible remote work options available.",
+          "icon": "bi-house-fill"
+        }
+      ],
+      "openJobs": [
+        {
+          "job_id": 82,
+          "company_id": 48,
+          "title": "Software Engineer",
+          "location": "San Francisco, CA",
+          "type": "Full Time",
+          "logo": "https://logo.clearbit.com/brex.com",
+          "description": "Seeking a Software Engineer to build financial tools.",
+          "tags": ["Technology"]
+        },
+        {
+          "job_id": 83,
+          "company_id": 48,
+          "title": "Product Manager",
+          "location": "Remote",
+          "type": "Full Time",
+          "logo": "https://logo.clearbit.com/brex.com",
+          "description": "Looking for a Product Manager to drive financial products.",
+          "tags": ["Product"]
+        }
+      ]
+    },
+    {
+      "id": 49,
+      "name": "SoFi",
+      "logoInitial": "S",
+      "jobs": 6,
+      "employees": "501+",
+      "employeeId": 49,
+      "locations": "2 Countries",
+      "website": "https://www.sofi.com",
+      "founded": "2011",
+      "industry": "Fintech/Payments",
+      "profile": "SoFi (Social Finance) offers student loans, personal loans, and investment products. With a mission to help people achieve financial independence, SoFi serves millions with digital-first financial services.",
+      "contacts": [
+        {
+          "icon": "twitter",
+          "url": "https://twitter.com/SoFi",
+          "label": "twitter.com/SoFi"
+        },
+        {
+          "icon": "facebook",
+          "url": "https://facebook.com/SoFi",
+          "label": "facebook.com/SoFi"
+        },
+        {
+          "icon": "envelope",
+          "url": "mailto:support@sofi.com",
+          "label": "support@sofi.com"
+        }
+      ],
+      "photos": [
+        {
+          "url": "https://images.unsplash.com/photo-1497366210541-8b783781e3e2?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+          "alt": "SoFi office"
+        },
+        {
+          "url": "https://images.unsplash.com/photo-1516321318423-3b7a17f4f6c6?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+          "alt": "SoFi team"
+        },
+        {
+          "url": "https://images.unsplash.com/photo-1503428593588-4f8c88a7f830?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+          "alt": "SoFi office"
+        },
+        {
+          "url": "https://images.unsplash.com/photo-1556740714-7a3a6b6e7e4b?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+          "alt": "SoFi meeting"
+        }
+      ],
+      "teamMembers": [
+        {
+          "name": "Anthony Noto",
+          "position": "CEO",
+          "photo": "https://randomuser.me/api/portraits/men/50.jpg",
+          "social": {
+            "linkedin": "#",
+            "twitter": "#"
+          }
+        },
+        {
+          "name": "Michelle Gill",
+          "position": "CFO",
+          "photo": "https://randomuser.me/api/portraits/women/45.jpg",
+          "social": {
+            "linkedin": "#",
+            "twitter": "#"
+          }
+        }
+      ],
+      "techStack": [
+        {
+          "name": "Python",
+          "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg"
+        },
+        {
+          "name": "JavaScript",
+          "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg"
+        },
+        {
+          "name": "AWS",
+          "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/amazonwebservices/amazonwebservices-original.svg"
+        }
+      ],
+      "officeLocations": [
+        {
+          "country": "United States",
+          "flag": "https://flagcdn.com/w40/us.png"
+        },
+        {
+          "country": "Mexico",
+          "flag": "https://flagcdn.com/w40/mx.png"
+        }
+      ],
+      "benefits": [
+        {
+          "title": "Health Coverage",
+          "description": "Comprehensive health plans for employees.",
+          "icon": "bi-heart-fill"
+        },
+        {
+          "title": "Flexible PTO",
+          "description": "Generous paid time off to promote balance.",
+          "icon": "bi-cloud-sun-fill"
+        },
+        {
+          "title": "Remote Work",
+          "description": "Flexible remote work options available.",
+          "icon": "bi-house-fill"
+        }
+      ],
+      "openJobs": [
+        {
+          "job_id": 84,
+          "company_id": 49,
+          "title": "Frontend Engineer",
+          "location": "San Francisco, CA",
+          "type": "Full Time",
+          "logo": "https://logo.clearbit.com/sofi.com",
+          "description": "Seeking a Frontend Engineer to enhance financial platforms.",
+          "tags": ["Technology"]
+        },
+        {
+          "job_id": 85,
+          "company_id": 49,
+          "title": "Financial Analyst",
+          "location": "Remote",
+          "type": "Full Time",
+          "logo": "https://logo.clearbit.com/sofi.com",
+          "description": "Looking for a Financial Analyst to support loan products.",
+          "tags": ["Finance"]
+        }
+      ]
+    },
+    {
+      "id": 50,
+      "name": "Kraken",
+      "logoInitial": "K",
+      "jobs": 5,
+      "employees": "501+",
+      "employeeId": 50,
+      "locations": "10 Countries",
+      "website": "https://www.kraken.com",
+      "founded": "2011",
+      "industry": "Fintech/Payments",
+      "profile": "Kraken is a leading cryptocurrency exchange offering trading, staking, and custody services. Known for its security and reliability, Kraken serves both retail and institutional investors globally.",
+      "contacts": [
+        {
+          "icon": "twitter",
+          "url": "https://twitter.com/krakenfx",
+          "label": "twitter.com/krakenfx"
+        },
+        {
+          "icon": "facebook",
+          "url": "https://facebook.com/krakenfx",
+          "label": "facebook.com/krakenfx"
+        },
+        {
+          "icon": "envelope",
+          "url": "mailto:support@kraken.com",
+          "label": "support@kraken.com"
+        }
+      ],
+      "photos": [
+        {
+          "url": "https://images.unsplash.com/photo-1497366210541-8b783781e3e2?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+          "alt": "Kraken office"
+        },
+        {
+          "url": "https://images.unsplash.com/photo-1516321318423-3b7a17f4f6c6?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+          "alt": "Kraken team"
+        },
+        {
+          "url": "https://images.unsplash.com/photo-1503428593588-4f8c88a7f830?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+          "alt": "Kraken office"
+        },
+        {
+          "url": "https://images.unsplash.com/photo-1556740714-7a3a6b6e7e4b?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+          "alt": "Kraken meeting"
+        }
+      ],
+      "teamMembers": [
+        {
+          "name": "Jesse Powell",
+          "position": "CEO",
+          "photo": "https://randomuser.me/api/portraits/men/50.jpg",
+          "social": {
+            "linkedin": "#",
+            "twitter": "#"
+          }
+        },
+        {
+          "name": "David Ripley",
+          "position": "COO",
+          "photo": "https://randomuser.me/api/portraits/men/45.jpg",
+          "social": {
+            "linkedin": "#",
+            "twitter": "#"
+          }
+        }
+      ],
+      "techStack": [
+        {
+          "name": "Python",
+          "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg"
+        },
+        {
+          "name": "Go",
+          "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/go/go-original.svg"
+        },
+        {
+          "name": "AWS",
+          "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/amazonwebservices/amazonwebservices-original.svg"
+        }
+      ],
+      "officeLocations": [
+        {
+          "country": "United States",
+          "flag": "https://flagcdn.com/w40/us.png"
+        },
+        {
+          "country": "United Kingdom",
+          "flag": "https://flagcdn.com/w40/gb.png"
+        },
+        {
+          "country": "Japan",
+          "flag": "https://flagcdn.com/w40/jp.png"
+        },
+        {
+          "country": "Canada",
+          "flag": "https://flagcdn.com/w40/ca.png"
+        }
+      ],
+      "benefits": [
+        {
+          "title": "Health Coverage",
+          "description": "Comprehensive health plans for employees.",
+          "icon": "bi-heart-fill"
+        },
+        {
+          "title": "Flexible PTO",
+          "description": "Generous paid time off to promote balance.",
+          "icon": "bi-cloud-sun-fill"
+        },
+        {
+          "title": "Remote Work",
+          "description": "Flexible remote work options available.",
+          "icon": "bi-house-fill"
+        }
+      ],
+      "openJobs": [
+        {
+          "job_id": 86,
+          "company_id": 50,
+          "title": "Security Engineer",
+          "location": "Remote",
+          "type": "Full Time",
+          "logo": "https://logo.clearbit.com/kraken.com",
+          "description": "Seeking a Security Engineer to protect trading platforms.",
+          "tags": ["Security"]
+        },
+        {
+          "job_id": 87,
+          "company_id": 50,
+          "title": "Backend Developer",
+          "location": "Remote",
+          "type": "Full Time",
+          "logo": "https://logo.clearbit.com/kraken.com",
+          "description": "Looking for a Backend Developer to enhance exchange systems.",
+          "tags": ["Technology"]
+        }
+      ]
+    },
+    {
+      "id": 51,
+      "name": "Paxos",
+      "logoInitial": "P",
+      "jobs": 5,
+      "employees": "201-500",
+      "employeeId": 51,
+      "locations": "3 Countries",
+      "website": "https://www.paxos.com",
+      "founded": "2012",
+      "industry": "Fintech/Payments",
+      "profile": "Paxos is a blockchain infrastructure platform enabling tokenized assets and stablecoins. It partners with financial institutions like PayPal to provide secure, regulated crypto and settlement services.",
+      "contacts": [
+        {
+          "icon": "twitter",
+          "url": "https://twitter.com/PaxosGlobal",
+          "label": "twitter.com/PaxosGlobal"
+        },
+        {
+          "icon": "facebook",
+          "url": "https://facebook.com/PaxosGlobal",
+          "label": "facebook.com/PaxosGlobal"
+        },
+        {
+          "icon": "envelope",
+          "url": "mailto:info@paxos.com",
+          "label": "info@paxos.com"
+        }
+      ],
+      "photos": [
+        {
+          "url": "https://images.unsplash.com/photo-1497366210541-8b783781e3e2?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+          "alt": "Paxos office"
+        },
+        {
+          "url": "https://images.unsplash.com/photo-1516321318423-3b7a17f4f6c6?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+          "alt": "Paxos team"
+        },
+        {
+          "url": "https://images.unsplash.com/photo-1503428593588-4f8c88a7f830?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+          "alt": "Paxos office"
+        },
+        {
+          "url": "https://images.unsplash.com/photo-1556740714-7a3a6b6e7e4b?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+          "alt": "Paxos meeting"
+        }
+      ],
+      "teamMembers": [
+        {
+          "name": "Charles Cascarilla",
+          "position": "CEO",
+          "photo": "https://randomuser.me/api/portraits/men/50.jpg",
+          "social": {
+            "linkedin": "#",
+            "twitter": "#"
+          }
+        },
+        {
+          "name": "Rich Teo",
+          "position": "Co-Founder",
+          "photo": "https://randomuser.me/api/portraits/men/45.jpg",
+          "social": {
+            "linkedin": "#",
+            "twitter": "#"
+          }
+        }
+      ],
+      "techStack": [
+        {
+          "name": "Go",
+          "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/go/go-original.svg"
+        },
+        {
+          "name": "Python",
+          "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg"
+        },
+        {
+          "name": "AWS",
+          "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/amazonwebservices/amazonwebservices-original.svg"
+        }
+      ],
+      "officeLocations": [
+        {
+          "country": "United States",
+          "flag": "https://flagcdn.com/w40/us.png"
+        },
+        {
+          "country": "United Kingdom",
+          "flag": "https://flagcdn.com/w40/gb.png"
+        },
+        {
+          "country": "Singapore",
+          "flag": "https://flagcdn.com/w40/sg.png"
+        }
+      ],
+      "benefits": [
+        {
+          "title": "Health Coverage",
+          "description": "Comprehensive health plans for employees.",
+          "icon": "bi-heart-fill"
+        },
+        {
+          "title": "Flexible PTO",
+          "description": "Generous paid time off to promote balance.",
+          "icon": "bi-cloud-sun-fill"
+        },
+        {
+          "title": "Remote Work",
+          "description": "Flexible remote work options available.",
+          "icon": "bi-house-fill"
+        }
+      ],
+      "openJobs": [
+        {
+          "job_id": 88,
+          "company_id": 51,
+          "title": "Blockchain Engineer",
+          "location": "New York, NY",
+          "type": "Full Time",
+          "logo": "https://logo.clearbit.com/paxos.com",
+          "description": "Seeking a Blockchain Engineer to develop tokenized assets.",
+          "tags": ["Technology"]
+        },
+        {
+          "job_id": 89,
+          "company_id": 51,
+          "title": "Compliance Officer",
+          "location": "Remote",
+          "type": "Full Time",
+          "logo": "https://logo.clearbit.com/paxos.com",
+          "description": "Looking for a Compliance Officer to ensure regulatory standards.",
+          "tags": ["Compliance"]
+        }
+      ]
+    },
+    {
+      "id": 52,
+      "name": "Ramp",
+      "logoInitial": "R",
+      "jobs": 5,
+      "employees": "201-500",
+      "employeeId": 52,
+      "locations": "2 Countries",
+      "website": "https://www.ramp.com",
+      "founded": "2019",
+      "industry": "Fintech/Payments",
+      "profile": "Ramp offers corporate cards and spend management software for businesses. With real-time insights and automated expense tracking, Ramp helps companies like Shopify optimize their finances.",
+      "contacts": [
+        {
+          "icon": "twitter",
+          "url": "https://twitter.com/RampCard",
+          "label": "twitter.com/RampCard"
+        },
+        {
+          "icon": "facebook",
+          "url": "https://facebook.com/RampCard",
+          "label": "facebook.com/RampCard"
+        },
+        {
+          "icon": "envelope",
+          "url": "mailto:support@ramp.com",
+          "label": "support@ramp.com"
+        }
+      ],
+      "photos": [
+        {
+          "url": "https://images.unsplash.com/photo-1497366210541-8b783781e3e2?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+          "alt": "Ramp office"
+        },
+        {
+          "url": "https://images.unsplash.com/photo-1516321318423-3b7a17f4f6c6?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+          "alt": "Ramp team"
+        },
+        {
+          "url": "https://images.unsplash.com/photo-1503428593588-4f8c88a7f830?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+          "alt": "Ramp office"
+        },
+        {
+          "url": "https://images.unsplash.com/photo-1556740714-7a3a6b6e7e4b?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+          "alt": "Ramp meeting"
+        }
+      ],
+      "teamMembers": [
+        {
+          "name": "Eric Glyman",
+          "position": "CEO",
+          "photo": "https://randomuser.me/api/portraits/men/50.jpg",
+          "social": {
+            "linkedin": "#",
+            "twitter": "#"
+          }
+        },
+        {
+          "name": "Karim Atiyeh",
+          "position": "CTO",
+          "photo": "https://randomuser.me/api/portraits/men/45.jpg",
+          "social": {
+            "linkedin": "#",
+            "twitter": "#"
+          }
+        }
+      ],
+      "techStack": [
+        {
+          "name": "Python",
+          "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg"
+        },
+        {
+          "name": "React",
+          "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg"
+        },
+        {
+          "name": "AWS",
+          "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/amazonwebservices/amazonwebservices-original.svg"
+        }
+      ],
+      "officeLocations": [
+        {
+          "country": "United States",
+          "flag": "https://flagcdn.com/w40/us.png"
+        },
+        {
+          "country": "Poland",
+          "flag": "https://flagcdn.com/w40/pl.png"
+        }
+      ],
+      "benefits": [
+        {
+          "title": "Health Coverage",
+          "description": "Comprehensive health plans for employees.",
+          "icon": "bi-heart-fill"
+        },
+        {
+          "title": "Flexible PTO",
+          "description": "Generous paid time off to promote balance.",
+          "icon": "bi-cloud-sun-fill"
+        },
+        {
+          "title": "Remote Work",
+          "description": "Flexible remote work options available.",
+          "icon": "bi-house-fill"
+        }
+      ],
+      "openJobs": [
+        {
+          "job_id": 90,
+          "company_id": 52,
+          "title": "Full-Stack Engineer",
+          "location": "New York, NY",
+          "type": "Full Time",
+          "logo": "https://logo.clearbit.com/ramp.com",
+          "description": "Seeking a Full-Stack Engineer to build spend management tools.",
+          "tags": ["Technology"]
+        },
+        {
+          "job_id": 91,
+          "company_id": 52,
+          "title": "Customer Success Manager",
+          "location": "Remote",
+          "type": "Full Time",
+          "logo": "https://logo.clearbit.com/ramp.com",
+          "description": "Looking for a Customer Success Manager to support business clients.",
+          "tags": ["Support"]
+        }
+      ]
+    },
+    
+    {
+      "id": 53,
+      "name": "Wieden+Kennedy",
+      "logoInitial": "W",
+      "jobs": 6,
+      "employees": "501+",
+      "employeeId": 53,
+      "locations": "8 Countries",
+      "website": "https://www.wk.com",
+      "founded": "1982",
+      "industry": "Design and Branding",
+      "profile": "Wieden+Kennedy is a global creative agency known for iconic campaigns like Nike’s 'Just Do It.' It delivers bold advertising, branding, and digital experiences for clients across industries.",
+      "contacts": [
+        {
+          "icon": "twitter",
+          "url": "https://twitter.com/WiedenKennedy",
+          "label": "twitter.com/WiedenKennedy"
+        },
+        {
+          "icon": "facebook",
+          "url": "https://facebook.com/WiedenKennedy",
+          "label": "facebook.com/WiedenKennedy"
+        },
+        {
+          "icon": "envelope",
+          "url": "mailto:info@wk.com",
+          "label": "info@wk.com"
+        }
+      ],
+      "photos": [
+        {
+          "url": "https://images.unsplash.com/photo-1497366210541-8b783781e3e2?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+          "alt": "Wieden+Kennedy office"
+        },
+        {
+          "url": "https://images.unsplash.com/photo-1516321318423-3b7a17f4f6c6?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+          "alt": "Wieden+Kennedy team"
+        },
+        {
+          "url": "https://images.unsplash.com/photo-1503428593588-4f8c88a7f830?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+          "alt": "Wieden+Kennedy office"
+        },
+        {
+          "url": "https://images.unsplash.com/photo-1556740714-7a3a6b6e7e4b?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+          "alt": "Wieden+Kennedy meeting"
+        }
+      ],
+      "teamMembers": [
+        {
+          "name": "Dan Wieden",
+          "position": "Co-Founder",
+          "photo": "https://randomuser.me/api/portraits/men/50.jpg",
+          "social": {
+            "linkedin": "#",
+            "twitter": "#"
+          }
+        },
+        {
+          "name": "Colleen DeCourcy",
+          "position": "Global Chief Creative Officer",
+          "photo": "https://randomuser.me/api/portraits/women/45.jpg",
+          "social": {
+            "linkedin": "#",
+            "twitter": "#"
+          }
+        }
+      ],
+      "techStack": [
+        {
+          "name": "Figma",
+          "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/figma/figma-original.svg"
+        },
+        {
+          "name": "Adobe XD",
+          "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/xd/xd-original.svg"
+        },
+        {
+          "name": "JavaScript",
+          "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg"
+        }
+      ],
+      "officeLocations": [
+        {
+          "country": "United States",
+          "flag": "https://flagcdn.com/w40/us.png"
+        },
+        {
+          "country": "United Kingdom",
+          "flag": "https://flagcdn.com/w40/gb.png"
+        },
+        {
+          "country": "China",
+          "flag": "https://flagcdn.com/w40/cn.png"
+        },
+        {
+          "country": "Japan",
+          "flag": "https://flagcdn.com/w40/jp.png"
+        }
+      ],
+      "benefits": [
+        {
+          "title": "Health Coverage",
+          "description": "Comprehensive health plans for employees.",
+          "icon": "bi-heart-fill"
+        },
+        {
+          "title": "Flexible PTO",
+          "description": "Generous paid time off to promote balance.",
+          "icon": "bi-cloud-sun-fill"
+        },
+        {
+          "title": "Remote Work",
+          "description": "Flexible remote work options available.",
+          "icon": "bi-house-fill"
+        }
+      ],
+      "openJobs": [
+        {
+          "job_id": 92,
+          "company_id": 53,
+          "title": "Art Director",
+          "location": "Portland, OR",
+          "type": "Full Time",
+          "logo": "https://logo.clearbit.com/wk.com",
+          "description": "Seeking an Art Director to lead creative campaigns.",
+          "tags": ["Creative"]
+        },
+        {
+          "job_id": 93,
+          "company_id": 53,
+          "title": "Copywriter",
+          "location": "Remote",
+          "type": "Full Time",
+          "logo": "https://logo.clearbit.com/wk.com",
+          "description": "Looking for a Copywriter to craft bold brand stories.",
+          "tags": ["Creative"]
+        }
+      ]
+    },
+    {
+      "id": 54,
+      "name": "BBDO",
+      "logoInitial": "B",
+      "jobs": 5,
+      "employees": "501+",
+      "employeeId": 54,
+      "locations": "80 Countries",
+      "website": "https://www.bbdo.com",
+      "founded": "1891",
+      "industry": "Design and Branding",
+      "profile": "BBDO is a global advertising agency known for award-winning campaigns for brands like AT&T and Pepsi. It combines creativity and strategy to deliver impactful marketing and branding solutions.",
+      "contacts": [
+        {
+          "icon": "twitter",
+          "url": "https://twitter.com/BBDO",
+          "label": "twitter.com/BBDO"
+        },
+        {
+          "icon": "facebook",
+          "url": "https://facebook.com/BBDO",
+          "label": "facebook.com/BBDO"
+        },
+        {
+          "icon": "envelope",
+          "url": "mailto:info@bbdo.com",
+          "label": "info@bbdo.com"
+        }
+      ],
+      "photos": [
+        {
+          "url": "https://images.unsplash.com/photo-1497366754035-1c882e89a5c9?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+          "alt": "BBDO office"
+        },
+        {
+          "url": "https://images.unsplash.com/photo-1517248135467-2c7b7b6f7e4b?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+          "alt": "BBDO team"
+        },
+        {
+          "url": "https://images.unsplash.com/photo-1503428593588-4f8c88a7f830?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+          "alt": "BBDO office"
+        },
+        {
+          "url": "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+          "alt": "BBDO meeting"
+        }
+      ],
+      "teamMembers": [
+        {
+          "name": "Andrew Robertson",
+          "position": "Global CEO",
+          "photo": "https://randomuser.me/api/portraits/men/50.jpg",
+          "social": {
+            "linkedin": "#",
+            "twitter": "#"
+          }
+        },
+        {
+          "name": "David Lubars",
+          "position": "Chief Creative Officer",
+          "photo": "https://randomuser.me/api/portraits/men/45.jpg",
+          "social": {
+            "linkedin": "#",
+            "twitter": "#"
+          }
+        }
+      ],
+      "techStack": [
+        {
+          "name": "Figma",
+          "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/figma/figma-original.svg"
+        },
+        {
+          "name": "Adobe Illustrator",
+          "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/illustrator/illustrator-plain.svg"
+        },
+        {
+          "name": "JavaScript",
+          "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg"
+        }
+      ],
+      "officeLocations": [
+        {
+          "country": "United States",
+          "flag": "https://flagcdn.com/w40/us.png"
+        },
+        {
+          "country": "United Kingdom",
+          "flag": "https://flagcdn.com/w40/gb.png"
+        },
+        {
+          "country": "Brazil",
+          "flag": "https://flagcdn.com/w40/br.png"
+        },
+        {
+          "country": "India",
+          "flag": "https://flagcdn.com/w40/in.png"
+        }
+      ],
+      "benefits": [
+        {
+          "title": "Health Coverage",
+          "description": "Comprehensive health plans for employees.",
+          "icon": "bi-heart-fill"
+        },
+        {
+          "title": "Flexible PTO",
+          "description": "Generous paid time off to promote balance.",
+          "icon": "bi-cloud-sun-fill"
+        },
+        {
+          "title": "Remote Work",
+          "description": "Flexible remote work options available.",
+          "icon": "bi-house-fill"
+        }
+      ],
+      "openJobs": [
+        {
+          "job_id": 94,
+          "company_id": 54,
+          "title": "Creative Strategist",
+          "location": "New York, NY",
+          "type": "Full Time",
+          "logo": "https://logo.clearbit.com/bbdo.com",
+          "description": "Seeking a Creative Strategist to develop campaign strategies.",
+          "tags": ["Creative"]
+        },
+        {
+          "job_id": 95,
+          "company_id": 54,
+          "title": "Graphic Designer",
+          "location": "Remote",
+          "type": "Full Time",
+          "logo": "https://logo.clearbit.com/bbdo.com",
+          "description": "Looking for a Graphic Designer to create campaign visuals.",
+          "tags": ["Design"]
+        }
+      ]
+    },
+    {
+      "id": 55,
+      "name": "Ogilvy",
+      "logoInitial": "O",
+      "jobs": 6,
+      "employees": "501+",
+      "employeeId": 55,
+      "locations": "80 Countries",
+      "website": "https://www.ogilvy.com",
+      "founded": "1948",
+      "industry": "Design and Branding",
+      "profile": "Ogilvy is a global advertising and branding agency founded by David Ogilvy. Known for campaigns for Dove and IBM, it delivers creative solutions in advertising, PR, and digital marketing.",
+      "contacts": [
+        {
+          "icon": "twitter",
+          "url": "https://twitter.com/Ogilvy",
+          "label": "twitter.com/Ogilvy"
+        },
+        {
+          "icon": "facebook",
+          "url": "https://facebook.com/Ogilvy",
+          "label": "facebook.com/Ogilvy"
+        },
+        {
+          "icon": "envelope",
+          "url": "mailto:info@ogilvy.com",
+          "label": "info@ogilvy.com"
+        }
+      ],
+      "photos": [
+        {
+          "url": "https://images.unsplash.com/photo-1497366210541-8b783781e3e2?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+          "alt": "Ogilvy office"
+        },
+        {
+          "url": "https://images.unsplash.com/photo-1516321318423-3b7a17f4f6c6?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+          "alt": "Ogilvy team"
+        },
+        {
+          "url": "https://images.unsplash.com/photo-1503428593588-4f8c88a7f830?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+          "alt": "Ogilvy office"
+        },
+        {
+          "url": "https://images.unsplash.com/photo-1556740714-7a3a6b6e7e4b?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+          "alt": "Ogilvy meeting"
+        }
+      ],
+      "teamMembers": [
+        {
+          "name": "Andy Main",
+          "position": "Global CEO",
+          "photo": "https://randomuser.me/api/portraits/men/50.jpg",
+          "social": {
+            "linkedin": "#",
+            "twitter": "#"
+          }
+        },
+        {
+          "name": "Liz Taylor",
+          "position": "Global Chief Creative Officer",
+          "photo": "https://randomuser.me/api/portraits/women/45.jpg",
+          "social": {
+            "linkedin": "#",
+            "twitter": "#"
+          }
+        }
+      ],
+      "techStack": [
+        {
+          "name": "Figma",
+          "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/figma/figma-original.svg"
+        },
+        {
+          "name": "Adobe XD",
+          "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/xd/xd-original.svg"
+        },
+        {
+          "name": "JavaScript",
+          "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg"
+        }
+      ],
+      "officeLocations": [
+        {
+          "country": "United States",
+          "flag": "https://flagcdn.com/w40/us.png"
+        },
+        {
+          "country": "United Kingdom",
+          "flag": "https://flagcdn.com/w40/gb.png"
+        },
+        {
+          "country": "China",
+          "flag": "https://flagcdn.com/w40/cn.png"
+        },
+        {
+          "country": "Australia",
+          "flag": "https://flagcdn.com/w40/au.png"
+        }
+      ],
+      "benefits": [
+        {
+          "title": "Health Coverage",
+          "description": "Comprehensive health plans for employees.",
+          "icon": "bi-heart-fill"
+        },
+        {
+          "title": "Flexible PTO",
+          "description": "Generous paid time off to promote balance.",
+          "icon": "bi-cloud-sun-fill"
+        },
+        {
+          "title": "Remote Work",
+          "description": "Flexible remote work options available.",
+          "icon": "bi-house-fill"
+        }
+      ],
+      "openJobs": [
+        {
+          "job_id": 96,
+          "company_id": 55,
+          "title": "Brand Strategist",
+          "location": "New York, NY",
+          "type": "Full Time",
+          "logo": "https://logo.clearbit.com/ogilvy.com",
+          "description": "Seeking a Brand Strategist to develop client campaigns.",
+          "tags": ["Strategy"]
+        },
+        {
+          "job_id": 97,
+          "company_id": 55,
+          "title": "Digital Designer",
+          "location": "Remote",
+          "type": "Full Time",
+          "logo": "https://logo.clearbit.com/ogilvy.com",
+          "description": "Looking for a Digital Designer to create online assets.",
+          "tags": ["Design"]
+        }
+      ]
+    },
+    {
+      "id": 56,
+      "name": "DDB Worldwide",
+      "logoInitial": "D",
+      "jobs": 5,
+      "employees": "501+",
+      "employeeId": 56,
+      "locations": "90 Countries",
+      "website": "https://www.ddb.com",
+      "founded": "1949",
+      "industry": "Design and Branding",
+      "profile": "DDB Worldwide is a global advertising agency known for creative campaigns for Volkswagen and McDonald’s. It focuses on storytelling and brand experiences to connect with audiences.",
+      "contacts": [
+        {
+          "icon": "twitter",
+          "url": "https://twitter.com/DDB_Worldwide",
+          "label": "twitter.com/DDB_Worldwide"
+        },
+        {
+          "icon": "facebook",
+          "url": "https://facebook.com/DDBWorldwide",
+          "label": "facebook.com/DDBWorldwide"
+        },
+        {
+          "icon": "envelope",
+          "url": "mailto:info@ddb.com",
+          "label": "info@ddb.com"
+        }
+      ],
+      "photos": [
+        {
+          "url": "https://images.unsplash.com/photo-1497366210541-8b783781e3e2?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+          "alt": "DDB office"
+        },
+        {
+          "url": "https://images.unsplash.com/photo-1516321318423-3b7a17f4f6c6?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+          "alt": "DDB team"
+        },
+        {
+          "url": "https://images.unsplash.com/photo-1503428593588-4f8c88a7f830?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+          "alt": "DDB office"
+        },
+        {
+          "url": "https://images.unsplash.com/photo-1556740714-7a3a6b6e7e4b?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+          "alt": "DDB meeting"
+        }
+      ],
+      "teamMembers": [
+        {
+          "name": "Wendy Clark",
+          "position": "Global CEO",
+          "photo": "https://randomuser.me/api/portraits/women/50.jpg",
+          "social": {
+            "linkedin": "#",
+            "twitter": "#"
+          }
+        },
+        {
+          "name": "Ari Weiss",
+          "position": "Chief Creative Officer",
+          "photo": "https://randomuser.me/api/portraits/men/45.jpg",
+          "social": {
+            "linkedin": "#",
+            "twitter": "#"
+          }
+        }
+      ],
+      "techStack": [
+        {
+          "name": "Figma",
+          "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/figma/figma-original.svg"
+        },
+        {
+          "name": "Adobe Illustrator",
+          "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/illustrator/illustrator-plain.svg"
+        },
+        {
+          "name": "JavaScript",
+          "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg"
+        }
+      ],
+      "officeLocations": [
+        {
+          "country": "United States",
+          "flag": "https://flagcdn.com/w40/us.png"
+        },
+        {
+          "country": "United Kingdom",
+          "flag": "https://flagcdn.com/w40/gb.png"
+        },
+        {
+          "country": "Germany",
+          "flag": "https://flagcdn.com/w40/de.png"
+        },
+        {
+          "country": "Brazil",
+          "flag": "https://flagcdn.com/w40/br.png"
+        }
+      ],
+      "benefits": [
+        {
+          "title": "Health Coverage",
+          "description": "Comprehensive health plans for employees.",
+          "icon": "bi-heart-fill"
+        },
+        {
+          "title": "Flexible PTO",
+          "description": "Generous paid time off to promote balance.",
+          "icon": "bi-cloud-sun-fill"
+        },
+        {
+          "title": "Remote Work",
+          "description": "Flexible remote work options available.",
+          "icon": "bi-house-fill"
+        }
+      ],
+      "openJobs": [
+        {
+          "job_id": 98,
+          "company_id": 56,
+          "title": "Copywriter",
+          "location": "Chicago, IL",
+          "type": "Full Time",
+          "logo": "https://logo.clearbit.com/ddb.com",
+          "description": "Seeking a Copywriter to craft compelling brand narratives.",
+          "tags": ["Creative"]
+        },
+        {
+          "job_id": 99,
+          "company_id": 56,
+          "title": "Art Director",
+          "location": "Remote",
+          "type": "Full Time",
+          "logo": "https://logo.clearbit.com/ddb.com",
+          "description": "Looking for an Art Director to lead campaign visuals.",
+          "tags": ["Creative"]
+        }
+      ]
+    },
+    {
+      "id": 57,
+      "name": "72andSunny",
+      "logoInitial": "7",
+      "jobs": 4,
+      "employees": "201-500",
+      "employeeId": 57,
+      "locations": "4 Countries",
+      "website": "https://www.72andsunny.com",
+      "founded": "2004",
+      "industry": "Design and Branding",
+      "profile": "72andSunny is a creative agency known for bold, culture-driven campaigns for brands like Google and Adidas. It focuses on innovative storytelling across advertising and digital platforms.",
+      "contacts": [
+        {
+          "icon": "twitter",
+          "url": "https://twitter.com/72andSunny",
+          "label": "twitter.com/72andSunny"
+        },
+        {
+          "icon": "facebook",
+          "url": "https://facebook.com/72andSunny",
+          "label": "facebook.com/72andSunny"
+        },
+        {
+          "icon": "envelope",
+          "url": "mailto:info@72andsunny.com",
+          "label": "info@72andsunny.com"
+        }
+      ],
+      "photos": [
+        {
+          "url": "https://images.unsplash.com/photo-1497366210541-8b783781e3e2?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+          "alt": "72andSunny office"
+        },
+        {
+          "url": "https://images.unsplash.com/photo-1516321318423-3b7a17f4f6c6?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+          "alt": "72andSunny team"
+        },
+        {
+          "url": "https://images.unsplash.com/photo-1503428593588-4f8c88a7f830?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+          "alt": "72andSunny office"
+        },
+        {
+          "url": "https://images.unsplash.com/photo-1556740714-7a3a6b6e7e4b?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+          "alt": "72andSunny meeting"
+        }
+      ],
+      "teamMembers": [
+        {
+          "name": "Glenn Cole",
+          "position": "Founder",
+          "photo": "https://randomuser.me/api/portraits/men/50.jpg",
+          "social": {
+            "linkedin": "#",
+            "twitter": "#"
+          }
+        },
+        {
+          "name": "Evvy Donohoe",
+          "position": "Chief Strategy Officer",
+          "photo": "https://randomuser.me/api/portraits/women/45.jpg",
+          "social": {
+            "linkedin": "#",
+            "twitter": "#"
+          }
+        }
+      ],
+      "techStack": [
+        {
+          "name": "Figma",
+          "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/figma/figma-original.svg"
+        },
+        {
+          "name": "Adobe XD",
+          "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/xd/xd-original.svg"
+        },
+        {
+          "name": "JavaScript",
+          "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg"
+        }
+      ],
+      "officeLocations": [
+        {
+          "country": "United States",
+          "flag": "https://flagcdn.com/w40/us.png"
+        },
+        {
+          "country": "Netherlands",
+          "flag": "https://flagcdn.com/w40/nl.png"
+        },
+        {
+          "country": "Australia",
+          "flag": "https://flagcdn.com/w40/au.png"
+        },
+        {
+          "country": "Singapore",
+          "flag": "https://flagcdn.com/w40/sg.png"
+        }
+      ],
+      "benefits": [
+        {
+          "title": "Health Coverage",
+          "description": "Comprehensive health plans for employees.",
+          "icon": "bi-heart-fill"
+        },
+        {
+          "title": "Flexible PTO",
+          "description": "Generous paid time off to promote balance.",
+          "icon": "bi-cloud-sun-fill"
+        },
+        {
+          "title": "Remote Work",
+          "description": "Flexible remote work options available.",
+          "icon": "bi-house-fill"
+        }
+      ],
+      "openJobs": [
+        {
+          "job_id": 100,
+          "company_id": 57,
+          "title": "Creative Director",
+          "location": "Los Angeles, CA",
+          "type": "Full Time",
+          "logo": "https://logo.clearbit.com/72andsunny.com",
+          "description": "Seeking a Creative Director to lead innovative campaigns.",
+          "tags": ["Creative"]
+        },
+        {
+          "job_id": 101,
+          "company_id": 57,
+          "title": "Brand Manager",
+          "location": "Remote",
+          "type": "Full Time",
+          "logo": "https://logo.clearbit.com/72andsunny.com",
+          "description": "Looking for a Brand Manager to oversee client projects.",
+          "tags": ["Strategy"]
+        }
+      ]
+    },
+    {
+      "id": 58,
+      "name": "Anomaly",
+      "logoInitial": "A",
+      "jobs": 4,
+      "employees": "201-500",
+      "employeeId": 58,
+      "locations": "5 Countries",
+      "website": "https://www.anomaly.com",
+      "founded": "2004",
+      "industry": "Design and Branding",
+      "profile": "Anomaly is a creative agency that blends advertising, design, and innovation for clients like Budweiser and Converse. It focuses on disrupting traditional marketing with bold ideas.",
+      "contacts": [
+        {
+          "icon": "twitter",
+          "url": "https://twitter.com/Anomaly",
+          "label": "twitter.com/Anomaly"
+        },
+        {
+          "icon": "facebook",
+          "url": "https://facebook.com/Anomaly",
+          "label": "facebook.com/Anomaly"
+        },
+        {
+          "icon": "envelope",
+          "url": "mailto:info@anomaly.com",
+          "label": "info@anomaly.com"
+        }
+      ],
+      "photos": [
+        {
+          "url": "https://images.unsplash.com/photo-1497366210541-8b783781e3e2?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+          "alt": "Anomaly office"
+        },
+        {
+          "url": "https://images.unsplash.com/photo-1516321318423-3b7a17f4f6c6?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+          "alt": "Anomaly team"
+        },
+        {
+          "url": "https://images.unsplash.com/photo-1503428593588-4f8c88a7f830?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+          "alt": "Anomaly office"
+        },
+        {
+          "url": "https://images.unsplash.com/photo-1556740714-7a3a6b6e7e4b?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+          "alt": "Anomaly meeting"
+        }
+      ],
+      "teamMembers": [
+        {
+          "name": "Carl Johnson",
+          "position": "Founder",
+          "photo": "https://randomuser.me/api/portraits/men/50.jpg",
+          "social": {
+            "linkedin": "#",
+            "twitter": "#"
+          }
+        },
+        {
+          "name": "Karina Wilsher",
+          "position": "Global CEO",
+          "photo": "https://randomuser.me/api/portraits/women/45.jpg",
+          "social": {
+            "linkedin": "#",
+            "twitter": "#"
+          }
+        }
+      ],
+      "techStack": [
+        {
+          "name": "Figma",
+          "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/figma/figma-original.svg"
+        },
+        {
+          "name": "Adobe XD",
+          "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/xd/xd-original.svg"
+        },
+        {
+          "name": "JavaScript",
+          "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg"
+        }
+      ],
+      "officeLocations": [
+        {
+          "country": "United States",
+          "flag": "https://flagcdn.com/w40/us.png"
+        },
+        {
+          "country": "United Kingdom",
+          "flag": "https://flagcdn.com/w40/gb.png"
+        },
+        {
+          "country": "Canada",
+          "flag": "https://flagcdn.com/w40/ca.png"
+        },
+        {
+          "country": "China",
+          "flag": "https://flagcdn.com/w40/cn.png"
+        }
+      ],
+      "benefits": [
+        {
+          "title": "Health Coverage",
+          "description": "Comprehensive health plans for employees.",
+          "icon": "bi-heart-fill"
+        },
+        {
+          "title": "Flexible PTO",
+          "description": "Generous paid time off to promote balance.",
+          "icon": "bi-cloud-sun-fill"
+        },
+        {
+          "title": "Remote Work",
+          "description": "Flexible remote work options available.",
+          "icon": "bi-house-fill"
+        }
+      ]
+    }
+]
