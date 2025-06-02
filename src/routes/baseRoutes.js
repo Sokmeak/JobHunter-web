@@ -1,4 +1,4 @@
-import JobDescription from "@/views/landing/JobDescription.vue";
+// import JobDescription from "@/views/landing/JobDescription.vue";
 import CompanyProfile from "@/views/landing/CompanyProfile.vue";
 
 import LandingPage from "../views/landing/Landing.vue";
@@ -28,8 +28,10 @@ export default [
 
       {
         path: "jobs/:id",
-        component: JobDescription,
         name: "JobDescription",
+        component: () =>
+          import("@/components/job-description/JobDescription.vue"),
+
         props: true,
       },
       {

@@ -12,6 +12,7 @@
           :to="item.href"
           class="nav-item"
           active-class="active"
+          :exact="item.name !== 'Find Jobs'"
           :title="isCollapsed ? item.name : ''"
         >
           <i :class="['bi', `bi-${item.icon}`, 'nav-icon']"></i>
@@ -161,7 +162,12 @@ export default {
           href: "/applicant/my-applications",
           icon: "file-earmark-text",
         },
-        { name: "Find Jobs", href: "/applicant/find-jobs", icon: "search" },
+        {
+          name: "Find Jobs",
+          href: "/applicant/find-jobs",
+          icon: "search",
+        },
+
         {
           name: "Browse Companies",
           href: "/applicant/BrowseCompany",

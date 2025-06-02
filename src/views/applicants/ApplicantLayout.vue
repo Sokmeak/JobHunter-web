@@ -68,6 +68,9 @@ export default {
         "/applicant/messages": "Messages",
         "/applicant/my-applications": "My Applications",
         "/applicant/find-jobs": "Find Jobs",
+
+        // "/applicant/find-jobs/:jobId": "Job Details", // Dynamic route handled in code
+
         "/applicant/BrowseCompany": "Browse Companies",
         "/applicant/profile": "My Public Profile",
         "/applicant/settings": "Settings",
@@ -79,7 +82,11 @@ export default {
     // Watch for route changes to update page title automatically
     $route(to) {
       // Set page title based on route
-      this.pageTitle = this.routeTitles[to.path] || "Dashboard";
+      if (to.path.startsWith("/applicant/find-jobs/") && to.path.split("/").length === 4) {
+        this.pageTitle = "Job Details";
+      } else {
+        this.pageTitle = this.routeTitles[to.path] || "Dashboard";
+      }
 
       // Determine if back button should be shown based on navigation depth
       // Force showBackButton to true for all routes except dashboard
@@ -92,8 +99,12 @@ export default {
     // Load saved sidebar state from localStorage (optional)
     // Comment out if you want it to always start expanded
     // const savedState = localStorage.getItem("sidebarCollapsed");
-    // if (savedState !== null) {
-    //   this.isSidebarCollapsed = savedState === "true";
+    // Set initial page title based on current route
+    if (this.$route.path.startsWith("/applicant/find-jobs/") && this.$route.path.split("/").length === 4) {
+      this.pageTitle = "Job Details";
+    } else {
+      this.pageTitle = this.routeTitles[this.$route.path] || "Dashboard";
+    }
     // }
 
     // Set initial page title based on current route
@@ -123,7 +134,7 @@ export default {
       // Save state to localStorage (optional)
       localStorage.setItem("sidebarCollapsed", this.isSidebarCollapsed);
     },
-        loadNotifications() {
+    loadNotifications() {
       // Simulated API call to load notifications
       // In a real app, you would fetch this from your backend
       setTimeout(() => {
@@ -185,11 +196,11 @@ export default {
   // .main-content.sidebar-collapsed {
   //   margin-left: 0;
   // }
-  
+
   .sidebar {
     transform: translateX(-100%);
   }
-  
+
   .sidebar.show {
     transform: translateX(0);
   }

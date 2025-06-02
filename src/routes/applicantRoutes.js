@@ -31,6 +31,13 @@ export default [
         path: "find-jobs",
         name: "ApplicantFindJobs",
         component: () => import("@/views/applicants/FindJob.vue"),
+        props: true,
+      },
+      {
+        path: "find-jobs/:id",
+        name: "JobDescription-Applicant",
+        props: true,
+        component: () => import("@/views/applicants/JobDescription.vue"),
       },
       {
         path: "BrowseCompany",
