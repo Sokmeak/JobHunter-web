@@ -110,6 +110,10 @@
 import { ref, computed } from "vue";
 
 const props = defineProps({
+  context: {
+    type: String,
+    default: "Landing",
+  },
   company: {
     type: Object,
     required: true,
