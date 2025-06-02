@@ -1,0 +1,898 @@
+[
+  {
+    "id": 6,
+    "name": "Authorize.net",
+    "logoInitial": "A",
+    "jobs": 15,
+    "employees": "500+",
+    "employeeId": 6,
+    "locations": "4 Countries",
+    "website": "https://www.authorize.net",
+    "founded": "1996",
+    "industry": "Payment Gateway",
+    "profile": "Authorize.net, a Visa solution, is a leading payment gateway offering secure and reliable payment processing for businesses. It supports multiple payment methods, including credit cards and digital wallets, and is known for its robust fraud protection, recurring billing, and customizable checkout experiences. Authorize.net serves businesses of all sizes, with a focus on flexibility and lower transaction fees compared to competitors.",
+    "contacts": [
+      {
+        "icon": "twitter",
+        "url": "https://twitter.com/AuthorizeNet",
+        "label": "twitter.com/AuthorizeNet"
+      },
+      {
+        "icon": "facebook",
+        "url": "https://facebook.com/AuthorizeNet",
+        "label": "facebook.com/AuthorizeNet"
+      },
+      {
+        "icon": "envelope",
+        "url": "mailto:support@authorize.net",
+        "label": "support@authorize.net"
+      }
+    ],
+    "photos": [
+      {
+        "url": "https://images.unsplash.com/photo-1497366210541-8b783781e3e2?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+        "alt": "Authorize.net office"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1516321318423-3b7a17f4f6c6?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+        "alt": "Authorize.net team"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1503428593588-4f8c88a7f830?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+        "alt": "Authorize.net office"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1556740714-7a3a6b6e7e4b?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+        "alt": "Authorize.net meeting"
+      }
+    ],
+    "teamMembers": [
+      {
+        "name": "Thomas Reed",
+        "position": "General Manager",
+        "photo": "https://randomuser.me/api/portraits/men/70.jpg",
+        "social": {
+          "linkedin": "#",
+          "twitter": "#"
+        }
+      },
+      {
+        "name": "Clara Nguyen",
+        "position": "Lead Engineer",
+        "photo": "https://randomuser.me/api/portraits/women/55.jpg",
+        "social": {
+          "linkedin": "#",
+          "twitter": "#"
+        }
+      },
+      {
+        "name": "Steven Patel",
+        "position": "Product Manager",
+        "photo": "https://randomuser.me/api/portraits/men/35.jpg",
+        "social": {
+          "linkedin": "#",
+          "twitter": "#"
+        }
+      },
+      {
+        "name": "Megan Foster",
+        "position": "Marketing Lead",
+        "photo": "https://randomuser.me/api/portraits/women/40.jpg",
+        "social": {
+          "linkedin": "#",
+          "twitter": "#"
+        }
+      }
+    ],
+    "techStack": [
+      {
+        "name": "JavaScript",
+        "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg"
+      },
+      {
+        "name": "PHP",
+        "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/php/php-original.svg"
+      },
+      {
+        "name": "Python",
+        "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg"
+      },
+      {
+        "name": "Java",
+        "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/java/java-original.svg"
+      },
+      {
+        "name": "MySQL",
+        "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mysql/mysql-original.svg"
+      }
+    ],
+    "officeLocations": [
+      {
+        "country": "United States",
+        "flag": "https://flagcdn.com/w40/us.png"
+      },
+      {
+        "country": "Canada",
+        "flag": "https://flagcdn.com/w40/ca.png"
+      },
+      {
+        "country": "United Kingdom",
+        "flag": "https://flagcdn.com/w40/gb.png"
+      },
+      {
+        "country": "Australia",
+        "flag": "https://flagcdn.com/w40/au.png"
+      }
+    ],
+    "benefits": [
+      {
+        "title": "Health Coverage",
+        "description": "Comprehensive medical, dental, and vision plans for employees.",
+        "icon": "bi-heart-fill"
+      },
+      {
+        "title": "Flexible PTO",
+        "description": "Generous paid time off to support work-life balance.",
+        "icon": "bi-cloud-sun-fill"
+      },
+      {
+        "title": "Professional Development",
+        "description": "Support for certifications and continuous learning.",
+        "icon": "bi-mortarboard-fill"
+      },
+      {
+        "title": "Team Events",
+        "description": "Regular team-building activities to foster collaboration.",
+        "icon": "bi-people-fill"
+      },
+      {
+        "title": "Remote Work",
+        "description": "Flexible remote work options for employees.",
+        "icon": "bi-house-fill"
+      }
+    ],
+    "openJobs": [
+      {
+        "job_id": 19,
+        "company_id": 6,
+        "title": "Security Engineer",
+        "location": "Remote",
+        "type": "Full Time",
+        "logo": "https://upload.wikimedia.org/wikipedia/commons/6/6b/Authorize.Net_Logo.svg",
+        "description": "Seeking a Security Engineer to enhance payment security protocols.",
+        "tags": [
+          "Technology",
+          "Security"
+        ]
+      },
+      {
+        "job_id": 20,
+        "company_id": 6,
+        "title": "Customer Success Manager",
+        "location": "Lehi, UT",
+        "type": "Full Time",
+        "logo": "https://upload.wikimedia.org/wikipedia/commons/6/6b/Authorize.Net_Logo.svg",
+        "description": "Looking for a Customer Success Manager to support merchant onboarding.",
+        "tags": [
+          "Customer Success"
+        ]
+      }
+    ]
+  },
+  {
+    "id": 7,
+    "name": "Helcim",
+    "logoInitial": "H",
+    "jobs": 10,
+    "employees": "50-100",
+    "employeeId": 7,
+    "locations": "2 Countries",
+    "website": "https://www.helcim.com",
+    "founded": "2006",
+    "industry": "Payment Gateway, Merchant Services",
+    "profile": "Helcim offers transparent interchange-plus pricing with no monthly fees, making it a cost-effective choice for small to midsize businesses. It provides tools for invoicing, POS, and virtual terminals, with automatic volume discounts and personalized support. Helcim’s in-house payment gateway ensures seamless integration and reliability for merchants.",
+    "contacts": [
+      {
+        "icon": "twitter",
+        "url": "https://twitter.com/Helcim",
+        "label": "twitter.com/Helcim"
+      },
+      {
+        "icon": "facebook",
+        "url": "https://facebook.com/HelcimInc",
+        "label": "facebook.com/HelcimInc"
+      },
+      {
+        "icon": "envelope",
+        "url": "mailto:support@helcim.com",
+        "label": "support@helcim.com"
+      }
+    ],
+    "photos": [
+      {
+        "url": "https://images.unsplash.com/photo-1497366754035-1c882e89a5c9?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+        "alt": "Helcim office"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1517248135467-2c7b7b6f7e4b?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+        "alt": "Helcim team"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1503428593588-4f8c88a7f830?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+        "alt": "Helcim office"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+        "alt": "Helcim meeting"
+      }
+    ],
+    "teamMembers": [
+      {
+        "name": "Nicholas Carter",
+        "position": "CEO",
+        "photo": "https://randomuser.me/api/portraits/men/45.jpg",
+        "social": {
+          "linkedin": "#",
+          "twitter": "#"
+        }
+      },
+      {
+        "name": "Sophie Kim",
+        "position": "CTO",
+        "photo": "https://randomuser.me/api/portraits/women/30.jpg",
+        "social": {
+          "linkedin": "#",
+          "twitter": "#"
+        }
+      },
+      {
+        "name": "Liam Wong",
+        "position": "Marketing Lead",
+        "photo": "https://randomuser.me/api/portraits/men/50.jpg",
+        "social": {
+          "linkedin": "#",
+          "twitter": "#"
+        }
+      },
+      {
+        "name": "Ava Thompson",
+        "position": "Product Manager",
+        "photo": "https://randomuser.me/api/portraits/women/25.jpg",
+        "social": {
+          "linkedin": "#",
+          "twitter": "#"
+        }
+      }
+    ],
+    "techStack": [
+      {
+        "name": "JavaScript",
+        "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg"
+      },
+      {
+        "name": "PHP",
+        "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/php/php-original.svg"
+      },
+      {
+        "name": "Python",
+        "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg"
+      },
+      {
+        "name": "React",
+        "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg"
+      },
+      {
+        "name": "MySQL",
+        "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mysql/mysql-original.svg"
+      }
+    ],
+    "officeLocations": [
+      {
+        "country": "Canada",
+        "flag": "https://flagcdn.com/w40/ca.png"
+      },
+      {
+        "country": "United States",
+        "flag": "https://flagcdn.com/w40/us.png"
+      }
+    ],
+    "benefits": [
+      {
+        "title": "Health Benefits",
+        "description": "Comprehensive health and wellness plans for employees.",
+        "icon": "bi-heart-fill"
+      },
+      {
+        "title": "Unlimited PTO",
+        "description": "Flexible time-off policy to promote work-life balance.",
+        "icon": "bi-cloud-sun-fill"
+      },
+      {
+        "title": "Learning Support",
+        "description": "Resources for professional development and skill-building.",
+        "icon": "bi-mortarboard-fill"
+      },
+      {
+        "title": "Team Retreats",
+        "description": "Annual team events to foster collaboration and innovation.",
+        "icon": "bi-people-fill"
+      },
+      {
+        "title": "Remote Flexibility",
+        "description": "Options to work remotely or from office locations.",
+        "icon": "bi-house-fill"
+      }
+    ],
+    "openJobs": [
+      {
+        "job_id": 21,
+        "company_id": 7,
+        "title": "Full-Stack Developer",
+        "location": "Calgary, Canada",
+        "type": "Full Time",
+        "logo": "https://upload.wikimedia.org/wikipedia/commons/0/0c/Helcim_logo.svg",
+        "description": "Seeking a Full-Stack Developer to build payment processing tools.",
+        "tags": [
+          "Technology"
+        ]
+      },
+      {
+        "job_id": 22,
+        "company_id": 7,
+        "title": "Support Specialist",
+        "location": "Remote",
+        "type": "Full Time",
+        "logo": "https://upload.wikimedia.org/wikipedia/commons/0/0c/Helcim_logo.svg",
+        "description": "Looking for a Support Specialist to assist merchants with payment solutions.",
+        "tags": [
+          "Customer Support"
+        ]
+      }
+    ]
+  },
+  {
+    "id": 8,
+    "name": "Payoneer",
+    "logoInitial": "P",
+    "jobs": 25,
+    "employees": "1,000+",
+    "employeeId": 8,
+    "locations": "200+ Countries",
+    "website": "https://www.payoneer.com",
+    "founded": "2005",
+    "industry": "Payment Gateway, Financial Services",
+    "profile": "Payoneer is a global payment platform trusted by over 5 million users, including Amazon and Google. It supports payments in 70 currencies and 22+ languages, offering free account opening and payments between Payoneer accounts. Payoneer is ideal for freelancers, marketplaces, and businesses with international customers, providing multi-currency accounts and POS solutions.",
+    "contacts": [
+      {
+        "icon": "twitter",
+        "url": "https://twitter.com/Payoneer",
+        "label": "twitter.com/Payoneer"
+      },
+      {
+        "icon": "facebook",
+        "url": "https://facebook.com/Payoneer",
+        "label": "facebook.com/Payoneer"
+      },
+      {
+        "icon": "envelope",
+        "url": "mailto:support@payoneer.com",
+        "label": "support@payoneer.com"
+      }
+    ],
+    "photos": [
+      {
+        "url": "https://images.unsplash.com/photo-1497366811353-6870744d04b2?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+        "alt": "Payoneer office"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1517245386807-9a4a7f8f6b2e?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+        "alt": "Payoneer team"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+        "alt": "Payoneer office"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1542744094-24638e6b8e4d?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+        "alt": "Payoneer meeting"
+      }
+    ],
+    "teamMembers": [
+      {
+        "name": "Ella Brooks",
+        "position": "CEO",
+        "photo": "https://randomuser.me/api/portraits/women/50.jpg",
+        "social": {
+          "linkedin": "#",
+          "twitter": "#"
+        }
+      },
+      {
+        "name": "Jacob Lee",
+        "position": "CTO",
+        "photo": "https://randomuser.me/api/portraits/men/60.jpg",
+        "social": {
+          "linkedin": "#",
+          "twitter": "#"
+        }
+      },
+      {
+        "name": "Grace Patel",
+        "position": "Marketing Director",
+        "photo": "https://randomuser.me/api/portraits/women/35.jpg",
+        "social": {
+          "linkedin": "#",
+          "twitter": "#"
+        }
+      },
+      {
+        "name": "Henry Kim",
+        "position": "Data Analyst",
+        "photo": "https://randomuser.me/api/portraits/men/40.jpg",
+        "social": {
+          "linkedin": "#",
+          "twitter": "#"
+        }
+      }
+    ],
+    "techStack": [
+      {
+        "name": "JavaScript",
+        "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg"
+      },
+      {
+        "name": "Node.js",
+        "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg"
+      },
+      {
+        "name": "Python",
+        "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg"
+      },
+      {
+        "name": "React",
+        "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg"
+      },
+      {
+        "name": "MongoDB",
+        "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mongodb/mongodb-original.svg"
+      }
+    ],
+    "officeLocations": [
+      {
+        "country": "United States",
+        "flag": "https://flagcdn.com/w40/us.png"
+      },
+      {
+        "country": "United Kingdom",
+        "flag": "https://flagcdn.com/w40/gb.png"
+      },
+      {
+        "country": "Israel",
+        "flag": "https://flagcdn.com/w40/il.png"
+      },
+      {
+        "country": "India",
+        "flag": "https://flagcdn.com/w40/in.png"
+      },
+      {
+        "country": "Philippines",
+        "flag": "https://flagcdn.com/w40/ph.png"
+      }
+    ],
+    "benefits": [
+      {
+        "title": "Healthcare Plans",
+        "description": "Comprehensive health coverage for employees and families.",
+        "icon": "bi-heart-fill"
+      },
+      {
+        "title": "Flexible PTO",
+        "description": "Generous time-off policies to support employee well-being.",
+        "icon": "bi-cloud-sun-fill"
+      },
+      {
+        "title": "Learning Budget",
+        "description": "Support for professional growth and certifications.",
+        "icon": "bi-mortarboard-fill"
+      },
+      {
+        "title": "Global Team Events",
+        "description": "Regular team-building and strategy retreats.",
+        "icon": "bi-people-fill"
+      },
+      {
+        "title": "Remote Work",
+        "description": "Flexible remote and hybrid work arrangements.",
+        "icon": "bi-house-fill"
+      }
+    ],
+    "openJobs": [
+      {
+        "job_id": 23,
+        "company_id": 8,
+        "title": "Backend Developer",
+        "location": "New York, NY",
+        "type": "Full Time",
+        "logo": "https://upload.wikimedia.org/wikipedia/commons/2/2f/Payoneer_logo.svg",
+        "description": "Seeking a Backend Developer to enhance global payment systems.",
+        "tags": [
+          "Technology"
+        ]
+      },
+      {
+        "job_id": 24,
+        "company_id": 8,
+        "title": "Marketing Specialist",
+        "location": "Remote",
+        "type": "Full Time",
+        "logo": "https://upload.wikimedia.org/wikipedia/commons/2/2f/Payoneer_logo.svg",
+        "description": "Looking for a Marketing Specialist to drive global campaigns.",
+        "tags": [
+          "Marketing"
+        ]
+      }
+    ]
+  },
+  {
+    "id": 9,
+    "name": "Shopify Payments",
+    "logoInitial": "S",
+    "jobs": 20,
+    "employees": "7,000+",
+    "employeeId": 9,
+    "locations": "175+ Countries",
+    "website": "https://www.shopify.com/payments",
+    "founded": "2013",
+    "industry": "Payment Gateway",
+    "profile": "Shopify Payments is a seamless payment solution integrated with Shopify’s e-commerce platform, enabling merchants to accept credit cards and digital wallets without a third-party gateway. It offers competitive pricing, no setup fees, and streamlined checkout experiences, making it ideal for Shopify store owners looking to simplify payment processing and grow their businesses.",
+    "contacts": [
+      {
+        "icon": "twitter",
+        "url": "https://twitter.com/Shopify",
+        "label": "twitter.com/Shopify"
+      },
+      {
+        "icon": "facebook",
+        "url": "https://facebook.com/Shopify",
+        "label": "facebook.com/Shopify"
+      },
+      {
+        "icon": "envelope",
+        "url": "mailto:support@shopify.com",
+        "label": "support@shopify.com"
+      }
+    ],
+    "photos": [
+      {
+        "url": "https://images.unsplash.com/photo-1497366210541-8b783781e3e2?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+        "alt": "Shopify office"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1516321318423-3b7a17f4f6c6?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+        "alt": "Shopify team"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1503428593588-4f8c88a7f830?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+        "alt": "Shopify office"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1556740714-7a3a6b6e7e4b?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+        "alt": "Shopify meeting"
+      }
+    ],
+    "teamMembers": [
+      {
+        "name": "Tobi Lütke",
+        "position": "CEO",
+        "photo": "https://randomuser.me/api/portraits/men/55.jpg",
+        "social": {
+          "linkedin": "#",
+          "twitter": "#"
+        }
+      },
+      {
+        "name": "Harley Finkelstein",
+        "position": "President",
+        "photo": "https://randomuser.me/api/portraits/men/65.jpg",
+        "social": {
+          "linkedin": "#",
+          "twitter": "#"
+        }
+      },
+      {
+        "name": "Amy Shapiro",
+        "position": "Marketing Director",
+        "photo": "https://randomuser.me/api/portraits/women/45.jpg",
+        "social": {
+          "linkedin": "#",
+          "twitter": "#"
+        }
+      },
+      {
+        "name": "Craig Miller",
+        "position": "Lead Developer",
+        "photo": "https://randomuser.me/api/portraits/men/30.jpg",
+        "social": {
+          "linkedin": "#",
+          "twitter": "#"
+        }
+      }
+    ],
+    "techStack": [
+      {
+        "name": "JavaScript",
+        "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg"
+      },
+      {
+        "name": "Ruby",
+        "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/ruby/ruby-original.svg"
+      },
+      {
+        "name": "React",
+        "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg"
+      },
+      {
+        "name": "Node.js",
+        "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg"
+      },
+      {
+        "name": "PostgreSQL",
+        "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/postgresql/postgresql-original.svg"
+      }
+    ],
+    "officeLocations": [
+      {
+        "country": "Canada",
+        "flag": "https://flagcdn.com/w40/ca.png"
+      },
+      {
+        "country": "United States",
+        "flag": "https://flagcdn.com/w40/us.png"
+      },
+      {
+        "country": "Ireland",
+        "flag": "https://flagcdn.com/w40/ie.png"
+      },
+      {
+        "country": "Singapore",
+        "flag": "https://flagcdn.com/w40/sg.png"
+      },
+      {
+        "country": "Australia",
+        "flag": "https://flagcdn.com/w40/au.png"
+      }
+    ],
+    "benefits": [
+      {
+        "title": "Health Coverage",
+        "description": "Comprehensive medical and wellness plans for employees.",
+        "icon": "bi-heart-fill"
+      },
+      {
+        "title": "Flexible PTO",
+        "description": "Generous paid time off to support work-life balance.",
+        "icon": "bi-cloud-sun-fill"
+      },
+      {
+        "title": "Professional Growth",
+        "description": "Support for continuous learning and skill development.",
+        "icon": "bi-mortarboard-fill"
+      },
+      {
+        "title": "Team Retreats",
+        "description": "Annual retreats for team collaboration and planning.",
+        "icon": "bi-people-fill"
+      },
+      {
+        "title": "Remote Work",
+        "description": "Flexible remote work options for all employees.",
+        "icon": "bi-house-fill"
+      }
+    ],
+    "openJobs": [
+      {
+        "job_id": 25,
+        "company_id": 9,
+        "title": "Frontend Developer",
+        "location": "Ottawa, Canada",
+        "type": "Full Time",
+        "logo": "https://upload.wikimedia.org/wikipedia/commons/8/84/Shopify_logo.svg",
+        "description": "Seeking a Frontend Developer to enhance Shopify Payments UI.",
+        "tags": [
+          "Technology"
+        ]
+      },
+      {
+        "job_id": 26,
+        "company_id": 9,
+        "title": "Product Manager",
+        "location": "Remote",
+        "type": "Full Time",
+        "logo": "https://upload.wikimedia.org/wikipedia/commons/8/84/Shopify_logo.svg",
+        "description": "Looking for a Product Manager to oversee payment features.",
+        "tags": [
+          "Product"
+        ]
+      }
+    ]
+  },
+  {
+    "id": 10,
+    "name": "2Checkout (Verifone)",
+    "logoInitial": "V",
+    "jobs": 12,
+    "employees": "500+",
+    "employeeId": 10,
+    "locations": "200+ Countries",
+    "website": "https://www.2checkout.com",
+    "founded": "2006",
+    "industry": "Payment Gateway",
+    "profile": "2Checkout, now part of Verifone, supports online businesses selling physical or digital products globally. It offers flexible payment models, including PSP and Merchant of Record, with support for Apple Pay, Google Pay, and subscription billing. 2Checkout simplifies complex transactions, handling taxes and compliance for merchants in over 200 countries.",
+    "contacts": [
+      {
+        "icon": "twitter",
+        "url": "https://twitter.com/2Checkout",
+        "label": "twitter.com/2Checkout"
+      },
+      {
+        "icon": "facebook",
+        "url": "https://facebook.com/2Checkout",
+        "label": "facebook.com/2Checkout"
+      },
+      {
+        "icon": "envelope",
+        "url": "mailto:support@2checkout.com",
+        "label": "support@2checkout.com"
+      }
+    ],
+    "photos": [
+      {
+        "url": "https://images.unsplash.com/photo-1497366754035-1c882e89a5c9?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+        "alt": "2Checkout office"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1517248135467-2c7b7b6f7e4b?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+        "alt": "2Checkout team"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1503428593588-4f8c88a7f830?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+        "alt": "2Checkout office"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+        "alt": "2Checkout meeting"
+      }
+    ],
+    "teamMembers": [
+      {
+        "name": "Lucas Bennett",
+        "position": "General Manager",
+        "photo": "https://randomuser.me/api/portraits/men/50.jpg",
+        "social": {
+          "linkedin": "#",
+          "twitter": "#"
+        }
+      },
+      {
+        "name": "Isabella Chen",
+        "position": "Lead Engineer",
+        "photo": "https://randomuser.me/api/portraits/women/60.jpg",
+        "social": {
+          "linkedin": "#",
+          "twitter": "#"
+        }
+      },
+      {
+        "name": "Mason Gupta",
+        "position": "Product Manager",
+        "photo": "https://randomuser.me/api/portraits/men/25.jpg",
+        "social": {
+          "linkedin": "#",
+          "twitter": "#"
+        }
+      },
+      {
+        "name": "Zoe Parker",
+        "position": "Marketing Lead",
+        "photo": "https://randomuser.me/api/portraits/women/30.jpg",
+        "social": {
+          "linkedin": "#",
+          "twitter": "#"
+        }
+      }
+    ],
+    "techStack": [
+      {
+        "name": "JavaScript",
+        "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg"
+      },
+      {
+        "name": "PHP",
+        "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/php/php-original.svg"
+      },
+      {
+        "name": "Python",
+        "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg"
+      },
+      {
+        "name": "Node.js",
+        "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg"
+      },
+      {
+        "name": "MySQL",
+        "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mysql/mysql-original.svg"
+      }
+    ],
+    "officeLocations": [
+      {
+        "country": "United States",
+        "flag": "https://flagcdn.com/w40/us.png"
+      },
+      {
+        "country": "United Kingdom",
+        "flag": "https://flagcdn.com/w40/gb.png"
+      },
+      {
+        "country": "Romania",
+        "flag": "https://flagcdn.com/w40/ro.png"
+      },
+      {
+        "country": "India",
+        "flag": "https://flagcdn.com/w40/in.png"
+      }
+    ],
+    "benefits": [
+      {
+        "title": "Health Benefits",
+        "description": "Comprehensive medical and wellness plans for employees.",
+        "icon": "bi-heart-fill"
+      },
+      {
+        "title": "Flexible PTO",
+        "description": "Generous time-off policy to promote work-life balance.",
+        "icon": "bi-cloud-sun-fill"
+      },
+      {
+        "title": "Learning Support",
+        "description": "Resources for professional development and certifications.",
+        "icon": "bi-mortarboard-fill"
+      },
+      {
+        "title": "Team Events",
+        "description": "Regular team-building and strategy retreats.",
+        "icon": "bi-people-fill"
+      },
+      {
+        "title": "Remote Work",
+        "description": "Flexible remote work options for employees.",
+        "icon": "bi-house-fill"
+      }
+    ],
+    "openJobs": [
+      {
+        "job_id": 27,
+        "company_id": 10,
+        "title": "Integration Engineer",
+        "location": "Columbus, OH",
+        "type": "Full Time",
+        "logo": "https://upload.wikimedia.org/wikipedia/commons/0/0c/2Checkout_logo.svg",
+        "description": "Seeking an Integration Engineer to streamline payment integrations.",
+        "tags": [
+          "Technology"
+        ]
+      },
+      {
+        "job_id": 28,
+        "company_id": 10,
+        "title": "Compliance Specialist",
+        "location": "Remote",
+        "type": "Full Time",
+        "logo": "https://upload.wikimedia.org/wikipedia/commons/0/0c/2Checkout_logo.svg",
+        "description": "Looking for a Compliance Specialist to ensure regulatory adherence.",
+        "tags": [
+          "Compliance"
+        ]
+      }
+    ]
+  }
+]

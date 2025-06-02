@@ -12,8 +12,18 @@
       <div class="row align-items-center">
         <div class="col-lg-10 g-5">
           <span class="typed-text-container">
-            <h1 class="display-5 fw-bold mb-3" aria-live="polite">
-              <span ref="typedElement"></span>
+            <!-- <h1 aria-live="polite" ref="typedElement"></h1> -->
+            <h1>
+              Discover<br />
+              <span
+                style="
+                  color: #26a4ff;
+                  font-weight: 600;
+                  font-family: 'ClashDisplay-Semibold', sans-serif;
+                "
+              >
+                5000+ job opportunities
+              </span>
             </h1>
           </span>
 
@@ -68,16 +78,16 @@ export default {
       if (typedElement.value) {
         new Typed(typedElement.value, {
           strings: [
-            "Discover<br/><span style='color: #26a4ff; font-weight: 600;'>5000+ job opportunities</span>.",
-            "Unlock<br/><span style='color: #26a4ff; font-weight: 600;'>your dream career</span> today.",
-            "Explore<br/><span style='color: #26a4ff; font-weight: 600;'>5000+ open positions</span> now.",
-            "Start<br/><span style='color: #26a4ff; font-weight: 600;'>your professional journey</span> with us.",
-            "Browse<br/><span style='color: #26a4ff; font-weight: 600;'>thousands of active listings</span>.",
-            "Apply<br/><span style='color: #26a4ff; font-weight: 600;'>anytime, anywhere</span>.",
-            "Connect<br/><span style='color: #26a4ff; font-weight: 600;'>with top employers</span> easily.",
-            "Find<br/><span style='color: #26a4ff; font-weight: 600;'>5000+ careers</span> waiting for you.",
-            "Take<br/><span style='color: #26a4ff; font-weight: 600;'>your skills to the next level</span>.",
-            "Join<br/><span style='color: #26a4ff; font-weight: 600;'>our growing job platform</span> today.",
+            "Discover<br/><h1 style='color: #26a4ff; font-weight: 600;'>5000+ job opportunities</h1>.",
+            "Unlock<br/><h1 style='color: #26a4ff; font-weight: 600;'>your dream career</h1> today.",
+            "Explore<br/><h1 style='color: #26a4ff; font-weight: 600;'>5000+ open positions</h1> now.",
+            "Start<br/><h1 style='color: #26a4ff; font-weight: 600;'>your professional journey</h1> with us.",
+            "Browse<br/><h1 style='color: #26a4ff; font-weight: 600;'>thousands of active listings</h1>.",
+            "Apply<br/><h1 style='color: #26a4ff; font-weight: 600;'>anytime, anywhere</h1>.",
+            "Connect<br/><h1 style='color: #26a4ff; font-weight: 600;'>with top employers</h1> easily.",
+            "Find<br/><h1 style='color: #26a4ff; font-weight: 600;'>5000+ careers</h1> waiting for you.",
+            "Take<br/><h1 style='color: #26a4ff; font-weight: 600;'>your skills to the next level</h1>.",
+            "Join<br/><h1 style='color: #26a4ff; font-weight: 600;'>our growing job platform</h1> today.",
           ],
           typeSpeed: 100,
           backSpeed: 100,

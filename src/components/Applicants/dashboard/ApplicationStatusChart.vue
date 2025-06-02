@@ -1,95 +1,176 @@
 <template>
-  <div class="card h-100">
+  <div class="card h-100 shadow-sm">
     <div class="card-body">
-      <h5 class="card-title text-muted">Jobs Applied Status</h5>
-      <div class="d-flex align-items-center justify-content-center mt-4">
-        <div class="position-relative" style="width: 120px; height: 120px">
-          <!-- Simple donut chart representation -->
-          <div class="donut-chart">
-            <svg viewBox="0 0 36 36" class="circular-chart">
-              <path
-                class="circle-bg"
-                d="M18 2.0845
-                    a 15.9155 15.9155 0 0 1 0 31.831
-                    a 15.9155 15.9155 0 0 1 0 -31.831"
-              />
-              <path
-                class="circle"
-                :stroke="statusData[0].color"
-                :stroke-dasharray="`${statusData[0].value}, 100`"
-                d="M18 2.0845
-                    a 15.9155 15.9155 0 0 1 0 31.831
-                    a 15.9155 15.9155 0 0 1 0 -31.831"
-              />
-            </svg>
-          </div>
+      <h5 class="card-title text-muted mb-4">Hired & Interviewed Status</h5>
+      <div
+        v-if="statusData[0].name !== 'No Applications'"
+        class="d-flex align-items-center justify-content-between"
+      >
+        <div class="chart-container" style="width: 140px; height: 140px">
+          <canvas :id="chartId"></canvas>
         </div>
-        <div class="ms-4">
-          <div v-for="(status, index) in statusData" :key="index" class="mb-3">
-            <div class="d-flex align-items-center">
-              <div
-                class="status-indicator me-2"
-                :style="{ backgroundColor: status.color }"
-              ></div>
-              <div>
-                <div class="fw-bold">{{ status.value }}%</div>
-                <div class="small text-muted">{{ status.name }}</div>
-              </div>
+        <div class="status-legend ms-4">
+          <div
+            v-for="(status, index) in statusData"
+            :key="index"
+            class="mb-2 d-flex align-items-center"
+          >
+            <div
+              class="status-indicator me-2"
+              :style="{ backgroundColor: status.color }"
+            ></div>
+            <div>
+              <div class="fw-bold">{{ percentage(status.value) }}%</div>
+              <div class="small text-muted">{{ status.name }}</div>
             </div>
           </div>
         </div>
       </div>
-      <div class="mt-3">
-        <a
-          href="#"
+      <div v-else class="text-center text-muted py-4">
+        No Hired or Interviewed applications found.
+      </div>
+      <div class="mt-4">
+        <router-link
+          to="/applications"
           class="text-decoration-none text-primary d-inline-flex align-items-center"
         >
           View All Applications
           <i class="bi bi-arrow-right ms-1"></i>
-        </a>
+        </router-link>
       </div>
     </div>
   </div>
 </template>
 
 <script setup>
-defineProps({
+import { ref, computed, onMounted, watch } from "vue";
+import { useApplicationStore } from "@/stores/ApplicantStore/Applications";
+import Chart from "chart.js/auto";
+
+const props = defineProps({
   statusData: {
     type: Array,
     required: true,
+    default: () => [{ name: "No Applications", value: 1, color: "#e5e7eb" }],
   },
+});
+
+const chartId = ref(`status-chart-${Math.random().toString(36).substr(2, 9)}`);
+let chartInstance = null;
+
+const applicationStore = useApplicationStore();
+
+// Calculate total applications for percentage
+const totalApplications = computed(() => {
+  return applicationStore.applications.length;
+});
+
+// Calculate percentage for a given value
+const percentage = (value) => {
+  return totalApplications.value
+    ? ((value / totalApplications.value) * 100).toFixed(1)
+    : 0;
+};
+
+// Chart.js configuration
+const chartConfig = computed(() => ({
+  type: "doughnut",
+  data: {
+    labels: props.statusData.map((item) => item.name),
+    datasets: [
+      {
+        data: props.statusData.map((item) => item.value),
+        backgroundColor: props.statusData.map((item) => item.color),
+        borderWidth: 0,
+        hoverOffset: 15,
+      },
+    ],
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    cutout: "65%",
+    plugins: {
+      legend: { display: false },
+      tooltip: {
+        callbacks: {
+          label: (context) => `${context.label}: ${percentage(context.raw)}%`,
+        },
+      },
+    },
+    animation: {
+      animateRotate: true,
+      animateScale: true,
+    },
+  },
+}));
+
+// Initialize or update chart
+const renderChart = () => {
+  if (props.statusData[0].name === "No Applications") return;
+  const ctx = document.getElementById(chartId.value).getContext("2d");
+  if (chartInstance) {
+    chartInstance.destroy();
+  }
+  chartInstance = new Chart(ctx, chartConfig.value);
+};
+
+// Watch for statusData changes
+watch(
+  () => props.statusData,
+  () => {
+    renderChart();
+  },
+  { deep: true }
+);
+
+onMounted(() => {
+  renderChart();
 });
 </script>
 
 <style scoped>
+.card {
+  border: none;
+  border-radius: 8px;
+  transition: transform 0.2s ease;
+}
+
+.card:hover {
+  transform: translateY(-3px);
+}
+
+.chart-container {
+  position: relative;
+}
+
 .status-indicator {
   width: 12px;
   height: 12px;
   border-radius: 3px;
 }
 
-.circular-chart {
-  display: block;
-  margin: 0 auto;
-  max-width: 100%;
+.status-legend {
+  max-width: 180px;
 }
 
-.circle-bg {
-  fill: none;
-  stroke: #dee2e6;
-  stroke-width: 3.8;
+.text-primary:hover {
+  text-decoration: underline;
 }
 
-.circle {
-  fill: none;
-  stroke-width: 3.8;
-  stroke-linecap: round;
-  animation: progress 1s ease-out forwards;
-}
-
-@keyframes progress {
-  0% {
-    stroke-dasharray: 0 100;
+@media (max-width: 576px) {
+  .d-flex {
+    flex-direction: column;
+    align-items: center;
+  }
+  .status-legend {
+    margin-top: 1rem;
+    margin-left: 0;
+    text-align: center;
+  }
+  .chart-container {
+    width: 120px;
+    height: 120px;
   }
 }
 </style>

@@ -10,9 +10,15 @@
     "build:sass": "sass --quiet-deps -q -I node_modules src/assets/custom.scss dist/custom.cs"
   },
   "dependencies": {
+    "@vuepic/vue-datepicker": "^11.0.2",
     "axios": "^1.8.4",
     "bootstrap": "^5.3.5",
     "bootstrap-icons": "^1.11.3",
+    "chart.js": "^4.4.9",
+    "date-fns": "^4.1.0",
+    "dayjs": "^1.11.13",
+    "html2canvas": "^1.4.1",
+    "jspdf": "^3.0.1",
     "lodash": "^4.17.21",
     "lucide-vue-next": "^0.503.0",
     "pinia": "^3.0.2",
@@ -21,7 +27,9 @@
     "scss": "^0.2.4",
     "typed.js": "^2.1.0",
     "vue": "^3.5.14",
-    "vue-router": "^4.5.1"
+    "vue-chartjs": "^5.3.2",
+    "vue-router": "^4.5.1",
+    "vue3-count-to": "^1.1.2"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^5.2.3",

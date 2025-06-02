@@ -134,13 +134,24 @@
                 </label>
               </div>
 
-              <RouterLink
-                to="/applicant"
-                type="submit"
-                class="btn btn-primary w-100 py-3 d-flex align-items-center justify-content-center"
-              >
-                <span>Sign In</span>
-                <i class="bi bi-box-arrow-in-right ms-2"></i>
+              <RouterLink v-if="activeRole === 'job-seeker'" to="/applicant">
+                <button
+                  type="submit"
+                  class="btn btn-primary w-100 py-3 d-flex align-items-center justify-content-center"
+                >
+                  <span>Sign In</span>
+                  <i class="bi bi-box-arrow-in-right ms-2"></i>
+                </button>
+              </RouterLink>
+
+              <RouterLink v-else to="/company">
+                <button
+                  type="submit"
+                  class="btn btn-primary w-100 py-3 d-flex align-items-center justify-content-center"
+                >
+                  <span>Sign In</span>
+                  <i class="bi bi-box-arrow-in-right ms-2"></i>
+                </button>
               </RouterLink>
             </form>
 

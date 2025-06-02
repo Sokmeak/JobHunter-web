@@ -1,16 +1,10 @@
 <template>
-  <div class="my-applications-page">
-    <!-- Header Section -->
-    <div class="page-header">
-      <div class="header-content">
-        <h2 class="greeting">Keep it up, Jake</h2>
-        <p class="subtitle">Here is job applications status from July 19 - July 25.</p>
-      </div>
-      <div class="date-range">
-        <span class="date-text">Jul 19 - Jul 25</span>
-        <i class="bi bi-calendar3"></i>
-      </div>
-    </div>
+  <div class="applications-container">
+    <GreetingSection
+      :user-name="selectedProfile?.name || 'User'"
+      :date-range="dateRange"
+      @dateRangeChanged="handleDateRangeChange"
+    />
 
     <!-- Feature Banner -->
     <ApplicationBanner
@@ -20,369 +14,367 @@
       @close="showBanner = false"
     />
 
-    <!-- Status Tabs -->
+    <!-- Status Tabs Component -->
     <StatusTabs
       :tabs="statusTabs"
-      :active-tab="activeTab"
-      :hide-empty-tabs="false"
-      @tab-changed="setActiveTab"
+      :activeTab="activeTab"
+      @update:activeTab="setActiveTab"
     />
-    <!-- Applications Section -->
-    <div class="applications-section">
-      <div class="section-header">
-        <h3>Applications History</h3>
-        <SearchFilter
-          :search-query="searchQuery"
-          @search-changed="updateSearch"
-          @filter-clicked="toggleFilter"
-        />
-      </div>
 
-      <!-- Loading State -->
-      <div v-if="isLoading" class="loading-state">
-        <div class="spinner-border text-primary" role="status">
-          <span class="visually-hidden">Loading...</span>
+    <!-- Main Content -->
+    <div class="content-section">
+      <div class="header-section">
+        <h1 class="section-title">Applications History</h1>
+        <div class="action-buttons">
+          <SearchInput v-model="searchQuery" @input="handleSearch" />
+          <FilterButton @click="showFilters = !showFilters" />
         </div>
-        <p>Loading your applications...</p>
       </div>
 
-      <!-- Empty State -->
-      <EmptyState 
-        v-else-if="filteredApplications.length === 0"
-        title="No applications found"
-        :message="emptyStateMessage"
-        icon="bi bi-file-earmark-text"
+      <!-- Loading and Error States -->
+      <div
+        v-if="applicationStore.loading || userProfileStore.loading"
+        class="text-center"
       >
-        <template #action>
-          <router-link to="/applicant/find-jobs" class="btn btn-primary mt-3">
-            Find Jobs to Apply
-          </router-link>
-        </template>
-      </EmptyState>
-
-      <!-- Applications Table -->
-      <template v-else>
-        <ApplicationTable
+        <LoadingSpinner />
+      </div>
+      <div
+        v-else-if="applicationStore.error || userProfileStore.error"
+        class="alert alert-danger"
+      >
+        {{ applicationStore.error || userProfileStore.error }}
+      </div>
+      <div v-else>
+        <!-- Applications Table Component -->
+        <ApplicationsTable
           :applications="paginatedApplications"
-          :start-index="(currentPage - 1) * itemsPerPage"
-          @view-details="viewApplication"
-          @follow-up="followUpApplication"
-          @withdraw="withdrawApplication"
+          @view-application="openApplicationDetails"
+          @action-menu="openActionMenu"
         />
+        <!-- Empty State -->
+        <EmptyState
+          v-if="paginatedApplications.length === 0"
+          :message="emptyStateMessage"
+          icon="briefcase"
+        />
+      </div>
 
-        <!-- Pagination -->
-        <Pagination
-          :current-page="currentPage"
-          :total-pages="totalPages"
-          @page-changed="setCurrentPage"
-        />
-      </template>
+      <!-- Pagination Component -->
+      <Pagination
+        v-if="filteredApplications.length > 0"
+        :currentPage="currentPage"
+        :totalPages="totalPages"
+        @update:page="currentPage = $event"
+      />
+
+      <!-- Application Details Modal Component -->
+      <ApplicationDetailsModal
+        v-if="showDetailsModal"
+        :application="selectedApplication"
+        @close="closeDetailsModal"
+        @withdraw="withdrawApplication"
+        @contact="contactRecruiter"
+      />
     </div>
   </div>
 </template>
 
 <script>
-import ApplicationBanner from '@/components/Applicants/applications/ApplicationBanner.vue';
-import ApplicationsTable from '@/components/Applicants/applications/ApplicationsTable.vue';
-import EmptyState from '@/components/Applicants/applications/EmptyState.vue';
-import Pagination from '@/components/Applicants/applications/Pagination.vue';
-import SearchFilter from '@/components/Applicants/applications/SearchFilter.vue';
-import StatusTabs from '@/components/Applicants/applications/StatusTabs.vue';
-
-
+import { ref, computed, onMounted } from "vue";
+import { parse, isAfter, addDays } from "date-fns";
+import ApplicationBanner from "@/components/Applicants/applications/ApplicationBanner.vue";
+import ApplicationDetailsModal from "@/components/Applicants/applications/ApplicationDetailsModal.vue";
+import ApplicationsTable from "@/components/Applicants/applications/ApplicationsTable.vue";
+import GreetingSection from "@/components/Applicants/applications/GreetingSection.vue";
+import StatusTabs from "@/components/Applicants/applications/StatusTabs.vue";
+import FilterButton from "@/components/Applicants/comon/FilterButton.vue";
+import SearchInput from "@/components/Applicants/comon/SearchInput.vue";
+import EmptyState from "@/components/Applicants/applications/EmptyState.vue";
+import LoadingSpinner from "@/components/Applicants/comon/LoadingSpinner.vue";
+import Pagination from "@/components/Applicants/applications/Pagination.vue";
+import { useApplicationStore } from "@/stores/ApplicantStore/Applications";
+import { useUserProfileStore } from "@/stores/ApplicantStore/userProfile";
 
 export default {
-  name: 'MyApplications',
+  name: "ApplicationsHistory",
   components: {
-    ApplicationBanner,
     StatusTabs,
-    SearchFilter,
+    SearchInput,
+    FilterButton,
     ApplicationsTable,
+    EmptyState,
+    LoadingSpinner,
     Pagination,
-    EmptyState
+    GreetingSection,
+    ApplicationBanner,
+    ApplicationDetailsModal,
   },
-  data() {
+  setup() {
+    // Use Pinia stores
+    const applicationStore = useApplicationStore();
+    const userProfileStore = useUserProfileStore();
+
+    // Reactive state
+    const dateRange = ref({
+      start: "15 May 2025",
+      end: "30 May 2025",
+    });
+    const activeTab = ref("all");
+    const searchQuery = ref("");
+    const currentPage = ref(1);
+    const itemsPerPage = ref(5);
+    const showDetailsModal = ref(false);
+    const showFilters = ref(false);
+    const showBanner = ref(true);
+    const selectedApplication = ref(null);
+
+    // Status tabs aligned with useApplicationStore statuses
+    const statusTabs = ref([
+      { status: "all", label: "All", count: 0 },
+      { status: "in-review", label: "In Review", count: 0 },
+      { status: "interviewing", label: "Interviewing", count: 0 },
+      { status: "shortlisted", label: "Shortlisted", count: 0 },
+      { status: "interviewed", label: "Interviewed", count: 0 },
+      { status: "assessment", label: "Assessment", count: 0 },
+      { status: "offered", label: "Offered", count: 0 },
+      { status: "hired", label: "Hired", count: 0 },
+      { status: "declined", label: "Declined", count: 0 },
+      { status: "unsuitable", label: "Unsuitable", count: 0 },
+    ]);
+
+    // Computed properties
+    const selectedProfile = computed(() => userProfileStore.selectedProfile);
+    const userApplications = computed(() =>
+      applicationStore.applications.filter(
+        (app) => app.userId === userProfileStore.defaultUserId
+      )
+    );
+
+    const filteredApplications = computed(() => {
+      let filtered = userApplications.value;
+
+      // Filter by date range
+      filtered = applicationStore.getApplicationsInDateRange(
+        dateRange.value.start,
+        dateRange.value.end
+      );
+
+      // Filter by active tab
+      if (activeTab.value !== "all") {
+        filtered = applicationStore.getApplicationsByStatus(activeTab.value);
+      }
+
+      // Filter by search query
+      if (searchQuery.value.trim()) {
+        filtered = applicationStore.searchApplications(searchQuery.value);
+        if (activeTab.value !== "all") {
+          const statusMap = {
+            "in-review": "In Review",
+            interviewing: "Interviewing",
+            shortlisted: "Shortlisted",
+            interviewed: "Interviewed",
+            assessment: "Assessment",
+            offered: "Offered",
+            hired: "Hired",
+            declined: "Declined",
+            unsuitable: "Unsuitable",
+          };
+          filtered = filtered.filter(
+            (app) => app.status === statusMap[activeTab.value]
+          );
+        }
+      }
+
+      return filtered;
+    });
+
+    const paginatedApplications = computed(() => {
+      const start = (currentPage.value - 1) * itemsPerPage.value;
+      const end = start + itemsPerPage.value;
+      return filteredApplications.value.slice(start, end);
+    });
+
+    const totalPages = computed(() =>
+      Math.ceil(filteredApplications.value.length / itemsPerPage.value)
+    );
+
+    const emptyStateMessage = computed(() => {
+      if (activeTab.value !== "all") {
+        return `You don't have any applications with "${getStatusLabel(
+          activeTab.value
+        )}" status.`;
+      } else if (searchQuery.value) {
+        return "No applications match your search criteria.";
+      } else {
+        return "You haven't applied to any jobs in this period.";
+      }
+    });
+
+    // Methods
+    const loadData = async () => {
+      try {
+        await Promise.all([
+          userProfileStore.fetchProfileByUserId(userProfileStore.defaultUserId),
+          applicationStore.fetchApplications(),
+        ]);
+        updateStatusCounts();
+      } catch (err) {
+        console.error("Error loading data:", err);
+      }
+    };
+
+    const updateStatusCounts = () => {
+      const statusCounts = applicationStore.getStatusCounts();
+      statusTabs.value.forEach((tab) => {
+        tab.count = statusCounts[tab.status] || 0;
+      });
+    };
+
+    const getStatusLabel = (statusKey) => {
+      const tab = statusTabs.value.find((t) => t.status === statusKey);
+      return tab ? tab.label : statusKey;
+    };
+
+    const setActiveTab = (tab) => {
+      activeTab.value = tab;
+      currentPage.value = 1; // Reset to first page
+    };
+
+    const handleSearch = () => {
+      currentPage.value = 1; // Reset to first page
+    };
+
+    const handleDateRangeChange = (newDateRange) => {
+      applicationStore.updateDateRange(newDateRange);
+      dateRange.value = { ...newDateRange };
+      currentPage.value = 1;
+    };
+
+    const openApplicationDetails = async (application) => {
+      await applicationStore.fetchApplicationById(application.id);
+      selectedApplication.value = applicationStore.selectedApplication;
+      showDetailsModal.value = true;
+      document.body.style.overflow = "hidden";
+    };
+
+    const closeDetailsModal = () => {
+      showDetailsModal.value = false;
+      selectedApplication.value = null;
+      document.body.style.overflow = "auto";
+    };
+
+    const openActionMenu = (application) => {
+      console.log("Action menu for:", application.companyName);
+      // Implement action menu logic (e.g., open dropdown)
+    };
+
+    const withdrawApplication = async () => {
+      if (!selectedApplication.value) return;
+      try {
+        await applicationStore.updateApplication(selectedApplication.value.id, {
+          ...selectedApplication.value,
+          status: "Withdrawn",
+        });
+        updateStatusCounts();
+        closeDetailsModal();
+      } catch (err) {
+        console.error("Error withdrawing application:", err);
+      }
+    };
+
+    const contactRecruiter = () => {
+      if (selectedApplication.value) {
+        console.log(
+          "Contacting recruiter:",
+          selectedApplication.value.recruiter.name
+        );
+        // Implement contact logic (e.g., open email client)
+        window.location.href = `mailto:${selectedApplication.value.recruiter.email}`;
+      }
+      closeDetailsModal();
+    };
+
+    // Initialize
+    onMounted(loadData);
+
     return {
-      showBanner: true,
-      activeTab: 'all',
-      searchQuery: '',
-      currentPage: 1,
-      itemsPerPage: 5,
-      isLoading: false,
-      statusTabs: [
-        { key: 'all', label: 'All', count: 0 },
-        { key: 'in-review', label: 'In Review', count: 0 },
-        { key: 'interviewing', label: 'Interviewing', count: 0 },
-        { key: 'assessment', label: 'Assessment', count: 0 },
-        { key: 'offered', label: 'Offered', count: 0 },
-        { key: 'hired', label: 'Hired', count: 0 }
-      ],
-      applications: [],
-      filteredApplications: []
+      userProfileStore,
+      applicationStore,
+      selectedProfile,
+      dateRange,
+      activeTab,
+      searchQuery,
+      currentPage,
+      itemsPerPage,
+      showDetailsModal,
+      showFilters,
+      showBanner,
+      selectedApplication,
+      statusTabs,
+      filteredApplications,
+      paginatedApplications,
+      totalPages,
+      emptyStateMessage,
+      setActiveTab,
+      handleSearch,
+      handleDateRangeChange,
+      openApplicationDetails,
+      closeDetailsModal,
+      openActionMenu,
+      withdrawApplication,
+      contactRecruiter,
     };
   },
-  computed: {
-    paginatedApplications() {
-      const start = (this.currentPage - 1) * this.itemsPerPage;
-      const end = start + this.itemsPerPage;
-      return this.filteredApplications.slice(start, end);
-    },
-    totalPages() {
-      return Math.ceil(this.filteredApplications.length / this.itemsPerPage);
-    },
-    emptyStateMessage() {
-      if (this.activeTab !== 'all') {
-        return `You don't have any applications with "${this.getStatusLabel(this.activeTab)}" status.`;
-      } else if (this.searchQuery) {
-        return 'No applications match your search criteria.';
-      } else {
-        return 'You haven\'t applied to any jobs in this period.';
-      }
-    }
-  },
-  created() {
-    // Simulate API call to get applications
-    this.loadApplications();
-  },
-  mounted() {
-    this.$emit('update-page-title', 'My Applications');
-  },
-  methods: {
-    loadApplications() {
-      this.isLoading = true;
-      
-      // Simulate API delay
-      setTimeout(() => {
-        // In a real app, this would be an API call
-        this.applications = [
-          {
-            id: 1,
-            companyName: 'Nomad',
-            companyLogo: 'https://v0.dev/placeholder.svg?height=40&width=40',
-            role: 'Social Media Assistant',
-            dateApplied: '2021-07-24',
-            status: 'Shortlisted'
-          },
-          {
-            id: 2,
-            companyName: 'Udacity',
-            companyLogo: 'https://v0.dev/placeholder.svg?height=40&width=40',
-            role: 'Social Media Assistant',
-            dateApplied: '2021-07-20',
-            status: 'Shortlisted'
-          },
-          {
-            id: 3,
-            companyName: 'Packer',
-            companyLogo: 'https://v0.dev/placeholder.svg?height=40&width=40',
-            role: 'Social Media Assistant',
-            dateApplied: '2021-07-16',
-            status: 'Offered'
-          },
-          {
-            id: 4,
-            companyName: 'Divvy',
-            companyLogo: 'https://v0.dev/placeholder.svg?height=40&width=40',
-            role: 'Social Media Assistant',
-            dateApplied: '2021-07-14',
-            status: 'Interviewing'
-          },
-          {
-            id: 5,
-            companyName: 'DigitalOcean',
-            companyLogo: 'https://v0.dev/placeholder.svg?height=40&width=40',
-            role: 'Social Media Assistant',
-            dateApplied: '2021-07-10',
-            status: 'Unsuitable'
-          }
-        ];
-        
-        // Update status tabs with actual counts
-        this.updateStatusCounts();
-        this.filteredApplications = [...this.applications];
-        this.isLoading = false;
-      }, 1000);
-    },
-    updateStatusCounts() {
-      // Count applications by status
-      const statusCounts = {
-        all: this.applications.length
-      };
-      
-      // Map application statuses to tab keys
-      const statusMap = {
-        'In Review': 'in-review',
-        'Shortlisted': 'shortlisted',
-        'Interviewing': 'interviewing',
-        'Assessment': 'assessment',
-        'Offered': 'offered',
-        'Hired': 'hired',
-        'Unsuitable': 'unsuitable'
-      };
-      
-      // Initialize all counts to 0
-      this.statusTabs.forEach(tab => {
-        statusCounts[tab.key] = 0;
-      });
-      
-      // Count applications by status
-      this.applications.forEach(app => {
-        const tabKey = statusMap[app.status];
-        if (tabKey && statusCounts.hasOwnProperty(tabKey)) {
-          statusCounts[tabKey]++;
-        }
-      });
-      
-      // Update tab counts
-      this.statusTabs = this.statusTabs.map(tab => ({
-        ...tab,
-        count: statusCounts[tab.key] || 0
-      }));
-    },
-    getStatusLabel(tabKey) {
-      const tab = this.statusTabs.find(t => t.key === tabKey);
-      return tab ? tab.label : '';
-    },
-    setActiveTab(tab) {
-      this.activeTab = tab;
-      this.filterApplications();
-    },
-    updateSearch(query) {
-      this.searchQuery = query;
-      this.filterApplications();
-    },
-    setCurrentPage(page) {
-      this.currentPage = page;
-    },
-    filterApplications() {
-      let filtered = [...this.applications];
-      
-      // Filter by status tab
-      if (this.activeTab !== 'all') {
-        const statusMap = {
-          'in-review': 'In Review',
-          'interviewing': 'Interviewing',
-          'assessment': 'Assessment',
-          'offered': 'Offered',
-          'hired': 'Hired',
-          'shortlisted': 'Shortlisted',
-          'unsuitable': 'Unsuitable'
-        };
-        filtered = filtered.filter(app => app.status === statusMap[this.activeTab]);
-      }
-      
-      // Filter by search query
-      if (this.searchQuery) {
-        filtered = filtered.filter(app => 
-          app.companyName.toLowerCase().includes(this.searchQuery.toLowerCase()) ||
-          app.role.toLowerCase().includes(this.searchQuery.toLowerCase())
-        );
-      }
-      
-      this.filteredApplications = filtered;
-      this.currentPage = 1;
-    },
-    toggleFilter() {
-      console.log('Toggle filter modal');
-    },
-    viewApplication(application) {
-      this.$router.push(`/applicant/applications/${application.id}`);
-    },
-    followUpApplication(application) {
-      console.log('Follow up for', application.companyName);
-    },
-    withdrawApplication(application) {
-      console.log('Withdraw application for', application.companyName);
-    }
-  }
 };
 </script>
 
 <style scoped>
-.my-applications-page {
-  padding: 0;
-  background-color: #ffffff;
+@import "bootstrap/dist/css/bootstrap.min.css";
+@import "bootstrap-icons/font/bootstrap-icons.css";
+
+.applications-container {
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  color: #333;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
 }
 
-.page-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  margin-bottom: 24px;
-}
-
-.header-content h2.greeting {
-  font-size: 24px;
-  font-weight: 600;
-  color: #202124;
-  margin: 0 0 8px 0;
-}
-
-.header-content .subtitle {
-  font-size: 14px;
-  color: #5f6368;
-  margin: 0;
-}
-
-.date-range {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 8px 16px;
-  background-color: #f8f9fa;
-  border-radius: 8px;
-  border: 1px solid #e8eaed;
-}
-
-.date-text {
-  font-size: 14px;
-  font-weight: 500;
-  color: #202124;
-}
-
-.applications-section {
-  background-color: #ffffff;
-}
-
-.section-header {
+.header-section {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 20px;
 }
 
-.section-header h3 {
-  font-size: 20px;
+.section-title {
+  font-size: 24px;
   font-weight: 600;
-  color: #202124;
+  color: #111827;
   margin: 0;
 }
 
-.loading-state {
+.action-buttons {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 48px 20px;
-  text-align: center;
+  gap: 10px;
 }
 
-.loading-state p {
-  margin-top: 16px;
-  font-size: 16px;
-  color: #5f6368;
+.alert-danger {
+  margin: 20px 0;
 }
 
+/* Responsive adjustments */
 @media (max-width: 768px) {
-  .page-header {
+  .header-section {
     flex-direction: column;
+    align-items: flex-start;
     gap: 16px;
   }
-  
-  .section-header {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 16px;
+
+  .action-buttons {
+    width: 100%;
+    flex-wrap: wrap;
   }
 }
 </style>

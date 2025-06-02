@@ -1,0 +1,1196 @@
+[
+  {
+    "id": 11,
+    "name": "Corepay",
+    "logoInitial": "C",
+    "jobs": 5,
+    "employees": "1-10",
+    "employeeId": 11,
+    "locations": "1 Country",
+    "website": "https://www.corepay.net",
+    "founded": "2015",
+    "industry": "Payment Gateway",
+    "profile": "Corepay is a specialized Payment Service Provider focusing on high-risk e-commerce merchants. It offers tailored payment solutions with transparent pricing and quick approval processes, ensuring reliable payment gateway services for online businesses.",
+    "contacts": [
+      {
+        "icon": "twitter",
+        "url": "https://twitter.com/CorepayInc",
+        "label": "twitter.com/CorepayInc"
+      },
+      {
+        "icon": "facebook",
+        "url": "https://facebook.com/CorepayInc",
+        "label": "facebook.com/CorepayInc"
+      },
+      {
+        "icon": "envelope",
+        "url": "mailto:support@corepay.net",
+        "label": "support@corepay.net"
+      }
+    ],
+    "photos": [
+      {
+        "url": "https://images.unsplash.com/photo-1497366754035-1c882e89a5c9?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+        "alt": "Corepay office"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1517248135467-2c7b7b6f7e4b?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+        "alt": "Corepay team"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1503428593588-4f8c88a7f830?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+        "alt": "Corepay office"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+        "alt": "Corepay meeting"
+      }
+    ],
+    "teamMembers": [
+      {
+        "name": "Alex Turner",
+        "position": "CEO",
+        "photo": "https://randomuser.me/api/portraits/men/45.jpg",
+        "social": {
+          "linkedin": "#",
+          "twitter": "#"
+        }
+      },
+      {
+        "name": "Emma Lee",
+        "position": "Lead Developer",
+        "photo": "https://randomuser.me/api/portraits/women/30.jpg",
+        "social": {
+          "linkedin": "#",
+          "twitter": "#"
+        }
+      }
+    ],
+    "techStack": [
+      {
+        "name": "JavaScript",
+        "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg"
+      },
+      {
+        "name": "PHP",
+        "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/php/php-original.svg"
+      },
+      {
+        "name": "Python",
+        "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg"
+      }
+    ],
+    "officeLocations": [
+      {
+        "country": "United States",
+        "flag": "https://flagcdn.com/w40/us.png"
+      }
+    ],
+    "benefits": [
+      {
+        "title": "Flexible Work Hours",
+        "description": "Flexible schedules to support work-life balance.",
+        "icon": "bi-clock-fill"
+      },
+      {
+        "title": "Health Benefits",
+        "description": "Basic health coverage for employees.",
+        "icon": "bi-heart-fill"
+      },
+      {
+        "title": "Remote Work",
+        "description": "Options to work remotely full-time.",
+        "icon": "bi-house-fill"
+      }
+    ],
+    "openJobs": [
+      {
+        "job_id": 29,
+        "company_id": 11,
+        "title": "Payment Integration Specialist",
+        "location": "Remote",
+        "type": "Full Time",
+        "logo": "https://corepay.net/wp-content/uploads/2020/03/corepay-logo.png",
+        "description": "Seeking a Payment Integration Specialist to support high-risk merchant integrations.",
+        "tags": [
+          "Technology"
+        ]
+      }
+    ]
+  },
+  {
+    "id": 12,
+    "name": "PayPrin",
+    "logoInitial": "P",
+    "jobs": 4,
+    "employees": "1-10",
+    "employeeId": 12,
+    "locations": "1 Country",
+    "website": "https://www.payprin.com",
+    "founded": "2009",
+    "industry": "Payment Gateway",
+    "profile": "PayPrin provides scalable payment gateway and transaction processing services, specializing in card-not-present (CNP) industries. It offers real-time authorization and robust fraud management tools for e-commerce merchants.",
+    "contacts": [
+      {
+        "icon": "twitter",
+        "url": "https://twitter.com/PayPrin",
+        "label": "twitter.com/PayPrin"
+      },
+      {
+        "icon": "facebook",
+        "url": "https://facebook.com/PayPrin",
+        "label": "facebook.com/PayPrin"
+      },
+      {
+        "icon": "envelope",
+        "url": "mailto:support@payprin.com",
+        "label": "support@payprin.com"
+      }
+    ],
+    "photos": [
+      {
+        "url": "https://images.unsplash.com/photo-1497366210541-8b783781e3e2?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+        "alt": "PayPrin office"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1516321318423-3b7a17f4f6c6?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+        "alt": "PayPrin team"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1503428593588-4f8c88a7f830?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+        "alt": "PayPrin office"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1556740714-7a3a6b6e7e4b?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+        "alt": "PayPrin meeting"
+      }
+    ],
+    "teamMembers": [
+      {
+        "name": "Sarah Mitchell",
+        "position": "Founder",
+        "photo": "https://randomuser.me/api/portraits/women/50.jpg",
+        "social": {
+          "linkedin": "#",
+          "twitter": "#"
+        }
+      },
+      {
+        "name": "James Patel",
+        "position": "CTO",
+        "photo": "https://randomuser.me/api/portraits/men/35.jpg",
+        "social": {
+          "linkedin": "#",
+          "twitter": "#"
+        }
+      }
+    ],
+    "techStack": [
+      {
+        "name": "JavaScript",
+        "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg"
+      },
+      {
+        "name": "PHP",
+        "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/php/php-original.svg"
+      },
+      {
+        "name": "MySQL",
+        "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mysql/mysql-original.svg"
+      }
+    ],
+    "officeLocations": [
+      {
+        "country": "United States",
+        "flag": "https://flagcdn.com/w40/us.png"
+      }
+    ],
+    "benefits": [
+      {
+        "title": "Health Benefits",
+        "description": "Comprehensive health plans for employees.",
+        "icon": "bi-heart-fill"
+      },
+      {
+        "title": "Flexible PTO",
+        "description": "Generous paid time off to promote balance.",
+        "icon": "bi-cloud-sun-fill"
+      },
+      {
+        "title": "Remote Work",
+        "description": "Fully remote work options available.",
+        "icon": "bi-house-fill"
+      }
+    ],
+    "openJobs": [
+      {
+        "job_id": 30,
+        "company_id": 12,
+        "title": "Fraud Analyst",
+        "location": "Remote",
+        "type": "Full Time",
+        "logo": "https://payprin.com/wp-content/uploads/2019/05/payprin-logo.png",
+        "description": "Seeking a Fraud Analyst to enhance transaction security.",
+        "tags": [
+          "Security"
+        ]
+      }
+    ]
+  },
+  {
+    "id": 13,
+    "name": "Power eCommerce",
+    "logoInitial": "P",
+    "jobs": 3,
+    "employees": "1-10",
+    "employeeId": 13,
+    "locations": "1 Country",
+    "website": "https://www.powerecommerce.com",
+    "founded": "2002",
+    "industry": "Payment Gateway",
+    "profile": "Power eCommerce offers a payment gateway as part of its e-commerce platform, designed to streamline online transactions and enhance customer satisfaction through automation.",
+    "contacts": [
+      {
+        "icon": "twitter",
+        "url": "https://twitter.com/PowerEcommerce",
+        "label": "twitter.com/PowerEcommerce"
+      },
+      {
+        "icon": "facebook",
+        "url": "https://facebook.com/PowerEcommerce",
+        "label": "facebook.com/PowerEcommerce"
+      },
+      {
+        "icon": "envelope",
+        "url": "mailto:support@powerecommerce.com",
+        "label": "support@powerecommerce.com"
+      }
+    ],
+    "photos": [
+      {
+        "url": "https://images.unsplash.com/photo-1497366811353-6870744d04b2?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+        "alt": "Power eCommerce office"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1517245386807-9a4a7f8f6b2e?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+        "alt": "Power eCommerce team"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+        "alt": "Power eCommerce office"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1542744094-24638e6b8e4d?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+        "alt": "Power eCommerce meeting"
+      }
+    ],
+    "teamMembers": [
+      {
+        "name": "Michael Grant",
+        "position": "CEO",
+        "photo": "https://randomuser.me/api/portraits/men/60.jpg",
+        "social": {
+          "linkedin": "#",
+          "twitter": "#"
+        }
+      },
+      {
+        "name": "Laura Kim",
+        "position": "Lead Developer",
+        "photo": "https://randomuser.me/api/portraits/women/45.jpg",
+        "social": {
+          "linkedin": "#",
+          "twitter": "#"
+        }
+      }
+    ],
+    "techStack": [
+      {
+        "name": "JavaScript",
+        "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg"
+      },
+      {
+        "name": "PHP",
+        "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/php/php-original.svg"
+      },
+      {
+        "name": "MySQL",
+        "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mysql/mysql-original.svg"
+      }
+    ],
+    "officeLocations": [
+      {
+        "country": "United States",
+        "flag": "https://flagcdn.com/w40/us.png"
+      }
+    ],
+    "benefits": [
+      {
+        "title": "Flexible Work Hours",
+        "description": "Flexible schedules to support employee needs.",
+        "icon": "bi-clock-fill"
+      },
+      {
+        "title": "Health Coverage",
+        "description": "Basic health benefits for employees.",
+        "icon": "bi-heart-fill"
+      },
+      {
+        "title": "Remote Work",
+        "description": "Fully remote work environment.",
+        "icon": "bi-house-fill"
+      }
+    ],
+    "openJobs": [
+      {
+        "job_id": 31,
+        "company_id": 13,
+        "title": "E-commerce Developer",
+        "location": "Remote",
+        "type": "Full Time",
+        "logo": "https://powerecommerce.com/wp-content/uploads/2020/02/powerecommerce-logo.png",
+        "description": "Seeking an E-commerce Developer to enhance payment gateway features.",
+        "tags": [
+          "Technology"
+        ]
+      }
+    ]
+  },
+  {
+    "id": 14,
+    "name": "ClearGate",
+    "logoInitial": "C",
+    "jobs": 4,
+    "employees": "1-10",
+    "employeeId": 14,
+    "locations": "1 Country",
+    "website": "https://www.cleargate.com",
+    "founded": "2010",
+    "industry": "Payment Gateway",
+    "profile": "ClearGate provides a Level 1 PCI DSS compliant payment gateway, offering secure transaction processing through apps, terminals, and gateways for various payment types.",
+    "contacts": [
+      {
+        "icon": "twitter",
+        "url": "https://twitter.com/ClearGate",
+        "label": "twitter.com/ClearGate"
+      },
+      {
+        "icon": "facebook",
+        "url": "https://facebook.com/ClearGate",
+        "label": "facebook.com/ClearGate"
+      },
+      {
+        "icon": "envelope",
+        "url": "mailto:support@cleargate.com",
+        "label": "support@cleargate.com"
+      }
+    ],
+    "photos": [
+      {
+        "url": "https://images.unsplash.com/photo-1497366210541-8b783781e3e2?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+        "alt": "ClearGate office"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1516321318423-3b7a17f4f6c6?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+        "alt": "ClearGate team"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1503428593588-4f8c88a7f830?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+        "alt": "ClearGate office"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1556740714-7a3a6b6e7e4b?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+        "alt": "ClearGate meeting"
+      }
+    ],
+    "teamMembers": [
+      {
+        "name": "Rachel Wong",
+        "position": "CEO",
+        "photo": "https://randomuser.me/api/portraits/women/40.jpg",
+        "social": {
+          "linkedin": "#",
+          "twitter": "#"
+        }
+      },
+      {
+        "name": "David Park",
+        "position": "CTO",
+        "photo": "https://randomuser.me/api/portraits/men/50.jpg",
+        "social": {
+          "linkedin": "#",
+          "twitter": "#"
+        }
+      }
+    ],
+    "techStack": [
+      {
+        "name": "JavaScript",
+        "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg"
+      },
+      {
+        "name": "Node.js",
+        "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg"
+      },
+      {
+        "name": "MySQL",
+        "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mysql/mysql-original.svg"
+      }
+    ],
+    "officeLocations": [
+      {
+        "country": "United States",
+        "flag": "https://flagcdn.com/w40/us.png"
+      }
+    ],
+    "benefits": [
+      {
+        "title": "Health Benefits",
+        "description": "Basic health coverage for employees.",
+        "icon": "bi-heart-fill"
+      },
+      {
+        "title": "Flexible PTO",
+        "description": "Flexible time-off policy for work-life balance.",
+        "icon": "bi-cloud-sun-fill"
+      },
+      {
+        "title": "Remote Work",
+        "description": "Fully remote work options available.",
+        "icon": "bi-house-fill"
+      }
+    ],
+    "openJobs": [
+      {
+        "job_id": 32,
+        "company_id": 14,
+        "title": "Security Engineer",
+        "location": "Remote",
+        "type": "Full Time",
+        "logo": "https://cleargate.com/wp-content/uploads/2020/01/cleargate-logo.png",
+        "description": "Seeking a Security Engineer to ensure PCI compliance.",
+        "tags": [
+          "Security"
+        ]
+      }
+    ]
+  },
+  {
+    "id": 15,
+    "name": "AfriPie Technology",
+    "logoInitial": "A",
+    "jobs": 3,
+    "employees": "1-10",
+    "employeeId": 15,
+    "locations": "2 Countries",
+    "website": "https://www.afripie.com",
+    "founded": "2018",
+    "industry": "Payment Gateway",
+    "profile": "AfriPie Technology offers an international bill payment gateway, enabling diaspora consumers to pay utility bills for family or themselves via online or mobile banking.",
+    "contacts": [
+      {
+        "icon": "twitter",
+        "url": "https://twitter.com/AfriPieTech",
+        "label": "twitter.com/AfriPieTech"
+      },
+      {
+        "icon": "facebook",
+        "url": "https://facebook.com/AfriPieTech",
+        "label": "facebook.com/AfriPieTech"
+      },
+      {
+        "icon": "envelope",
+        "url": "mailto:support@afripie.com",
+        "label": "support@afripie.com"
+      }
+    ],
+    "photos": [
+      {
+        "url": "https://images.unsplash.com/photo-1497366754035-1c882e89a5c9?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+        "alt": "AfriPie office"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1517248135467-2c7b7b6f7e4b?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+        "alt": "AfriPie team"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1503428593588-4f8c88a7f830?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+        "alt": "AfriPie office"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+        "alt": "AfriPie meeting"
+      }
+    ],
+    "teamMembers": [
+      {
+        "name": "Nia Okoye",
+        "position": "Founder",
+        "photo": "https://randomuser.me/api/portraits/women/55.jpg",
+        "social": {
+          "linkedin": "#",
+          "twitter": "#"
+        }
+      },
+      {
+        "name": "Tunde Adebayo",
+        "position": "Lead Developer",
+        "photo": "https://randomuser.me/api/portraits/men/40.jpg",
+        "social": {
+          "linkedin": "#",
+          "twitter": "#"
+        }
+      }
+    ],
+    "techStack": [
+      {
+        "name": "JavaScript",
+        "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg"
+      },
+      {
+        "name": "Node.js",
+        "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg"
+      },
+      {
+        "name": "MongoDB",
+        "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mongodb/mongodb-original.svg"
+      }
+    ],
+    "officeLocations": [
+      {
+        "country": "United States",
+        "flag": "https://flagcdn.com/w40/us.png"
+      },
+      {
+        "country": "Nigeria",
+        "flag": "https://flagcdn.com/w40/ng.png"
+      }
+    ],
+    "benefits": [
+      {
+        "title": "Health Benefits",
+        "description": "Basic health coverage for employees.",
+        "icon": "bi-heart-fill"
+      },
+      {
+        "title": "Flexible Work Hours",
+        "description": "Flexible schedules to support employee needs.",
+        "icon": "bi-clock-fill"
+      },
+      {
+        "title": "Remote Work",
+        "description": "Fully remote work environment.",
+        "icon": "bi-house-fill"
+      }
+    ],
+    "openJobs": [
+      {
+        "job_id": 33,
+        "company_id": 15,
+        "title": "Mobile Developer",
+        "location": "Remote",
+        "type": "Full Time",
+        "logo": "https://afripie.com/wp-content/uploads/2020/06/afripie-logo.png",
+        "description": "Seeking a Mobile Developer to enhance bill payment features.",
+        "tags": [
+          "Technology"
+        ]
+      }
+    ]
+  },
+  {
+    "id": 16,
+    "name": "PassimPay",
+    "logoInitial": "P",
+    "jobs": 4,
+    "employees": "1-10",
+    "employeeId": 16,
+    "locations": "1 Country",
+    "website": "https://www.passimpay.io",
+    "founded": "2020",
+    "industry": "Payment Gateway",
+    "profile": "PassimPay is a crypto payment platform specializing in seamless integration with e-commerce platforms, offering flexible rates and features for online businesses.",
+    "contacts": [
+      {
+        "icon": "twitter",
+        "url": "https://twitter.com/PassimPay",
+        "label": "twitter.com/PassimPay"
+      },
+      {
+        "icon": "facebook",
+        "url": "https://facebook.com/PassimPay",
+        "label": "facebook.com/PassimPay"
+      },
+      {
+        "icon": "envelope",
+        "url": "mailto:support@passimpay.io",
+        "label": "support@passimpay.io"
+      }
+    ],
+    "photos": [
+      {
+        "url": "https://images.unsplash.com/photo-1497366811353-6870744d04b2?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+        "alt": "PassimPay office"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1517245386807-9a4a7f8f6b2e?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+        "alt": "PassimPay team"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+        "alt": "PassimPay office"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1542744094-24638e6b8e4d?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+        "alt": "PassimPay meeting"
+      }
+    ],
+    "teamMembers": [
+      {
+        "name": "Ivan Petrov",
+        "position": "CEO",
+        "photo": "https://randomuser.me/api/portraits/men/55.jpg",
+        "social": {
+          "linkedin": "#",
+          "twitter": "#"
+        }
+      },
+      {
+        "name": "Anna Volkov",
+        "position": "Lead Developer",
+        "photo": "https://randomuser.me/api/portraits/women/35.jpg",
+        "social": {
+          "linkedin": "#",
+          "twitter": "#"
+        }
+      }
+    ],
+    "techStack": [
+      {
+        "name": "JavaScript",
+        "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg"
+      },
+      {
+        "name": "Node.js",
+        "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg"
+      },
+      {
+        "name": "MongoDB",
+        "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mongodb/mongodb-original.svg"
+      }
+    ],
+    "officeLocations": [
+      {
+        "country": "United States",
+        "flag": "https://flagcdn.com/w40/us.png"
+      }
+    ],
+    "benefits": [
+      {
+        "title": "Flexible Work Hours",
+        "description": "Flexible schedules to support employee needs.",
+        "icon": "bi-clock-fill"
+      },
+      {
+        "title": "Health Benefits",
+        "description": "Basic health coverage for employees.",
+        "icon": "bi-heart-fill"
+      },
+      {
+        "title": "Remote Work",
+        "description": "Fully remote work environment.",
+        "icon": "bi-house-fill"
+      }
+    ],
+    "openJobs": [
+      {
+        "job_id": 34,
+        "company_id": 16,
+        "title": "Crypto Payment Specialist",
+        "location": "Remote",
+        "type": "Full Time",
+        "logo": "https://passimpay.io/wp-content/uploads/2020/08/passimpay-logo.png",
+        "description": "Seeking a Crypto Payment Specialist to optimize blockchain integrations.",
+        "tags": [
+          "Technology"
+        ]
+      }
+    ]
+  },
+  {
+    "id": 17,
+    "name": "EasyPayDirect",
+    "logoInitial": "E",
+    "jobs": 5,
+    "employees": "1-10",
+    "employeeId": 17,
+    "locations": "1 Country",
+    "website": "https://www.easypaydirect.com",
+    "founded": "2008",
+    "industry": "Payment Gateway",
+    "profile": "EasyPayDirect offers a payment gateway that integrates with over 250 shopping carts, featuring an intuitive interface and optimized transaction flows for e-commerce businesses.",
+    "contacts": [
+      {
+        "icon": "twitter",
+        "url": "https://twitter.com/EasyPayDirect",
+        "label": "twitter.com/EasyPayDirect"
+      },
+      {
+        "icon": "facebook",
+        "url": "https://facebook.com/EasyPayDirect",
+        "label": "facebook.com/EasyPayDirect"
+      },
+      {
+        "icon": "envelope",
+        "url": "mailto:support@easypaydirect.com",
+        "label": "support@easypaydirect.com"
+      }
+    ],
+    "photos": [
+      {
+        "url": "https://images.unsplash.com/photo-1497366210541-8b783781e3e2?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+        "alt": "EasyPayDirect office"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1516321318423-3b7a17f4f6c6?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+        "alt": "EasyPayDirect team"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1503428593588-4f8c88a7f830?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+        "alt": "EasyPayDirect office"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1556740714-7a3a6b6e7e4b?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+        "alt": "EasyPayDirect meeting"
+      }
+    ],
+    "teamMembers": [
+      {
+        "name": "Chris Walker",
+        "position": "CEO",
+        "photo": "https://randomuser.me/api/portraits/men/50.jpg",
+        "social": {
+          "linkedin": "#",
+          "twitter": "#"
+        }
+      },
+      {
+        "name": "Megan Chen",
+        "position": "Lead Developer",
+        "photo": "https://randomuser.me/api/portraits/women/30.jpg",
+        "social": {
+          "linkedin": "#",
+          "twitter": "#"
+        }
+      }
+    ],
+    "techStack": [
+      {
+        "name": "JavaScript",
+        "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg"
+      },
+      {
+        "name": "PHP",
+        "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/php/php-original.svg"
+      },
+      {
+        "name": "MySQL",
+        "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mysql/mysql-original.svg"
+      }
+    ],
+    "officeLocations": [
+      {
+        "country": "United States",
+        "flag": "https://flagcdn.com/w40/us.png"
+      }
+    ],
+    "benefits": [
+      {
+        "title": "Health Benefits",
+        "description": "Basic health coverage for employees.",
+        "icon": "bi-heart-fill"
+      },
+      {
+        "title": "Flexible PTO",
+        "description": "Flexible time-off policy for work-life balance.",
+        "icon": "bi-cloud-sun-fill"
+      },
+      {
+        "title": "Remote Work",
+        "description": "Fully remote work options available.",
+        "icon": "bi-house-fill"
+      }
+    ],
+    "openJobs": [
+      {
+        "job_id": 35,
+        "company_id": 17,
+        "title": "Integration Engineer",
+        "location": "Remote",
+        "type": "Full Time",
+        "logo": "https://easypaydirect.com/wp-content/uploads/2020/04/easypaydirect-logo.png",
+        "description": "Seeking an Integration Engineer to streamline shopping cart integrations.",
+        "tags": [
+          "Technology"
+        ]
+      }
+    ]
+  },
+  {
+    "id": 18,
+    "name": "Akurateco",
+    "logoInitial": "A",
+    "jobs": 4,
+    "employees": "1-10",
+    "employeeId": 18,
+    "locations": "1 Country",
+    "website": "https://www.akurateco.com",
+    "founded": "2019",
+    "industry": "Payment Gateway",
+    "profile": "Akurateco provides a white-label payment gateway solution, enabling businesses to manage multi-channel transactions, improve approval rates, and make data-driven decisions.",
+    "contacts": [
+      {
+        "icon": "twitter",
+        "url": "https://twitter.com/Akurateco",
+        "label": "twitter.com/Akurateco"
+      },
+      {
+        "icon": "facebook",
+        "url": "https://facebook.com/Akurateco",
+        "label": "facebook.com/Akurateco"
+      },
+      {
+        "icon": "envelope",
+        "url": "mailto:support@akurateco.com",
+        "label": "support@akurateco.com"
+      }
+    ],
+    "photos": [
+      {
+        "url": "https://images.unsplash.com/photo-1497366754035-1c882e89a5c9?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+        "alt": "Akurateco office"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1517248135467-2c7b7b6f7e4b?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+        "alt": "Akurateco team"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1503428593588-4f8c88a7f830?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+        "alt": "Akurateco office"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+        "alt": "Akurateco meeting"
+      }
+    ],
+    "teamMembers": [
+      {
+        "name": "Elena Sokolova",
+        "position": "CEO",
+        "photo": "https://randomuser.me/api/portraits/women/50.jpg",
+        "social": {
+          "linkedin": "#",
+          "twitter": "#"
+        }
+      },
+      {
+        "name": "Dmitry Ivanov",
+        "position": "CTO",
+        "photo": "https://randomuser.me/api/portraits/men/45.jpg",
+        "social": {
+          "linkedin": "#",
+          "twitter": "#"
+        }
+      }
+    ],
+    "techStack": [
+      {
+        "name": "JavaScript",
+        "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg"
+      },
+      {
+        "name": "Node.js",
+        "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg"
+      },
+      {
+        "name": "MongoDB",
+        "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mongodb/mongodb-original.svg"
+      }
+    ],
+    "officeLocations": [
+      {
+        "country": "United States",
+        "flag": "https://flagcdn.com/w40/us.png"
+      }
+    ],
+    "benefits": [
+      {
+        "title": "Health Benefits",
+        "description": "Basic health coverage for employees.",
+        "icon": "bi-heart-fill"
+      },
+      {
+        "title": "Flexible Work Hours",
+        "description": "Flexible schedules to support employee needs.",
+        "icon": "bi-clock-fill"
+      },
+      {
+        "title": "Remote Work",
+        "description": "Fully remote work environment.",
+        "icon": "bi-house-fill"
+      }
+    ],
+    "openJobs": [
+      {
+        "job_id": 36,
+        "company_id": 18,
+        "title": "Payment Analyst",
+        "location": "Remote",
+        "type": "Full Time",
+        "logo": "https://akurateco.com/wp-content/uploads/2020/03/akurateco-logo.png",
+        "description": "Seeking a Payment Analyst to optimize transaction flows.",
+        "tags": [
+          "Technology"
+        ]
+      }
+    ]
+  },
+  {
+    "id": 19,
+    "name": "Dyneti",
+    "logoInitial": "D",
+    "jobs": 3,
+    "employees": "1-10",
+    "employeeId": 19,
+    "locations": "1 Country",
+    "website": "https://www.dyneti.com",
+    "founded": "2020",
+    "industry": "Payment Gateway",
+    "profile": "Dyneti builds frictionless, fraud-free payment authentication solutions for mobile devices, focusing on secure and seamless transaction experiences.",
+    "contacts": [
+      {
+        "icon": "twitter",
+        "url": "https://twitter.com/DynetiTech",
+        "label": "twitter.com/DynetiTech"
+      },
+      {
+        "icon": "facebook",
+        "url": "https://facebook.com/DynetiTech",
+        "label": "facebook.com/DynetiTech"
+      },
+      {
+        "icon": "envelope",
+        "url": "mailto:support@dyneti.com",
+        "label": "support@dyneti.com"
+      }
+    ],
+    "photos": [
+      {
+        "url": "https://images.unsplash.com/photo-1497366210541-8b783781e3e2?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+        "alt": "Dyneti office"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1516321318423-3b7a17f4f6c6?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+        "alt": "Dyneti team"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1503428593588-4f8c88a7f830?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+        "alt": "Dyneti office"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1556740714-7a3a6b6e7e4b?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+        "alt": "Dyneti meeting"
+      }
+    ],
+    "teamMembers": [
+      {
+        "name": "Sophie Lin",
+        "position": "Founder",
+        "photo": "https://randomuser.me/api/portraits/women/40.jpg",
+        "social": {
+          "linkedin": "#",
+          "twitter": "#"
+        }
+      },
+      {
+        "name": "Ethan Wu",
+        "position": "Lead Engineer",
+        "photo": "https://randomuser.me/api/portraits/men/50.jpg",
+        "social": {
+          "linkedin": "#",
+          "twitter": "#"
+        }
+      }
+    ],
+    "techStack": [
+      {
+        "name": "JavaScript",
+        "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg"
+      },
+      {
+        "name": "Node.js",
+        "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg"
+      },
+      {
+        "name": "MongoDB",
+        "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mongodb/mongodb-original.svg"
+      }
+    ],
+    "officeLocations": [
+      {
+        "country": "United States",
+        "flag": "https://flagcdn.com/w40/us.png"
+      }
+    ],
+    "benefits": [
+      {
+        "title": "Health Benefits",
+        "description": "Basic health coverage for employees.",
+        "icon": "bi-heart-fill"
+      },
+      {
+        "title": "Flexible Work Hours",
+        "description": "Flexible schedules to support employee needs.",
+        "icon": "bi-clock-fill"
+      },
+      {
+        "title": "Remote Work",
+        "description": "Fully remote work environment.",
+        "icon": "bi-house-fill"
+      }
+    ],
+    "openJobs": [
+      {
+        "job_id": 37,
+        "company_id": 19,
+        "title": "Mobile Authentication Developer",
+        "location": "Remote",
+        "type": "Full Time",
+        "logo": "https://dyneti.com/wp-content/uploads/2020/09/dyneti-logo.png",
+        "description": "Seeking a Mobile Authentication Developer to enhance payment security.",
+        "tags": [
+          "Technology"
+        ]
+      }
+    ]
+  },
+  {
+    "id": 20,
+    "name": "SabPaisa",
+    "logoInitial": "S",
+    "jobs": 4,
+    "employees": "1-10",
+    "employeeId": 20,
+    "locations": "1 Country",
+    "website": "https://www.sabpaisa.in",
+    "founded": "2016",
+    "industry": "Payment Gateway",
+    "profile": "SabPaisa is a rapidly growing payment gateway in India, offering a wide range of payment solutions for businesses, including online and subscription payments.",
+    "contacts": [
+      {
+        "icon": "twitter",
+        "url": "https://twitter.com/SabPaisa",
+        "label": "twitter.com/SabPaisa"
+      },
+      {
+        "icon": "facebook",
+        "url": "https://facebook.com/SabPaisa",
+        "label": "facebook.com/SabPaisa"
+      },
+      {
+        "icon": "envelope",
+        "url": "mailto:support@sabpaisa.in",
+        "label": "support@sabpaisa.in"
+      }
+    ],
+    "photos": [
+      {
+        "url": "https://images.unsplash.com/photo-1497366754035-1c882e89a5c9?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+        "alt": "SabPaisa office"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1517248135467-2c7b7b6f7e4b?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+        "alt": "SabPaisa team"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1503428593588-4f8c88a7f830?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+        "alt": "SabPaisa office"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+        "alt": "SabPaisa meeting"
+      }
+    ],
+    "teamMembers": [
+      {
+        "name": "Priya Sharma",
+        "position": "CEO",
+        "photo": "https://randomuser.me/api/portraits/women/45.jpg",
+        "social": {
+          "linkedin": "#",
+          "twitter": "#"
+        }
+      },
+      {
+        "name": "Rahul Gupta",
+        "position": "CTO",
+        "photo": "https://randomuser.me/api/portraits/men/40.jpg",
+        "social": {
+          "linkedin": "#",
+          "twitter": "#"
+        }
+      }
+    ],
+    "techStack": [
+      {
+        "name": "JavaScript",
+        "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg"
+      },
+      {
+        "name": "Node.js",
+        "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg"
+      },
+      {
+        "name": "MongoDB",
+        "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mongodb/mongodb-original.svg"
+      }
+    ],
+    "officeLocations": [
+      {
+        "country": "India",
+        "flag": "https://flagcdn.com/w40/in.png"
+      }
+    ],
+    "benefits": [
+      {
+        "title": "Health Benefits",
+        "description": "Basic health coverage for employees.",
+        "icon": "bi-heart-fill"
+      },
+      {
+        "title": "Flexible Work Hours",
+        "description": "Flexible schedules to support employee needs.",
+        "icon": "bi-clock-fill"
+      },
+      {
+        "title": "Remote Work",
+        "description": "Fully remote work environment.",
+        "icon": "bi-house-fill"
+      }
+    ],
+    "openJobs": [
+      {
+        "job_id": 38,
+        "company_id": 20,
+        "title": "Payment Gateway Developer",
+        "location": "Remote",
+        "type": "Full Time",
+        "logo": "https://sabpaisa.in/wp-content/uploads/2020/05/sabpaisa-logo.png",
+        "description": "Seeking a Payment Gateway Developer to enhance transaction features.",
+        "tags": [
+          "Technology"
+        ]
+      }
+    ]
+  }
+]

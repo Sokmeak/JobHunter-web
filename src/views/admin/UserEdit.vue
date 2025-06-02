@@ -124,7 +124,7 @@
     
     // Show success message and redirect
     alert('User updated successfully!');
-    router.push(`/users/${props.id}`);
+    router.push(`/admin/users`);
   };
   
   onMounted(() => {

@@ -7,6 +7,7 @@ import Analytics from "@/views/admin/Analytics.vue";
 import Content from "@/views/admin/ContentModeration.vue";
 import Settings from "@/views/admin/Setting.vue";
 import AdminLogin from "@/views/auth/AdminLogin.vue";
+import UserProfile from "@/views/admin/UserProfile.vue";
 
 export default [
   {
@@ -25,7 +26,7 @@ export default [
         path: "admindashboard",
         name: "admindashboard",
         component: Dashboard,
-        meta: { title: "admindashboard" },
+        meta: { title: "Admin Dashboard" },
       },
       {
         path: "users",
@@ -43,6 +44,13 @@ export default [
             component: UserDetails,
             props: true,
             meta: { title: "User Details" },
+          },
+          {
+            path: ":id/profile",
+            name: "UserProfile",
+            component: UserProfile,
+            props: true,
+            meta: { title: "User Profile" },
           },
           {
             path: ":id/edit",
@@ -70,6 +78,13 @@ export default [
         name: "Settings",
         component: Settings,
         meta: { title: "System Configurations" },
+      },
+      {
+        path: "notifications",
+        name: "Admin-Notifications",
+        component: () => import("@/views/admin/Notifications.vue"),
+        meta: { title: "Notifications" },
+        props: true,
       },
     ],
   },

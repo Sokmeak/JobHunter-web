@@ -62,7 +62,7 @@
         :key="job.id"
         :class="viewMode === 'grid' ? 'col' : ''"
       >
-        <job-card :job="job" />
+        <job-card :job="job" :context="context" />
       </div>
     </div>
 
@@ -85,6 +85,10 @@ import Pagination from "../sharecomponents/Pagination.vue";
 const viewMode = ref("list");
 
 const props = defineProps({
+  context: {
+    type: String,
+    default: "Landing", // or "Dashboard"
+  },
   jobs: {
     type: Array,
     required: true,

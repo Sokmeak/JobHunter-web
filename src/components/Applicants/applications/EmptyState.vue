@@ -1,11 +1,11 @@
 <template>
-  <div class="empty-state" :class="{ 'compact': compact }">
-    <div class="empty-state-content">
-      <i :class="icon"></i>
-      <h4>{{ title }}</h4>
-      <p>{{ message }}</p>
-      <slot name="action"></slot>
+  <div class="empty-state">
+    <div class="empty-state-icon">
+      <i :class="`bi bi-${icon}`"></i>
     </div>
+    <h3 class="empty-state-title">{{ title }}</h3>
+    <p class="empty-state-message">{{ message }}</p>
+    <slot name="action"></slot>
   </div>
 </template>
 
@@ -19,15 +19,11 @@ export default {
     },
     message: {
       type: String,
-      default: 'There are no items to display at this time.'
+      default: 'There are no items to display.'
     },
     icon: {
       type: String,
-      default: 'bi bi-file-earmark-text'
-    },
-    compact: {
-      type: Boolean,
-      default: false
+      default: 'inbox'
     }
   }
 };
@@ -35,47 +31,34 @@ export default {
 
 <style scoped>
 .empty-state {
-  background-color: #f8f9fa;
-  border-radius: 12px;
-  padding: 48px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
   text-align: center;
-  margin-bottom: 24px;
+  background-color: #f9fafb;
+  border-radius: 8px;
+  border: 1px dashed #e5e7eb;
 }
 
-.empty-state.compact {
-  padding: 24px 16px;
-}
-
-.empty-state-content {
-  max-width: 400px;
-  margin: 0 auto;
-}
-
-.empty-state i {
+.empty-state-icon {
   font-size: 48px;
-  color: #9aa0a6;
+  color: #9ca3af;
   margin-bottom: 16px;
 }
 
-.empty-state.compact i {
-  font-size: 32px;
-  margin-bottom: 12px;
-}
-
-.empty-state h4 {
+.empty-state-title {
   font-size: 18px;
   font-weight: 600;
-  color: #202124;
-  margin-bottom: 8px;
+  color: #374151;
+  margin: 0 0 8px 0;
 }
 
-.empty-state p {
+.empty-state-message {
   font-size: 14px;
-  color: #5f6368;
-  margin-bottom: 16px;
-}
-
-.empty-state.compact p {
-  margin-bottom: 12px;
+  color: #6b7280;
+  max-width: 400px;
+  margin: 0 0 24px 0;
 }
 </style>

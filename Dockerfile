@@ -1,15 +1,20 @@
-# web/Dockerfile
-FROM node:20-alpine AS build-stage
+# Use Node base image
+FROM node:20-alpine
 
+# Set working directory
 WORKDIR /app
+
+# Copy only package files first to install deps
 COPY package*.json ./
+
+# Install dependencies
 RUN npm install
+
+# Copy everything else (will be overridden by volume during dev)
 COPY . .
-RUN npm run build
 
-# Production stage
-FROM nginx:stable-alpine AS production-stage
-COPY --from=build-stage /app/dist /usr/share/nginx/html
+# Expose default Vite port
+EXPOSE 5173
 
-EXPOSE 80
-CMD ["nginx", "-g", "daemon off;"]
+# Start dev server
+CMD ["npm", "run", "dev", "--", "--host"]
