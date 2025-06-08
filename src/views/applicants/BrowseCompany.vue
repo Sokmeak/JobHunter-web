@@ -1,6 +1,6 @@
 <template>
   <div class="d-flex">
-     <div class="container py-4">
+    <div class="container py-4">
       <!-- <HeroSection
         ref="heroSection"
         :title="title"
@@ -23,6 +23,7 @@
          :context="context"
         :initial-search-query="searchQuery.keyword"
         @clear-search="clearSearch"
+        :context="context"
       />
     </div>
 
@@ -34,10 +35,7 @@
 import { ref } from "vue";
 import SearchJob from "@/components/sharecomponents/SearchJob.vue";
 import SearchResultsPage from "@/components/browsecompany/SearchResultsPage.vue";
-
 const context = "Applicant";
-
-
 // const companies = [
 //   {
 //     id: 1,

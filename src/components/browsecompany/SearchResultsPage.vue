@@ -55,6 +55,10 @@ const props = defineProps({
     type: Object,
     default: () => ({ keyword: "", location: "" }),
   },
+  context: {
+    type: String,
+    default: "Landing",
+  },
 });
 
 const emit = defineEmits(["clear-search"]);
@@ -208,6 +212,45 @@ const paginatedCompanies = computed(() => {
   return filteredCompanies.value.slice(start, end);
 });
 </script>
+
+<template>
+  <div class="company-page">
+    <!-- <div v-else-if="error" class="error">Error: {{ error }}</div> -->
+    <div class="content-wrapper">
+      <div class="sidebar">
+        <FilterCompanySidebar
+          :search-query="companyStore.searchQuery"
+          :initial-industries="selectedIndustries"
+          :initial-sizes="selectedSizes"
+          @search="handleSearch"
+          @filter-change="handleFilterChange"
+        />
+      </div>
+      <div class="main-content">
+        <div class="results">
+          <CompanyResults
+            :context="context"
+            :companies="paginatedCompanies"
+            :total-results="filteredCompanies.length"
+            :view-mode="viewMode"
+            @view-change="handleViewChange"
+            @sort-change="handleSortChange"
+            @clear-search="clearSearch"
+          />
+        </div>
+        <div class="pagination">
+          <Pagination
+            :current-page="currentPage"
+            :total-items="filteredCompanies.length"
+            :items-per-page="itemsPerPage"
+            @page-change="handlePageChange"
+            @per-page-change="handlePerPageChange"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
 
 <style scoped>
 .company-page {
