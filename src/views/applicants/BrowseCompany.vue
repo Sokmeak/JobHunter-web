@@ -20,6 +20,7 @@
       />
 
       <SearchResultsPage
+         :context="context"
         :initial-search-query="searchQuery.keyword"
         @clear-search="clearSearch"
       />
@@ -33,6 +34,9 @@
 import { ref } from "vue";
 import SearchJob from "@/components/sharecomponents/SearchJob.vue";
 import SearchResultsPage from "@/components/browsecompany/SearchResultsPage.vue";
+
+const context = "Applicant";
+
 
 // const companies = [
 //   {

@@ -2,20 +2,8 @@
   <div class="d-flex">
     <div class="container py-2">
       <div class="container-fluid py-1">
-        <!-- Loading and Error States -->
-        <div
-          v-if="applicationStore.loading || userProfileStore.loading"
-          class="text-center"
-        >
-          <p>Loading dashboard...</p>
-        </div>
-        <div
-          v-else-if="applicationStore.error || userProfileStore.error"
-          class="alert alert-danger"
-        >
-          {{ applicationStore.error || userProfileStore.error }}
-        </div>
-        <div v-else>
+        <!-- Main Content -->
+        <div>
           <!-- Greeting Section -->
           <GreetingSection
             :user-name="selectedProfile?.name || 'User'"
@@ -124,13 +112,15 @@ export default {
     const dateRange = ref({
       start: "15 May 2025",
       end: "30 May 2025",
-    }); // Aligned with mock data dates
+    });
     const recentApplications = ref([]);
     const applicationStatus = ref([
-      { name: "Loading", value: 0, color: "#e5e7eb" },
+      { name: "No Data", value: 0, color: "#e5e7eb" },
     ]);
     const upcomingInterviews = ref([]);
     const selectedUserId = ref(userProfileStore.defaultUserId);
+    const totalJobsApplied = ref(0);
+    const interviewedCount = ref(0);
 
     // Computed properties
     const userProfiles = computed(() => userProfileStore.userProfiles);
@@ -141,24 +131,6 @@ export default {
         (app) => app.userId === selectedUserId.value
       )
     );
-
-    // const totalJobsApplied = computed(() => userApplications.value.length);
-
-    // const interviewedCount = computed(
-    //   () =>
-    //     userApplications.value.filter((app) =>
-    //       ["Interview Scheduled", "Phone Screening"].includes(app.status)
-    //     ).length
-    // );
-
-    const totalJobsApplied = ref(0);
-    const interviewedCount = ref(0);
-    // watch(userApplications, (apps) => {
-    //   totalJobsApplied.value = apps.length;
-    //   interviewedCount.value = apps.filter((app) =>
-    //     ["Interview Scheduled", "Phone Screening"].includes(app.status)
-    //   ).length;
-    // });
 
     // Derive upcoming interviews from application timelines
     const computeUpcomingInterviews = () => {
@@ -174,7 +146,7 @@ export default {
         interviewSteps.forEach((step) => {
           interviews.push({
             id: app.id,
-            time: step.date !== "Pending" ? "TBD" : "TBD",
+            time: step.date !== "Pending" ? step.date : "TBD",
             name: app.recruiter.name,
             position: `${app.recruiter.role} at ${app.companyName}`,
             avatar: app.recruiter.avatar,
@@ -182,7 +154,7 @@ export default {
           });
         });
       });
-      return interviews.slice(0, 5); // Limit to 5 upcoming interviews
+      return interviews.slice(0, 5);
     };
 
     // Watchers
@@ -261,34 +233,22 @@ export default {
           await applicationStore.fetchApplications();
         }
 
-        // Filter applications by date range
-        recentApplications.value = applicationStore
-          .getApplicationsInDateRange(
-            dateRange.value.start,
-            dateRange.value.end
-          )
-          .slice(0, 3);
+        // Filter applications by date range and user
+        const filteredApps = applicationStore
+          .getApplicationsInDateRange(dateRange.value.start, dateRange.value.end)
+          .filter((app) => app.userId === selectedUserId.value);
 
+        recentApplications.value = filteredApps.slice(0, 3);
         console.log("Recent Applications:", recentApplications.value);
 
         // Update total jobs applied and interviewed count
-        totalJobsApplied.value = applicationStore.getApplicationsInDateRange(
-          dateRange.value.start,
-          dateRange.value.end
+        totalJobsApplied.value = filteredApps.length;
+        console.log("Total Jobs Applied:", totalJobsApplied.value);
+
+        interviewedCount.value = filteredApps.filter((app) =>
+          ["Interview Scheduled", "Phone Screening"].includes(app.status)
         ).length;
-
-        console.log("Total Jobs Applied after filter:", totalJobsApplied.value);
-
-        interviewedCount.value = applicationStore
-          .getApplicationsInDateRange(
-            dateRange.value.start,
-            dateRange.value.end
-          )
-          .filter((app) => ["Interviewing"].includes(app.status)).length;
-
-        console.log("userApplications after filter:", userApplications.value);
-
-        // Update recent applications
+        console.log("Interviewed Count:", interviewedCount.value);
 
         // Update upcoming interviews
         upcomingInterviews.value = computeUpcomingInterviews();
@@ -312,10 +272,10 @@ export default {
           },
         ];
         applicationStatus.value = chartData;
+
         saveDashboardState();
       } catch (err) {
         console.error("Error loading dashboard data:", err);
-        applicationStore.error = "Failed to load dashboard data";
       }
     };
 
@@ -337,6 +297,8 @@ export default {
       Object.values(STORAGE_KEYS).forEach((key) => {
         localStorage.removeItem(key);
       });
+      localStorage.removeItem("user_profiles_v1");
+      localStorage.removeItem("selected_profile_v1");
       selectedUserId.value = userProfileStore.defaultUserId;
       applicationStore.init();
       userProfileStore.init();
@@ -375,7 +337,6 @@ export default {
     },
     async handleEditApplication(application) {
       console.log("Edit application:", application);
-      // Navigate to edit page or open modal
       this.$router.push(`/applications/${application.id}/edit`);
     },
     async handleDeleteApplication(application) {

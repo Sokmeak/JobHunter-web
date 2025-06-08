@@ -11,7 +11,6 @@
             : profile.bannerGradient,
         }"
       >
-        <!-- Banner Upload Overlay (Edit Mode) -->
         <div
           v-if="isEditing"
           class="position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center"
@@ -36,22 +35,18 @@
             class="rounded-circle border border-4 border-white overflow-hidden position-relative"
             style="height: 120px; width: 120px; background-color: #4da9ff"
           >
-            <!-- Default avatar background when no image -->
             <div
               v-if="!currentAvatar"
               class="d-flex align-items-center justify-content-center h-100 w-100 text-white"
             >
               <i class="bi bi-person-fill" style="font-size: 3rem"></i>
             </div>
-            <!-- Profile image -->
             <img
               v-else
               :src="currentAvatar"
               class="w-100 h-100 object-fit-cover"
               alt="Profile image"
             />
-
-            <!-- Upload overlay for edit mode -->
             <div
               v-if="isEditing"
               class="position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center"
@@ -74,7 +69,6 @@
           style="display: none"
           @change="handleProfileUpload"
         />
-
         <input
           ref="bannerInput"
           type="file"
@@ -86,7 +80,6 @@
         <!-- Profile Info Section -->
         <div class="row align-items-end mb-3">
           <div class="col-md-8">
-            <!-- Name -->
             <div v-if="!isEditing" class="h1 mb-1">{{ profile.name }}</div>
             <input
               v-else
@@ -94,8 +87,8 @@
               class="form-control form-control-lg mb-2"
               v-model="editableProfile.name"
               placeholder="Your Name"
+              required
             />
-            <!-- Position and Company -->
             <div v-if="!isEditing" class="h4 text-muted mb-0">
               {{ profile.title }} at
               <span class="text-dark">{{ profile.company }}</span>
@@ -116,11 +109,11 @@
               />
             </div>
           </div>
-
           <div class="col-md-4 text-md-end mt-3 mt-md-0">
             <button
               class="btn btn-outline-primary px-4"
               @click="toggleEditMode"
+              :disabled="isEditing && (!editableProfile.name || !editableProfile.email)"
             >
               {{ isEditing ? "Save Changes" : "Edit Profile" }}
             </button>
@@ -151,7 +144,6 @@
             <i class="bi bi-flag me-2"></i>
             <span class="fw-medium">OPEN FOR OPPORTUNITIES</span>
           </div>
-
           <div v-if="isEditing" class="form-check">
             <input
               class="form-check-input"
@@ -177,6 +169,7 @@
             </button>
           </div>
         </div>
+
         <!-- Banner Upload Section (Edit Mode) -->
         <div v-if="isEditing" class="mb-3">
           <div class="d-flex gap-2 align-items-center">
@@ -188,7 +181,6 @@
               Remove Banner
             </button>
           </div>
-          <!-- Error message -->
           <div v-if="uploadError" class="alert alert-danger mt-2">
             {{ uploadError }}
           </div>
@@ -206,16 +198,20 @@ export default {
       type: Object,
       required: true,
       default: () => ({
-        name: "Jake Gyll",
-        title: "Product Designer",
-        company: "Twitter",
-        location: "Manchester, UK",
-        openToOpportunities: true,
-        bannerGradient:
-          "linear-gradient(90deg, #ffd1dc 0%, #c995c0 50%, #6b4887 100%)",
+        name: "",
+        title: "",
+        company: "",
+        location: "",
+        email: "",
+        openToOpportunities: false,
+        bannerGradient: "linear-gradient(90deg, #ffd1dc 0%, #c995c0 50%, #6b4887 100%)",
         avatar: null,
         banner: null,
       }),
+    },
+    error: {
+      type: String,
+      default: null,
     },
   },
   data() {
@@ -229,6 +225,7 @@ export default {
         title: "",
         company: "",
         location: "",
+        email: "",
         openToOpportunities: false,
         bannerGradient: "",
         avatar: null,
@@ -239,18 +236,29 @@ export default {
   methods: {
     toggleEditMode() {
       if (this.isEditing) {
-        // Emit updated profile data to parent
-        this.$emit('update-profile', { ...this.editableProfile });
+        if (!this.editableProfile.name) {
+          this.uploadError = "Name is required";
+          return;
+        }
+        if (!this.validateEmail(this.editableProfile.email)) {
+          this.uploadError = "Valid email is required";
+          return;
+        }
+        this.$emit("update-profile", { ...this.editableProfile });
         this.currentAvatar = this.editableProfile.avatar;
         this.currentBanner = this.editableProfile.banner;
         this.isEditing = false;
         this.uploadError = null;
       } else {
-        // Enter edit mode, initialize editableProfile from props
         this.editableProfile = { ...this.profile };
         this.isEditing = true;
         this.uploadError = null;
       }
+    },
+
+    validateEmail(email) {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      return emailRegex.test(email);
     },
 
     triggerFileInput() {
@@ -264,9 +272,6 @@ export default {
     handleProfileUpload(event) {
       const file = event.target.files[0];
       if (!file) return;
-
-      this.uploadError = null;
-
       if (!this.validateFile(file)) return;
       const reader = new FileReader();
       reader.onload = (e) => {
@@ -274,55 +279,39 @@ export default {
         this.currentAvatar = e.target.result;
       };
       reader.onerror = () => {
-        this.uploadError = "Error reading the file. Please try again.";
+        this.uploadError = "Error reading the profile image. Please try again.";
       };
       reader.readAsDataURL(file);
-
       event.target.value = "";
     },
 
     handleBannerUpload(event) {
       const file = event.target.files[0];
       if (!file) return;
-
-      this.uploadError = null;
-
       if (!this.validateFile(file)) return;
-
       const reader = new FileReader();
       reader.onload = (e) => {
         this.editableProfile.banner = e.target.result;
         this.currentBanner = e.target.result;
       };
       reader.onerror = () => {
-        this.uploadError = "Error reading the banner file. Please try again.";
+        this.uploadError = "Error reading the banner image. Please try again.";
       };
       reader.readAsDataURL(file);
-
       event.target.value = "";
     },
 
     validateFile(file) {
-      // Validate file type
-      const allowedTypes = [
-        "image/jpeg",
-        "image/jpg",
-        "image/png",
-        "image/gif",
-      ];
+      const allowedTypes = ["image/jpeg", "image/jpg", "image/png", "image/gif"];
       if (!allowedTypes.includes(file.type)) {
-        this.uploadError =
-          "Please select a valid image file (JPG, PNG, or GIF).";
+        this.uploadError = "Please select a valid image file (JPG, PNG, or GIF).";
         return false;
       }
-
-      // Validate file size (5MB limit)
-      const maxSize = 5 * 1024 * 1024; // 5MB in bytes
+      const maxSize = 5 * 1024 * 1024; // 5MB
       if (file.size > maxSize) {
         this.uploadError = "File size must be less than 5MB.";
         return false;
       }
-
       return true;
     },
 
@@ -338,20 +327,22 @@ export default {
       this.uploadError = null;
     },
   },
-
   watch: {
     profile: {
       immediate: true,
       deep: true,
       handler(newProfile) {
-        // Sync current images with profile prop
         this.currentAvatar = newProfile.avatar;
         this.currentBanner = newProfile.banner;
-        // If not editing, sync editableProfile with prop
         if (!this.isEditing) {
           this.editableProfile = { ...newProfile };
         }
       },
+    },
+    error(newError) {
+      if (newError) {
+        this.uploadError = newError;
+      }
     },
   },
 };
@@ -361,11 +352,8 @@ export default {
 .bg-light-success {
   background-color: rgba(25, 135, 84, 0.1);
 }
-
 .object-fit-cover {
   object-fit: cover;
 }
-
-/* Add Bootstrap Icons */
 @import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css");
 </style>
