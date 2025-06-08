@@ -10,6 +10,7 @@
     "build:sass": "sass --quiet-deps -q -I node_modules src/assets/custom.scss dist/custom.cs"
   },
   "dependencies": {
+    "@nestjs/mapped-types": "*",
     "@vuepic/vue-datepicker": "^11.0.2",
     "axios": "^1.8.4",
     "bootstrap": "^5.3.5",

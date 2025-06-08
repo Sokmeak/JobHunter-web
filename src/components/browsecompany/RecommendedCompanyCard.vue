@@ -95,8 +95,16 @@
 
     <!-- Footer -->
     <div class="company-footer">
+      <!-- add one props call context -->
+
       <RouterLink
-        to="/company/1"
+        :to="{
+          name:
+            context === 'Landing'
+              ? 'CompanyProfile'
+              : 'ApplicantCompany-Profile',
+          params: { id: company.id },
+        }"
         class="btn btn-view-details"
         @click.prevent="viewDetails"
       >
@@ -124,6 +132,7 @@ const props = defineProps({
   },
 });
 
+// use context as ref instead
 const emit = defineEmits(["quick-apply", "view-company", "view-details"]);
 
 const countJobs = (company) => company.jobIds?.length || 0;

@@ -8,6 +8,7 @@
     <div class="companies-grid">
       <RecommendedCompanyCard
         v-for="company in displayedCompanies"
+        :context="context"
         :key="company.id"
         :company="company"
       />
@@ -16,12 +17,18 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+
 import RecommendedCompanyCard from "./RecommendedCompanyCard.vue";
 import { computed, onMounted } from "vue";
 import { useCompanyStore } from "@/stores/companyStore";
 
+
+const props = defineProps({
+  context: String,
+});
+
 const companyStore = useCompanyStore();
+
 
 // Compute the first 8 companies to display
 const displayedCompanies = computed(() => {
