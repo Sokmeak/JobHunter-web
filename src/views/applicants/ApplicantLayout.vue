@@ -82,10 +82,12 @@ export default {
     // Watch for route changes to update page title automatically
     $route(to) {
       // Set page title based on route
-      if (to.path.startsWith("/applicant/find-jobs/") && to.path.split("/").length === 4) {
+      if (to.path.startsWith("/applicant/find-jobs/")) {
         this.pageTitle = "Job Details";
+      } else if (this.$route.path.startsWith("/applicant/BrowseCompany/")) {
+        this.pageTitle = "Company Profile";
       } else {
-        this.pageTitle = this.routeTitles[to.path] || "Dashboard";
+        this.pageTitle = this.routeTitles[this.$route.path];
       }
 
       // Determine if back button should be shown based on navigation depth
@@ -100,15 +102,23 @@ export default {
     // Comment out if you want it to always start expanded
     // const savedState = localStorage.getItem("sidebarCollapsed");
     // Set initial page title based on current route
-    if (this.$route.path.startsWith("/applicant/find-jobs/") && this.$route.path.split("/").length === 4) {
+    if (
+      this.$route.path.startsWith("/applicant/find-jobs/") &&
+      this.$route.path.split("/").length === 4
+    ) {
       this.pageTitle = "Job Details";
+    } else if (
+      this.$route.path.startsWith("/applicant/BrowseCompany/") &&
+      this.$route.path.split("/").length === 5
+    ) {
+      this.pageTitle = "Company Profile";
     } else {
-      this.pageTitle = this.routeTitles[this.$route.path] || "Dashboard";
+      this.pageTitle = this.routeTitles[this.$route.path];
     }
     // }
 
     // Set initial page title based on current route
-    this.pageTitle = this.routeTitles[this.$route.path] || "Dashboard";
+    this.pageTitle = this.routeTitles[this.$route.path];
 
     // Set initial back button state
     this.showBackButton = this.$route.path !== "/applicant/dashboard";

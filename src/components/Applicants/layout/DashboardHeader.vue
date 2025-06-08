@@ -28,7 +28,7 @@
           aria-expanded="false"
           aria-label="Notifications"
         >
-          <div class="notification-icon">
+          <div class="rounded-circle notification-icon">
             <svg
               width="24"
               height="24"
@@ -231,6 +231,7 @@ export default {
   border: none;
   position: relative;
   transition: all 0.2s ease;
+  border: 2px solid #4640de;
 }
 
 .notification-button:hover {
@@ -248,7 +249,7 @@ export default {
   height: 40px;
   border-radius: 50%;
   background-color: #ffffff;
-  border: 2px solid #4640de;
+
   display: flex;
   align-items: center;
   justify-content: center;

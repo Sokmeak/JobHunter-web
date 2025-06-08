@@ -20,10 +20,9 @@
       />
 
       <SearchResultsPage
-         :context="context"
+        :context="context"
         :initial-search-query="searchQuery.keyword"
         @clear-search="clearSearch"
-        :context="context"
       />
     </div>
 
