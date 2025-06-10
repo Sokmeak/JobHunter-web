@@ -162,310 +162,122 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted, onUnmounted } from "vue";
-import { useRouter } from "vue-router";
+
+import { ref, computed, onMounted } from 'vue'
+import { useUsersStore } from '@/stores/AdminStore/usersManag'
 import {
   Search,
-  ChevronDown,
   Plus,
+  ChevronDown,
+  CheckCircle,
+  XCircle,
   MoreHorizontal,
   Eye,
   Edit,
-  CheckCircle,
-  XCircle,
   Ban,
   Trash2,
   ChevronLeft,
-  ChevronRight,
-} from "lucide-vue-next";
-import AddUserModal from "@/components/Admin/Users/AddUserModal.vue";
+  ChevronRight
+} from 'lucide-vue-next'
 
-const router = useRouter();
+import AddUserModal from '@/components/Admin/Users/AddUserModal.vue'
 
-// Reactive data
-const searchQuery = ref("");
-const statusFilter = ref("");
-const currentPage = ref(1);
-const itemsPerPage = 15;
-const activeActionsMenu = ref(null);
-const showAddUserModal = ref(false);
+// Store Pinia
+const usersStore = useUsersStore()
 
-// Mock users data
-const users = ref([
-  {
-    id: 1,
-    name: "Jonh Doe",
-    email: "jonhdoe@gmail.com",
-    role: "Job Seekers",
-    status: "Active",
-    verified: true,
-    joinDate: "Jan 15, 2023",
-  },
-  {
-    id: 2,
-    name: "Jonh Doe",
-    email: "jonhdoe@gmail.com",
-    role: "Job Seekers",
-    status: "Active",
-    verified: true,
-    joinDate: "Jan 15, 2023",
-  },
-  {
-    id: 3,
-    name: "Jonh Doe",
-    email: "jonhdoe@gmail.com",
-    role: "Job Seekers",
-    status: "Active",
-    verified: true,
-    joinDate: "Jan 15, 2023",
-  },
-  {
-    id: 4,
-    name: "Jonh Doe",
-    email: "jonhdoe@gmail.com",
-    role: "Job Seekers",
-    status: "Active",
-    verified: true,
-    joinDate: "Jan 15, 2023",
-  },
-  {
-    id: 5,
-    name: "Jonh Doe",
-    email: "jonhdoe@gmail.com",
-    role: "Job Seekers",
-    status: "Active",
-    verified: true,
-    joinDate: "Jan 15, 2023",
-  },
-  {
-    id: 6,
-    name: "Jonh Doe",
-    email: "jonhdoe@gmail.com",
-    role: "Job Seekers",
-    status: "Active",
-    verified: true,
-    joinDate: "Jan 15, 2023",
-  },
-  {
-    id: 7,
-    name: "Jonh Doe",
-    email: "jonhdoe@gmail.com",
-    role: "Job Seekers",
-    status: "Active",
-    verified: true,
-    joinDate: "Jan 15, 2023",
-  },
-  {
-    id: 8,
-    name: "Jonh Doe",
-    email: "jonhdoe@gmail.com",
-    role: "Job Seekers",
-    status: "Active",
-    verified: true,
-    joinDate: "Jan 15, 2023",
-  },
-  {
-    id: 9,
-    name: "Jonh Doe",
-    email: "jonhdoe@gmail.com",
-    role: "Job Seekers",
-    status: "Active",
-    verified: true,
-    joinDate: "Jan 15, 2023",
-  },
-  {
-    id: 10,
-    name: "Jonh Doe",
-    email: "jonhdoe@gmail.com",
-    role: "Employer",
-    status: "Active",
-    verified: false,
-    joinDate: "Jan 15, 2023",
-  },
-  {
-    id: 11,
-    name: "Jonh Doe",
-    email: "jonhdoe@gmail.com",
-    role: "Employer",
-    status: "Active",
-    verified: false,
-    joinDate: "Jan 15, 2023",
-  },
-  {
-    id: 12,
-    name: "Jonh Doe",
-    email: "jonhdoe@gmail.com",
-    role: "Employer",
-    status: "Active",
-    verified: false,
-    joinDate: "Jan 15, 2023",
-  },
-  {
-    id: 13,
-    name: "Jonh Doe",
-    email: "jonhdoe@gmail.com",
-    role: "Employer",
-    status: "Active",
-    verified: false,
-    joinDate: "Jan 15, 2023",
-  },
-  {
-    id: 14,
-    name: "Jonh Doe",
-    email: "jonhdoe@gmail.com",
-    role: "Employer",
-    status: "Active",
-    verified: false,
-    joinDate: "Jan 15, 2023",
-  },
-  {
-    id: 15,
-    name: "Jonh Doe",
-    email: "jonhdoe@gmail.com",
-    role: "Employer",
-    status: "Active",
-    verified: false,
-    joinDate: "Jan 15, 2023",
-  },
-  {
-    id: 16,
-    name: "Jonh Doe",
-    email: "jonhdoe@gmail.com",
-    role: "Employer",
-    status: "Active",
-    verified: false,
-    joinDate: "Jan 15, 2023",
-  },
-  {
-    id: 17,
-    name: "Jonh Doe",
-    email: "jonhdoe@gmail.com",
-    role: "Employer",
-    status: "Active",
-    verified: false,
-    joinDate: "Jan 15, 2023",
-  },
-  {
-    id: 18,
-    name: "Jonh Doe",
-    email: "jonhdoe@gmail.com",
-    role: "Employer",
-    status: "Active",
-    verified: false,
-    joinDate: "Jan 15, 2023",
-  },
-]);
+// Données réactives locales
+const searchQuery = ref('')
+const statusFilter = ref('')
+const currentPage = ref(1)
+const usersPerPage = 5
+const showAddUserModal = ref(false)
+const activeActionsMenu = ref(null)
 
-// Computed properties
-const filteredUsers = computed(() => {
-  return users.value.filter((user) => {
-    const matchesSearch =
-      user.name.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
-      user.email.toLowerCase().includes(searchQuery.value.toLowerCase());
-    const matchesStatus =
-      !statusFilter.value ||
-      user.status.toLowerCase() === statusFilter.value.toLowerCase();
-
-    return matchesSearch && matchesStatus;
-  });
-});
-
-const paginatedUsers = computed(() => {
-  const start = (currentPage.value - 1) * itemsPerPage;
-  const end = start + itemsPerPage;
-  return filteredUsers.value.slice(start, end);
-});
-
-const totalUsers = computed(() => filteredUsers.value.length);
-const totalPages = computed(() => Math.ceil(totalUsers.value / itemsPerPage));
-const startIndex = computed(() => (currentPage.value - 1) * itemsPerPage);
-const endIndex = computed(() =>
-  Math.min(startIndex.value + itemsPerPage, totalUsers.value)
-);
-
-// Methods
-const getRoleClass = (role) => {
-  return {
-    "role-job-seekers": role === "Job Seekers",
-    "role-employer": role === "Employer",
-    "role-admin": role === "Admin",
-  };
-};
-
-const getStatusClass = (status) => {
-  return {
-    "status-active": status === "Active",
-    "status-inactive": status === "Inactive",
-    "status-pending": status === "Pending",
-    "status-suspended": status === "Suspended",
-  };
-};
-
-const toggleActionsMenu = (userId) => {
-  activeActionsMenu.value = activeActionsMenu.value === userId ? null : userId;
-};
-
-const viewUser = (userId) => {
-  router.push(`/admin/users/${userId}/profile`);
-  activeActionsMenu.value = null;
-};
-
-const editUser = (userId) => {
-  router.push(`/admin/users/${userId}/edit`);
-  activeActionsMenu.value = null;
-};
-
-const toggleVerification = (userId) => {
-  const user = users.value.find((u) => u.id === userId);
-  if (user) {
-    user.verified = !user.verified;
-  }
-  activeActionsMenu.value = null;
-};
-
-const suspendUser = (userId) => {
-  const user = users.value.find((u) => u.id === userId);
-  if (user) {
-    user.status = user.status === "Suspended" ? "Active" : "Suspended";
-  }
-  activeActionsMenu.value = null;
-};
-
-const deleteUser = (userId) => {
-  if (confirm("Are you sure you want to delete this user?")) {
-    const index = users.value.findIndex((u) => u.id === userId);
-    if (index > -1) {
-      users.value.splice(index, 1);
-    }
-  }
-  activeActionsMenu.value = null;
-};
-
-const handleUserAdded = (newUser) => {
-  users.value.unshift({
-    ...newUser,
-    id: Date.now(),
-    joinDate: new Date().toLocaleDateString("en-US", {
-      year: "numeric",
-      month: "short",
-      day: "numeric",
-    }),
-  });
-};
-
-const handleClickOutside = (event) => {
-  if (!event.target.closest(".actions-dropdown")) {
-    activeActionsMenu.value = null;
-  }
-};
-
+// Appel initial
 onMounted(() => {
-  document.addEventListener("click", handleClickOutside);
-});
+})
 
-onUnmounted(() => {
-  document.removeEventListener("click", handleClickOutside);
-});
+// Filtrage des utilisateurs
+const filteredUsers = computed(() => {
+  let users = [...usersStore.users]
+
+  if (searchQuery.value) {
+    const query = searchQuery.value.toLowerCase()
+    users = users.filter(
+      (u) =>
+        u.name.toLowerCase().includes(query) ||
+        u.email.toLowerCase().includes(query)
+    )
+  }
+
+  if (statusFilter.value) {
+    users = users.filter((u) => u.status === statusFilter.value)
+  }
+
+  return users
+})
+
+// Pagination
+const totalUsers = computed(() => filteredUsers.value.length)
+const totalPages = computed(() =>
+  Math.ceil(filteredUsers.value.length / usersPerPage)
+)
+const startIndex = computed(() => (currentPage.value - 1) * usersPerPage)
+const endIndex = computed(() =>
+  Math.min(startIndex.value + usersPerPage, filteredUsers.value.length)
+)
+const paginatedUsers = computed(() =>
+  filteredUsers.value.slice(startIndex.value, endIndex.value)
+)
+
+// Méthodes
+function handleUserAdded(user) {
+  usersStore.addUser(user)
+  showAddUserModal.value = false
+}
+
+function toggleVerification(userId) {
+  usersStore.toggleVerification(userId)
+}
+
+function suspendUser(userId) {
+  usersStore.suspendUser(userId)
+}
+
+function deleteUser(userId) {
+  usersStore.deleteUser(userId)
+}
+
+function viewUser(userId) {
+  console.log('Viewing user', userId)
+}
+
+function editUser(userId) {
+  console.log('Editing user', userId)
+}
+
+function toggleActionsMenu(userId) {
+  activeActionsMenu.value =
+    activeActionsMenu.value === userId ? null : userId
+}
+
+// Classes dynamiques
+function getRoleClass(role) {
+  switch (role) {
+    case 'admin':
+      return 'role-admin'
+    case 'editor':
+      return 'role-editor'
+    case 'user':
+      return 'role-user'
+    default:
+      return ''
+  }
+}
+
+function getStatusClass(status) {
+  return `status-${status}`
+}
 </script>
 
 <style scoped>

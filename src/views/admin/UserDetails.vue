@@ -100,7 +100,7 @@
 <script setup>
 import { ref, computed } from 'vue';
 import { Plus, Search, Eye, Edit, Trash2, ChevronLeft, ChevronRight } from 'lucide-vue-next';
-import { useUsersStore } from '@/stores/AdminStore/users';
+import { useUsersStore } from '@/stores/AdminStore/usersdetails';
 
 const userStore = useUsersStore()
 
