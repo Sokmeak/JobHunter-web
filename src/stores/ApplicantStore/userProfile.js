@@ -89,7 +89,6 @@ const mockProfiles = [
       },
     ],
   },
-  // Additional mock profile for testing multiple users
   {
     userId: 1,
     name: "Emma Watson",
@@ -192,6 +191,7 @@ export const useUserProfileStore = defineStore("userProfile", () => {
     try {
       const profiles = await mockApi.getAllProfiles();
       userProfiles.value = profiles;
+      console.log("Fetched all profiles:", profiles);
     } catch (err) {
       error.value = err.message;
     } finally {
@@ -206,6 +206,7 @@ export const useUserProfileStore = defineStore("userProfile", () => {
     try {
       const profile = await mockApi.getProfileByUserId(userId);
       selectedProfile.value = profile;
+      console.log("Fetched profile for userId", userId, ":", profile);
     } catch (err) {
       error.value = err.message;
     } finally {
@@ -224,7 +225,6 @@ export const useUserProfileStore = defineStore("userProfile", () => {
       if (index !== -1) {
         userProfiles.value[index] = updated;
       }
-      saveToLocalStorage();
       console.log("Updated profile:", updatedProfile);
     } catch (err) {
       error.value = err.message;
@@ -242,7 +242,10 @@ export const useUserProfileStore = defineStore("userProfile", () => {
         userProfiles.value.find((p) => p.userId === userId) ||
         selectedProfile.value;
       if (!profile) throw new Error("Profile not found");
-      const newEducation = [educationData, ...profile.education];
+      const newEducation = [
+        { ...educationData, id: Date.now() },
+        ...profile.education,
+      ];
       const updatedProfile = { ...profile, education: newEducation };
       await updateProfile(userId, updatedProfile);
       console.log("Added education:", educationData);
@@ -263,7 +266,10 @@ export const useUserProfileStore = defineStore("userProfile", () => {
         selectedProfile.value;
       if (!profile) throw new Error("Profile not found");
       const newEducation = [...profile.education];
-      newEducation[index] = educationData;
+      newEducation[index] = {
+        ...educationData,
+        id: profile.education[index].id,
+      };
       const updatedProfile = { ...profile, education: newEducation };
       await updateProfile(userId, updatedProfile);
       console.log("Updated education at index", index, ":", educationData);
@@ -345,7 +351,10 @@ export const useUserProfileStore = defineStore("userProfile", () => {
         userProfiles.value.find((p) => p.userId === userId) ||
         selectedProfile.value;
       if (!profile) throw new Error("Profile not found");
-      const newPortfolios = [portfolioData, ...profile.portfolios];
+      const newPortfolios = [
+        { ...portfolioData, id: Date.now() },
+        ...profile.portfolios,
+      ];
       const updatedProfile = { ...profile, portfolios: newPortfolios };
       await updateProfile(userId, updatedProfile);
       console.log("Added portfolio:", portfolioData);
@@ -366,7 +375,10 @@ export const useUserProfileStore = defineStore("userProfile", () => {
         selectedProfile.value;
       if (!profile) throw new Error("Profile not found");
       const newPortfolios = [...profile.portfolios];
-      newPortfolios[index] = portfolioData;
+      newPortfolios[index] = {
+        ...portfolioData,
+        id: profile.portfolios[index].id,
+      };
       const updatedProfile = { ...profile, portfolios: newPortfolios };
       await updateProfile(userId, updatedProfile);
       console.log("Edited portfolio at index:", index);
@@ -425,7 +437,10 @@ export const useUserProfileStore = defineStore("userProfile", () => {
         userProfiles.value.find((p) => p.userId === userId) ||
         selectedProfile.value;
       if (!profile) throw new Error("Profile not found");
-      const newExperiences = [experienceData, ...profile.experiences];
+      const newExperiences = [
+        { ...experienceData, id: Date.now() },
+        ...profile.experiences,
+      ];
       const updatedProfile = { ...profile, experiences: newExperiences };
       await updateProfile(userId, updatedProfile);
       console.log("Added experience:", experienceData);
@@ -446,7 +461,10 @@ export const useUserProfileStore = defineStore("userProfile", () => {
         selectedProfile.value;
       if (!profile) throw new Error("Profile not found");
       const newExperiences = [...profile.experiences];
-      newExperiences[index] = experienceData;
+      newExperiences[index] = {
+        ...experienceData,
+        id: profile.experiences[index].id,
+      };
       const updatedProfile = { ...profile, experiences: newExperiences };
       await updateProfile(userId, updatedProfile);
       console.log("Updated experience at index", index, ":", experienceData);
@@ -477,42 +495,12 @@ export const useUserProfileStore = defineStore("userProfile", () => {
     }
   };
 
-  // Save to localStorage for persistence
-  const saveToLocalStorage = () => {
-    if (typeof localStorage !== "undefined") {
-      localStorage.setItem("userProfiles", JSON.stringify(userProfiles.value));
-      if (selectedProfile.value) {
-        localStorage.setItem(
-          "selectedProfile",
-          JSON.stringify(selectedProfile.value)
-        );
-      }
-    }
-  };
-
-  // Load from localStorage
-  const loadFromLocalStorage = () => {
-    if (typeof localStorage !== "undefined") {
-      const storedProfiles = localStorage.getItem("userProfiles");
-      if (storedProfiles) {
-        userProfiles.value = JSON.parse(storedProfiles);
-      }
-      const storedSelectedProfile = localStorage.getItem("selectedProfile");
-      if (storedSelectedProfile) {
-        selectedProfile.value = JSON.parse(storedSelectedProfile);
-      }
-    }
-  };
-
   // Initialize the store
   const init = () => {
-    loadFromLocalStorage();
-    if (!userProfiles.value.length) {
-      fetchAllProfiles();
-    }
-    if (!selectedProfile.value) {
-      fetchProfileByUserId(defaultUserId.value);
-    }
+    userProfiles.value = [...mockProfiles];
+    selectedProfile.value =
+      mockProfiles.find((p) => p.userId === defaultUserId.value) || null;
+    console.log("Initialized selectedProfile:", selectedProfile.value);
   };
 
   // Run initialization
@@ -540,8 +528,6 @@ export const useUserProfileStore = defineStore("userProfile", () => {
     addExperience,
     updateExperience,
     deleteExperience,
-    saveToLocalStorage,
-    loadFromLocalStorage,
     init,
   };
 });

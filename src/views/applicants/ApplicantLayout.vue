@@ -2,7 +2,7 @@
   <div class="applicant-layout">
     <!-- Sidebar -->
     <SidebarNavigation
-      :user="user"
+      :user="selectedProfile"
       :is-collapsed="isSidebarCollapsed"
       @toggle-collapse="toggleSidebarCollapse"
     />
@@ -19,7 +19,7 @@
         :title="pageTitle"
         :show-back-button="showBackButton"
         :notification-count="notificationCount"
-        :user="user"
+        :user="selectedProfile"
         @toggle-collapse="toggleSidebarCollapse"
       />
       <div class="content-wrapper">
@@ -43,8 +43,11 @@
 </template>
 
 <script>
+import { ref, computed, watch } from "vue";
+import { useRoute } from "vue-router"; // Import useRoute
 import SidebarNavigation from "@/components/Applicants/layout/SidebarNavigation.vue";
 import DashboardHeader from "@/components/Applicants/layout/DashboardHeader.vue";
+import { useUserProfileStore } from "@/stores/ApplicantStore/userProfile";
 
 export default {
   name: "ApplicantLayout",
@@ -52,106 +55,82 @@ export default {
     SidebarNavigation,
     DashboardHeader,
   },
-  data() {
-    return {
-      user: {
-        name: "John Doe",
-        email: "john.doe@example.com",
-        avatar: "https://v0.dev/placeholder.svg?height=40&width=40",
-      },
-      pageTitle: "Dashboard",
-      showBackButton: false,
-      notificationCount: 2,
-      isSidebarCollapsed: false, // Set to false to start expanded
-      routeTitles: {
-        "/applicant/dashboard": "Dashboard",
-        "/applicant/messages": "Messages",
-        "/applicant/my-applications": "My Applications",
-        "/applicant/find-jobs": "Find Jobs",
+  setup() {
+    // Use Pinia store for user profile
+    const userProfileStore = useUserProfileStore();
+    const selectedProfile = computed(() => userProfileStore.selectedProfile);
 
-        // "/applicant/find-jobs/:jobId": "Job Details", // Dynamic route handled in code
+    // Reactive state
+    const pageTitle = ref("Dashboard");
+    const showBackButton = ref(false);
+    const notificationCount = ref(0);
+    const isSidebarCollapsed = ref(false); // Start expanded
 
-        "/applicant/BrowseCompany": "Browse Companies",
-        "/applicant/profile": "My Public Profile",
-        "/applicant/settings": "Settings",
-        "/applicant/help": "Help Center",
-      },
+    // Route titles mapping
+    const routeTitles = {
+      "/applicant/dashboard": "Dashboard",
+      "/applicant/messages": "Messages",
+      "/applicant/my-applications": "My Applications",
+      "/applicant/find-jobs": "Find Jobs",
+      "/applicant/BrowseCompany": "Browse Companies",
+      "/applicant/profile": "My Public Profile",
+      "/applicant/settings": "Settings",
+      "/applicant/help": "Help Center",
     };
-  },
-  watch: {
-    // Watch for route changes to update page title automatically
-    $route(to) {
-      // Set page title based on route
-      if (to.path.startsWith("/applicant/find-jobs/")) {
-        this.pageTitle = "Job Details";
-      } else if (this.$route.path.startsWith("/applicant/BrowseCompany/")) {
-        this.pageTitle = "Company Profile";
-      } else {
-        this.pageTitle = this.routeTitles[this.$route.path];
-      }
 
-      // Determine if back button should be shown based on navigation depth
-      // Force showBackButton to true for all routes except dashboard
-      this.showBackButton = to.path !== "/applicant/dashboard";
+    // Watch for route changes to update page title and back button
+    const route = useRoute(); // Access current route
+    watch(
+      () => route.path,
+      (newPath) => {
+        if (newPath.startsWith("/applicant/find-jobs/")) {
+          pageTitle.value = "Job Details";
+        } else if (newPath.startsWith("/applicant/BrowseCompany/")) {
+          pageTitle.value = "Company Profile";
+        } else {
+          pageTitle.value = routeTitles[newPath] || "Applicant Portal";
+        }
+        showBackButton.value = newPath !== "/applicant/dashboard";
+      },
+      { immediate: true }
+    );
 
-      console.log("Route changed, showBackButton set to:", this.showBackButton);
-    },
-  },
-  mounted() {
-    // Load saved sidebar state from localStorage (optional)
-    // Comment out if you want it to always start expanded
-    // const savedState = localStorage.getItem("sidebarCollapsed");
-    // Set initial page title based on current route
-    if (
-      this.$route.path.startsWith("/applicant/find-jobs/") &&
-      this.$route.path.split("/").length === 4
-    ) {
-      this.pageTitle = "Job Details";
-    } else if (
-      this.$route.path.startsWith("/applicant/BrowseCompany/") &&
-      this.$route.path.split("/").length === 5
-    ) {
-      this.pageTitle = "Company Profile";
-    } else {
-      this.pageTitle = this.routeTitles[this.$route.path];
-    }
-    // }
-
-    // Set initial page title based on current route
-    this.pageTitle = this.routeTitles[this.$route.path];
-
-    // Set initial back button state
-    this.showBackButton = this.$route.path !== "/applicant/dashboard";
-    console.log("Initial showBackButton state:", this.showBackButton);
-
-    // Load notifications (simulated)
-    this.loadNotifications();
-  },
-  methods: {
-    updatePageTitle(title) {
-      this.pageTitle = title;
-      // Update document title as well
+    // Methods
+    const updatePageTitle = (title) => {
+      pageTitle.value = title;
       document.title = `${title} | Applicant Portal`;
-    },
+    };
 
-    updateBackButton(show) {
-      this.showBackButton = show;
-      console.log("updateBackButton called, new value:", show);
-    },
+    const updateBackButton = (show) => {
+      showBackButton.value = show;
+    };
 
-    toggleSidebarCollapse() {
-      this.isSidebarCollapsed = !this.isSidebarCollapsed;
-      // Save state to localStorage (optional)
-      localStorage.setItem("sidebarCollapsed", this.isSidebarCollapsed);
-    },
-    loadNotifications() {
+    const toggleSidebarCollapse = () => {
+      isSidebarCollapsed.value = !isSidebarCollapsed.value;
+    };
+
+    const loadNotifications = () => {
       // Simulated API call to load notifications
-      // In a real app, you would fetch this from your backend
       setTimeout(() => {
-        // Simulate new notifications arriving
-        this.notificationCount = Math.floor(Math.random() * 5);
+        notificationCount.value = Math.floor(Math.random() * 5);
       }, 2000);
-    },
+    };
+
+    // Initialize notifications
+    loadNotifications();
+
+    return {
+      selectedProfile,
+      userProfileStore,
+      pageTitle,
+      showBackButton,
+      notificationCount,
+      isSidebarCollapsed,
+      updatePageTitle,
+      updateBackButton,
+      toggleSidebarCollapse,
+      loadNotifications,
+    };
   },
 };
 </script>
@@ -166,16 +145,15 @@ export default {
 .main-content {
   flex: 1;
   display: flex;
-  padding: 0 1.5rem;
   flex-direction: column;
+  padding: 0 1.5rem;
   background-color: #ffffff;
   transition: margin-left 0.3s ease-in-out;
   min-width: 0; /* Prevents flex item from overflowing */
 }
 
-/* Fixed sidebar states to match actual sidebar widths */
 .main-content.sidebar-expanded {
-  margin-left: 15rem; /* Match sidebar width: 15rem = 240px */
+  margin-left: 240px; /* Match sidebar width */
 }
 
 .main-content.sidebar-collapsed {
@@ -184,9 +162,9 @@ export default {
 
 .content-wrapper {
   flex: 1;
-  padding: 24px 24px 24px 0px;
+  padding: 24px 24px 24px 0;
   overflow-y: auto;
-  background-color: #ffffff;
+
 }
 
 /* Page transitions */
@@ -202,17 +180,12 @@ export default {
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
-  // .main-content.sidebar-expanded,
-  // .main-content.sidebar-collapsed {
-  //   margin-left: 0;
+  // .main-content {
+  //   margin-left: 0 !important; /* Override sidebar margins on mobile */
   // }
 
-  .sidebar {
-    transform: translateX(-100%);
-  }
-
-  .sidebar.show {
-    transform: translateX(0);
+  .content-wrapper {
+    padding: 16px; /* Reduced padding for mobile */
   }
 }
 </style>

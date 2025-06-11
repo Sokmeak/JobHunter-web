@@ -2,8 +2,20 @@
   <div class="d-flex">
     <div class="container py-2">
       <div class="container-fluid py-1">
-        <!-- Main Content -->
-        <div>
+        <!-- Loading and Error States -->
+        <div
+          v-if="applicationStore.loading || userProfileStore.loading"
+          class="text-center"
+        >
+          <p>Loading dashboard...</p>
+        </div>
+        <div
+          v-else-if="applicationStore.error || userProfileStore.error"
+          class="alert alert-danger"
+        >
+          {{ applicationStore.error || userProfileStore.error }}
+        </div>
+        <div v-else>
           <!-- Greeting Section -->
           <GreetingSection
             :user-name="selectedProfile?.name || 'User'"
@@ -77,36 +89,9 @@ export default {
     RecentApplications,
   },
   setup() {
-    // LocalStorage keys with versioning
-    const STORAGE_KEYS = {
-      DATE_RANGE: "dashboard_date_range_v1",
-      USER_PREFERENCES: "dashboard_user_preferences_v1",
-      DASHBOARD_STATE: "dashboard_state_v1",
-      SELECTED_USER: "dashboard_selected_user_v1",
-    };
-
     // Use Pinia stores
     const userProfileStore = useUserProfileStore();
     const applicationStore = useApplicationStore();
-
-    // LocalStorage utility functions
-    const saveToStorage = (key, data) => {
-      try {
-        localStorage.setItem(key, JSON.stringify(data));
-      } catch (error) {
-        console.error(`Error saving ${key} to localStorage:`, error);
-      }
-    };
-
-    const loadFromStorage = (key, defaultValue = null) => {
-      try {
-        const stored = localStorage.getItem(key);
-        return stored ? JSON.parse(stored) : defaultValue;
-      } catch (error) {
-        console.error(`Error loading ${key} from localStorage:`, error);
-        return defaultValue;
-      }
-    };
 
     // Reactive state
     const dateRange = ref({
@@ -115,12 +100,10 @@ export default {
     });
     const recentApplications = ref([]);
     const applicationStatus = ref([
-      { name: "No Data", value: 0, color: "#e5e7eb" },
+      { name: "Loading", value: 0, color: "#e5e7eb" },
     ]);
     const upcomingInterviews = ref([]);
     const selectedUserId = ref(userProfileStore.defaultUserId);
-    const totalJobsApplied = ref(0);
-    const interviewedCount = ref(0);
 
     // Computed properties
     const userProfiles = computed(() => userProfileStore.userProfiles);
@@ -131,6 +114,9 @@ export default {
         (app) => app.userId === selectedUserId.value
       )
     );
+
+    const totalJobsApplied = ref(0);
+    const interviewedCount = ref(0);
 
     // Derive upcoming interviews from application timelines
     const computeUpcomingInterviews = () => {
@@ -154,14 +140,13 @@ export default {
           });
         });
       });
-      return interviews.slice(0, 5);
+      return interviews.slice(0, 5); // Limit to 5 upcoming interviews
     };
 
     // Watchers
     watch(
       dateRange,
-      (newDateRange) => {
-        saveToStorage(STORAGE_KEYS.DATE_RANGE, newDateRange);
+      () => {
         loadDashboardData();
       },
       { deep: true }
@@ -178,39 +163,6 @@ export default {
       },
       { deep: true }
     );
-
-    watch(selectedUserId, (newUserId) => {
-      saveToStorage(STORAGE_KEYS.SELECTED_USER, newUserId);
-    });
-
-    // Save user preferences
-    const saveUserPreferences = () => {
-      const preferences = {
-        lastLogin: new Date().toISOString(),
-        dashboardVersion: "1.0",
-        selectedUserId: selectedUserId.value,
-      };
-      saveToStorage(STORAGE_KEYS.USER_PREFERENCES, preferences);
-    };
-
-    // Load user preferences
-    const loadUserPreferences = () => {
-      const preferences = loadFromStorage(STORAGE_KEYS.USER_PREFERENCES);
-      if (preferences?.selectedUserId !== undefined) {
-        selectedUserId.value = preferences.selectedUserId;
-      }
-    };
-
-    // Save dashboard state
-    const saveDashboardState = () => {
-      const dashboardState = {
-        totalJobsApplied: totalJobsApplied.value,
-        interviewedCount: interviewedCount.value,
-        applicationStatus: applicationStatus.value,
-        lastUpdated: new Date().toISOString(),
-      };
-      saveToStorage(STORAGE_KEYS.DASHBOARD_STATE, dashboardState);
-    };
 
     // Load dashboard data
     const loadDashboardData = async () => {
@@ -233,30 +185,32 @@ export default {
           await applicationStore.fetchApplications();
         }
 
-        // Filter applications by date range and user
-        const filteredApps = applicationStore
-          .getApplicationsInDateRange(dateRange.value.start, dateRange.value.end)
-          .filter((app) => app.userId === selectedUserId.value);
-
-        recentApplications.value = filteredApps.slice(0, 3);
-        console.log("Recent Applications:", recentApplications.value);
+        // Filter applications by date range
+        recentApplications.value = applicationStore
+          .getApplicationsInDateRange(
+            dateRange.value.start,
+            dateRange.value.end
+          )
+          .slice(0, 3);
 
         // Update total jobs applied and interviewed count
-        totalJobsApplied.value = filteredApps.length;
-        console.log("Total Jobs Applied:", totalJobsApplied.value);
-
-        interviewedCount.value = filteredApps.filter((app) =>
-          ["Interview Scheduled", "Phone Screening"].includes(app.status)
+        totalJobsApplied.value = applicationStore.getApplicationsInDateRange(
+          dateRange.value.start,
+          dateRange.value.end
         ).length;
-        console.log("Interviewed Count:", interviewedCount.value);
+
+        interviewedCount.value = applicationStore
+          .getApplicationsInDateRange(
+            dateRange.value.start,
+            dateRange.value.end
+          )
+          .filter((app) => ["Interviewing"].includes(app.status)).length;
 
         // Update upcoming interviews
         upcomingInterviews.value = computeUpcomingInterviews();
 
         // Get status counts for chart
         const statusData = applicationStore.getStatusCounts();
-        console.log("Status Data:", statusData);
-
         const chartData = [
           {
             name: "Hired",
@@ -272,10 +226,9 @@ export default {
           },
         ];
         applicationStatus.value = chartData;
-
-        saveDashboardState();
       } catch (err) {
         console.error("Error loading dashboard data:", err);
+        applicationStore.error = "Failed to load dashboard data";
       }
     };
 
@@ -294,11 +247,6 @@ export default {
 
     // Clear stored data
     const clearStoredData = () => {
-      Object.values(STORAGE_KEYS).forEach((key) => {
-        localStorage.removeItem(key);
-      });
-      localStorage.removeItem("user_profiles_v1");
-      localStorage.removeItem("selected_profile_v1");
       selectedUserId.value = userProfileStore.defaultUserId;
       applicationStore.init();
       userProfileStore.init();
@@ -307,9 +255,7 @@ export default {
 
     // Initialize on mount
     onMounted(async () => {
-      loadUserPreferences();
       await loadDashboardData();
-      saveUserPreferences();
     });
 
     return {
@@ -336,7 +282,6 @@ export default {
       this.$router.push(`/applications/${application.id}`);
     },
     async handleEditApplication(application) {
-      console.log("Edit application:", application);
       this.$router.push(`/applications/${application.id}/edit`);
     },
     async handleDeleteApplication(application) {
