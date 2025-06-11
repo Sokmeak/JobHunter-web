@@ -1,283 +1,528 @@
 <template>
   <div class="post-job-form">
-    <!-- Header -->
-    <div class="d-flex justify-content-between align-items-center mb-4">
-      <div>
-        <h2 class="mb-1 fw-bold">Post a New Job</h2>
-        <p class="text-muted mb-0">
-          Create a new job posting to attract the best candidates
-        </p>
+    <!-- Step 1: Job Information -->
+    <div v-if="currentStep === 1" class="card">
+      <div class="card-header bg-white border-bottom">
+        <h5 class="mb-0 fw-bold">Job Information</h5>
       </div>
-      <button class="btn btn-outline-secondary" @click="saveDraft">
-        <i class="bi bi-save me-2"></i>Save as Draft
-      </button>
+      <div class="card-body">
+        <form @submit.prevent="handleNext">
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label class="form-label fw-semibold"
+                >Job Title <span class="text-danger">*</span></label
+              >
+              <input
+                type="text"
+                class="form-control"
+                placeholder="e.g. Software Engineer"
+                v-model="localJobData.title"
+                required
+              />
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label fw-semibold"
+                >Job Category <span class="text-danger">*</span></label
+              >
+              <select
+                class="form-select"
+                v-model="localJobData.category"
+                required
+              >
+                <option value="">Select job category</option>
+                <option value="Design">Design</option>
+                <option value="Development">Development</option>
+                <option value="Marketing">Marketing</option>
+                <option value="Sales">Sales</option>
+                <option value="Customer Support">Customer Support</option>
+                <option value="Human Resources">Human Resources</option>
+                <option value="Finance">Finance</option>
+                <option value="Operations">Operations</option>
+              </select>
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label fw-semibold"
+                >Job Type <span class="text-danger">*</span></label
+              >
+              <select
+                class="form-select"
+                v-model="localJobData.jobType"
+                required
+              >
+                <option value="">Select job type</option>
+                <option value="Full-Time">Full-Time</option>
+                <option value="Part-Time">Part-Time</option>
+                <option value="Contract">Contract</option>
+                <option value="Internship">Internship</option>
+                <option value="Freelance">Freelance</option>
+              </select>
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label fw-semibold">Salary Type</label>
+              <select class="form-select" v-model="localJobData.salaryType">
+                <option value="">Select salary type</option>
+                <option value="Range">Range</option>
+                <option value="Starting Amount">Starting Amount</option>
+                <option value="Maximum Amount">Maximum Amount</option>
+                <option value="Exact Amount">Exact Amount</option>
+              </select>
+            </div>
+            <div class="col-md-4 mb-3" v-if="localJobData.salaryType">
+              <label class="form-label fw-semibold">Currency</label>
+              <select class="form-select" v-model="localJobData.currency">
+                <option value="USD">USD</option>
+                <option value="EUR">EUR</option>
+                <option value="GBP">GBP</option>
+                <option value="CAD">CAD</option>
+              </select>
+            </div>
+            <div
+              class="col-md-4 mb-3"
+              v-if="localJobData.salaryType === 'Range'"
+            >
+              <label class="form-label fw-semibold">Minimum Salary</label>
+              <input
+                type="number"
+                class="form-control"
+                placeholder="e.g. 50000"
+                v-model="localJobData.salaryMin"
+              />
+            </div>
+            <div
+              class="col-md-4 mb-3"
+              v-if="localJobData.salaryType === 'Range'"
+            >
+              <label class="form-label fw-semibold">Maximum Salary</label>
+              <input
+                type="number"
+                class="form-control"
+                placeholder="e.g. 80000"
+                v-model="localJobData.salaryMax"
+              />
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label fw-semibold">Education</label>
+              <select class="form-select" v-model="localJobData.education">
+                <option value="">Select education level</option>
+                <option value="High School">High School</option>
+                <option value="Associate Degree">Associate Degree</option>
+                <option value="Bachelor's Degree">Bachelor's Degree</option>
+                <option value="Master's Degree">Master's Degree</option>
+                <option value="PhD">PhD</option>
+              </select>
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label fw-semibold">Experience</label>
+              <select class="form-select" v-model="localJobData.experience">
+                <option value="">Select experience level</option>
+                <option value="Entry Level">Entry Level</option>
+                <option value="1-2 years">1-2 years</option>
+                <option value="3-5 years">3-5 years</option>
+                <option value="5-10 years">5-10 years</option>
+                <option value="10+ years">10+ years</option>
+              </select>
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label fw-semibold">Job Level</label>
+              <select class="form-select" v-model="localJobData.jobLevel">
+                <option value="">Select job level</option>
+                <option value="Entry Level">Entry Level</option>
+                <option value="Mid Level">Mid Level</option>
+                <option value="Senior Level">Senior Level</option>
+                <option value="Lead">Lead</option>
+                <option value="Manager">Manager</option>
+                <option value="Director">Director</option>
+              </select>
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label fw-semibold">Application Deadline</label>
+              <input
+                type="date"
+                class="form-control"
+                v-model="localJobData.expireDate"
+              />
+            </div>
+          </div>
+
+          <div class="d-flex justify-content-end">
+            <button type="submit" class="btn btn-primary">
+              Next: Job Description <i class="bi bi-arrow-right ms-1"></i>
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
 
-    <form @submit.prevent="submitJob" class="row g-4">
-      <!-- Basic Information -->
-      <div class="col-12">
-        <div class="card border-0 shadow-sm">
-          <div class="card-body p-4">
-            <h5 class="mb-4 fw-bold">Basic Information</h5>
+    <!-- Step 2: Job Description -->
+    <div v-if="currentStep === 2" class="card">
+      <div class="card-header bg-white border-bottom">
+        <h5 class="mb-0 fw-bold">Job Description</h5>
+      </div>
+      <div class="card-body">
+        <form @submit.prevent="handleNext">
+          <div class="mb-4">
+            <label class="form-label fw-semibold"
+              >Job Description <span class="text-danger">*</span></label
+            >
+            <textarea
+              class="form-control"
+              rows="6"
+              placeholder="Enter job description..."
+              v-model="localJobData.description"
+              required
+            ></textarea>
+            <small class="text-muted">Maximum 500 words</small>
+          </div>
 
-            <div class="row g-3">
-              <div class="col-md-6">
-                <label class="form-label fw-medium">Job Title *</label>
+          <div class="mb-4">
+            <label class="form-label fw-semibold">Responsibilities</label>
+            <div
+              class="mb-2"
+              v-for="(responsibility, index) in localJobData.responsibilities"
+              :key="index"
+            >
+              <div class="input-group">
                 <input
                   type="text"
                   class="form-control"
-                  v-model="jobForm.title"
-                  placeholder="e.g. Senior Frontend Developer"
-                  required
+                  v-model="localJobData.responsibilities[index]"
+                  placeholder="Enter responsibility..."
                 />
-              </div>
-              <div class="col-md-6">
-                <label class="form-label fw-medium">Department *</label>
-                <select
-                  class="form-select"
-                  v-model="jobForm.department"
-                  required
+                <button
+                  class="btn btn-outline-danger"
+                  type="button"
+                  @click="removeResponsibility(index)"
                 >
-                  <option value="">Select Department</option>
-                  <option value="Engineering">Engineering</option>
-                  <option value="Design">Design</option>
-                  <option value="Marketing">Marketing</option>
-                  <option value="Sales">Sales</option>
-                  <option value="HR">Human Resources</option>
-                  <option value="Finance">Finance</option>
-                </select>
+                  <i class="bi bi-trash"></i>
+                </button>
               </div>
-              <div class="col-md-6">
-                <label class="form-label fw-medium">Employment Type *</label>
-                <select class="form-select" v-model="jobForm.type" required>
-                  <option value="">Select Type</option>
-                  <option value="Full-Time">Full-Time</option>
-                  <option value="Part-Time">Part-Time</option>
-                  <option value="Contract">Contract</option>
-                  <option value="Internship">Internship</option>
-                  <option value="Freelance">Freelance</option>
-                </select>
-              </div>
-              <div class="col-md-6">
-                <label class="form-label fw-medium">Location *</label>
+            </div>
+            <button
+              type="button"
+              class="btn btn-outline-primary btn-sm"
+              @click="addResponsibility"
+            >
+              <i class="bi bi-plus me-1"></i>
+              Add Responsibility
+            </button>
+          </div>
+
+          <div class="mb-4">
+            <label class="form-label fw-semibold">Who You Are</label>
+            <div
+              class="mb-2"
+              v-for="(requirement, index) in localJobData.whoYouAre"
+              :key="index"
+            >
+              <div class="input-group">
                 <input
                   type="text"
                   class="form-control"
-                  v-model="jobForm.location"
-                  placeholder="e.g. San Francisco, CA or Remote"
-                  required
+                  v-model="localJobData.whoYouAre[index]"
+                  placeholder="Enter requirement..."
                 />
+                <button
+                  class="btn btn-outline-danger"
+                  type="button"
+                  @click="removeRequirement(index)"
+                >
+                  <i class="bi bi-trash"></i>
+                </button>
               </div>
-              <div class="col-md-6">
-                <label class="form-label fw-medium">Experience Level</label>
-                <select class="form-select" v-model="jobForm.experienceLevel">
-                  <option value="">Select Level</option>
-                  <option value="Entry Level">Entry Level (0-2 years)</option>
-                  <option value="Mid Level">Mid Level (3-5 years)</option>
-                  <option value="Senior Level">Senior Level (6+ years)</option>
-                  <option value="Executive">Executive</option>
-                </select>
+            </div>
+            <button
+              type="button"
+              class="btn btn-outline-primary btn-sm"
+              @click="addRequirement"
+            >
+              <i class="bi bi-plus me-1"></i>
+              Add Requirement
+            </button>
+          </div>
+
+          <div class="mb-4">
+            <label class="form-label fw-semibold">Nice-To-Haves</label>
+            <div
+              class="mb-2"
+              v-for="(niceToHave, index) in localJobData.niceToHaves"
+              :key="index"
+            >
+              <div class="input-group">
+                <input
+                  type="text"
+                  class="form-control"
+                  v-model="localJobData.niceToHaves[index]"
+                  placeholder="Enter nice-to-have..."
+                />
+                <button
+                  class="btn btn-outline-danger"
+                  type="button"
+                  @click="removeNiceToHave(index)"
+                >
+                  <i class="bi bi-trash"></i>
+                </button>
               </div>
-              <div class="col-md-6">
-                <label class="form-label fw-medium">Salary Range</label>
-                <div class="input-group">
-                  <span class="input-group-text">$</span>
+            </div>
+            <button
+              type="button"
+              class="btn btn-outline-primary btn-sm"
+              @click="addNiceToHave"
+            >
+              <i class="bi bi-plus me-1"></i>
+              Add Nice-To-Have
+            </button>
+          </div>
+
+          <div class="d-flex justify-content-between">
+            <button
+              type="button"
+              class="btn btn-outline-secondary"
+              @click="$emit('prev-step')"
+            >
+              <i class="bi bi-arrow-left me-1"></i>
+              Previous
+            </button>
+            <button type="submit" class="btn btn-primary">
+              Next: Perks & Benefits <i class="bi bi-arrow-right ms-1"></i>
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Step 3: Perks & Benefits -->
+    <div v-if="currentStep === 3" class="card">
+      <div class="card-header bg-white border-bottom">
+        <h5 class="mb-0 fw-bold">Perks & Benefits</h5>
+      </div>
+      <div class="card-body">
+        <form @submit.prevent="handleSubmit">
+          <div class="mb-4">
+            <label class="form-label fw-semibold">Perks</label>
+            <p class="text-muted small">
+              Encourage more people to apply by sharing the attractive rewards
+              and benefits you offer your employees
+            </p>
+            <div class="row">
+              <div
+                class="col-md-6 mb-2"
+                v-for="perk in availablePerks"
+                :key="perk.id"
+              >
+                <div class="form-check">
                   <input
-                    type="number"
-                    class="form-control"
-                    v-model="jobForm.salaryMin"
-                    placeholder="Min"
+                    class="form-check-input"
+                    type="checkbox"
+                    :value="perk.id"
+                    v-model="localJobData.perks"
+                    :id="'perk-' + perk.id"
                   />
-                  <span class="input-group-text">to</span>
-                  <input
-                    type="number"
-                    class="form-control"
-                    v-model="jobForm.salaryMax"
-                    placeholder="Max"
-                  />
+                  <label class="form-check-label" :for="'perk-' + perk.id">
+                    <i :class="perk.icon + ' me-2'"></i>
+                    {{ perk.name }}
+                  </label>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-      </div>
 
-      <!-- Job Description -->
-      <div class="col-12">
-        <div class="card border-0 shadow-sm">
-          <div class="card-body p-4">
-            <h5 class="mb-4 fw-bold">Job Description</h5>
-
-            <div class="mb-3">
-              <label class="form-label fw-medium">Job Summary *</label>
-              <textarea
-                class="form-control"
-                rows="4"
-                v-model="jobForm.summary"
-                placeholder="Write a brief summary of the role..."
-                required
-              ></textarea>
-            </div>
-
-            <div class="mb-3">
-              <label class="form-label fw-medium">Responsibilities</label>
-              <div class="responsibilities-list">
-                <div
-                  v-for="(responsibility, index) in jobForm.responsibilities"
-                  :key="index"
-                  class="d-flex align-items-center mb-2"
-                >
+          <div class="mb-4">
+            <label class="form-label fw-semibold">Benefits</label>
+            <div class="row">
+              <div
+                class="col-md-6 mb-2"
+                v-for="benefit in availableBenefits"
+                :key="benefit.id"
+              >
+                <div class="form-check">
                   <input
-                    type="text"
-                    class="form-control me-2"
-                    v-model="jobForm.responsibilities[index]"
-                    placeholder="Add a responsibility..."
+                    class="form-check-input"
+                    type="checkbox"
+                    :value="benefit.id"
+                    v-model="localJobData.benefits"
+                    :id="'benefit-' + benefit.id"
                   />
-                  <button
-                    type="button"
-                    class="btn btn-outline-danger btn-sm"
-                    @click="removeResponsibility(index)"
+                  <label
+                    class="form-check-label"
+                    :for="'benefit-' + benefit.id"
                   >
-                    <i class="bi bi-trash"></i>
-                  </button>
+                    <i :class="benefit.icon + ' me-2'"></i>
+                    {{ benefit.name }}
+                  </label>
                 </div>
-                <button
-                  type="button"
-                  class="btn btn-outline-primary btn-sm"
-                  @click="addResponsibility"
-                >
-                  <i class="bi bi-plus me-1"></i>Add Responsibility
-                </button>
-              </div>
-            </div>
-
-            <div class="mb-3">
-              <label class="form-label fw-medium">Requirements</label>
-              <div class="requirements-list">
-                <div
-                  v-for="(requirement, index) in jobForm.requirements"
-                  :key="index"
-                  class="d-flex align-items-center mb-2"
-                >
-                  <input
-                    type="text"
-                    class="form-control me-2"
-                    v-model="jobForm.requirements[index]"
-                    placeholder="Add a requirement..."
-                  />
-                  <button
-                    type="button"
-                    class="btn btn-outline-danger btn-sm"
-                    @click="removeRequirement(index)"
-                  >
-                    <i class="bi bi-trash"></i>
-                  </button>
-                </div>
-                <button
-                  type="button"
-                  class="btn btn-outline-primary btn-sm"
-                  @click="addRequirement"
-                >
-                  <i class="bi bi-plus me-1"></i>Add Requirement
-                </button>
               </div>
             </div>
           </div>
-        </div>
-      </div>
 
-      <!-- Submit Buttons -->
-      <div class="col-12">
-        <div class="d-flex justify-content-end gap-3">
-          <button
-            type="button"
-            class="btn btn-outline-secondary"
-            @click="cancel"
-          >
-            Cancel
-          </button>
-          <button
-            type="button"
-            class="btn btn-outline-primary"
-            @click="preview"
-          >
-            Preview
-          </button>
-          <button type="submit" class="btn btn-primary">
-            <i class="bi bi-check-circle me-2"></i>Post Job
-          </button>
-        </div>
+          <div class="d-flex justify-content-between">
+            <button
+              type="button"
+              class="btn btn-outline-secondary"
+              @click="$emit('prev-step')"
+            >
+              <i class="bi bi-arrow-left me-1"></i>
+              Previous
+            </button>
+            <button type="submit" class="btn btn-primary">
+              <i class="bi bi-check me-1"></i>
+              Post Job
+            </button>
+          </div>
+        </form>
       </div>
-    </form>
+    </div>
   </div>
 </template>
 
-<script setup>
-import { ref } from "vue";
-import { useRouter } from "vue-router";
+<script>
+import { ref, watch } from "vue";
 
-const router = useRouter();
+export default {
+  name: "PostJobForm",
+  props: {
+    currentStep: {
+      type: Number,
+      required: true,
+    },
+    jobData: {
+      type: Object,
+      required: true,
+    },
+  },
+  emits: ["update-job", "next-step", "prev-step", "submit"],
+  setup(props, { emit }) {
+    const localJobData = ref({ ...props.jobData });
 
-const jobForm = ref({
-  title: "",
-  department: "",
-  type: "",
-  location: "",
-  experienceLevel: "",
-  salaryMin: "",
-  salaryMax: "",
-  summary: "",
-  responsibilities: [""],
-  requirements: [""],
-});
+    const availablePerks = ref([
+      {
+        id: "full-healthcare",
+        name: "Full Healthcare",
+        icon: "bi bi-heart-pulse",
+      },
+      {
+        id: "unlimited-vacation",
+        name: "Unlimited Vacation",
+        icon: "bi bi-calendar-heart",
+      },
+      {
+        id: "skill-development",
+        name: "Skill Development",
+        icon: "bi bi-mortarboard",
+      },
+      { id: "team-summits", name: "Team Summits", icon: "bi bi-people" },
+      { id: "remote-working", name: "Remote Working", icon: "bi bi-house" },
+      {
+        id: "commuter-benefits",
+        name: "Commuter Benefits",
+        icon: "bi bi-bus-front",
+      },
+      { id: "we-give-back", name: "We Give Back", icon: "bi bi-heart" },
+      { id: "free-gym", name: "Free Gym Membership", icon: "bi bi-activity" },
+    ]);
 
-const addResponsibility = () => {
-  jobForm.value.responsibilities.push("");
-};
+    const availableBenefits = ref([
+      {
+        id: "health-insurance",
+        name: "Health Insurance",
+        icon: "bi bi-shield-plus",
+      },
+      {
+        id: "dental-insurance",
+        name: "Dental Insurance",
+        icon: "bi bi-emoji-smile",
+      },
+      { id: "vision-insurance", name: "Vision Insurance", icon: "bi bi-eye" },
+      {
+        id: "life-insurance",
+        name: "Life Insurance",
+        icon: "bi bi-shield-check",
+      },
+      {
+        id: "paid-time-off",
+        name: "Paid Time Off",
+        icon: "bi bi-calendar-check",
+      },
+      {
+        id: "retirement-plan",
+        name: "Retirement Plan",
+        icon: "bi bi-piggy-bank",
+      },
+      {
+        id: "flexible-schedule",
+        name: "Flexible Schedule",
+        icon: "bi bi-clock",
+      },
+      {
+        id: "professional-development",
+        name: "Professional Development",
+        icon: "bi bi-graph-up-arrow",
+      },
+    ]);
 
-const removeResponsibility = (index) => {
-  jobForm.value.responsibilities.splice(index, 1);
-};
+    // Initialize arrays if they don't exist
+    if (!localJobData.value.responsibilities)
+      localJobData.value.responsibilities = [""];
+    if (!localJobData.value.whoYouAre) localJobData.value.whoYouAre = [""];
+    if (!localJobData.value.niceToHaves) localJobData.value.niceToHaves = [""];
+    if (!localJobData.value.perks) localJobData.value.perks = [];
+    if (!localJobData.value.benefits) localJobData.value.benefits = [];
 
-const addRequirement = () => {
-  jobForm.value.requirements.push("");
-};
+    // Watch for changes and emit updates
+    watch(
+      localJobData,
+      (newData) => {
+        emit("update-job", newData);
+      },
+      { deep: true }
+    );
 
-const removeRequirement = (index) => {
-  jobForm.value.requirements.splice(index, 1);
-};
+    const handleNext = () => {
+      emit("update-job", localJobData.value);
+      emit("next-step");
+    };
 
-const submitJob = () => {
-  console.log("Submitting job:", jobForm.value);
-  router.push("/company/job-listing");
-};
+    const handleSubmit = () => {
+      emit("update-job", localJobData.value);
+      emit("submit");
+    };
 
-const saveDraft = () => {
-  console.log("Saving as draft:", jobForm.value);
-};
+    const addResponsibility = () => {
+      localJobData.value.responsibilities.push("");
+    };
 
-const preview = () => {
-  console.log("Preview job:", jobForm.value);
-};
+    const removeResponsibility = (index) => {
+      localJobData.value.responsibilities.splice(index, 1);
+    };
 
-const cancel = () => {
-  router.push("/company/job-listing");
+    const addRequirement = () => {
+      localJobData.value.whoYouAre.push("");
+    };
+
+    const removeRequirement = (index) => {
+      localJobData.value.whoYouAre.splice(index, 1);
+    };
+
+    const addNiceToHave = () => {
+      localJobData.value.niceToHaves.push("");
+    };
+
+    const removeNiceToHave = (index) => {
+      localJobData.value.niceToHaves.splice(index, 1);
+    };
+
+    return {
+      localJobData,
+      availablePerks,
+      availableBenefits,
+      handleNext,
+      handleSubmit,
+      addResponsibility,
+      removeResponsibility,
+      addRequirement,
+      removeRequirement,
+      addNiceToHave,
+      removeNiceToHave,
+    };
+  },
 };
 </script>
-
-<style scoped>
-.form-control:focus,
-.form-select:focus {
-  border-color: #6366f1;
-  box-shadow: 0 0 0 0.2rem rgba(99, 102, 241, 0.25);
-}
-
-.card {
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-}
-</style>

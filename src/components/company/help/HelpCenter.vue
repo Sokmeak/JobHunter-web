@@ -1,366 +1,301 @@
 <template>
-<div class="help-center">
-  <!-- Header -->
-  <div class="text-center mb-5">
-    <h2 class="mb-3 fw-bold">Help Center</h2>
-    <p class="text-muted mb-4">Find answers to your questions and get support</p>
-    
+  <div class="help-center">
+    <!-- Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <div>
+        <h2 class="fw-bold mb-0">Help Center</h2>
+      </div>
+      <div class="d-flex align-items-center gap-2">
+        <span class="text-muted">Back to knowledge</span>
+        <i class="bi bi-arrow-right text-muted"></i>
+      </div>
+    </div>
+
     <!-- Search Bar -->
-    <div class="row justify-content-center">
-      <div class="col-md-6">
-        <div class="position-relative">
-          <i class="bi bi-search position-absolute search-icon"></i>
-          <input 
-            type="text" 
-            class="form-control search-input" 
-            placeholder="Search for help articles..."
+    <div class="row mb-4">
+      <div class="col-md-8">
+        <div class="input-group">
+          <span class="input-group-text bg-white border-end-0">
+            <i class="bi bi-search text-muted"></i>
+          </span>
+          <input
+            type="text"
+            class="form-control border-start-0"
+            placeholder="Ask any questions to search support..."
             v-model="searchQuery"
+          />
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <!-- Help Topics Sidebar -->
+      <div class="col-md-3">
+        <div class="card">
+          <div class="card-header bg-white border-bottom">
+            <h6 class="mb-0 fw-bold">Help Topics</h6>
+          </div>
+          <div class="card-body p-0">
+            <div class="list-group list-group-flush">
+              <a
+                href="#"
+                class="list-group-item list-group-item-action border-0"
+                :class="{ active: selectedCategory === category }"
+                v-for="category in categories"
+                :key="category"
+                @click="selectedCategory = category"
+              >
+                {{ category }}
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Getting Started Card -->
+        <div class="card mt-4">
+          <div
+            class="card-body text-center"
+            style="
+              background: linear-gradient(
+                135deg,
+                var(--primary-color),
+                #6366f1
+              );
+            "
           >
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="row g-4">
-    <!-- Help Categories -->
-    <div class="col-lg-8">
-      <!-- Quick Help Cards -->
-      <div class="row g-3 mb-5">
-        <div v-for="category in helpCategories" :key="category.id" class="col-md-4">
-          <div class="card border-0 shadow-sm h-100 help-category-card" @click="selectCategory(category.id)">
-            <div class="card-body p-4 text-center">
-              <div class="help-icon mb-3">
-                <i :class="category.icon" class="fs-1 text-primary"></i>
-              </div>
-              <h6 class="mb-2 fw-bold">{{ category.title }}</h6>
-              <p class="text-muted small mb-0">{{ category.description }}</p>
+            <div class="text-white">
+              <h6 class="fw-bold mb-2">Getting started for your business</h6>
+              <p class="small mb-3">
+                Lorem ipsum dolor sit amet consectetur adipisicing elit.
+              </p>
+              <button class="btn btn-light btn-sm">Contact Us</button>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- FAQ Section -->
-      <div class="card border-0 shadow-sm mb-4">
-        <div class="card-body p-4">
-          <h5 class="mb-4 fw-bold">Frequently Asked Questions</h5>
-          
-          <div class="accordion" id="faqAccordion">
-            <div v-for="(faq, index) in faqs" :key="faq.id" class="accordion-item border-0 mb-3">
-              <h2 class="accordion-header">
-                <button 
-                  class="accordion-button collapsed fw-medium"
-                  type="button" 
-                  data-bs-toggle="collapse" 
-                  :data-bs-target="`#faq${index}`"
-                >
-                  {{ faq.question }}
-                </button>
-              </h2>
-              <div :id="`faq${index}`" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
-                <div class="accordion-body text-muted">
-                  {{ faq.answer }}
+      <!-- Main Content -->
+      <div class="col-md-9">
+        <div class="card">
+          <div class="card-body">
+            <!-- FAQ Items -->
+            <div
+              class="faq-item border-bottom pb-3 mb-3"
+              v-for="topic in filteredTopics"
+              :key="topic.id"
+            >
+              <div
+                class="d-flex justify-content-between align-items-center cursor-pointer"
+                @click="toggleTopic(topic.id)"
+              >
+                <h6 class="fw-semibold mb-0">{{ topic.question }}</h6>
+                <i
+                  :class="[
+                    'bi',
+                    expandedTopics.includes(topic.id)
+                      ? 'bi-chevron-up'
+                      : 'bi-chevron-down',
+                  ]"
+                ></i>
+              </div>
+
+              <div v-if="expandedTopics.includes(topic.id)" class="mt-3">
+                <p class="text-muted mb-3">{{ topic.answer }}</p>
+                <div class="d-flex align-items-center justify-content-between">
+                  <div class="d-flex align-items-center">
+                    <span class="text-muted small me-3"
+                      >Was this article helpful?</span
+                    >
+                    <div class="btn-group">
+                      <button
+                        class="btn btn-outline-success btn-sm"
+                        :class="{ active: topic.helpful === true }"
+                        @click="markHelpful(topic.id, true)"
+                      >
+                        <i class="bi bi-hand-thumbs-up me-1"></i>
+                        Yes
+                      </button>
+                      <button
+                        class="btn btn-outline-danger btn-sm"
+                        :class="{ active: topic.helpful === false }"
+                        @click="markHelpful(topic.id, false)"
+                      >
+                        <i class="bi bi-hand-thumbs-down me-1"></i>
+                        No
+                      </button>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-        </div>
-      </div>
 
-      <!-- Popular Articles -->
-      <div class="card border-0 shadow-sm">
-        <div class="card-body p-4">
-          <h5 class="mb-4 fw-bold">Popular Articles</h5>
-          
-          <div class="articles-list">
-            <div v-for="article in popularArticles" :key="article.id" class="d-flex align-items-start mb-3 p-3 border rounded-3 article-item">
-              <div class="article-icon me-3">
-                <i class="bi bi-file-text text-primary fs-5"></i>
-              </div>
-              <div class="flex-grow-1">
-                <h6 class="mb-1 fw-medium">{{ article.title }}</h6>
-                <p class="text-muted small mb-2">{{ article.excerpt }}</p>
-                <div class="d-flex align-items-center gap-3">
-                  <small class="text-muted">{{ article.readTime }} read</small>
-                  <small class="text-muted">{{ article.views }} views</small>
-                </div>
-              </div>
-              <button class="btn btn-sm btn-outline-primary">Read</button>
+            <!-- No Results -->
+            <div v-if="filteredTopics.length === 0" class="text-center py-5">
+              <i class="bi bi-search fs-1 text-muted mb-3"></i>
+              <h5 class="text-muted">No results found</h5>
+              <p class="text-muted">
+                Try adjusting your search terms or browse categories.
+              </p>
             </div>
           </div>
         </div>
-      </div>
-    </div>
 
-    <!-- Sidebar -->
-    <div class="col-lg-4">
-      <!-- Contact Support -->
-      <div class="card border-0 shadow-sm mb-4">
-        <div class="card-body p-4">
-          <h6 class="mb-3 fw-bold">Need More Help?</h6>
-          <p class="text-muted small mb-3">Can't find what you're looking for? Our support team is here to help.</p>
-          
-          <div class="d-grid gap-2">
-            <button class="btn btn-primary" @click="contactSupport">
-              <i class="bi bi-chat-dots me-2"></i>Contact Support
+        <!-- Contact Support -->
+        <div class="card mt-4">
+          <div class="card-body text-center">
+            <h6 class="fw-bold mb-2">Still need help?</h6>
+            <p class="text-muted mb-3">
+              Can't find what you're looking for? Contact our support team.
+            </p>
+            <button class="btn btn-primary">
+              <i class="bi bi-chat-dots me-1"></i>
+              Contact Support
             </button>
-            <button class="btn btn-outline-primary" @click="scheduleCall">
-              <i class="bi bi-telephone me-2"></i>Schedule a Call
-            </button>
-            <button class="btn btn-outline-secondary" @click="sendFeedback">
-              <i class="bi bi-envelope me-2"></i>Send Feedback
-            </button>
-          </div>
-        </div>
-      </div>
-
-      <!-- Quick Links -->
-      <div class="card border-0 shadow-sm mb-4">
-        <div class="card-body p-4">
-          <h6 class="mb-3 fw-bold">Quick Links</h6>
-          
-          <div class="quick-links">
-            <a href="#" class="d-flex align-items-center text-decoration-none mb-3 p-2 rounded quick-link">
-              <i class="bi bi-play-circle me-3 text-primary"></i>
-              <span>Video Tutorials</span>
-            </a>
-            <a href="#" class="d-flex align-items-center text-decoration-none mb-3 p-2 rounded quick-link">
-              <i class="bi bi-download me-3 text-primary"></i>
-              <span>User Guide (PDF)</span>
-            </a>
-            <a href="#" class="d-flex align-items-center text-decoration-none mb-3 p-2 rounded quick-link">
-              <i class="bi bi-code-square me-3 text-primary"></i>
-              <span>API Documentation</span>
-            </a>
-            <a href="#" class="d-flex align-items-center text-decoration-none mb-3 p-2 rounded quick-link">
-              <i class="bi bi-people me-3 text-primary"></i>
-              <span>Community Forum</span>
-            </a>
-          </div>
-        </div>
-      </div>
-
-      <!-- System Status -->
-      <div class="card border-0 shadow-sm">
-        <div class="card-body p-4">
-          <h6 class="mb-3 fw-bold">System Status</h6>
-          
-          <div class="status-items">
-            <div class="d-flex align-items-center justify-content-between mb-3">
-              <span>Application System</span>
-              <span class="badge bg-success-subtle text-success">Operational</span>
-            </div>
-            <div class="d-flex align-items-center justify-content-between mb-3">
-              <span>Email Notifications</span>
-              <span class="badge bg-success-subtle text-success">Operational</span>
-            </div>
-            <div class="d-flex align-items-center justify-content-between mb-3">
-              <span>File Uploads</span>
-              <span class="badge bg-warning-subtle text-warning">Degraded</span>
-            </div>
-            <div class="d-flex align-items-center justify-content-between">
-              <span>API Services</span>
-              <span class="badge bg-success-subtle text-success">Operational</span>
-            </div>
-          </div>
-          
-          <div class="mt-3">
-            <a href="#" class="text-decoration-none small">View Status Page →</a>
           </div>
         </div>
       </div>
     </div>
   </div>
-</div>
 </template>
 
-<script setup>
-import { ref } from 'vue'
+<script>
+import { mapState, mapMutations } from "vuex";
 
-const searchQuery = ref('')
+export default {
+  name: "HelpCenter",
+  data() {
+    return {
+      searchQuery: "",
+      selectedCategory: "All",
+      expandedTopics: [],
+      categories: [
+        "All",
+        "Getting Started",
+        "Applications",
+        "Job Posting",
+        "Account Settings",
+        "Billing",
+        "Integrations",
+      ],
+      allTopics: [
+        {
+          id: 1,
+          question: "What is My Application?",
+          answer:
+            "My Application is the place for you to track jobs you have applied for. You can see the status of your applications, upcoming interviews, and any feedback from employers. This feature helps you stay organized throughout your job search process.",
+          category: "Getting Started",
+          helpful: null,
+        },
+        {
+          id: 2,
+          question: "How to access my applications history",
+          answer:
+            "You can access your application history by navigating to the Applications section in your dashboard. Here you will find a complete list of all jobs you have applied for, along with their current status and any updates from employers.",
+          category: "Applications",
+          helpful: null,
+        },
+        {
+          id: 3,
+          question: "Not seeing jobs you applied to your my application list?",
+          answer:
+            "If you are not seeing jobs you applied to in your application list, please check if you were logged in when you applied. Only applications submitted while logged in will appear in your dashboard. You can also try refreshing the page or clearing your browser cache.",
+          category: "Applications",
+          helpful: null,
+        },
+        {
+          id: 4,
+          question: "How do I post a new job?",
+          answer:
+            'To post a new job, click the "Post a job" button in the top right corner of your dashboard. You will be guided through a 3-step process where you can add job details, description, and benefits. Once completed, your job will be live and visible to candidates.',
+          category: "Job Posting",
+          helpful: null,
+        },
+        {
+          id: 5,
+          question: "How to edit my company profile?",
+          answer:
+            "You can edit your company profile by going to Settings > Overview. Here you can update your company logo, description, contact information, tech stack, and other details that will be visible to job seekers.",
+          category: "Account Settings",
+          helpful: null,
+        },
+        {
+          id: 6,
+          question: "How to manage team members?",
+          answer:
+            "Team member management can be found in Settings > Team. You can add new team members, assign roles (Admin, Recruiter, Hiring Manager), and manage permissions. Each team member will receive an invitation email to join your company account.",
+          category: "Account Settings",
+          helpful: null,
+        },
+      ],
+    };
+  },
+  computed: {
+    ...mapState(["helpTopics"]),
+    filteredTopics() {
+      let topics = this.allTopics;
 
-const helpCategories = ref([
-  {
-    id: 'getting-started',
-    title: 'Getting Started',
-    description: 'Learn the basics of using JobHunter',
-    icon: 'bi bi-rocket-takeoff'
-  },
-  {
-    id: 'job-posting',
-    title: 'Job Posting',
-    description: 'How to create and manage job postings',
-    icon: 'bi bi-briefcase'
-  },
-  {
-    id: 'applicant-management',
-    title: 'Applicant Management',
-    description: 'Managing candidates and applications',
-    icon: 'bi bi-people'
-  },
-  {
-    id: 'interviews',
-    title: 'Interviews',
-    description: 'Scheduling and conducting interviews',
-    icon: 'bi bi-calendar-check'
-  },
-  {
-    id: 'analytics',
-    title: 'Analytics & Reports',
-    description: 'Understanding your hiring metrics',
-    icon: 'bi bi-graph-up'
-  },
-  {
-    id: 'account',
-    title: 'Account & Billing',
-    description: 'Account settings and billing questions',
-    icon: 'bi bi-gear'
-  }
-])
+      // Filter by category
+      if (this.selectedCategory !== "All") {
+        topics = topics.filter(
+          (topic) => topic.category === this.selectedCategory
+        );
+      }
 
-const faqs = ref([
-  {
-    id: 1,
-    question: 'How do I post a new job?',
-    answer: 'To post a new job, navigate to the Job Listing page and click the "Post New Job" button. Fill in the required information including job title, description, requirements, and other details. Once submitted, your job will be reviewed and published.'
-  },
-  {
-    id: 2,
-    question: 'How can I manage applicants for my jobs?',
-    answer: 'You can manage applicants through the Applicants section. Here you can view all applications, move candidates through different stages of your hiring process, schedule interviews, and communicate with candidates.'
-  },
-  {
-    id: 3,
-    question: 'Can I schedule interviews directly through the platform?',
-    answer: 'Yes, you can schedule interviews using our built-in scheduling system. Go to the Schedule section or use the quick actions in the applicant management area to set up interviews with candidates.'
-  },
-  {
-    id: 4,
-    question: 'How do I upgrade my subscription plan?',
-    answer: 'To upgrade your plan, go to Settings > Billing and select the plan that best fits your needs. You can upgrade or downgrade at any time, and changes will be reflected in your next billing cycle.'
-  },
-  {
-    id: 5,
-    question: 'What analytics are available?',
-    answer: 'Our analytics dashboard provides insights into job performance, application rates, candidate sources, time-to-hire metrics, and more. You can access detailed reports for each job posting and overall hiring performance.'
-  }
-])
+      // Filter by search query
+      if (this.searchQuery) {
+        topics = topics.filter(
+          (topic) =>
+            topic.question
+              .toLowerCase()
+              .includes(this.searchQuery.toLowerCase()) ||
+            topic.answer.toLowerCase().includes(this.searchQuery.toLowerCase())
+        );
+      }
 
-const popularArticles = ref([
-  {
-    id: 1,
-    title: 'Setting up your first job posting',
-    excerpt: 'A comprehensive guide to creating effective job postings that attract the right candidates.',
-    readTime: '5 min',
-    views: '1.2k'
+      return topics;
+    },
   },
-  {
-    id: 2,
-    title: 'Best practices for candidate screening',
-    excerpt: 'Learn how to efficiently screen candidates and identify the best fits for your roles.',
-    readTime: '8 min',
-    views: '890'
+  methods: {
+    ...mapMutations(["markHelpful"]),
+    toggleTopic(id) {
+      const index = this.expandedTopics.indexOf(id);
+      if (index > -1) {
+        this.expandedTopics.splice(index, 1);
+      } else {
+        this.expandedTopics.push(id);
+      }
+    },
+    markHelpful(id, helpful) {
+      const topic = this.allTopics.find((t) => t.id === id);
+      if (topic) {
+        topic.helpful = helpful;
+      }
+    },
   },
-  {
-    id: 3,
-    title: 'Using the applicant pipeline effectively',
-    excerpt: 'Maximize your hiring efficiency with our pipeline management features.',
-    readTime: '6 min',
-    views: '756'
-  },
-  {
-    id: 4,
-    title: 'Interview scheduling and management',
-    excerpt: 'Streamline your interview process with automated scheduling and reminders.',
-    readTime: '4 min',
-    views: '623'
-  }
-])
-
-const selectCategory = (categoryId) => {
-  console.log('Selected category:', categoryId)
-}
-
-const contactSupport = () => {
-  console.log('Contact support')
-}
-
-const scheduleCall = () => {
-  console.log('Schedule call')
-}
-
-const sendFeedback = () => {
-  console.log('Send feedback')
-}
+};
 </script>
 
 <style scoped>
-.search-input {
-  padding-left: 2.5rem;
-  background-color: #f8fafc;
-  border: 1px solid #e2e8f0;
-  border-radius: 50px;
-  padding: 12px 20px 12px 2.5rem;
-}
-
-.search-input:focus {
-  background-color: white;
-  border-color: #6366f1;
-  box-shadow: 0 0 0 0.2rem rgba(99, 102, 241, 0.25);
-}
-
-.search-icon {
-  left: 1rem;
-  top: 50%;
-  transform: translateY(-50%);
-  color: #94a3b8;
-  font-size: 0.875rem;
-  z-index: 5;
-}
-
-.help-category-card {
+.cursor-pointer {
   cursor: pointer;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-.help-category-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+.faq-item:hover {
+  background-color: var(--bg-light);
+  border-radius: 8px;
+  padding: 1rem;
+  margin: -1rem;
+  margin-bottom: 0.5rem;
 }
 
-.help-icon {
-  height: 80px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+.list-group-item.active {
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
 }
 
-.accordion-button {
-  background-color: #f8fafc;
-  border: 1px solid #e2e8f0;
-  border-radius: 8px !important;
-}
-
-.accordion-button:not(.collapsed) {
-  background-color: #6366f1;
+.btn-group .btn.active {
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
   color: white;
-  border-color: #6366f1;
-}
-
-.accordion-button:focus {
-  box-shadow: 0 0 0 0.2rem rgba(99, 102, 241, 0.25);
-}
-
-.article-item:hover {
-  border-color: #6366f1 !important;
-  background-color: #f8fafc;
-}
-
-.quick-link:hover {
-  background-color: #f8fafc;
-  color: #6366f1;
-}
-
-.status-items {
-  font-size: 0.875rem;
 }
 </style>
