@@ -184,7 +184,7 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
+import { useInterviewStore } from "@/stores/company/interviews";
 
 export default {
   name: "MySchedule",
@@ -193,44 +193,13 @@ export default {
       currentDate: new Date(),
       selectedDate: new Date(),
       weekdays: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
-      events: [
-        {
-          id: 1,
-          title: "Technical Interview with John Doe",
-          date: "2021-11-10",
-          time: "10:00 AM",
-          type: "technical",
-          duration: "1.5 hours",
-        },
-        {
-          id: 2,
-          title: "HR Interview with Jane Smith",
-          date: "2021-11-12",
-          time: "2:00 PM",
-          type: "hr",
-          duration: "1 hour",
-        },
-        {
-          id: 3,
-          title: "Final Interview",
-          date: "2021-11-15",
-          time: "11:00 AM",
-          type: "final",
-          duration: "2 hours",
-        },
-        {
-          id: 4,
-          title: "Team Meeting",
-          date: "2021-11-18",
-          time: "9:00 AM",
-          type: "meeting",
-          duration: "30 minutes",
-        },
-      ],
     };
   },
   computed: {
-    ...mapState(["interviews"]),
+    interviews() {
+      const store = useInterviewStore();
+      return store.interviews;
+    },
     currentMonth() {
       return this.currentDate.toLocaleDateString("en-US", { month: "long" });
     },
@@ -317,7 +286,7 @@ export default {
       this.selectedDate = new Date(date.date);
     },
     getEventsForDate(date) {
-      return this.events.filter((event) => event.date === date);
+      return this.interviews.filter((event) => event.date === date);
     },
     getEventClass(type) {
       const classes = {

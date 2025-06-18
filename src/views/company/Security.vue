@@ -22,7 +22,7 @@
             <span v-else class="badge bg-secondary me-2">Disabled</span>
             <button
               class="btn btn-outline-primary btn-sm"
-              @click="toggleTwoFactor"
+              @click="toggleTwoFactorHandler"
             >
               {{ security.twoFactor.enabled ? "Disable" : "Enable" }}
             </button>
@@ -38,7 +38,7 @@
           <h5 class="mb-0 fw-bold">Active Sessions</h5>
           <button
             class="btn btn-outline-danger btn-sm"
-            @click="terminateAllSessions"
+            @click="terminateAllSessionsHandler"
           >
             Terminate All Sessions
           </button>
@@ -73,7 +73,7 @@
               <button
                 v-if="!session.current"
                 class="btn btn-outline-danger btn-sm"
-                @click="terminateSession(session.id)"
+                @click="terminateSessionHandler(session.id)"
               >
                 Terminate
               </button>
@@ -119,7 +119,7 @@
         </div>
 
         <div class="d-flex justify-content-end">
-          <button class="btn btn-primary" @click="saveSecuritySettings">
+          <button class="btn btn-primary" @click="saveSecuritySettingsHandler">
             Save Preferences
           </button>
         </div>
@@ -128,91 +128,42 @@
   </div>
 </template>
 
-<script>
-import { ref } from "vue";
+<script setup>
+import { useSecurityStore } from "@/stores/company/security";
 
-export default {
-  name: "Security",
-  setup() {
-    const security = ref({
-      twoFactor: {
-        enabled: false,
-      },
-      sessions: [
-        {
-          id: 1,
-          device: "MacBook Pro",
-          location: "San Francisco, CA",
-          browser: "Chrome 120.0",
-          lastActive: "2 minutes ago",
-          current: true,
-        },
-        {
-          id: 2,
-          device: "iPhone 15",
-          location: "San Francisco, CA",
-          browser: "Safari Mobile",
-          lastActive: "1 hour ago",
-          current: false,
-        },
-      ],
-      preferences: {
-        emailOnLogin: true,
-        sessionTimeout: true,
-      },
-    });
+const security = useSecurityStore();
 
-    const getDeviceIcon = (device) => {
-      if (device.includes("iPhone") || device.includes("Android")) {
-        return "bi bi-phone";
-      } else if (device.includes("Mac") || device.includes("Windows")) {
-        return "bi bi-laptop";
-      }
-      return "bi bi-device-hdd";
-    };
+const getDeviceIcon = (device) => {
+  if (device.includes("iPhone") || device.includes("Android")) {
+    return "bi bi-phone";
+  } else if (device.includes("Mac") || device.includes("Windows")) {
+    return "bi bi-laptop";
+  }
+  return "bi bi-device-hdd";
+};
 
-    const toggleTwoFactor = () => {
-      security.value.twoFactor.enabled = !security.value.twoFactor.enabled;
-      const action = security.value.twoFactor.enabled ? "enabled" : "disabled";
-      alert(`Two-factor authentication ${action}`);
-    };
+const toggleTwoFactorHandler = () => {
+  const enabled = security.toggleTwoFactor();
+  alert(`Two-factor authentication ${enabled ? "enabled" : "disabled"}`);
+};
 
-    const terminateSession = (sessionId) => {
-      if (confirm("Are you sure you want to terminate this session?")) {
-        const index = security.value.sessions.findIndex(
-          (s) => s.id === sessionId
-        );
-        if (index > -1) {
-          security.value.sessions.splice(index, 1);
-        }
-      }
-    };
+const terminateSessionHandler = (id) => {
+  if (confirm("Are you sure you want to terminate this session?")) {
+    security.terminateSession(id);
+  }
+};
 
-    const terminateAllSessions = () => {
-      if (
-        confirm(
-          "This will sign you out of all devices except this one. Continue?"
-        )
-      ) {
-        security.value.sessions = security.value.sessions.filter(
-          (s) => s.current
-        );
-        alert("All other sessions have been terminated");
-      }
-    };
+const terminateAllSessionsHandler = () => {
+  if (
+    confirm("This will sign you out of all devices except this one. Continue?")
+  ) {
+    security.terminateAllSessions();
+    alert("All other sessions have been terminated");
+  }
+};
 
-    const saveSecuritySettings = () => {
-      alert("Security preferences saved successfully!");
-    };
-
-    return {
-      security,
-      getDeviceIcon,
-      toggleTwoFactor,
-      terminateSession,
-      terminateAllSessions,
-      saveSecuritySettings,
-    };
-  },
+const saveSecuritySettingsHandler = () => {
+  security.saveSecuritySettings();
+  alert("Security preferences saved successfully!");
 };
 </script>

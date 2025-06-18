@@ -82,9 +82,7 @@ export default {
       { name: "API Keys", path: "/company/settings/api", icon: "bi bi-key" },
     ];
 
-    const isActiveRoute = (path) => {
-      return route.path === path;
-    };
+    const isActiveRoute = (path) => route.path === path;
 
     return {
       settingsMenu,

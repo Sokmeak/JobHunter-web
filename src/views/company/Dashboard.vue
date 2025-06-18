@@ -123,7 +123,7 @@
             <div class="d-flex justify-content-between align-items-center">
               <h5 class="mb-0 fw-bold">Recent Applications</h5>
               <router-link
-                to="/company/applicants"
+                to="/company/all-applicants"
                 class="text-primary text-decoration-none"
               >
                 View All
@@ -219,7 +219,7 @@
             <div class="d-flex justify-content-between align-items-center">
               <h5 class="mb-0 fw-bold">Upcoming Interviews</h5>
               <router-link
-                to="/company/calendar"
+                to="/company/schedule"
                 class="text-primary text-decoration-none"
               >
                 View Calendar

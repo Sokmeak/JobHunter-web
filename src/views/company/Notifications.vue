@@ -10,89 +10,41 @@
           <h6 class="fw-bold mb-3">Email Notifications</h6>
           <div class="row">
             <div class="col-md-6">
-              <div class="form-check mb-3">
+              <div
+                class="form-check mb-3"
+                v-for="(value, key) in notifications.email"
+                :key="key"
+              >
                 <input
                   class="form-check-input"
                   type="checkbox"
-                  id="newApplications"
-                  v-model="notifications.email.newApplications"
+                  :id="key"
+                  v-model="notifications.email[key]"
                 />
-                <label class="form-check-label" for="newApplications">
-                  <strong>New Applications</strong>
+                <label class="form-check-label" :for="key">
+                  <strong>{{ emailLabels[key] }}</strong>
                   <div class="small text-muted">
-                    Get notified when someone applies to your jobs
-                  </div>
-                </label>
-              </div>
-              <div class="form-check mb-3">
-                <input
-                  class="form-check-input"
-                  type="checkbox"
-                  id="interviewReminders"
-                  v-model="notifications.email.interviewReminders"
-                />
-                <label class="form-check-label" for="interviewReminders">
-                  <strong>Interview Reminders</strong>
-                  <div class="small text-muted">
-                    Reminders for upcoming interviews
-                  </div>
-                </label>
-              </div>
-              <div class="form-check mb-3">
-                <input
-                  class="form-check-input"
-                  type="checkbox"
-                  id="statusUpdates"
-                  v-model="notifications.email.statusUpdates"
-                />
-                <label class="form-check-label" for="statusUpdates">
-                  <strong>Application Status Updates</strong>
-                  <div class="small text-muted">
-                    When applicant status changes
+                    {{ emailDescriptions[key] }}
                   </div>
                 </label>
               </div>
             </div>
             <div class="col-md-6">
-              <div class="form-check mb-3">
+              <div
+                class="form-check mb-3"
+                v-for="(value, key) in notifications.emailRight"
+                :key="key"
+              >
                 <input
                   class="form-check-input"
                   type="checkbox"
-                  id="weeklyReports"
-                  v-model="notifications.email.weeklyReports"
+                  :id="key"
+                  v-model="notifications.email[key]"
                 />
-                <label class="form-check-label" for="weeklyReports">
-                  <strong>Weekly Reports</strong>
+                <label class="form-check-label" :for="key">
+                  <strong>{{ emailLabels[key] }}</strong>
                   <div class="small text-muted">
-                    Weekly summary of hiring activity
-                  </div>
-                </label>
-              </div>
-              <div class="form-check mb-3">
-                <input
-                  class="form-check-input"
-                  type="checkbox"
-                  id="teamUpdates"
-                  v-model="notifications.email.teamUpdates"
-                />
-                <label class="form-check-label" for="teamUpdates">
-                  <strong>Team Updates</strong>
-                  <div class="small text-muted">
-                    When team members join or leave
-                  </div>
-                </label>
-              </div>
-              <div class="form-check mb-3">
-                <input
-                  class="form-check-input"
-                  type="checkbox"
-                  id="systemUpdates"
-                  v-model="notifications.email.systemUpdates"
-                />
-                <label class="form-check-label" for="systemUpdates">
-                  <strong>System Updates</strong>
-                  <div class="small text-muted">
-                    Important system announcements
+                    {{ emailDescriptions[key] }}
                   </div>
                 </label>
               </div>
@@ -107,61 +59,41 @@
           <h6 class="fw-bold mb-3">Push Notifications</h6>
           <div class="row">
             <div class="col-md-6">
-              <div class="form-check mb-3">
+              <div
+                class="form-check mb-3"
+                v-for="(value, key) in notifications.pushLeft"
+                :key="key"
+              >
                 <input
                   class="form-check-input"
                   type="checkbox"
-                  id="pushNewApplications"
-                  v-model="notifications.push.newApplications"
+                  :id="'push-' + key"
+                  v-model="notifications.push[key]"
                 />
-                <label class="form-check-label" for="pushNewApplications">
-                  <strong>New Applications</strong>
+                <label class="form-check-label" :for="'push-' + key">
+                  <strong>{{ pushLabels[key] }}</strong>
                   <div class="small text-muted">
-                    Instant notifications for new applications
-                  </div>
-                </label>
-              </div>
-              <div class="form-check mb-3">
-                <input
-                  class="form-check-input"
-                  type="checkbox"
-                  id="pushInterviews"
-                  v-model="notifications.push.interviews"
-                />
-                <label class="form-check-label" for="pushInterviews">
-                  <strong>Interview Notifications</strong>
-                  <div class="small text-muted">
-                    Upcoming interview reminders
+                    {{ pushDescriptions[key] }}
                   </div>
                 </label>
               </div>
             </div>
             <div class="col-md-6">
-              <div class="form-check mb-3">
+              <div
+                class="form-check mb-3"
+                v-for="(value, key) in notifications.pushRight"
+                :key="key"
+              >
                 <input
                   class="form-check-input"
                   type="checkbox"
-                  id="pushUrgent"
-                  v-model="notifications.push.urgent"
+                  :id="'push-' + key"
+                  v-model="notifications.push[key]"
                 />
-                <label class="form-check-label" for="pushUrgent">
-                  <strong>Urgent Updates</strong>
+                <label class="form-check-label" :for="'push-' + key">
+                  <strong>{{ pushLabels[key] }}</strong>
                   <div class="small text-muted">
-                    Critical system notifications
-                  </div>
-                </label>
-              </div>
-              <div class="form-check mb-3">
-                <input
-                  class="form-check-input"
-                  type="checkbox"
-                  id="pushMessages"
-                  v-model="notifications.push.messages"
-                />
-                <label class="form-check-label" for="pushMessages">
-                  <strong>Messages</strong>
-                  <div class="small text-muted">
-                    New messages from team members
+                    {{ pushDescriptions[key] }}
                   </div>
                 </label>
               </div>
@@ -206,7 +138,11 @@
         </div>
 
         <div class="d-flex justify-content-end gap-2">
-          <button type="button" class="btn btn-outline-secondary">
+          <button
+            type="button"
+            class="btn btn-outline-secondary"
+            @click="resetDefaults"
+          >
             Reset to Default
           </button>
           <button
@@ -222,41 +158,71 @@
   </div>
 </template>
 
-<script>
-import { ref } from "vue";
+<script setup>
+import { storeToRefs } from "pinia";
+import { useNotificationsStore } from "@/stores/company/notifications";
 
-export default {
-  name: "Notifications",
-  setup() {
-    const notifications = ref({
-      email: {
-        newApplications: true,
-        interviewReminders: true,
-        statusUpdates: true,
-        weeklyReports: true,
-        teamUpdates: false,
-        systemUpdates: true,
-      },
-      push: {
-        newApplications: true,
-        interviews: true,
-        urgent: true,
-        messages: false,
-      },
-      frequency: {
-        email: "immediate",
-        reports: "weekly",
-      },
-    });
+const notificationsStore = useNotificationsStore();
+const { notifications } = storeToRefs(notificationsStore);
 
-    const saveNotifications = () => {
-      alert("Notification preferences saved successfully!");
-    };
+// Labels & descriptions to keep template clean
+const emailLabels = {
+  newApplications: "New Applications",
+  interviewReminders: "Interview Reminders",
+  statusUpdates: "Application Status Updates",
+  weeklyReports: "Weekly Reports",
+  teamUpdates: "Team Updates",
+  systemUpdates: "System Updates",
+};
+const emailDescriptions = {
+  newApplications: "Get notified when someone applies to your jobs",
+  interviewReminders: "Reminders for upcoming interviews",
+  statusUpdates: "When applicant status changes",
+  weeklyReports: "Weekly summary of hiring activity",
+  teamUpdates: "When team members join or leave",
+  systemUpdates: "Important system announcements",
+};
 
-    return {
-      notifications,
-      saveNotifications,
-    };
-  },
+// To split email notifications into 2 columns in UI
+notifications.value.emailRight = {
+  weeklyReports: notifications.value.email.weeklyReports,
+  teamUpdates: notifications.value.email.teamUpdates,
+  systemUpdates: notifications.value.email.systemUpdates,
+};
+notifications.value.emailLeft = {
+  newApplications: notifications.value.email.newApplications,
+  interviewReminders: notifications.value.email.interviewReminders,
+  statusUpdates: notifications.value.email.statusUpdates,
+};
+
+// Similarly for push notifications
+const pushLabels = {
+  newApplications: "New Applications",
+  interviews: "Interview Notifications",
+  urgent: "Urgent Updates",
+  messages: "Messages",
+};
+const pushDescriptions = {
+  newApplications: "Instant notifications for new applications",
+  interviews: "Upcoming interview reminders",
+  urgent: "Critical system notifications",
+  messages: "New messages from team members",
+};
+
+notifications.value.pushLeft = {
+  newApplications: notifications.value.push.newApplications,
+  interviews: notifications.value.push.interviews,
+};
+notifications.value.pushRight = {
+  urgent: notifications.value.push.urgent,
+  messages: notifications.value.push.messages,
+};
+
+const saveNotifications = () => {
+  notificationsStore.saveNotifications();
+};
+
+const resetDefaults = () => {
+  notificationsStore.resetDefaults();
 };
 </script>

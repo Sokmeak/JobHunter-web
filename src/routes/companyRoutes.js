@@ -52,6 +52,20 @@ export default [
         meta: { title: "Job Details", requiresAuth: true },
       },
       {
+        path: "jobs/edit/:id",
+        name: "EditJob",
+        component: () => import("@/views/company/EditJob.vue"),
+        props: true,
+        meta: { title: "Edit Job", requiresAuth: true },
+      },
+      {
+        path: "jobs/duplicate/:id",
+        name: "DuplicateJob",
+        component: () => import("@/views/company/DuplicateJob.vue"),
+        props: true,
+        meta: { title: "Duplicate Job", requiresAuth: true },
+      },
+      {
         path: "all-applicants",
         name: "AllApplicants",
         component: AllApplicants,

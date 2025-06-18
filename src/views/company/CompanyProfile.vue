@@ -6,13 +6,21 @@
       </div>
       <div class="card-body">
         <form @submit.prevent="saveProfile">
-          <!-- Company Logo -->
+          <!-- Company Logo with Drag & Drop -->
           <div class="mb-4">
             <label class="form-label fw-semibold">Company Logo</label>
-            <div class="d-flex align-items-center">
+            <div
+              class="d-flex align-items-center logo-dropzone"
+              :class="{ dragover: isDragOver }"
+              @dragover.prevent="onDragOver"
+              @dragleave.prevent="onDragLeave"
+              @drop.prevent="onDrop"
+            >
               <div class="me-3">
                 <img
-                  :src="companyData.logo"
+                  :src="
+                    companyData.logo || '/placeholder.svg?height=80&width=80'
+                  "
                   class="rounded"
                   width="80"
                   height="80"
@@ -23,20 +31,39 @@
                 <button
                   type="button"
                   class="btn btn-outline-primary btn-sm me-2"
+                  @click="triggerFileInput"
                 >
-                  <i class="bi bi-upload me-1"></i>
-                  Upload New Logo
+                  <i class="bi bi-upload me-1"></i>Upload New Logo
                 </button>
-                <button type="button" class="btn btn-outline-secondary btn-sm">
+                <button
+                  type="button"
+                  class="btn btn-outline-secondary btn-sm me-2"
+                  @click="showOnlinePicker = true"
+                >
+                  <i class="bi bi-cloud-upload me-1"></i>Select from Online
+                </button>
+                <button
+                  type="button"
+                  class="btn btn-outline-secondary btn-sm"
+                  @click="removeLogo"
+                >
                   Remove
                 </button>
                 <div class="small text-muted mt-1">
                   Recommended size: 400x400px. Max file size: 2MB.
                 </div>
+                <input
+                  type="file"
+                  accept="image/*"
+                  ref="fileInput"
+                  class="d-none"
+                  @change="handleFileUpload"
+                />
               </div>
             </div>
           </div>
 
+          <!-- Form Fields -->
           <div class="row">
             <div class="col-md-6 mb-3">
               <label class="form-label fw-semibold"
@@ -171,43 +198,153 @@
         </form>
       </div>
     </div>
+
+    <!-- Online Picker Modal -->
+    <div
+      class="modal fade show d-block"
+      tabindex="-1"
+      v-if="showOnlinePicker"
+      style="background-color: rgba(0, 0, 0, 0.5)"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title fw-bold">Select Logo from Online</h5>
+            <button
+              type="button"
+              class="btn-close"
+              @click="showOnlinePicker = false"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <p>Paste the image URL from your online drive or source:</p>
+            <input
+              type="url"
+              class="form-control"
+              v-model="onlineImageUrl"
+              placeholder="https://example.com/image.png"
+            />
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              @click="showOnlinePicker = false"
+            >
+              Cancel
+            </button>
+            <button
+              type="button"
+              class="btn btn-primary"
+              @click="selectOnlineImage"
+              :disabled="!onlineImageUrl"
+            >
+              Select
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
-<script>
+<script setup>
 import { ref } from "vue";
+import { storeToRefs } from "pinia";
+import { useCompanyProfileStore } from "@/stores/company/companyProfileStore";
 
-export default {
-  name: "CompanyProfile",
-  setup() {
-    const companyData = ref({
-      name: "Stripe",
-      logo: "/placeholder.svg?height=80&width=80",
-      industry: "Technology",
-      size: "1000+",
-      foundedYear: 2010,
-      website: "https://stripe.com",
-      linkedin: "https://linkedin.com/company/stripe",
-      description:
-        "Stripe is a technology company that builds economic infrastructure for the internet.",
-      address: {
-        street: "354 Oyster Point Blvd",
-        city: "South San Francisco",
-        state: "CA",
-        zipCode: "94080",
-        country: "US",
-      },
-    });
+const store = useCompanyProfileStore();
+const { companyData } = storeToRefs(store);
+const { saveProfile } = store;
 
-    const saveProfile = () => {
-      // Save profile logic
-      alert("Company profile updated successfully!");
-    };
+const showOnlinePicker = ref(false);
+const onlineImageUrl = ref(null);
+const fileInput = ref(null);
+const isDragOver = ref(false);
 
-    return {
-      companyData,
-      saveProfile,
-    };
-  },
+const triggerFileInput = () => {
+  if (fileInput.value) fileInput.value.click();
+};
+
+const handleFileUpload = (event) => {
+  const file = event.target.files[0];
+  if (!file) return;
+
+  if (!file.type.startsWith("image/")) {
+    alert("Please select a valid image file.");
+    return;
+  }
+
+  if (file.size > 2 * 1024 * 1024) {
+    alert("File size exceeds 2MB.");
+    return;
+  }
+
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    companyData.value.logo = e.target.result; // base64 image URL
+  };
+  reader.readAsDataURL(file);
+};
+
+const onDragOver = () => {
+  isDragOver.value = true;
+};
+
+const onDragLeave = () => {
+  isDragOver.value = false;
+};
+
+const onDrop = (event) => {
+  isDragOver.value = false;
+  const file = event.dataTransfer.files[0];
+  if (!file) return;
+
+  if (!file.type.startsWith("image/")) {
+    alert("Please drop a valid image file.");
+    return;
+  }
+
+  if (file.size > 2 * 1024 * 1024) {
+    alert("File size exceeds 2MB.");
+    return;
+  }
+
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    companyData.value.logo = e.target.result;
+  };
+  reader.readAsDataURL(file);
+};
+
+const selectOnlineImage = () => {
+  companyData.value.logo = onlineImageUrl.value;
+  onlineImageUrl.value = null;
+  showOnlinePicker.value = false;
+};
+
+const removeLogo = () => {
+  companyData.value.logo = "";
 };
 </script>
+
+<style scoped>
+.logo-dropzone {
+  padding: 12px;
+  border: 2px dashed var(--light-gray);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: border-color 0.2s ease;
+  user-select: none;
+
+  /* Make dropzone bigger */
+  min-height: 100px;
+  align-items: center;
+}
+
+.logo-dropzone.dragover {
+  border-color: var(--primary-color);
+  background-color: var(--bg-light);
+  display: flex;
+}
+</style>

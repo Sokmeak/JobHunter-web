@@ -12,11 +12,11 @@
         </div>
       </div>
       <div class="d-flex gap-2">
-        <button class="btn btn-outline-secondary">
+        <button class="btn btn-outline-secondary" @click="editJob(job.id)">
           <i class="bi bi-pencil me-1"></i>
           Edit Job
         </button>
-        <button class="btn btn-outline-danger">
+        <button class="btn btn-outline-danger" @click="deleteJob(job.id)">
           <i class="bi bi-trash me-1"></i>
           Delete Job
         </button>
@@ -31,7 +31,6 @@
 
       <!-- Sidebar -->
       <div class="col-lg-4">
-        <!-- Job Stats -->
         <div class="card mb-4">
           <div class="card-body">
             <h6 class="fw-bold mb-3">Job Statistics</h6>
@@ -60,7 +59,6 @@
           </div>
         </div>
 
-        <!-- Recent Applicants -->
         <div class="card">
           <div class="card-header bg-white border-bottom">
             <div class="d-flex justify-content-between align-items-center">
@@ -77,7 +75,7 @@
             <div class="list-group list-group-flush">
               <div
                 class="list-group-item border-0 py-3"
-                v-for="applicant in recentApplicants"
+                v-for="applicant in store.recentApplicants"
                 :key="applicant.id"
               >
                 <div class="d-flex align-items-center">
@@ -107,112 +105,45 @@
   </div>
 </template>
 
-<script>
-import { ref, computed, onMounted } from "vue";
+<script setup>
+import { ref, onMounted } from "vue";
 import { useRoute, useRouter } from "vue-router";
+import { useJobStore } from "@/stores/company/jobStore";
 import JobDetailsPage from "@/components/company/jobs/JobDetailsPage.vue";
 
-export default {
-  name: "JobDetails",
-  components: {
-    JobDetailsPage,
-  },
-  setup() {
-    const route = useRoute();
-    const router = useRouter();
-    const job = ref(null);
+const route = useRoute();
+const router = useRouter();
+const store = useJobStore();
 
-    const recentApplicants = ref([
-      {
-        id: 1,
-        name: "Jake Gyll",
-        avatar: "/placeholder.svg?height=40&width=40",
-        appliedDate: "2 days ago",
-        stage: "In Review",
-      },
-      {
-        id: 2,
-        name: "Guy Hawkins",
-        avatar: "/placeholder.svg?height=40&width=40",
-        appliedDate: "3 days ago",
-        stage: "Shortlisted",
-      },
-      {
-        id: 3,
-        name: "Cyndy Lillibridge",
-        avatar: "/placeholder.svg?height=40&width=40",
-        appliedDate: "1 week ago",
-        stage: "Interview",
-      },
-    ]);
+const job = ref(null);
 
-    // Mock job data - in real app, this would come from API
-    const mockJobs = {
-      1: {
-        id: 1,
-        title: "Social Media Assistant",
-        department: "Design",
-        type: "Full-Time",
-        applicants: 19,
-        capacity: 20,
-        status: "Live",
-        datePosted: "20 May 2020",
-        dueDate: "24 May 2020",
-        salary: "$75k-$85k USD",
-        description:
-          "Stripe is looking for Social Media Marketing expert to help manage our online networks. As a Social Media Assistant, you will be responsible for developing and implementing our Social Media strategy in order to increase our online presence and improve our marketing and sales efforts.",
-        responsibilities: [
-          "Community engagement to ensure that is supported and actively represented online",
-          "Focus on social media content development and publication",
-          "Marketing and strategy support",
-          "Stay up to date with the latest social media best practices and technologies",
-        ],
-        requirements: [
-          "Bachelor's degree in Marketing, Communications, or related field",
-          "2+ years of experience in social media marketing",
-          "Excellent written and verbal communication skills",
-          "Strong analytical and project management skills",
-        ],
-        perks: [
-          "Full Healthcare",
-          "Unlimited Vacation",
-          "Skill Development",
-          "Team Summits",
-        ],
-        benefits: [
-          "Health Insurance",
-          "Dental Insurance",
-          "Paid Time Off",
-          "Retirement Plan",
-        ],
-      },
-    };
+onMounted(() => {
+  const jobId = parseInt(route.params.id);
+  job.value = store.getJobById(jobId);
+});
 
-    onMounted(() => {
-      const jobId = parseInt(route.params.id);
-      job.value = mockJobs[jobId] || null;
-    });
+const goBack = () => {
+  router.push("/company/jobs");
+};
 
-    const getStageClass = (stage) => {
-      const classes = {
-        "In Review": "badge bg-warning",
-        Shortlisted: "badge bg-primary",
-        Interview: "badge bg-info",
-        Hired: "badge bg-success",
-      };
-      return classes[stage] || "badge bg-secondary";
-    };
+const getStageClass = (stage) => {
+  const classes = {
+    "In Review": "badge bg-warning",
+    Shortlisted: "badge bg-primary",
+    Interview: "badge bg-info",
+    Hired: "badge bg-success",
+  };
+  return classes[stage] || "badge bg-secondary";
+};
 
-    const goBack = () => {
-      router.push("/company/jobs");
-    };
+const editJob = (id) => {
+  router.push(`/company/jobs/edit/${id}`);
+};
 
-    return {
-      job,
-      recentApplicants,
-      getStageClass,
-      goBack,
-    };
-  },
+const deleteJob = (id) => {
+  if (confirm("Are you sure you want to delete this job?")) {
+    store.deleteJob(id);
+    router.push("/company/jobs");
+  }
 };
 </script>

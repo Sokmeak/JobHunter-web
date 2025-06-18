@@ -87,89 +87,22 @@
   </div>
 </template>
 
-<script>
-import { ref } from "vue";
-import { useRouter } from "vue-router";
+<script setup>
+import { computed } from "vue";
+import { usePostJobStore } from "@/stores/company/postJob";
 import PostJobForm from "@/components/company/jobs/PostJobForm.vue";
 
-export default {
-  name: "PostJob",
-  components: {
-    PostJobForm,
-  },
-  setup() {
-    const router = useRouter();
-    const currentStep = ref(1);
+const postJobStore = usePostJobStore();
 
-    const jobData = ref({
-      // Step 1: Job Information
-      title: "",
-      category: "",
-      jobType: "",
-      salaryType: "",
-      salaryMin: "",
-      salaryMax: "",
-      currency: "USD",
-      education: "",
-      experience: "",
-      jobLevel: "",
-      expireDate: "",
+const currentStep = computed(() => postJobStore.currentStep);
+const jobData = computed(() => postJobStore.jobData);
 
-      // Step 2: Job Description
-      description: "",
-      responsibilities: [],
-      whoYouAre: [],
-      niceToHaves: [],
-
-      // Step 3: Perks & Benefits
-      perks: [],
-      benefits: [],
-    });
-
-    const updateJobData = (data) => {
-      jobData.value = { ...jobData.value, ...data };
-    };
-
-    const nextStep = () => {
-      if (currentStep.value < 3) {
-        currentStep.value++;
-      }
-    };
-
-    const prevStep = () => {
-      if (currentStep.value > 1) {
-        currentStep.value--;
-      }
-    };
-
-    const saveDraft = () => {
-      // Save as draft logic
-      alert("Job saved as draft!");
-    };
-
-    const previewJob = () => {
-      // Preview job logic
-      alert("Preview job functionality");
-    };
-
-    const submitJob = () => {
-      // Submit job logic
-      alert("Job posted successfully!");
-      router.push("/company/jobs");
-    };
-
-    return {
-      currentStep,
-      jobData,
-      updateJobData,
-      nextStep,
-      prevStep,
-      saveDraft,
-      previewJob,
-      submitJob,
-    };
-  },
-};
+const saveDraft = () => postJobStore.saveDraft();
+const previewJob = () => postJobStore.previewJob();
+const submitJob = () => postJobStore.submitJob();
+const nextStep = () => postJobStore.nextStep();
+const prevStep = () => postJobStore.prevStep();
+const updateJobData = (data) => postJobStore.updateJobData(data);
 </script>
 
 <style scoped>

@@ -12,7 +12,9 @@
             <div class="d-flex align-items-center">
               <div class="me-3">
                 <img
-                  :src="accountData.avatar"
+                  :src="
+                    accountData.avatar || '/placeholder.svg?height=80&width=80'
+                  "
                   class="rounded-circle"
                   width="80"
                   height="80"
@@ -176,6 +178,12 @@
                 required
               />
             </div>
+          </div>
+
+          <div class="d-flex justify-content-end">
+            <button type="submit" class="btn btn-primary">
+              Update Password
+            </button>
           </div>
         </form>
       </div>

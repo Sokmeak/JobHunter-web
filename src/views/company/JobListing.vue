@@ -109,11 +109,10 @@
               <td class="text-muted">{{ job.datePosted }}</td>
               <td class="text-muted">{{ job.dueDate }}</td>
               <td>
-                <div class="dropdown">
+                <div class="dropdown" @click.stop>
                   <button
                     class="btn btn-outline-secondary btn-sm"
                     data-bs-toggle="dropdown"
-                    @click.stop
                   >
                     <i class="bi bi-three-dots"></i>
                   </button>
@@ -122,34 +121,38 @@
                       <a
                         class="dropdown-item"
                         href="#"
-                        @click.stop="viewJob(job.id)"
-                        >View Details</a
+                        @click.prevent="viewJob(job.id)"
                       >
+                        View Details
+                      </a>
                     </li>
                     <li>
                       <a
                         class="dropdown-item"
                         href="#"
-                        @click.stop="editJob(job.id)"
-                        >Edit Job</a
+                        @click.prevent="editJob(job.id)"
                       >
+                        Edit Job
+                      </a>
                     </li>
                     <li>
                       <a
                         class="dropdown-item"
                         href="#"
-                        @click.stop="duplicateJob(job.id)"
-                        >Duplicate</a
+                        @click.prevent="duplicateJob(job.id)"
                       >
+                        Duplicate
+                      </a>
                     </li>
                     <li><hr class="dropdown-divider" /></li>
                     <li>
                       <a
                         class="dropdown-item text-danger"
                         href="#"
-                        @click.stop="deleteJob(job.id)"
-                        >Delete</a
+                        @click.prevent="deleteJob(job.id)"
                       >
+                        Delete
+                      </a>
                     </li>
                   </ul>
                 </div>
@@ -278,13 +281,11 @@ export default {
     };
 
     const editJob = (jobId) => {
-      // Edit job logic
-      console.log("Edit job:", jobId);
+      router.push(`/company/jobs/${jobId}/edit`);
     };
 
     const duplicateJob = (jobId) => {
-      // Duplicate job logic
-      console.log("Duplicate job:", jobId);
+      alert(`Duplicate job ID ${jobId} (functionality not implemented yet)`);
     };
 
     const deleteJob = (jobId) => {
