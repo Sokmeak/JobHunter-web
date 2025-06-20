@@ -19,8 +19,9 @@
                 <router-link
                   to="/company/dashboard"
                   class="text-decoration-none"
-                  >Dashboard</router-link
                 >
+                  Dashboard
+                </router-link>
               </li>
               <li class="breadcrumb-item active" aria-current="page">
                 {{ currentPageTitle }}
@@ -84,56 +85,6 @@
               </span>
             </button>
           </div>
-
-          <!-- Profile -->
-          <div class="dropdown">
-            <button
-              class="btn btn-link text-dark p-0 d-flex align-items-center"
-              data-bs-toggle="dropdown"
-            >
-              <img
-                :src="placeholder"
-                alt="Profile"
-                class="rounded-circle me-2"
-                style="width: 40px; height: 40px"
-              />
-              <div class="text-start d-none d-md-block">
-                <div class="fw-medium">John Doe</div>
-                <small class="text-muted">HR Manager</small>
-              </div>
-              <i class="bi bi-chevron-down ms-2"></i>
-            </button>
-            <ul class="dropdown-menu dropdown-menu-end">
-              <li>
-                <div class="dropdown-header">
-                  <div class="fw-medium">John Doe</div>
-                  <small class="text-muted">john.doe@company.com</small>
-                </div>
-              </li>
-              <li><hr class="dropdown-divider" /></li>
-              <li>
-                <router-link to="/company/settings" class="dropdown-item">
-                  <i class="bi bi-person me-2"></i>Profile
-                </router-link>
-              </li>
-              <li>
-                <router-link to="/company/settings" class="dropdown-item">
-                  <i class="bi bi-gear me-2"></i>Settings
-                </router-link>
-              </li>
-              <li>
-                <a href="#" class="dropdown-item">
-                  <i class="bi bi-question-circle me-2"></i>Help
-                </a>
-              </li>
-              <li><hr class="dropdown-divider" /></li>
-              <li>
-                <a href="#" class="dropdown-item text-danger">
-                  <i class="bi bi-box-arrow-right me-2"></i>Sign Out
-                </a>
-              </li>
-            </ul>
-          </div>
         </div>
       </div>
     </div>
@@ -143,12 +94,9 @@
 <script setup>
 import { ref, computed } from "vue";
 import { useRoute } from "vue-router";
-import placeholder from "@/assets/images/placeholder.svg";
 
-defineEmits(["toggleSidebar", "toggleNotifications", "toggleProfile"]);
-
-const route = useRoute();
 const searchQuery = ref("");
+const route = useRoute();
 
 const currentPageTitle = computed(() => {
   const routeNames = {

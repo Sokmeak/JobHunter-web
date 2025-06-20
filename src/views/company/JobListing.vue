@@ -1,441 +1,312 @@
 <template>
-<div class="job-listing">
-  <!-- Header -->
-  <div class="d-flex justify-content-between align-items-center mb-4">
-    <div>
-      <h2 class="mb-1 fw-bold">Job Listings</h2>
-      <p class="text-muted mb-0">Manage all your job postings</p>
+  <div class="job-listing">
+    <!-- Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <div>
+        <h2 class="fw-bold mb-0">Job Listing</h2>
+      </div>
+      <div class="d-flex gap-2">
+        <button class="btn btn-outline-secondary">
+          <i class="bi bi-funnel me-1"></i>
+          Filter
+        </button>
+        <router-link to="/company/post-job" class="btn btn-primary">
+          <i class="bi bi-plus me-1"></i>
+          Post New Job
+        </router-link>
+      </div>
     </div>
-    <button class="btn btn-primary" @click="postNewJob">
-      <i class="bi bi-plus me-2"></i>Post New Job
-    </button>
-  </div>
 
-  <!-- Filters and Search -->
-  <div class="card border-0 shadow-sm mb-4">
-    <div class="card-body p-4">
-      <div class="row g-3 align-items-center">
-        <div class="col-md-4">
-          <div class="position-relative">
-            <i class="bi bi-search position-absolute search-icon"></i>
-            <input 
-              type="text" 
-              class="form-control search-input" 
-              placeholder="Search jobs..."
-              v-model="searchQuery"
+    <!-- Search Bar -->
+    <div class="row mb-4">
+      <div class="col-md-6">
+        <div class="input-group">
+          <span class="input-group-text bg-white border-end-0">
+            <i class="bi bi-search text-muted"></i>
+          </span>
+          <input
+            type="text"
+            class="form-control border-start-0"
+            placeholder="Search jobs..."
+            v-model="searchQuery"
+          />
+        </div>
+      </div>
+    </div>
+
+    <!-- Jobs Table -->
+    <div class="card">
+      <div class="table-responsive">
+        <table class="table table-hover mb-0">
+          <thead class="table-light">
+            <tr>
+              <th class="border-0">
+                <input type="checkbox" class="form-check-input" />
+              </th>
+              <th class="border-0">
+                Job Title
+                <i class="bi bi-arrow-up-down ms-1 text-muted"></i>
+              </th>
+              <th class="border-0">
+                Status
+                <i class="bi bi-arrow-up-down ms-1 text-muted"></i>
+              </th>
+              <th class="border-0">
+                Job Type
+                <i class="bi bi-arrow-up-down ms-1 text-muted"></i>
+              </th>
+              <th class="border-0">
+                Applicants
+                <i class="bi bi-arrow-up-down ms-1 text-muted"></i>
+              </th>
+              <th class="border-0">
+                Date Posted
+                <i class="bi bi-arrow-up-down ms-1 text-muted"></i>
+              </th>
+              <th class="border-0">
+                Due Date
+                <i class="bi bi-arrow-up-down ms-1 text-muted"></i>
+              </th>
+              <th class="border-0">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              v-for="job in filteredJobs"
+              :key="job.id"
+              @click="viewJob(job.id)"
+              style="cursor: pointer"
             >
-          </div>
-        </div>
-        <div class="col-md-2">
-          <select class="form-select" v-model="statusFilter">
-            <option value="">All Status</option>
-            <option value="Active">Active</option>
-            <option value="Draft">Draft</option>
-            <option value="Paused">Paused</option>
-            <option value="Closed">Closed</option>
-          </select>
-        </div>
-        <div class="col-md-2">
-          <select class="form-select" v-model="departmentFilter">
-            <option value="">All Departments</option>
-            <option value="Engineering">Engineering</option>
-            <option value="Design">Design</option>
-            <option value="Marketing">Marketing</option>
-            <option value="Sales">Sales</option>
-          </select>
-        </div>
-        <div class="col-md-2">
-          <select class="form-select" v-model="typeFilter">
-            <option value="">All Types</option>
-            <option value="Full-Time">Full-Time</option>
-            <option value="Part-Time">Part-Time</option>
-            <option value="Contract">Contract</option>
-            <option value="Internship">Internship</option>
-          </select>
-        </div>
-        <div class="col-md-2">
-          <button class="btn btn-outline-secondary w-100" @click="clearFilters">
-            <i class="bi bi-x-circle me-1"></i>Clear
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Jobs Grid -->
-  <div class="row g-4">
-    <div v-for="job in filteredJobs" :key="job.id" class="col-lg-6">
-      <div class="card border-0 shadow-sm job-card h-100">
-        <div class="card-body p-4">
-          <!-- Job Header -->
-          <div class="d-flex justify-content-between align-items-start mb-3">
-            <div class="d-flex align-items-start">
-              <div class="job-icon bg-primary-subtle text-primary rounded-3 p-3 me-3">
-                <i class="bi bi-briefcase fs-4"></i>
-              </div>
-              <div>
-                <h5 class="mb-1 fw-bold">{{ job.title }}</h5>
-                <p class="text-muted mb-2">{{ job.department }} • {{ job.location }}</p>
-                <div class="d-flex flex-wrap gap-2">
-                  <span class="badge bg-primary-subtle text-primary border border-primary px-2 py-1">{{ job.type }}</span>
-                  <span class="badge" :class="getStatusBadgeClass(job.status)">{{ job.status }}</span>
+              <td>
+                <input type="checkbox" class="form-check-input" @click.stop />
+              </td>
+              <td>
+                <div>
+                  <h6 class="mb-1 fw-semibold">{{ job.title }}</h6>
+                  <small class="text-muted">{{ job.department }}</small>
                 </div>
-              </div>
-            </div>
-            <div class="dropdown">
-              <button class="btn btn-sm btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown">
-                <i class="bi bi-three-dots"></i>
-              </button>
-              <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="#" @click="viewJob(job.id)">View Details</a></li>
-                <li><a class="dropdown-item" href="#" @click="editJob(job.id)">Edit Job</a></li>
-                <li><a class="dropdown-item" href="#" @click="duplicateJob(job.id)">Duplicate</a></li>
-                <li><a class="dropdown-item" href="#" @click="viewAnalytics(job.id)">View Analytics</a></li>
-                <li><hr class="dropdown-divider"></li>
-                <li><a class="dropdown-item" href="#" @click="pauseJob(job.id)" v-if="job.status === 'Active'">Pause Job</a></li>
-                <li><a class="dropdown-item" href="#" @click="activateJob(job.id)" v-if="job.status === 'Paused'">Activate Job</a></li>
-                <li><a class="dropdown-item text-danger" href="#" @click="deleteJob(job.id)">Delete</a></li>
-              </ul>
-            </div>
-          </div>
+              </td>
+              <td>
+                <span :class="getStatusClass(job.status)">
+                  {{ job.status }}
+                </span>
+              </td>
+              <td>{{ job.type }}</td>
+              <td>
+                <div class="d-flex align-items-center">
+                  <span class="me-2">{{ job.applicants }}</span>
+                  <div class="progress" style="width: 60px; height: 6px">
+                    <div
+                      class="progress-bar bg-primary"
+                      :style="`width: ${
+                        (job.applicants / job.capacity) * 100
+                      }%`"
+                    ></div>
+                  </div>
+                  <small class="text-muted ms-2">{{ job.capacity }}</small>
+                </div>
+              </td>
+              <td class="text-muted">{{ job.datePosted }}</td>
+              <td class="text-muted">{{ job.dueDate }}</td>
+              <td>
+                <div class="dropdown" @click.stop>
+                  <button
+                    class="btn btn-outline-secondary btn-sm"
+                    data-bs-toggle="dropdown"
+                  >
+                    <i class="bi bi-three-dots"></i>
+                  </button>
+                  <ul class="dropdown-menu">
+                    <li>
+                      <a
+                        class="dropdown-item"
+                        href="#"
+                        @click.prevent="viewJob(job.id)"
+                      >
+                        View Details
+                      </a>
+                    </li>
+                    <li>
+                      <a
+                        class="dropdown-item"
+                        href="#"
+                        @click.prevent="editJob(job.id)"
+                      >
+                        Edit Job
+                      </a>
+                    </li>
+                    <li>
+                      <a
+                        class="dropdown-item"
+                        href="#"
+                        @click.prevent="duplicateJob(job.id)"
+                      >
+                        Duplicate
+                      </a>
+                    </li>
+                    <li><hr class="dropdown-divider" /></li>
+                    <li>
+                      <a
+                        class="dropdown-item text-danger"
+                        href="#"
+                        @click.prevent="deleteJob(job.id)"
+                      >
+                        Delete
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
 
-          <!-- Job Stats -->
-          <div class="row g-3 mb-3">
-            <div class="col-4">
-              <div class="text-center">
-                <h6 class="mb-1 fw-bold text-primary">{{ job.applicants }}</h6>
-                <small class="text-muted">Applicants</small>
-              </div>
-            </div>
-            <div class="col-4">
-              <div class="text-center">
-                <h6 class="mb-1 fw-bold text-success">{{ job.views }}</h6>
-                <small class="text-muted">Views</small>
-              </div>
-            </div>
-            <div class="col-4">
-              <div class="text-center">
-                <h6 class="mb-1 fw-bold text-warning">{{ job.shortlisted || 0 }}</h6>
-                <small class="text-muted">Shortlisted</small>
-              </div>
-            </div>
+      <!-- Pagination -->
+      <div class="card-footer bg-white border-top">
+        <div class="d-flex justify-content-between align-items-center">
+          <div class="d-flex align-items-center">
+            <span class="me-2">View</span>
+            <select class="form-select form-select-sm" style="width: auto">
+              <option>10</option>
+              <option>25</option>
+              <option>50</option>
+            </select>
+            <span class="ms-2">Jobs per page</span>
           </div>
-
-          <!-- Job Description Preview -->
-          <p class="text-muted small mb-3">{{ job.description.substring(0, 120) }}...</p>
-
-          <!-- Job Footer -->
-          <div class="d-flex justify-content-between align-items-center">
-            <div>
-              <small class="text-muted">Posted {{ job.postedDate }}</small>
-            </div>
-            <div class="d-flex gap-2">
-              <button class="btn btn-sm btn-outline-primary" @click="viewApplicants(job.id)">
-                <i class="bi bi-people me-1"></i>{{ job.applicants }} Applicants
-              </button>
-              <button class="btn btn-sm btn-primary" @click="viewJob(job.id)">
-                View Details
-              </button>
-            </div>
-          </div>
+          <nav>
+            <ul class="pagination pagination-sm mb-0">
+              <li class="page-item">
+                <a class="page-link" href="#"
+                  ><i class="bi bi-chevron-left"></i
+                ></a>
+              </li>
+              <li class="page-item active">
+                <a class="page-link" href="#">1</a>
+              </li>
+              <li class="page-item">
+                <a class="page-link" href="#">2</a>
+              </li>
+              <li class="page-item">
+                <a class="page-link" href="#"
+                  ><i class="bi bi-chevron-right"></i
+                ></a>
+              </li>
+            </ul>
+          </nav>
         </div>
       </div>
     </div>
   </div>
-
-  <!-- Empty State -->
-  <div v-if="filteredJobs.length === 0" class="text-center py-5">
-    <i class="bi bi-briefcase text-muted" style="font-size: 4rem;"></i>
-    <h4 class="mt-3 mb-2">No jobs found</h4>
-    <p class="text-muted mb-4">{{ searchQuery ? 'Try adjusting your search criteria' : 'Get started by posting your first job' }}</p>
-    <button class="btn btn-primary" @click="postNewJob" v-if="!searchQuery">
-      <i class="bi bi-plus me-2"></i>Post Your First Job
-    </button>
-  </div>
-
-  <!-- Pagination -->
-  <div class="d-flex justify-content-center mt-4" v-if="filteredJobs.length > 0">
-    <nav>
-      <ul class="pagination">
-        <li class="page-item" :class="{ disabled: currentPage === 1 }">
-          <button class="page-link" @click="currentPage--" :disabled="currentPage === 1">Previous</button>
-        </li>
-        <li v-for="page in totalPages" :key="page" class="page-item" :class="{ active: page === currentPage }">
-          <button class="page-link" @click="currentPage = page">{{ page }}</button>
-        </li>
-        <li class="page-item" :class="{ disabled: currentPage === totalPages }">
-          <button class="page-link" @click="currentPage++" :disabled="currentPage === totalPages">Next</button>
-        </li>
-      </ul>
-    </nav>
-  </div>
-</div>
 </template>
 
-<script setup>
-import { ref, computed, inject } from 'vue'
-import { useRouter } from 'vue-router'
+<script>
+import { ref, computed } from "vue";
+import { useRouter } from "vue-router";
 
-const router = useRouter()
-const navigate = inject('navigate')
+export default {
+  name: "JobListing",
+  setup() {
+    const router = useRouter();
+    const searchQuery = ref("");
 
-const searchQuery = ref('')
-const statusFilter = ref('')
-const departmentFilter = ref('')
-const typeFilter = ref('')
-const currentPage = ref(1)
-const itemsPerPage = ref(6)
+    const jobs = ref([
+      {
+        id: 1,
+        title: "Social Media Assistant",
+        department: "Design",
+        type: "Full-Time",
+        applicants: 19,
+        capacity: 20,
+        status: "Live",
+        datePosted: "20 May 2020",
+        dueDate: "24 May 2020",
+      },
+      {
+        id: 2,
+        title: "Senior Designer",
+        department: "Design",
+        type: "Full-Time",
+        applicants: 1234,
+        capacity: 1500,
+        status: "Live",
+        datePosted: "16 May 2020",
+        dueDate: "24 May 2020",
+      },
+      {
+        id: 3,
+        title: "Frontend Developer",
+        department: "Development",
+        type: "Full-Time",
+        applicants: 45,
+        capacity: 50,
+        status: "Draft",
+        datePosted: "15 May 2020",
+        dueDate: "30 May 2020",
+      },
+      {
+        id: 4,
+        title: "Marketing Manager",
+        department: "Marketing",
+        type: "Full-Time",
+        applicants: 78,
+        capacity: 100,
+        status: "Closed",
+        datePosted: "10 May 2020",
+        dueDate: "20 May 2020",
+      },
+    ]);
 
-const jobs = ref([
-  {
-    id: 1,
-    title: 'Senior Frontend Developer',
-    department: 'Engineering',
-    location: 'San Francisco, CA',
-    type: 'Full-Time',
-    status: 'Active',
-    applicants: 24,
-    views: 1250,
-    shortlisted: 8,
-    postedDate: '2 weeks ago',
-    description: 'We are looking for a Senior Frontend Developer to join our dynamic team. You will be responsible for developing user-facing features, ensuring the technical feasibility of UI/UX designs, and optimizing applications for maximum speed and scalability.'
+    const filteredJobs = computed(() => {
+      if (!searchQuery.value) return jobs.value;
+      return jobs.value.filter(
+        (job) =>
+          job.title.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
+          job.department.toLowerCase().includes(searchQuery.value.toLowerCase())
+      );
+    });
+
+    const getStatusClass = (status) => {
+      const classes = {
+        Live: "badge bg-success",
+        Draft: "badge bg-warning",
+        Closed: "badge bg-danger",
+        Paused: "badge bg-secondary",
+      };
+      return classes[status] || "badge bg-secondary";
+    };
+
+    const viewJob = (jobId) => {
+      router.push(`/company/jobs/${jobId}`);
+    };
+
+    const editJob = (jobId) => {
+      router.push(`/company/jobs/${jobId}/edit`);
+    };
+
+    const duplicateJob = (jobId) => {
+      alert(`Duplicate job ID ${jobId} (functionality not implemented yet)`);
+    };
+
+    const deleteJob = (jobId) => {
+      if (confirm("Are you sure you want to delete this job?")) {
+        const index = jobs.value.findIndex((job) => job.id === jobId);
+        if (index > -1) {
+          jobs.value.splice(index, 1);
+        }
+      }
+    };
+
+    return {
+      searchQuery,
+      jobs,
+      filteredJobs,
+      getStatusClass,
+      viewJob,
+      editJob,
+      duplicateJob,
+      deleteJob,
+    };
   },
-  {
-    id: 2,
-    title: 'UX Designer',
-    department: 'Design',
-    location: 'Remote',
-    type: 'Full-Time',
-    status: 'Active',
-    applicants: 18,
-    views: 890,
-    shortlisted: 6,
-    postedDate: '1 week ago',
-    description: 'Join our design team as a UX Designer and help create intuitive and engaging user experiences. You will work closely with product managers and developers to design user-centered solutions.'
-  },
-  {
-    id: 3,
-    title: 'Backend Developer',
-    department: 'Engineering',
-    location: 'New York, NY',
-    type: 'Full-Time',
-    status: 'Active',
-    applicants: 15,
-    views: 756,
-    shortlisted: 5,
-    postedDate: '3 days ago',
-    description: 'We need a skilled Backend Developer to build and maintain our server-side applications. You will work with databases, APIs, and cloud services to ensure our platform runs smoothly.'
-  },
-  {
-    id: 4,
-    title: 'Product Manager',
-    department: 'Product',
-    location: 'Austin, TX',
-    type: 'Full-Time',
-    status: 'Paused',
-    applicants: 12,
-    views: 623,
-    shortlisted: 4,
-    postedDate: '1 month ago',
-    description: 'Lead product strategy and development as our Product Manager. You will define product roadmaps, work with cross-functional teams, and drive product success from conception to launch.'
-  },
-  {
-    id: 5,
-    title: 'Marketing Intern',
-    department: 'Marketing',
-    location: 'Remote',
-    type: 'Internship',
-    status: 'Active',
-    applicants: 8,
-    views: 445,
-    shortlisted: 3,
-    postedDate: '5 days ago',
-    description: 'Join our marketing team as an intern and gain hands-on experience in digital marketing, content creation, and campaign management. Perfect opportunity for students and recent graduates.'
-  },
-  {
-    id: 6,
-    title: 'DevOps Engineer',
-    department: 'Engineering',
-    location: 'Seattle, WA',
-    type: 'Contract',
-    status: 'Draft',
-    applicants: 0,
-    views: 0,
-    shortlisted: 0,
-    postedDate: 'Draft',
-    description: 'We are seeking a DevOps Engineer to help us scale our infrastructure and improve our deployment processes. You will work with cloud platforms, CI/CD pipelines, and monitoring tools.'
-  }
-])
-
-const filteredJobs = computed(() => {
-  let filtered = jobs.value
-
-  if (searchQuery.value) {
-    filtered = filtered.filter(job => 
-      job.title.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
-      job.department.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
-      job.location.toLowerCase().includes(searchQuery.value.toLowerCase())
-    )
-  }
-
-  if (statusFilter.value) {
-    filtered = filtered.filter(job => job.status === statusFilter.value)
-  }
-
-  if (departmentFilter.value) {
-    filtered = filtered.filter(job => job.department === departmentFilter.value)
-  }
-
-  if (typeFilter.value) {
-    filtered = filtered.filter(job => job.type === typeFilter.value)
-  }
-
-  return filtered
-})
-
-const totalPages = computed(() => Math.ceil(filteredJobs.value.length / itemsPerPage.value))
-
-const getStatusBadgeClass = (status) => {
-  switch (status) {
-    case 'Active':
-      return 'bg-success-subtle text-success border border-success px-2 py-1'
-    case 'Paused':
-      return 'bg-warning-subtle text-warning border border-warning px-2 py-1'
-    case 'Draft':
-      return 'bg-secondary-subtle text-secondary border border-secondary px-2 py-1'
-    case 'Closed':
-      return 'bg-danger-subtle text-danger border border-danger px-2 py-1'
-    default:
-      return 'bg-secondary-subtle text-secondary border border-secondary px-2 py-1'
-  }
-}
-
-const clearFilters = () => {
-  searchQuery.value = ''
-  statusFilter.value = ''
-  departmentFilter.value = ''
-  typeFilter.value = ''
-}
-
-const postNewJob = () => {
-  if (navigate) {
-    navigate('post-job')
-  } else {
-    router.push('/company/post-job')
-  }
-}
-
-const viewJob = (jobId) => {
-  if (navigate) {
-    navigate('job-details', { id: jobId })
-  } else {
-    router.push(`/company/job-details/${jobId}`)
-  }
-}
-
-const editJob = (jobId) => {
-  console.log('Edit job:', jobId)
-  if (navigate) {
-    navigate('post-job', { id: jobId })
-  }
-}
-
-const duplicateJob = (jobId) => {
-  console.log('Duplicate job:', jobId)
-}
-
-const viewAnalytics = (jobId) => {
-  console.log('View analytics:', jobId)
-  if (navigate) {
-    navigate('job-analytics', { id: jobId })
-  }
-}
-
-const pauseJob = (jobId) => {
-  console.log('Pause job:', jobId)
-  const job = jobs.value.find(j => j.id === jobId)
-  if (job) job.status = 'Paused'
-}
-
-const activateJob = (jobId) => {
-  console.log('Activate job:', jobId)
-  const job = jobs.value.find(j => j.id === jobId)
-  if (job) job.status = 'Active'
-}
-
-const deleteJob = (jobId) => {
-  if (confirm('Are you sure you want to delete this job?')) {
-    const index = jobs.value.findIndex(j => j.id === jobId)
-    if (index !== -1) jobs.value.splice(index, 1)
-  }
-}
-
-const viewApplicants = (jobId) => {
-  if (navigate) {
-    navigate('all-applicants', { jobId })
-  } else {
-    router.push(`/company/all-applicants?job=${jobId}`)
-  }
-}
+};
 </script>
-
-<style scoped>
-.search-input {
-  padding-left: 2.5rem;
-  background-color: #f8fafc;
-  border: 1px solid #e2e8f0;
-}
-
-.search-input:focus {
-  background-color: white;
-  border-color: #6366f1;
-  box-shadow: 0 0 0 0.2rem rgba(99, 102, 241, 0.25);
-}
-
-.search-icon {
-  left: 1rem;
-  top: 50%;
-  transform: translateY(-50%);
-  color: #94a3b8;
-  font-size: 0.875rem;
-  z-index: 5;
-}
-
-.job-card {
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.job-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 8px 25px rgba(0,0,0,0.15);
-}
-
-.job-icon {
-  width: 60px;
-  height: 60px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.form-select:focus {
-  border-color: #6366f1;
-  box-shadow: 0 0 0 0.2rem rgba(99, 102, 241, 0.25);
-}
-
-.page-link {
-  color: #6366f1;
-  border-color: #e2e8f0;
-}
-
-.page-link:hover {
-  color: #4f46e5;
-  background-color: #f3f4f6;
-  border-color: #d1d5db;
-}
-
-.page-item.active .page-link {
-  background-color: #6366f1;
-  border-color: #6366f1;
-}
-</style>
