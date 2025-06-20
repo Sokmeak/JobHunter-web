@@ -316,8 +316,6 @@ async function handleSubmit() {
     });
 
     // Store token and role in localStorage
-    localStorage.setItem("access_token", response.data.access_token);
-    localStorage.setItem("user_role", activeRole.value);
 
     // If rememberMe is checked, store additional user info
     if (form.value.rememberMe) {
@@ -335,13 +333,18 @@ async function handleSubmit() {
     const decodedToken = jwtDecode(response.data.access_token);
     const { id, email, role } = decodedToken;
 
+    console.log(decodedToken);
+
+    localStorage.setItem("access_token", response.data.access_token);
+    localStorage.setItem("user_role", role.type);
+
     // use user id => company_id
 
     // Fetch company by user ID
     let companyId = null;
     if (activeRole.value !== "job-seeker") {
       const companyResponse = await axios.get(
-        `http://localhost:3000/companies/userId/${id}`,
+        `http://localhost:3000/company/dashboard`,
         {
           headers: {
             Authorization: `Bearer ${response.data.access_token}`,
@@ -359,7 +362,7 @@ async function handleSubmit() {
 
     // Redirect based on role
     setTimeout(() => {
-      if (activeRole.value === "job-seeker") {
+      if (role.type === "job-seeker") {
         router.push("/applicant");
       } else {
         console.log("Company_id:");
