@@ -26,7 +26,7 @@ export default [
         path: "admindashboard",
         name: "admindashboard",
         component: Dashboard,
-        meta: { title: "admindashboard" },
+        meta: { title: "Admin Dashboard" },
       },
       {
         path: "users",
@@ -46,11 +46,11 @@ export default [
             meta: { title: "User Details" },
           },
           {
-            path: ':id/profile',
-            name: 'UserProfile',
+            path: ":id/profile",
+            name: "UserProfile",
             component: UserProfile,
             props: true,
-            meta: { title: 'User Profile' }
+            meta: { title: "User Profile" },
           },
           {
             path: ":id/edit",
@@ -78,6 +78,13 @@ export default [
         name: "Settings",
         component: Settings,
         meta: { title: "System Configurations" },
+      },
+      {
+        path: "notifications",
+        name: "Admin-Notifications",
+        component: () => import("@/views/admin/Notifications.vue"),
+        meta: { title: "Notifications" },
+        props: true,
       },
     ],
   },

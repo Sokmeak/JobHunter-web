@@ -1,197 +1,189 @@
 <template>
-    <div class="chart-wrapper">
-      <div class="chart-header">
-        <div class="chart-title-section">
-          <h3 class="chart-title">Job Posting</h3>
-          <p class="chart-subtitle">Monthly job posting activity</p>
-        </div>
+  <div class="card h-100">
+    <div class="card-header bg-white border-bottom">
+      <div class="d-flex flex-column">
+        <h5 class="card-title mb-1 fw-semibold text-dark">Job Posting</h5>
+        <p class="card-text mb-0 text-muted small">
+          Monthly job posting activity
+        </p>
       </div>
-      
-      <div class="chart-content">
-        <canvas ref="chartCanvas" class="chart-canvas"></canvas>
-        
-        <div class="chart-legend">
-          <div class="legend-item">
-            <div class="legend-color" style="background-color: #f59e0b;"></div>
-            <span class="legend-label">Job Posting</span>
-          </div>
+    </div>
+
+    <div class="card-body">
+      <div class="chart-container position-relative">
+        <canvas ref="chartCanvas"></canvas>
+      </div>
+
+      <div class="d-flex justify-content-center mt-3">
+        <div class="d-flex align-items-center">
+          <div
+            class="legend-color me-2"
+            style="background-color: #f59e0b"
+          ></div>
+          <span class="text-muted small">Job Posting</span>
         </div>
       </div>
     </div>
-  </template>
-  
-  <script setup>
-  import { ref, onMounted, watch } from 'vue';
-  
-  const props = defineProps({
+  </div>
+</template>
+
+<script setup>
+import { ref, onMounted, watch, onBeforeUnmount } from "vue";
+import Chart from "chart.js/auto";
+
+const props = defineProps({
+  data: {
+    type: Object,
+    required: true,
+    default: () => ({
+      labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
+      datasets: [
+        {
+          data: [65, 78, 52, 91, 43, 86],
+        },
+      ],
+    }),
+  },
+  period: {
+    type: String,
+    default: "last-month",
+  },
+});
+
+const chartCanvas = ref(null);
+let chart = null;
+
+const initChart = () => {
+  if (chart) {
+    chart.destroy();
+  }
+
+  const ctx = chartCanvas.value.getContext("2d");
+
+  chart = new Chart(ctx, {
+    type: "bar",
     data: {
-      type: Object,
-      required: true
+      labels: props.data.labels,
+      datasets: [
+        {
+          label: "Job Posting",
+          data: props.data.datasets[0].data,
+          backgroundColor: "#f59e0b",
+          borderRadius: 4,
+          borderSkipped: false,
+          barPercentage: 0.6,
+          categoryPercentage: 0.8,
+        },
+      ],
     },
-    period: {
-      type: String,
-      default: 'last-month'
-    }
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: {
+          display: false,
+        },
+        tooltip: {
+          backgroundColor: "rgba(0, 0, 0, 0.7)",
+          padding: 10,
+          titleFont: {
+            size: 14,
+            weight: "bold",
+          },
+          bodyFont: {
+            size: 13,
+          },
+          displayColors: false,
+        },
+      },
+      scales: {
+        y: {
+          beginAtZero: true,
+          grid: {
+            color: "#f3f4f6",
+          },
+          ticks: {
+            color: "#9ca3af",
+            font: {
+              size: 12,
+            },
+            padding: 10,
+          },
+          border: {
+            display: false,
+          },
+        },
+        x: {
+          grid: {
+            display: false,
+          },
+          ticks: {
+            color: "#6b7280",
+            font: {
+              size: 12,
+            },
+          },
+          border: {
+            display: false,
+          },
+        },
+      },
+    },
   });
-  
-  const chartCanvas = ref(null);
-  
-  const drawChart = () => {
-    const canvas = chartCanvas.value;
-    const ctx = canvas.getContext('2d');
-    
-    // Set canvas size
-    canvas.width = canvas.offsetWidth * 2;
-    canvas.height = 300 * 2;
-    ctx.scale(2, 2);
-    
-    const width = canvas.offsetWidth;
-    const height = 300;
-    const padding = { top: 20, right: 20, bottom: 60, left: 40 };
-    
-    // Clear canvas
-    ctx.clearRect(0, 0, width, height);
-    
-    // Chart dimensions
-    const chartWidth = width - padding.left - padding.right;
-    const chartHeight = height - padding.top - padding.bottom;
-    
-    // Data
-    const data = props.data.datasets[0].data;
-    const labels = props.data.labels;
-    const maxValue = Math.max(...data);
-    
-    // Draw Y-axis grid lines and labels
-    ctx.strokeStyle = '#f3f4f6';
-    ctx.lineWidth = 1;
-    ctx.fillStyle = '#9ca3af';
-    ctx.font = '12px Inter';
-    ctx.textAlign = 'right';
-    
-    for (let i = 0; i <= 5; i++) {
-      const value = (maxValue / 5) * i;
-      const y = padding.top + chartHeight - (i / 5) * chartHeight;
-      
-      // Grid line
-      ctx.beginPath();
-      ctx.moveTo(padding.left, y);
-      ctx.lineTo(padding.left + chartWidth, y);
-      ctx.stroke();
-      
-      // Label
-      ctx.fillText(Math.round(value).toString(), padding.left - 10, y + 4);
-    }
-    
-    // Draw bars
-    const barWidth = chartWidth / labels.length * 0.6;
-    const barSpacing = chartWidth / labels.length;
-    
-    ctx.fillStyle = '#f59e0b';
-    
-    data.forEach((value, index) => {
-      const barHeight = (value / maxValue) * chartHeight;
-      const x = padding.left + index * barSpacing + (barSpacing - barWidth) / 2;
-      const y = padding.top + chartHeight - barHeight;
-      
-      // Draw rounded rectangle
-      const radius = 4;
-      ctx.beginPath();
-      ctx.moveTo(x + radius, y);
-      ctx.lineTo(x + barWidth - radius, y);
-      ctx.quadraticCurveTo(x + barWidth, y, x + barWidth, y + radius);
-      ctx.lineTo(x + barWidth, y + barHeight);
-      ctx.lineTo(x, y + barHeight);
-      ctx.lineTo(x, y + radius);
-      ctx.quadraticCurveTo(x, y, x + radius, y);
-      ctx.closePath();
-      ctx.fill();
-    });
-    
-    // Draw X-axis labels
-    ctx.fillStyle = '#6b7280';
-    ctx.textAlign = 'center';
-    
-    labels.forEach((label, index) => {
-      const x = padding.left + index * barSpacing + barSpacing / 2;
-      ctx.fillText(label, x, height - 20);
-    });
-  };
-  
-  onMounted(() => {
-    drawChart();
-  });
-  
-  watch(() => props.data, () => {
-    drawChart();
-  }, { deep: true });
-  
-  watch(() => props.period, () => {
-    drawChart();
-  });
-  </script>
-  
-  <style scoped>
-  .chart-wrapper {
-    height: 100%;
-    display: flex;
-    flex-direction: column;
+};
+
+const updateChart = () => {
+  if (!chart) return;
+
+  chart.data.labels = props.data.labels;
+  chart.data.datasets[0].data = props.data.datasets[0].data;
+  chart.update();
+};
+
+onMounted(() => {
+  initChart();
+});
+
+onBeforeUnmount(() => {
+  if (chart) {
+    chart.destroy();
   }
-  
-  .chart-header {
-    margin-bottom: 20px;
+});
+
+watch(
+  () => props.data,
+  () => {
+    updateChart();
+  },
+  { deep: true }
+);
+
+watch(
+  () => props.period,
+  () => {
+    updateChart();
   }
-  
-  .chart-title-section {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-  }
-  
-  .chart-title {
-    font-size: 16px;
-    font-weight: 600;
-    color: #111827;
-    margin: 0;
-  }
-  
-  .chart-subtitle {
-    font-size: 12px;
-    color: #6b7280;
-    margin: 0;
-  }
-  
-  .chart-content {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-  }
-  
-  .chart-canvas {
-    width: 100%;
-    height: 300px;
-    flex: 1;
-  }
-  
-  .chart-legend {
-    display: flex;
-    justify-content: center;
-    margin-top: 16px;
-  }
-  
-  .legend-item {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-  
-  .legend-color {
-    width: 12px;
-    height: 12px;
-    border-radius: 2px;
-  }
-  
-  .legend-label {
-    font-size: 12px;
-    color: #6b7280;
-  }
-  </style>
+);
+</script>
+
+<style scoped>
+.chart-container {
+  height: 300px;
+}
+
+.legend-color {
+  width: 12px;
+  height: 12px;
+  border-radius: 2px;
+  background-color: #f59e0b;
+}
+
+.card {
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+  border: 1px solid rgba(0, 0, 0, 0.125);
+}
+
+.card-header {
+  padding: 1rem 1.25rem 0.75rem;
+}
+</style>

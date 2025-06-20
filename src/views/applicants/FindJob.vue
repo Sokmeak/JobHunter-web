@@ -1,108 +1,126 @@
 <template>
-    <div class="d-flex">
-  <!-- <div class="container py-4"> -->
+  <div class="d-flex">
+    <!-- <div class="container py-4"> -->
     <div class="container py-4">
-    <SearchJob
-      v-model="searchValue"
-      :placeholder="placeholder"
-      ref="searchJobComponent"
-      @search="handleSearch"
-    />
+      <SearchJob
+        v-model="searchValue"
+        :placeholder="placeholder"
+        ref="searchJobComponent"
+        @search="handleSearch"
+      />
 
-    <div class="container py-4">
-      <div class="row g-4">
-        <div class="col-lg-3">
-          <filter-sidebar
-            :employmentTypes="employmentTypes"
-            :categories="categories"
-            :jobLevels="jobLevels"
-            :salaryRanges="salaryRanges"
-            :selectedFilters="selectedFilters"
-            @update:filters="updateFilters"
-          />
-        </div>
-
-        <div class="col-lg-9">
-          <!-- Search query feedback -->
-          <div
-            v-if="searchQuery.keyword || searchQuery.location"
-            class="d-flex justify-content-between align-items-center mb-3"
-          >
-            <p class="text-muted mb-0">
-              Showing results for:
-              <strong v-if="searchQuery.keyword"
-                >"{{ searchQuery.keyword }}"</strong
-              >
-              <span v-if="searchQuery.keyword && searchQuery.location">
-                in
-              </span>
-              <strong v-if="searchQuery.location"
-                >"{{ searchQuery.location }}"</strong
-              >
-            </p>
-            <button @click="clearSearch" class="btn btn-sm btn-link">
-              Clear search
-            </button>
+      <div class="container py-4">
+        <div class="row g-4">
+          <div class="col-lg-3">
+            <filter-sidebar
+              :employmentTypes="jobStore.employmentTypes"
+              :categories="jobStore.categories"
+              :jobLevels="jobStore.jobLevels"
+              :salaryRanges="jobStore.salaryRanges"
+              :selectedFilters="jobStore.selectedFilters"
+              @update:filters="updateFilters"
+            />
           </div>
 
-          <!-- Empty state when no results found -->
-          <div v-if="filteredJobs.length === 0" class="text-center py-5">
-            <div class="mb-4">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="64"
-                height="64"
-                fill="currentColor"
-                class="bi bi-search text-muted"
-                viewBox="0 0 16 16"
-              >
-                <path
-                  d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"
-                />
-              </svg>
+          <div class="col-lg-9">
+            <!-- Search query feedback -->
+            <div
+              v-if="
+                jobStore.searchQuery.keyword || jobStore.searchQuery.location
+              "
+              class="d-flex justify-content-between align-items-center mb-3"
+            >
+              <p class="text-muted mb-0">
+                Showing results for:
+                <strong v-if="jobStore.searchQuery.keyword"
+                  >"{{ jobStore.searchQuery.keyword }}"</strong
+                >
+                <span
+                  v-if="
+                    jobStore.searchQuery.keyword &&
+                    jobStore.searchQuery.location
+                  "
+                >
+                  in
+                </span>
+                <strong v-if="jobStore.searchQuery.location"
+                  >"{{ jobStore.searchQuery.location }}"</strong
+                >
+              </p>
+              <button @click="clearSearch" class="btn btn-sm btn-link">
+                Clear search
+              </button>
             </div>
-            <h3 class="fs-4 fw-bold">No jobs found</h3>
-            <p class="text-muted">
-              We couldn't find any jobs matching
-              <span v-if="searchQuery.keyword"
-                >'{{ searchQuery.keyword }}'</span
-              >
-              <span v-if="searchQuery.keyword && searchQuery.location">
-                in
-              </span>
-              <span v-if="searchQuery.location"
-                >'{{ searchQuery.location }}'</span
-              >
-              <span
-                v-if="
-                  !searchQuery.keyword && !searchQuery.location && hasFilters
-                "
-              >
-                your selected filters
-              </span>
-            </p>
-            <button class="btn btn-outline-primary mt-3" @click="clearSearch">
-              Clear search and filters
-            </button>
-          </div>
 
-          <!-- Job listings (with pagination) -->
-          <job-listings
-            v-if="filteredJobs.length > 0"
-            :jobs="filteredJobs"
-            :total-items="totalJobs"
-            :initial-page="currentPage"
-            :initial-per-page="itemsPerPage"
-            @page-change="updatePage"
-            @per-page-change="updatePerPage"
-          />
+            <!-- Empty state when no results found -->
+            <div
+              v-if="jobStore.filteredJobs.length === 0"
+              class="text-center py-5"
+            >
+              <div class="mb-4">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="64"
+                  height="64"
+                  fill="currentColor"
+                  class="bi bi-search text-muted"
+                  viewBox="0 0 16 16"
+                >
+                  <path
+                    d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"
+                  />
+                </svg>
+              </div>
+              <h3 class="fs-4 fw-bold">No jobs found</h3>
+              <p class="text-muted">
+                We couldn't find any jobs matching
+                <span v-if="jobStore.searchQuery.keyword"
+                  >'{{ jobStore.searchQuery.keyword }}'</span
+                >
+                <span
+                  v-if="
+                    jobStore.searchQuery.keyword &&
+                    jobStore.searchQuery.location
+                  "
+                >
+                  in
+                </span>
+                <span v-if="jobStore.searchQuery.location"
+                  >'{{ jobStore.searchQuery.location }}'</span
+                >
+                <span
+                  v-if="
+                    !jobStore.searchQuery.keyword &&
+                    !jobStore.searchQuery.location &&
+                    hasFilters
+                  "
+                >
+                  your selected filters
+                </span>
+              </p>
+              <button class="btn btn-outline-primary mt-3" @click="clearSearch">
+                Clear search and filters
+              </button>
+            </div>
+
+            <!-- Job listings (with pagination) -->
+            <JobListings
+              v-if="jobStore.filteredJobs.length > 0"
+              :context="context"
+              :jobs="jobStore.filteredJobs"
+              :total-items="jobStore.totalJobs"
+              :initial-page="jobStore.currentPage"
+              :initial-per-page="jobStore.itemsPerPage"
+              @page-change="jobStore.updatePage"
+              @per-page-change="jobStore.updatePerPage"
+            />
           </div>
         </div>
       </div>
     </div>
   </div>
 </template>
-
+<!-- 
 <script setup>
 import DashboardHeader from "@/components/Applicants/layout/DashboardHeader.vue";
 import JobListings from "@/components/findjob/JobListings.vue";
@@ -495,6 +513,48 @@ onMounted(() => {
     keyword: url.searchParams.get("keyword") || "",
     location: url.searchParams.get("location") || "",
   };
+});
+</script> -->
+
+<script setup>
+import { ref } from "vue";
+import { onMounted } from "vue";
+import { useJobStore } from "@/stores/jobStore";
+import SearchJob from "@/components/sharecomponents/SearchJob.vue";
+
+
+import FilterSidebar from "@/components/findjob/FilterSidebar.vue";
+import JobListings from "@/components/findjob/JobListings.vue";
+
+// Pinia store
+const jobStore = useJobStore();
+const heroSection = ref(null);
+const context = "Applicant";
+
+// Methods
+async function fetchData() {
+  await Promise.all([jobStore.fetchJobs(), jobStore.fetchFilterOptions()]);
+}
+
+function handleSearch(queryObj) {
+  jobStore.setSearchQuery(queryObj);
+  jobStore.updateUrl();
+}
+
+function clearSearch() {
+  jobStore.clearSearch();
+  jobStore.updateUrl();
+  heroSection.value?.clearSearch(); // Ensure HeroSection clears SearchJob inputs
+}
+
+function updateFilters(filterType, value) {
+  jobStore.updateFilters(filterType, value);
+}
+
+// Initialize from URL and fetch data
+onMounted(async () => {
+  jobStore.initializeFromUrl();
+  await fetchData();
 });
 </script>
 

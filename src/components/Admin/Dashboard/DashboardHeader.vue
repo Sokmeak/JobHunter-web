@@ -1,38 +1,51 @@
+```vue
 <template>
   <header class="dashboard-header">
     <div class="header-content">
       <div class="title-section">
         <h1 class="title">Dashboard</h1>
         <p class="welcome-message">
-          Welcome back, {{ dashboardData.username }}! Here is what's happening on
-          <span class="highlight">JobHunter</span> Today.
+          Welcome back, {{ dashboardData.username }}! Here is what's happening
+          on <span class="highlight">JobHunter</span> Today.
         </p>
       </div>
       <div class="actions">
-        <button class="action-button" @click="toggleDatepickerAndSetToday">
-          <Calendar class="button-icon" />
-          <span>Today</span>
+        <!-- Simplified Date Button with Datepicker -->
+        <button
+          class="btn btn-outline-primary d-flex align-items-center gap-2"
+          @click="toggleDatepickerAndSetFilter"
+        >
+          <i class="bi bi-calendar button-icon"></i>
+          <span>{{ currentFilter }}</span>
         </button>
-
         <div v-if="showDatepicker" class="datepicker-container">
           <VueDatePicker
             v-model="selectedDate"
             @update:model-value="hideDatepicker"
-            :inline="false"   
-            :enable-time-picker="false" 
-            auto-apply              
-            :close-on-auto-apply="true" 
-            :clearable="true"    
-            :text-input="false"  
+            :inline="false"
+            :enable-time-picker="false"
+            auto-apply
+            :close-on-auto-apply="true"
+            :clearable="true"
+            :text-input="false"
           />
         </div>
 
-        <button class="action-button" @click="refreshPage">
-          <RefreshCw class="button-icon" />
+        <!-- Refresh Button -->
+        <button
+          class="btn btn-outline-secondary d-flex align-items-center gap-2"
+          @click="refreshPage"
+        >
+          <i class="bi bi-arrow-clockwise button-icon"></i>
           <span>Refresh</span>
         </button>
-        <button class="action-button" @click="exportStatCardsToPdf">
-                    <Download class="button-icon" />
+
+        <!-- Export Button -->
+        <button
+          class="btn btn-outline-secondary d-flex align-items-center gap-2"
+          @click="exportStatCardsToPdf"
+        >
+          <i class="bi bi-download button-icon"></i>
           <span>Export</span>
         </button>
       </div>
@@ -41,43 +54,79 @@
 </template>
 
 <script setup>
-import { inject, ref } from 'vue';
-import { Calendar, RefreshCw, Download } from 'lucide-vue-next';
+import { inject, ref } from "vue";
+import VueDatePicker from "@vuepic/vue-datepicker";
+import "@vuepic/vue-datepicker/dist/main.css";
+import dayjs from "dayjs";
+import "dayjs/locale/en";
 
-import VueDatePicker from '@vuepic/vue-datepicker';
-import '@vuepic/vue-datepicker/dist/main.css';
-
-const dashboardData = inject('dashboardData');
-const selectedDate = inject('selectedDate');
-
-const exportStatCardsToPdf = inject('exportStatCardsToPdf');
+const dashboardData = inject("dashboardData");
+const selectedDate = inject("selectedDate");
+const exportStatCardsToPdf = inject("exportStatCardsToPdf");
 
 const showDatepicker = ref(false);
+const currentFilter = ref("Today - Monday, June 02, 2025, 02:51 PM"); // Default filter with current time
 
-const toggleDatepickerAndSetToday = () => {
-  // Bascule l'affichage du datepicker
+// Current date and time (02:51 PM +07, Monday, June 02, 2025)
+const now = dayjs("2025-06-02T14:51:00+07:00");
+
+// Toggle datepicker and set filter
+const toggleDatepickerAndSetFilter = () => {
   showDatepicker.value = !showDatepicker.value;
-  // Si on ouvre le datepicker (et qu'il n'était pas déjà ouvert), on met la date à aujourd'hui
-  if (showDatepicker.value && selectedDate.value) {
-    selectedDate.value = new Date();
+  if (!showDatepicker.value) {
+    selectedDate.value = now.toDate(); // Set to today by default
   }
 };
 
-const hideDatepicker = () => {
-  // Cette fonction est appelée quand VueDatePicker met à jour sa valeur (par exemple, après une sélection)
+// Hide datepicker after selection
+const hideDatepicker = (newDate) => {
   showDatepicker.value = false;
+  if (newDate) {
+    const today = now.toDate();
+    const yesterday = now.subtract(1, "day").toDate();
+    const diffTime = today.getTime() - newDate.getTime();
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+    if (diffDays === 0) {
+      currentFilter.value = `Today - ${now.format(
+        "dddd, MMMM DD, YYYY, hh:mm A"
+      )}`;
+    } else if (diffDays === 1) {
+      currentFilter.value = `Yesterday - ${dayjs(newDate).format(
+        "dddd, MMMM DD, YYYY"
+      )}`;
+    } else if (diffDays >= 7 && diffDays <= 13) {
+      const startOfWeek = now.subtract(1, "week").startOf("week");
+      const endOfWeek = now.subtract(1, "week").endOf("week");
+      currentFilter.value = `Last Week - ${startOfWeek.format(
+        "MMM DD"
+      )} to ${endOfWeek.format("MMM DD")}`;
+    } else if (newDate.getMonth() === today.getMonth() - 1) {
+      const lastMonthStart = now.subtract(1, "month").startOf("month");
+      currentFilter.value = `Last Month - ${lastMonthStart.format("MMM YYYY")}`;
+    } else {
+      currentFilter.value = "Overall - All Time";
+    }
+  }
 };
 
-function refreshPage() {
+// Refresh page
+const refreshPage = () => {
   window.location.reload();
-}
+};
+
+// Logout function
+const logout = () => {
+  localStorage.removeItem("userToken"); // Example: remove token
+  dashboardData.username = ""; // Clear username
+  window.location.href = "/login"; // Redirect to login page
+};
 </script>
 
 <style scoped>
 .dashboard-header {
   margin-bottom: 20px;
   position: relative;
-  /* Assure que le datepicker peut se positionner par rapport à lui */
 }
 
 .header-content {
@@ -103,6 +152,17 @@ function refreshPage() {
   color: #6b7280;
   font-size: 14px;
 }
+.btn {
+  background-color: #4f46e5;
+  color: white;
+}
+.btn-outline-secondary {
+  background-color: #f8f9ff;
+  color: #000;
+}
+.btn:hover {
+  background-color: #4338ca;
+}
 
 .highlight {
   color: #4f46e5;
@@ -114,45 +174,25 @@ function refreshPage() {
   gap: 10px;
 }
 
-.action-button {
-  display: flex;
-  align-items: center;
-  padding: 8px 16px;
-  background-color: white;
-  border: 1px solid #e5e7eb;
-  border-radius: 6px;
-  font-size: 14px;
-  color: #374151;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-
-.action-button:hover {
-  background-color: #f9fafb;
-}
-
 .button-icon {
-  width: 16px;
-  height: 16px;
-  margin-right: 8px;
+  font-size: 16px;
 }
 
-/* Important pour que le datepicker soit visible et interactif */
 .datepicker-container {
   position: absolute;
-  z-index: 1000; /* Assure que le datepicker est au-dessus des autres éléments */
+  z-index: 1000;
   top: 80%;
   right: 20px;
   margin-top: 1px;
   border-radius: 8px;
   overflow: hidden;
-  min-width: 300px; /* Ou plus, juste pour le test */
-  min-height: 400px; /* Ou plus, juste pour le test */
+  min-width: 300px;
+  min-height: 400px;
 }
 
 .dp__main {
   width: auto !important;
-  min-width: 280px; /* Exemple, ajuste selon tes besoins */
+  min-width: 280px;
 }
 
 @media (max-width: 640px) {
@@ -166,3 +206,4 @@ function refreshPage() {
   }
 }
 </style>
+```

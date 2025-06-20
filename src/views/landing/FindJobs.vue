@@ -147,6 +147,7 @@
             <!-- Job listings (with pagination) -->
             <JobListings
               v-if="jobStore.filteredJobs.length > 0"
+              :context="context"
               :jobs="jobStore.filteredJobs"
               :total-items="jobStore.totalJobs"
               :initial-page="jobStore.currentPage"
@@ -174,6 +175,7 @@ const title = "Dream Job";
 const subtitle = "Explore thousands of job opportunities in one place.";
 const popularTags = ["UI Designer", "UX Developer", "Android", "Admin"];
 const heroPlaceholder = "Start with a job keyword...";
+const context = "Landing";
 
 // Pinia store
 const jobStore = useJobStore();
@@ -196,7 +198,6 @@ function clearSearch() {
 }
 
 function updateFilters(filterType, value) {
-  
   jobStore.updateFilters(filterType, value);
 }
 
@@ -204,6 +205,13 @@ function updateFilters(filterType, value) {
 onMounted(async () => {
   jobStore.initializeFromUrl();
   await fetchData();
+  if (jobStore.filteredJobs.length === 0) {
+    jobStore.clearSearch(); // Clear search if no jobs found
+  }
+
+  if (jobStore.filteredJobs) {
+    console.log("filterJobs", jobStore.filteredJobs);
+  }
 });
 </script>
 

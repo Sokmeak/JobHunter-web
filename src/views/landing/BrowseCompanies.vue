@@ -13,7 +13,7 @@
 
     <!-- Show default content when no search query -->
     <template v-if="!searchQuery.keyword && !searchQuery.location">
-      <RecommendedCompanyCardSection />
+      <RecommendedCompanyCardSection :context="context" />
       <CompaniesByCategorySection />
     </template>
 
@@ -22,6 +22,7 @@
       <SearchResultsPage
         :initial-search-query="searchQuery"
         @clear-search="clearSearch"
+        :context="context"
       />
     </template>
   </div>
@@ -41,6 +42,8 @@ defineProps({
     default: () => ({ keyword: "", location: "" }),
   },
 });
+
+const context = "Landing";
 
 // Refs
 const searchQuery = ref({ keyword: "", location: "" });
