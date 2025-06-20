@@ -5,10 +5,12 @@ export default [
     path: "/signin",
     name: "Signin",
     component: SignIn,
+    meta: { title: "Job Hunter - Sign In" },
   },
   {
     path: "/signup",
     name: "Signup",
     component: SignUp,
+    meta: { title: "Job Hunter - Sign Up" },
   },
 ];

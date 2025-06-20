@@ -18,13 +18,19 @@
         <div class="flex-grow-1">
           <h3 class="fs-5 fw-semibold mb-0">{{ job.title }}</h3>
           <p class="text-secondary small mb-0">
-            {{ job.company }} • {{ job.location }}
+            {{ job.companyName }} • {{ job.location }}
           </p>
         </div>
 
         <div>
           <RouterLink
-            :to="{ name: 'JobDescription', params: { id: job.id } }"
+            :to="{
+              name:
+                context === 'Landing'
+                  ? 'JobDescription'
+                  : 'JobDescription-Applicant',
+              params: { id: jobId(job) },
+            }"
             class="btn btn-primary"
             >Apply</RouterLink
           >
@@ -64,19 +70,25 @@
 
 <script setup>
 import { defineProps } from "vue";
+import { computed } from "vue";
+import { RouterLink } from "vue-router";
 
 const props = defineProps({
   job: Object,
+  context: {
+    type: String,
+    default: "Landing", // or "Dashboard"
+  },
 });
 const handleHover = (id) => {
   console.log("Hovered job ID:", id);
   // You can also emit or store the ID if needed
 };
 
-const jobId = (job) =>
-  computed(() => {
-    return typeof job.id === "number" ? job.id : job.job_id;
-  }).value;
+const jobId = (job) => {
+  // Assuming job.id is a unique identifier for the job
+  return job.id;
+};
 // In a real app, you would use actual company logos
 const getCompanyLogo = (company) => {
   const logos = {

@@ -22,4 +22,10 @@ const router = createRouter({
   routes,
 });
 
+// Update document title on route change
+router.beforeEach((to, from, next) => {
+  document.title = to.meta.title || "Job Hunter"; // Fallback title
+  next();
+});
+
 export default router;

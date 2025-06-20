@@ -115,6 +115,7 @@ export default {
 
 <style lang="scss" scoped>
 @use "@/style/variables.css" as *; // <-- important
+
 .divider {
   height: 2rem;
   border-left: 1px solid #939393;

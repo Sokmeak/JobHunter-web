@@ -14,7 +14,7 @@
             <circle cx="16.7529" cy="16.7109" r="16" fill="#4640DE" />
           </svg>
         </div>
-        <PrimaryLogo v-else class="ms-2" />
+        <PrimaryLogo v-else class="ms-2" :context="'/company'" />
       </div>
     </div>
 

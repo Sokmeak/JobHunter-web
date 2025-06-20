@@ -12,6 +12,10 @@ const props = defineProps({
     type: Object,
     default: () => ({ keyword: "", location: "" }),
   },
+  context: {
+    type: String,
+    default: "Landing",
+  },
 });
 
 const emit = defineEmits(["clear-search"]);
@@ -182,6 +186,7 @@ const paginatedCompanies = computed(() => {
       <div class="main-content">
         <div class="results">
           <CompanyResults
+            :context="context"
             :companies="paginatedCompanies"
             :total-results="filteredCompanies.length"
             :view-mode="viewMode"

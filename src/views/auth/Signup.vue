@@ -340,6 +340,12 @@
 <script setup>
 import { ref, watch } from "vue";
 import PrimaryLogo from "@/components/sharecomponents/PrimaryLogo.vue";
+import { RouterLink } from "vue-router";
+import axios from "axios";
+
+
+// Set the base URL for axios requests
+axios.defaults.baseURL = "http://localhost:3000";
 
 // Form data
 const form = ref({
@@ -367,24 +373,88 @@ watch(activeRole, (newRole) => {
 });
 
 // Handle form submission
-function handleSubmit() {
+async function handleSubmit() {
+  let signupData = null;
   if (activeRole.value === "job-seeker") {
+    // Handle job seeker signup logic
+    const isValidEmail = (email) => {
+      const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      return re.test(email);
+    };
+    if (!isValidEmail(form.value.email)) {
+      alert("Please enter a valid email address.");
+      return;
+    }
+    if (form.value.password.length < 6) {
+      alert("Password must be at least 6 characters long.");
+      return;
+    }
+    // Simulate job seeker signup logic
+    // Here you would typically send the form data to your backend API
+
+    signupData = {
+      username: form.value.fullName,
+      email: form.value.email,
+      password: form.value.password,
+      role: "JOB SEEKER",
+    };
+    // Simulate API call
+
     console.log("Job Seeker signup:", {
       fullName: form.value.fullName,
       email: form.value.email,
       password: form.value.password,
     });
   } else {
-    console.log("Company signup:", {
-      fullName: form.value.fullName,
+    // we can  create model
+
+    signupData = {
+      username: form.value.fullName,
       email: form.value.email,
       password: form.value.password,
+      role: "EMPLOYER",
+
       companyName: form.value.companyName,
       companySize: form.value.companySize,
       websiteUrl: form.value.websiteUrl,
+    };
+    console.log("Company signup:", {
+      fullName: signupData.username,
+      email: signupData.email,
+      role: signupData.role,
+      password: signupData.password,
+
+      // company relation
+
+      companyName: signupData.companyName,
+      companySize: signupData.companySize,
+      websiteUrl: signupData.websiteUrl,
     });
   }
   // Add logic for signup (e.g., API call) here
+
+  await axios
+    .post(`http://localhost:3000/auth/signup`, signupData)
+    .then((response) => {
+      console.log("Signup successful:", response.data);
+      // redirect to login
+
+      // Use Vue Router to redirect to login page
+      window.location.href = "/signin";
+    })
+    .catch((error) => {
+      console.error("Signup error:", error);
+    });
+
+  // Reset form after submission
+  form.value = {
+    fullName: "",
+    email: "",
+    password: "",
+    companyName: "",
+    companySize: "",
+    websiteUrl: "",
+  };
 }
 </script>
 
