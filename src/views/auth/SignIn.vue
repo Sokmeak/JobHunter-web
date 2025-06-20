@@ -59,7 +59,6 @@
                 class="btn btn-google w-100 mb-2 d-flex align-items-center justify-content-center gap-2"
               >
                 <i class="bi bi-google me-2"></i>
-
                 <span>Continue with Google</span>
               </button>
               <button
@@ -134,14 +133,15 @@
                 </label>
               </div>
 
-              <RouterLink
-                to="/applicant"
+              <button
                 type="submit"
                 class="btn btn-primary w-100 py-3 d-flex align-items-center justify-content-center"
+                :disabled="isLoading"
               >
-                <span>Sign In</span>
-                <i class="bi bi-box-arrow-in-right ms-2"></i>
-              </RouterLink>
+                <span v-if="!isLoading">Sign In</span>
+                <span v-else>Loading...</span>
+                <i class="bi bi-box-arrow-in-right ms-2" v-if="!isLoading"></i>
+              </button>
             </form>
 
             <p class="text-center mt-4 mb-0">
@@ -228,7 +228,7 @@
                 />
                 <img
                   src="https://logo.clearbit.com/digitalocean.com"
-                  alt="Amazon"
+                  alt="DigitalOcean"
                   class="company-logo"
                 />
               </div>
@@ -260,8 +260,10 @@
 
 <script setup>
 import PrimaryLogo from "@/components/sharecomponents/PrimaryLogo.vue";
-
 import { ref } from "vue";
+import { useRouter } from "vue-router";
+import axios from "axios";
+import { jwtDecode } from "jwt-decode";
 
 // Form data
 const form = ref({
@@ -276,19 +278,20 @@ const activeRole = ref("job-seeker");
 // Password visibility toggle
 const showPassword = ref(false);
 
+// Loading state for submit button
+const isLoading = ref(false);
+
+// Router instance
+const router = useRouter();
+
 // Set active role with animation
 function setActiveRole(role) {
-  // Only update if role is changing
   if (role !== activeRole.value) {
-    // Add transition class
     document.querySelector(".login-box").classList.add("fade-transition");
     document.querySelector(".info-content").classList.add("fade-transition");
 
-    // Set timeout to remove class after animation completes
     setTimeout(() => {
       activeRole.value = role;
-
-      // Set another timeout to remove transition class
       setTimeout(() => {
         document
           .querySelector(".login-box")
@@ -302,31 +305,88 @@ function setActiveRole(role) {
 }
 
 // Handle form submission
-function handleSubmit() {
-  console.log(`${activeRole.value} login:`, {
-    email: form.value.email,
-    password: form.value.password,
-    rememberMe: form.value.rememberMe,
-  });
-
-  // Add logic for login (e.g., API call) here
-
-  // Show success animation
+async function handleSubmit() {
+  isLoading.value = true;
   const loginButton = document.querySelector('button[type="submit"]');
-  loginButton.innerHTML = '<i class="bi bi-check-circle"></i> Success!';
-  loginButton.classList.add("btn-success");
 
-  // Reset after 2 seconds
-  setTimeout(() => {
-    loginButton.innerHTML =
-      '<span>Sign In</span><i class="bi bi-box-arrow-in-right ms-2"></i>';
-    loginButton.classList.remove("btn-success");
-  }, 2000);
+  try {
+    const response = await axios.post("http://localhost:3000/auth/login", {
+      email: form.value.email,
+      password: form.value.password,
+    });
+
+    // Store token and role in localStorage
+
+    // If rememberMe is checked, store additional user info
+    if (form.value.rememberMe) {
+      localStorage.setItem("user_email", form.value.email);
+    } else {
+      // Clear stored email if rememberMe is not checked
+      localStorage.removeItem("user_email");
+    }
+
+    // Show success animation
+    loginButton.innerHTML = '<i class="bi bi-check-circle"></i> Success!';
+    loginButton.classList.add("btn-success");
+
+    // Decode the JWT token to extract payload data
+    const decodedToken = jwtDecode(response.data.access_token);
+    const { id, email, role } = decodedToken;
+
+    console.log(decodedToken);
+
+    localStorage.setItem("access_token", response.data.access_token);
+    localStorage.setItem("user_role", role.type);
+
+    // use user id => company_id
+
+    // Fetch company by user ID
+    let companyId = null;
+    if (activeRole.value !== "job-seeker") {
+      const companyResponse = await axios.get(
+        `http://localhost:3000/company/dashboard`,
+        {
+          headers: {
+            Authorization: `Bearer ${response.data.access_token}`,
+          },
+        }
+      );
+      companyId = companyResponse.data.id;
+      localStorage.setItem("company_id", companyId);
+      console.log("Company_id:", companyId);
+    }
+
+    // Optionally store extracted data in localStorage or use directly
+    localStorage.setItem("user_id", id);
+    console.log("Decoded token data:", { id, email, role });
+
+    // Redirect based on role
+    setTimeout(() => {
+      if (role.type === "job-seeker") {
+        router.push("/applicant");
+      } else {
+        console.log("Company_id:");
+
+        router.push("/company");
+      }
+    }, 1000);
+  } catch (error) {
+    console.error("Login error:", error);
+    loginButton.innerHTML = '<i class="bi bi-exclamation-circle"></i> Error!';
+    loginButton.classList.add("btn-danger");
+
+    // Reset button after 2 seconds
+    setTimeout(() => {
+      loginButton.innerHTML =
+        '<span>Sign In</span><i class="bi bi-box-arrow-in-right ms-2"></i>';
+      loginButton.classList.remove("btn-danger");
+      isLoading.value = false;
+    }, 2000);
+  }
 }
 </script>
 
 <style scoped>
-/* Import Bootstrap CSS and icons */
 /* Import Bootstrap CSS and icons */
 :root {
   --primary-color: #4640de;
@@ -351,68 +411,8 @@ body {
 .company-logo {
   width: 90px;
   height: 30px;
-  object-fit: contain; /* Ensures logos scale without distortion */
+  object-fit: contain;
 }
-
-/* Animated background shapes */
-/* .shape {
-  position: absolute;
-  border-radius: 50%;
-  z-index: 0;
-  animation: float 15s infinite ease-in-out;
-}
-
-.shape-1 {
-  width: 300px;
-  height: 300px;
-  background: linear-gradient(
-    45deg,
-    var(--primary-subtle),
-    rgba(107, 103, 232, 0.1)
-  );
-  top: -100px;
-  right: -100px;
-  animation-delay: 0s;
-}
-
-.shape-2 {
-  width: 200px;
-  height: 200px;
-  background: linear-gradient(
-    45deg,
-    rgba(107, 103, 232, 0.1),
-    var(--primary-subtle)
-  );
-  bottom: 20%;
-  left: -100px;
-  animation-delay: -5s;
-}
-
-.shape-3 {
-  width: 150px;
-  height: 150px;
-  background: linear-gradient(
-    45deg,
-    rgba(107, 103, 232, 0.05),
-    var(--primary-subtle)
-  );
-  bottom: 10%;
-  right: 10%;
-  animation-delay: -10s;
-}
-
-.shape-4 {
-  width: 100px;
-  height: 100px;
-  background: linear-gradient(
-    45deg,
-    var(--primary-subtle),
-    rgba(107, 103, 232, 0.2)
-  );
-  top: 30%;
-  left: 20%;
-  animation-delay: -7s;
-} */
 
 @keyframes float {
   0% {
@@ -440,23 +440,6 @@ header {
   backdrop-filter: blur(10px);
 }
 
-.logo span {
-  background: linear-gradient(
-    45deg,
-    var(--primary-color),
-    var(--primary-light)
-  );
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-/* .role-toggle {
-  font-size: 0.95rem;
-  transition: all 0.3s ease;
-  font-weight: 500;
-} */
-
 .btn-primary {
   background-color: var(--primary-color);
   border-color: var(--primary-color);
@@ -465,7 +448,6 @@ header {
 
 .btn-primary:hover,
 .btn-primary:focus {
-  /* background-color: var(--primary-dark); */
   border-color: var(--primary-dark);
   box-shadow: 0 4px 8px rgba(70, 64, 222, 0.3);
   transform: translateY(-1px);
@@ -530,12 +512,6 @@ header {
 .btn-linkedin:hover {
   background-color: #f8f9fa;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-}
-
-.social-icon {
-  width: 24px;
-  height: 24px;
-  object-fit: contain;
 }
 
 .divider {
@@ -614,7 +590,6 @@ header {
   text-decoration: underline;
 }
 
-/* Info Content Styling */
 .info-content {
   padding: 20px;
 }
@@ -715,7 +690,6 @@ header {
   }
 }
 
-/* Animations */
 .slide-up {
   animation: slideUp 0.8s ease-out forwards;
 }
@@ -775,11 +749,15 @@ header {
   }
 }
 
-/* Success animation for login button */
 .btn-success {
   background-color: #22c55e;
   border-color: #22c55e;
   animation: successPulse 0.5s;
+}
+
+.btn-danger {
+  background-color: #ef4444;
+  border-color: #ef4444;
 }
 
 @keyframes successPulse {
@@ -794,7 +772,6 @@ header {
   }
 }
 
-/* Responsive styles */
 @media (max-width: 992px) {
   .login-box {
     padding: 30px;

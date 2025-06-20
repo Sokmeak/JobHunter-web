@@ -103,10 +103,10 @@
       </router-link>
     </div>
 
-    <!-- Profile at Bottom -->
+    <!-- Company Profile at Bottom -->
     <div
       class="sidebar-footer p-3 border-top mt-auto"
-      v-if="!isCollapsed && currentUser"
+      v-if="!isCollapsed && currentCompany"
     >
       <div class="dropdown w-100">
         <button
@@ -114,25 +114,25 @@
           data-bs-toggle="dropdown"
         >
           <img
-            :src="currentUser.avatar"
-            alt="User"
+            :src="currentCompany.logo || '/placeholder.svg'"
+            alt="Company Logo"
             class="rounded-circle me-2"
             style="width: 40px; height: 40px"
           />
           <div class="flex-grow-1 text-start">
             <div class="fw-medium text-dark text-truncate">
-              {{ currentUser.name }}
+              {{ currentCompany.hr_contact_name }}
               <i class="bi bi-caret-down-fill small ms-1"></i>
             </div>
             <div class="text-muted small text-truncate">
-              {{ currentUser.role }}
+              {{ "Admin" }}
             </div>
           </div>
         </button>
         <ul class="dropdown-menu">
           <li class="dropdown-header">
-            <div class="fw-medium">{{ currentUser.name }}</div>
-            <small class="text-muted">{{ currentUser.email }}</small>
+            <div class="fw-medium">{{ currentCompany.name }}</div>
+            <small class="text-muted">{{ currentCompany.website }}</small>
           </li>
           <li><hr class="dropdown-divider" /></li>
           <li>
@@ -146,7 +146,11 @@
             </router-link>
           </li>
           <li>
-            <a href="#" class="dropdown-item text-danger">
+            <a
+              href="#"
+              class="dropdown-item text-danger"
+              @click.prevent="logout"
+            >
               <i class="bi bi-box-arrow-right me-2"></i>Sign Out
             </a>
           </li>
@@ -157,12 +161,23 @@
 </template>
 
 <script setup>
-import { computed } from "vue";
-import { useAuthStore } from "@/stores/auth";
+import { computed, onMounted } from "vue";
+import { useAuthStore } from "@/stores/company/auth";
 import PrimaryLogo from "@/components/sharecomponents/PrimaryLogo.vue";
 
 const auth = useAuthStore();
-const currentUser = computed(() => auth.currentUser);
+const currentCompany = computed(() => auth.currentCompany);
+
+onMounted(() => {
+  if (auth.isAuthenticated && !auth.company) {
+    auth.fetchCompanyProfile();
+  }
+});
+
+function logout() {
+  auth.logout();
+  window.location.href = "/signin"; // Redirect after logout
+}
 
 defineProps({
   isCollapsed: {
@@ -173,6 +188,7 @@ defineProps({
 </script>
 
 <style scoped>
+/* Same style as before – unchanged */
 .sidebar {
   position: fixed;
   padding-left: 0.8rem;

@@ -4,6 +4,8 @@ import { ref } from "vue";
 export const useCompanyProfileStore = defineStore("companyProfileStore", () => {
   const companyData = ref({
     name: "Stripe",
+    hr_contact_name: "techcorp_admin",
+    hr_contact_email: "admin@gmail.com",
     logo: "/placeholder.svg?height=80&width=80",
     industry: "Technology",
     size: "1000+",

@@ -49,9 +49,19 @@ export default [
         path: "BrowseCompany",
         name: "ApplicantCompany",
         component: () => import("@/views/applicants/BrowseCompany.vue"),
+
         meta: { title: "Job Hunter - Browse Companies" },
         props: true,
       },
+      // a route for company details
+      {
+        path: "BrowseCom/:id",
+        name: "ApplicantCompany-Profile",
+        component: () => import("@/views/landing/CompanyProfile.vue"),
+        meta: { title: "Job Hunter - Companies Profile" },
+        props: true,
+      },
+
       {
         path: "profile",
         name: "Applicant-Profile",

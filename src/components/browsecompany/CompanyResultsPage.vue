@@ -131,7 +131,7 @@
     >
       <div v-for="company in companies" :key="company.id" class="company-item">
         <RecommendedCompanyCard
-          :context="'Landing'"
+          :context="context"
           :company="company"
           :view-mode="viewMode"
         />
@@ -184,6 +184,10 @@ const props = defineProps({
   hasMore: {
     type: Boolean,
     default: false,
+  },
+  context: {
+    type: String,
+    default: "Landing",
   },
   searchSuggestions: {
     type: Array,
