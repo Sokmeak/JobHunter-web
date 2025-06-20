@@ -376,6 +376,7 @@
 
 <script>
 import { ref, watch } from "vue";
+import axios from "axios";
 
 export default {
   name: "PostJobForm",
@@ -496,28 +497,38 @@ export default {
 
     const handleSubmit = async () => {
       // Save data to jobObject
+
+      // emit("submit");
       jobObject.value = { ...localJobData.value };
       console.log(
         "Job Data Submitted:",
         JSON.stringify(jobObject.value, null, 2)
       );
 
+      // Get token and company_id from localStorage
+      const token = localStorage.getItem("access_token");
+      console.log(token);
+
+      const companyId = localStorage.getItem("company_id");
+
+      if (!token) {
+        console.error("No access token found in localStorage");
+        return;
+      }
+      if (!companyId) {
+        console.error("No company_id found in localStorage");
+        return;
+      }
+
       // Transform frontend data to backend format
       const backendData = {
         title: localJobData.value.title,
         description: localJobData.value.description,
-        responsibility: localJobData.value.responsibilities
-          .filter((r) => r.trim())
-          .join(","),
-        qualification: [
-          ...(localJobData.value.education
-            ? [localJobData.value.education]
-            : []),
-          ...(localJobData.value.experience
-            ? [localJobData.value.experience]
-            : []),
-          ...localJobData.value.whoYouAre.filter((q) => q.trim()),
-        ].join(","),
+        responsibility: localJobData.value.responsibilities.filter((r) =>
+          r.trim()
+        ),
+
+        qualification: localJobData.value.education,
         job_type: localJobData.value.jobType,
         skill_required: localJobData.value.category,
         salary_range:
@@ -571,23 +582,26 @@ export default {
             ? "Flexible working hours."
             : undefined,
         },
-        company_id: localJobData.value.company_id || 1, // Default if not provided
-        created_by: localJobData.value.created_by || 1, // Default user ID
+        // company_id: companyId || 1, // Default if not provided
+        // created_by: userId || 1, // Default user ID
       };
 
       try {
-        const response = await fetch("http://localhost:3000/companies/jobs", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(backendData),
-        });
+        console.log("tokent in the try catch", token);
 
-        if (!response.ok) {
-          throw new Error("Failed to create job");
-        }
+        console.log(backendData);
 
-        const createdJob = await response.json();
-        console.log("Job created successfully:", createdJob);
+        const response = await axios.post(
+          "http://localhost:3000/companies/jobs",
+          backendData,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        console.log("Job created successfully:", response.data);
         emit("update-job", localJobData.value);
         emit("submit");
       } catch (error) {

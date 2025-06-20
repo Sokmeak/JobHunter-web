@@ -49,10 +49,12 @@ export const usePostJobStore = defineStore("postJob", {
     },
     submitJob() {
       // Your submit logic here
-      alert("Job posted successfully!");
+      // alert("Job posted successfully!");
+      alert("Redirecting to job listing ....");
       // If you want to redirect after submit:
       // const router = useRouter();
-      // router.push("/company/jobs");
+
+      window.location.href = "/company/job-listing";
     },
   },
 });

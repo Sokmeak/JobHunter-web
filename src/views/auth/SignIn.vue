@@ -344,7 +344,7 @@ async function handleSubmit() {
     let companyId = null;
     if (activeRole.value !== "job-seeker") {
       const companyResponse = await axios.get(
-        `http://localhost:3000/company/dashboard`,
+        `http://localhost:3000/companies/profile`,
         {
           headers: {
             Authorization: `Bearer ${response.data.access_token}`,
@@ -353,6 +353,7 @@ async function handleSubmit() {
       );
       companyId = companyResponse.data.id;
       localStorage.setItem("company_id", companyId);
+
       console.log("Company_id:", companyId);
     }
 
