@@ -30,7 +30,7 @@
             d="M14 6V4h-4v2h4zM4 8v11h16V8H4zm16-2c1.11 0 2 .89 2 2v11c0 1.11-.89 2-2 2H4c-1.11 0-2-.89-2-2V8c0-1.11.89-2 2-2h16z"
           />
         </svg>
-        {{ 10 }}
+        {{ company.jobs.length }}
         {{ company.applicant_applied === 1 ? "Job" : "Jobs" }}
       </div>
     </div>
@@ -40,7 +40,7 @@
       <h3 class="company-name">{{ company.name }}</h3>
 
       <div class="company-meta">
-        <span v-if="company.location" class="meta-item">
+        <span v-if="company.headquartersLocation" class="meta-item">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="16"
@@ -56,10 +56,10 @@
               d="M8 8a2 2 0 1 1 0-4 2 2 0 0 1 0 4m0 1a3 3 0 1 0 0-6 3 3 0 0 0 0 6"
             />
           </svg>
-          {{ company.location }}
+          {{ company.headquartersLocation }}
         </span>
 
-        <span v-if="company.size" class="meta-item">
+        <span v-if="company.employee_count" class="meta-item">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="16"
@@ -72,11 +72,11 @@
               d="M15 14s1 0 1-1-1-4-5-4-5 3-5 4 1 1 1 1zm-7.978-1L7 12.996c.001-.264.167-1.03.76-1.72C8.312 10.629 9.282 10 11 10c1.717 0 2.687.63 3.24 1.276.593.69.758 1.457.76 1.72l-.008.002-.014.002zM11 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4m3-2a3 3 0 1 1-6 0 3 3 0 0 1 6 0M6.936 9.28a6 6 0 0 0-1.23-.247A7 7 0 0 0 5 9c-4 0-5 3-5 4q0 1 1 1h4.216A2.24 2.24 0 0 1 5 13c0-1.01.377-2.042 1.09-2.904.243-.294.526-.569.846-.816M4.92 10A5.5 5.5 0 0 0 4 13H1c0-.26.164-1.03.76-1.724.545-.636 1.492-1.256 3.16-1.275ZM1.5 5.5a3 3 0 1 1 6 0 3 3 0 0 1-6 0m3-2a2 2 0 1 0 0 4 2 2 0 0 0 0-4"
             />
           </svg>
-          {{ company.size }}
+          {{ company.employee_count }}
         </span>
       </div>
 
-      <p class="company-description">{{ company.description }}</p>
+      <p class="company-description">{{ company.cultureDescription }}</p>
     </div>
 
     <!-- Tags -->
@@ -164,13 +164,6 @@ const getTagClass = (tag) => {
   return tagClasses[tag] || "tag-default";
 };
 
-const getDomainFromUrl = (url) => {
-  try {
-    return new URL(url).hostname.replace("www.", "");
-  } catch {
-    return url;
-  }
-};
 
 const viewDetails = () => {
   emit("view-details", props.company);

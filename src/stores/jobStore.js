@@ -5,11 +5,22 @@ import axios from "axios";
 
 const API_BASE_URL = "http://localhost:3000/jobhunter-system";
 
-// Mock API functions
 const mockApi = {
-  async fetchJobs() {
-    const response = await axios.get(`${API_BASE_URL}/all-jobs`);
-    return response.data;
+  async fetchJobs(page = 1, limit = 30, searchkeyparam = "", location = "") {
+    const response = await axios.get(`${API_BASE_URL}/all-jobs`, {
+      params: { page, limit, searchkeyparam, location },
+    });
+    return response.data; // Returns { jobs: Job[], total: number }
+  },
+  async fetchJobById(id) {
+    const response = await axios.get(`${API_BASE_URL}/jobs/${id}`);
+    return response.data; // Returns Job
+  },
+  async fetchSimilarJobs(id, limit = 5) {
+    const response = await axios.get(`${API_BASE_URL}/jobs/${id}/similar`, {
+      params: { limit },
+    });
+    return response.data; // Returns { jobs: Job[], total: number }
   },
   async fetchFilterOptions() {
     await new Promise((resolve) =>
@@ -65,6 +76,7 @@ export const useJobStore = defineStore("jobStore", () => {
   const currentPage = ref(1);
   const itemsPerPage = ref(6);
   const jobs = ref([]);
+  const totalJobs = ref(0);
   const employmentTypes = ref([]);
   const categories = ref([]);
   const jobLevels = ref([]);
@@ -73,7 +85,6 @@ export const useJobStore = defineStore("jobStore", () => {
   const error = ref(null);
 
   // Computed properties
-  const totalJobs = computed(() => applyFilters(jobs.value).length);
   const totalPages = computed(() =>
     Math.max(1, Math.ceil(totalJobs.value / itemsPerPage.value))
   );
@@ -104,42 +115,23 @@ export const useJobStore = defineStore("jobStore", () => {
     const { employmentTypes, categories, jobLevels, salaryRanges } =
       selectedFilters.value;
 
-    // Apply search filters
-    if (keyword || location) {
-      results = results.filter((job) => {
-        const matchesKeyword = keyword
-          ? job.title.toLowerCase().includes(keyword) ||
-            job.tags.some((tag) => tag.toLowerCase().includes(keyword))
-          : true;
-        const matchesLocation = location
-          ? job.location
-              .split(",")[0]
-              .trim()
-              .toLowerCase()
-              .replace(/\s+/g, "-") === location
-          : true;
-        return matchesKeyword && matchesLocation;
-      });
-    }
-
-    // Apply sidebar filters
     if (employmentTypes.length > 0) {
       results = results.filter((job) =>
         employmentTypes
           .map((type) => type.toLowerCase())
-          .includes(job.job_type.toLowerCase())
+          .includes(job.job_type?.toLowerCase())
       );
     }
 
     if (categories.length > 0) {
       results = results.filter((job) =>
-        job.tags.some((tag) => categories.includes(tag.toLowerCase()))
+        job.tags?.some((tag) => categories.includes(tag.toLowerCase()))
       );
     }
 
     if (jobLevels.length > 0) {
       results = results.filter((job) =>
-        jobLevels.includes(job.level.toLowerCase())
+        jobLevels.includes(job.level?.toLowerCase())
       );
     }
 
@@ -151,7 +143,8 @@ export const useJobStore = defineStore("jobStore", () => {
         range4: { min: 3000, max: Infinity },
       };
       results = results.filter((job) => {
-        const salaryRange = job.salary_range.replace(/[^0-9-]/g, "");
+        const salaryRange = job.salary_range?.replace(/[^0-9-]/g, "");
+        if (!salaryRange) return false;
         if (salaryRange.includes("or above")) {
           const minSalary = Number(salaryRange.replace(" or above", ""));
           return salaryRanges.some((range) => {
@@ -178,47 +171,32 @@ export const useJobStore = defineStore("jobStore", () => {
     isLoading.value = true;
     error.value = null;
     try {
-      // Ensure companies are fetched and use the result
       let companies = companyStore.companies || [];
       if (!companies.length) {
         companies = await companyStore.fetchCompanies();
-        // Update store if fetchCompanies doesn't automatically do so
         if (!companyStore.companies?.length && Array.isArray(companies)) {
-          companyStore.companies = companies; // Ensure store is updated
+          companyStore.companies = companies;
         }
       }
 
-      const response = await mockApi.fetchJobs();
-      console.log("Raw API response:", response); // Log raw response
-      let data = response;
+      const response = await mockApi.fetchJobs(
+        currentPage.value,
+        itemsPerPage.value,
+        searchQuery.value.keyword,
+        searchQuery.value.location
+      );
+      console.log("Raw API response:", response);
+      const { jobs: jobData, total } = response;
 
-      // Handle common API response formats
-      if (data && typeof data === "object") {
-        if (Array.isArray(data.jobs)) {
-          data = data.jobs;
-        } else if (Array.isArray(data.data)) {
-          data = data.data;
-        } else if (Array.isArray(data.results)) {
-          data = data.results;
-        }
-      }
-
-      // Validate that data is an array
-      if (!Array.isArray(data)) {
-        console.error("Invalid API response structure:", data);
+      if (!Array.isArray(jobData)) {
+        console.error("Invalid API response structure:", jobData);
         throw new Error(
-          `API response is not an array. Received: ${typeof data}`
+          `API response is not an array. Received: ${typeof jobData}`
         );
       }
 
-      // Use local companies variable to avoid reactivity issues
-      jobs.value = data.map((job) => {
+      jobs.value = jobData.map((job) => {
         const company = companies.find((c) => c.id === job.company_id);
-        if (!company) {
-          console.warn(
-            `No company found for job ${job.id} with company_id ${job.company_id}`
-          );
-        }
         return {
           ...job,
           companyName: company ? company.name : "Unknown Company",
@@ -226,10 +204,12 @@ export const useJobStore = defineStore("jobStore", () => {
           companyLocation: company ? company.location : null,
         };
       });
-      console.log("Mapped jobs:", jobs.value); // Log mapped jobs
+      totalJobs.value = total;
+      console.log("Mapped jobs:", jobs.value);
     } catch (err) {
       error.value = err.message || "Failed to fetch jobs";
       jobs.value = [];
+      totalJobs.value = 0;
       console.error("Fetch error:", err);
     } finally {
       isLoading.value = false;
@@ -247,6 +227,7 @@ export const useJobStore = defineStore("jobStore", () => {
       salaryRanges.value = data.salaryRanges;
     } catch (err) {
       error.value = err.message || "Failed to fetch filter options";
+      console.error("Fetch error:", err);
     } finally {
       isLoading.value = false;
     }
@@ -260,28 +241,18 @@ export const useJobStore = defineStore("jobStore", () => {
       if (!companyStore.companies || companyStore.companies.length === 0) {
         await companyStore.fetchCompanies();
       }
-      const response = await mockApi.fetchJobs();
+      const response = await mockApi.fetchJobs(1, 30);
       console.log("Raw API response (high demand):", response);
-      let data = response;
+      const { jobs: jobData } = response;
 
-      if (data && typeof data === "object") {
-        if (Array.isArray(data.jobs)) {
-          data = data.jobs;
-        } else if (Array.isArray(data.data)) {
-          data = data.data;
-        } else if (Array.isArray(data.results)) {
-          data = data.results;
-        }
-      }
-
-      if (!Array.isArray(data)) {
-        console.error("Invalid API response structure:", data);
+      if (!Array.isArray(jobData)) {
+        console.error("Invalid API response structure:", jobData);
         throw new Error(
-          `API response is not an array. Received: ${typeof data}`
+          `API response is not an array. Received: ${typeof jobData}`
         );
       }
 
-      highDemandJobs.value = data
+      highDemandJobs.value = jobData
         .filter((job) => job.applicant_applied > 5)
         .map((job) => {
           const company = Array.isArray(companyStore.companies)
@@ -310,28 +281,18 @@ export const useJobStore = defineStore("jobStore", () => {
       if (!companyStore.companies || companyStore.companies.length === 0) {
         await companyStore.fetchCompanies();
       }
-      const response = await mockApi.fetchJobs();
+      const response = await mockApi.fetchJobs(1, 30);
       console.log("Raw API response (latest):", response);
-      let data = response;
+      const { jobs: jobData } = response;
 
-      if (data && typeof data === "object") {
-        if (Array.isArray(data.jobs)) {
-          data = data.jobs;
-        } else if (Array.isArray(data.data)) {
-          data = data.data;
-        } else if (Array.isArray(data.results)) {
-          data = data.results;
-        }
-      }
-
-      if (!Array.isArray(data)) {
-        console.error("Invalid API response structure:", data);
+      if (!Array.isArray(jobData)) {
+        console.error("Invalid API response structure:", jobData);
         throw new Error(
-          `API response is not an array. Received: ${typeof data}`
+          `API response is not an array. Received: ${typeof jobData}`
         );
       }
 
-      const sortedJobs = [...data].sort(
+      const sortedJobs = [...jobData].sort(
         (a, b) => new Date(b.posted_at) - new Date(a.posted_at)
       );
       latestJobs.value = sortedJobs.slice(0, 4).map((job) => {
@@ -348,6 +309,45 @@ export const useJobStore = defineStore("jobStore", () => {
       error.value = err.message || "Failed to fetch latest jobs";
       latestJobs.value = [];
       console.error("Fetch error:", err);
+    } finally {
+      isLoading.value = false;
+    }
+  }
+
+  async function fetchSimilarJobs(jobId) {
+    const companyStore = useCompanyStore();
+    isLoading.value = true;
+    error.value = null;
+    try {
+      if (!companyStore.companies || companyStore.companies.length === 0) {
+        await companyStore.fetchCompanies();
+      }
+      const response = await mockApi.fetchSimilarJobs(jobId, 5);
+      console.log("Raw API response (similar jobs):", response);
+      const { jobs: jobData } = response;
+
+      if (!Array.isArray(jobData)) {
+        console.error("Invalid API response structure:", jobData);
+        throw new Error(
+          `API response is not an array. Received: ${typeof jobData}`
+        );
+      }
+
+      return jobData.map((job) => {
+        const company = Array.isArray(companyStore.companies)
+          ? companyStore.companies.find((c) => c.id === job.company_id)
+          : null;
+        return {
+          ...job,
+          companyName: company ? company.name : "Unknown Company",
+          companyLogo: company ? company.logo : null,
+          companyLocation: company ? company.location : null,
+        };
+      });
+    } catch (err) {
+      error.value = err.message || "Failed to fetch similar jobs";
+      console.error("Fetch error:", err);
+      return [];
     } finally {
       isLoading.value = false;
     }
@@ -390,9 +390,9 @@ export const useJobStore = defineStore("jobStore", () => {
   function updateUrl() {
     const url = new URL(window.location);
     if (searchQuery.value.keyword) {
-      url.searchParams.set("keyword", searchQuery.value.keyword);
+      url.searchParams.set("searchkeyparam", searchQuery.value.keyword);
     } else {
-      url.searchParams.delete("keyword");
+      url.searchParams.delete("searchkeyparam");
     }
     if (searchQuery.value.location) {
       url.searchParams.set("location", searchQuery.value.location);
@@ -405,15 +405,41 @@ export const useJobStore = defineStore("jobStore", () => {
   function initializeFromUrl() {
     const url = new URL(window.location);
     searchQuery.value = {
-      keyword: url.searchParams.get("keyword") || "",
+      keyword: url.searchParams.get("searchkeyparam") || "",
       location: url.searchParams.get("location") || "",
     };
   }
 
   // Getters
-  const getJobById = (id) => {
-    return jobs.value.find((job) => job.id === id);
+  const getJobById = async (id) => {
+    isLoading.value = true;
+    error.value = null;
+    try {
+      const job = await mockApi.fetchJobById(id);
+      const companyStore = useCompanyStore();
+      let companies = companyStore.companies || [];
+      if (!companies.length) {
+        companies = await companyStore.fetchCompanies();
+        if (!companyStore.companies?.length && Array.isArray(companies)) {
+          companyStore.companies = companies;
+        }
+      }
+      const company = companies.find((c) => c.id === job.company_id);
+      return {
+        ...job,
+        companyName: company ? company.name : "Unknown Company",
+        companyLogo: company ? company.logo : null,
+        companyLocation: company ? company.location : null,
+      };
+    } catch (err) {
+      error.value = err.message || "Failed to fetch job";
+      console.error("Fetch job error:", err);
+      return null;
+    } finally {
+      isLoading.value = false;
+    }
   };
+
   const getAllJobs = () => {
     return jobs.value;
   };
@@ -449,5 +475,6 @@ export const useJobStore = defineStore("jobStore", () => {
     getAllJobs,
     fetchHighDemandHighSalaryJobs,
     fetchLatestJobs,
+    fetchSimilarJobs,
   };
 });
