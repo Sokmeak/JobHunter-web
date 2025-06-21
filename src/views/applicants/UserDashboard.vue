@@ -92,6 +92,7 @@ export default {
     const userProfileStore = useUserProfileStore();
     const applicationStore = useApplicationStore();
     const router = useRouter();
+    const router = useRouter();
 
     const saveToStorage = (key, data) => {
       try {
@@ -115,6 +116,7 @@ export default {
       start: "15 May 2025",
       end: "30 May 2025",
     });
+    });
     const recentApplications = ref([]);
     const applicationStatus = ref([
       { name: "Loading", value: 0, color: "#e5e7eb" },
@@ -135,6 +137,7 @@ export default {
       );
     });
 
+    const totalJobsApplied = computed(() => userApplications.value.length);
     const totalJobsApplied = computed(() => userApplications.value.length);
 
     const interviewedCount = computed(() =>
@@ -216,11 +219,13 @@ export default {
             value: statusData.hired || 0,
             color: "#4640DE",
             percentage: statusData.percentage?.hired || 0,
+            percentage: statusData.percentage?.hired || 0,
           },
           {
             name: "Interviewed",
             value: statusData.interviewed || 0,
             color: "#E9EBFD",
+            percentage: statusData.percentage?.interviewed || 0,
             percentage: statusData.percentage?.interviewed || 0,
           },
         ];
