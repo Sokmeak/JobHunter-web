@@ -1,40 +1,44 @@
 <template>
   <div class="d-flex">
     <div class="container py-4">
+      <!-- Loading State -->
+      <div v-if="userProfileStore.loading" class="text-center">
+        <p>Loading profile...</p>
+      </div>
       <!-- Error State -->
-      <div v-if="userProfileStore.error" class="alert alert-danger">
+      <div v-else-if="userProfileStore.error" class="alert alert-danger">
         {{ userProfileStore.error }}
       </div>
       <!-- Profile Data -->
-      <div v-if="userProfileStore.selectedProfile" class="row">
+      <div v-else-if="userProfileStore.selectedProfile" class="row">
         <div class="col-md-8">
           <profile-header
             :profile="userProfileStore.selectedProfile"
             @update-profile="updateProfile"
           />
-          <about-me :about="userProfileStore.selectedProfile.about" />
+          <about-me :about="userProfileStore.selectedProfile.bio || ''" />
           <experience-section
-            :experiences="userProfileStore.selectedProfile.experiences"
-            :more-count="userProfileStore.selectedProfile.moreExperiences"
+            :experiences="userProfileStore.selectedProfile.workExperience || []"
+            :more-count="3"
             @add-experience="handleAddExperience"
             @update-experience="handleUpdateExperience"
             @delete-experience="handleDeleteExperience"
           />
           <education-section
-            :education="userProfileStore.selectedProfile.education"
+            :education="userProfileStore.selectedProfile.educationHistory || []"
             @add-education="handleAddEducation"
             @update-education="handleUpdateEducation"
             @delete-education="handleDeleteEducation"
           />
           <skills-section
-            :skills="userProfileStore.selectedProfile.skills"
+            :skills="userProfileStore.selectedProfile.skillTags || []"
             @add-skill="handleAddSkill"
             @remove-skill="handleRemoveSkill"
           />
           <portfolio-section
-            :portfolios="userProfileStore.selectedProfile.portfolios"
+            :portfolios="userProfileStore.selectedProfile.portfolios || []"
             @add-portfolio="handleAddPortfolio"
-            @edit-portfolio="handleEditPortfolio"
+            @update-portfolio="handleUpdatePortfolio"
             @delete-portfolio="handleDeletePortfolio"
           />
         </div>
@@ -42,14 +46,14 @@
           <additional-details
             :email="userProfileStore.selectedProfile.email || 'Not specified'"
             :phone="userProfileStore.selectedProfile.phone || 'Not specified'"
-            :languages="userProfileStore.selectedProfile.languages || 'Not specified'"
+            :languages="userProfileStore.selectedProfile.languages || []"
             @update-email="handleUpdateEmail"
             @update-phone="handleUpdatePhone"
             @update-languages="handleUpdateLanguages"
           />
           <social-links
-            :social-links="userProfileStore.selectedProfile.socialLinks"
-            @save-social-links="handleSocialLinksSave"
+            :social-links="userProfileStore.selectedProfile.socialLinks || []"
+            @save-social-links="handleSaveSocialLinks"
           />
         </div>
       </div>
@@ -68,8 +72,8 @@ import AboutMe from "@/components/Applicants/Profile/AboutMe.vue";
 import ExperienceSection from "@/components/Applicants/Profile/ExperienceSection.vue";
 import EducationSection from "@/components/Applicants/Profile/EducationSection.vue";
 import SkillsSection from "@/components/Applicants/Profile/SkillsSection.vue";
-import PortfolioSection from "@/components/Applicants/Profile/PortfolioSection.vue";
 import AdditionalDetails from "@/components/Applicants/Profile/AdditionalDetails.vue";
+import PortfolioSection from "@/components/Applicants/Profile/PortfolioSection.vue";
 import SocialLinks from "@/components/Applicants/Profile/SocialLinks.vue";
 import { useUserProfileStore } from "@/stores/ApplicantStore/userProfile";
 
@@ -81,8 +85,8 @@ export default {
     ExperienceSection,
     EducationSection,
     SkillsSection,
-    PortfolioSection,
     AdditionalDetails,
+    PortfolioSection,
     SocialLinks,
   },
   setup() {
@@ -90,20 +94,16 @@ export default {
 
     // Fetch profile data on mount
     onMounted(async () => {
-      if (!userProfileStore.userProfiles.length) {
-        await userProfileStore.fetchAllProfiles();
-      }
       if (!userProfileStore.selectedProfile) {
-        await userProfileStore.fetchProfileByUserId(userProfileStore.defaultUserId);
+        await userProfileStore.fetchProfile();
       }
       console.log("Mounted - Selected Profile:", userProfileStore.selectedProfile);
-      $emit("update-page-title", "My Public Profile");
     });
 
     // Methods
     const updateProfile = async (updatedProfile) => {
       try {
-        await userProfileStore.updateProfile(userProfileStore.selectedProfile.userId, updatedProfile);
+        await userProfileStore.updateProfile(updatedProfile);
       } catch (error) {
         console.error("Failed to update profile:", error);
       }
@@ -111,7 +111,7 @@ export default {
 
     const handleUpdateEmail = async (email) => {
       try {
-        await userProfileStore.updateProfile(userProfileStore.selectedProfile.userId, { email });
+        await userProfileStore.updateProfile({ email });
       } catch (error) {
         console.error("Failed to update email:", error);
       }
@@ -119,7 +119,7 @@ export default {
 
     const handleUpdatePhone = async (phone) => {
       try {
-        await userProfileStore.updateProfile(userProfileStore.selectedProfile.userId, { phone });
+        await userProfileStore.updateProfile({ phone });
       } catch (error) {
         console.error("Failed to update phone:", error);
       }
@@ -127,7 +127,7 @@ export default {
 
     const handleUpdateLanguages = async (languages) => {
       try {
-        await userProfileStore.updateProfile(userProfileStore.selectedProfile.userId, { languages });
+        await userProfileStore.updateProfile({ languages });
       } catch (error) {
         console.error("Failed to update languages:", error);
       }
@@ -135,7 +135,7 @@ export default {
 
     const handleAddEducation = async (educationData) => {
       try {
-        await userProfileStore.addEducation(userProfileStore.selectedProfile.userId, educationData);
+        await userProfileStore.addEducation(educationData);
       } catch (error) {
         console.error("Failed to add education:", error);
       }
@@ -143,7 +143,7 @@ export default {
 
     const handleUpdateEducation = async (index, educationData) => {
       try {
-        await userProfileStore.updateEducation(userProfileStore.selectedProfile.userId, index, educationData);
+        await userProfileStore.updateEducation(index, educationData);
       } catch (error) {
         console.error("Failed to update education:", error);
       }
@@ -151,7 +151,7 @@ export default {
 
     const handleDeleteEducation = async (index) => {
       try {
-        await userProfileStore.deleteEducation(userProfileStore.selectedProfile.userId, index);
+        await userProfileStore.deleteEducation(index);
       } catch (error) {
         console.error("Failed to delete education:", error);
       }
@@ -159,7 +159,7 @@ export default {
 
     const handleAddSkill = async (skill) => {
       try {
-        await userProfileStore.addSkill(userProfileStore.selectedProfile.userId, skill);
+        await userProfileStore.addSkill({ skill });
       } catch (error) {
         console.error("Failed to add skill:", error);
       }
@@ -167,7 +167,7 @@ export default {
 
     const handleRemoveSkill = async (index) => {
       try {
-        await userProfileStore.removeSkill(userProfileStore.selectedProfile.userId, index);
+        await userProfileStore.removeSkill(index);
       } catch (error) {
         console.error("Failed to remove skill:", error);
       }
@@ -175,31 +175,31 @@ export default {
 
     const handleAddPortfolio = async (portfolioData) => {
       try {
-        await userProfileStore.addPortfolio(userProfileStore.selectedProfile.userId, portfolioData);
+        await userProfileStore.addPortfolio(portfolioData);
       } catch (error) {
         console.error("Failed to add portfolio:", error);
       }
     };
 
-    const handleEditPortfolio = async (index, portfolioData) => {
+    const handleUpdatePortfolio = async (index, portfolioData) => {
       try {
-        await userProfileStore.editPortfolio(userProfileStore.selectedProfile.userId, index, portfolioData);
+        await userProfileStore.updatePortfolio(index, portfolioData);
       } catch (error) {
-        console.error("Failed to edit portfolio:", error);
+        console.error("Failed to update portfolio:", error);
       }
     };
 
     const handleDeletePortfolio = async (index) => {
       try {
-        await userProfileStore.deletePortfolio(userProfileStore.selectedProfile.userId, index);
+        await userProfileStore.deletePortfolio(index);
       } catch (error) {
         console.error("Failed to delete portfolio:", error);
       }
     };
 
-    const handleSocialLinksSave = async (updatedLinks) => {
+    const handleSaveSocialLinks = async (socialLinks) => {
       try {
-        await userProfileStore.saveSocialLinks(userProfileStore.selectedProfile.userId, updatedLinks);
+        await userProfileStore.saveSocialLinks(socialLinks);
       } catch (error) {
         console.error("Failed to save social links:", error);
       }
@@ -207,7 +207,7 @@ export default {
 
     const handleAddExperience = async (experienceData) => {
       try {
-        await userProfileStore.addExperience(userProfileStore.selectedProfile.userId, experienceData);
+        await userProfileStore.addExperience(experienceData);
       } catch (error) {
         console.error("Failed to add experience:", error);
       }
@@ -215,7 +215,7 @@ export default {
 
     const handleUpdateExperience = async (index, experienceData) => {
       try {
-        await userProfileStore.updateExperience(userProfileStore.selectedProfile.userId, index, experienceData);
+        await userProfileStore.updateExperience(index, experienceData);
       } catch (error) {
         console.error("Failed to update experience:", error);
       }
@@ -223,7 +223,7 @@ export default {
 
     const handleDeleteExperience = async (index) => {
       try {
-        await userProfileStore.deleteExperience(userProfileStore.selectedProfile.userId, index);
+        await userProfileStore.deleteExperience(index);
       } catch (error) {
         console.error("Failed to delete experience:", error);
       }
@@ -241,9 +241,9 @@ export default {
       handleAddSkill,
       handleRemoveSkill,
       handleAddPortfolio,
-      handleEditPortfolio,
+      handleUpdatePortfolio,
       handleDeletePortfolio,
-      handleSocialLinksSave,
+      handleSaveSocialLinks,
       handleAddExperience,
       handleUpdateExperience,
       handleDeleteExperience,
@@ -281,7 +281,6 @@ export default {
   color: #6366f1 !important;
 }
 
-/* Responsive adjustments */
 @media (max-width: 768px) {
   .container {
     padding-left: 16px;

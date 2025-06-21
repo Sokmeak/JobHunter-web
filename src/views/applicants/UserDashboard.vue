@@ -3,24 +3,18 @@
     <div class="container py-2">
       <div class="container-fluid py-1">
         <!-- Loading and Error States -->
-        <div
-          v-if="applicationStore.loading || userProfileStore.loading"
-          class="text-center"
-        >
+        <div v-if="isLoading" class="text-center">
           <p>Loading dashboard...</p>
         </div>
-        <div
-          v-else-if="applicationStore.error || userProfileStore.error"
-          class="alert alert-danger"
-        >
-          {{ applicationStore.error || userProfileStore.error }}
+        <div v-else-if="errorMessage" class="alert alert-danger">
+          {{ errorMessage }}
         </div>
         <div v-else>
           <!-- Greeting Section -->
           <GreetingSection
             :user-name="selectedProfile?.name || 'User'"
             :date-range="dateRange"
-            @dateRangeChanged="handleDateRangeChange"
+            @date-range-changed="handleDateRangeChange"
           />
 
           <div class="row mt-1">
@@ -78,6 +72,7 @@ import UpcomingInterviews from "@/components/Applicants/dashboard/UpcomingInterv
 import RecentApplications from "@/components/Applicants/dashboard/RecentApplications.vue";
 import { useUserProfileStore } from "@/stores/ApplicantStore/userProfile";
 import { useApplicationStore } from "@/stores/ApplicantStore/Applications";
+import { useRouter } from "vue-router";
 
 export default {
   name: "UserDashboard",
@@ -89,11 +84,33 @@ export default {
     RecentApplications,
   },
   setup() {
-    // Use Pinia stores
+    const STORAGE_KEYS = {
+      DATE_RANGE: "dashboard_date_range_v1",
+      DASHBOARD_STATE: "dashboard_state_v1",
+    };
+
     const userProfileStore = useUserProfileStore();
     const applicationStore = useApplicationStore();
+    const router = useRouter();
 
-    // Reactive state
+    const saveToStorage = (key, data) => {
+      try {
+        localStorage.setItem(key, JSON.stringify(data));
+      } catch (error) {
+        console.error(`Error saving ${key} to localStorage:`, error);
+      }
+    };
+
+    const loadFromStorage = (key, defaultValue = null) => {
+      try {
+        const stored = localStorage.getItem(key);
+        return stored ? JSON.parse(stored) : defaultValue;
+      } catch (error) {
+        console.error(`Error loading ${key} from localStorage:`, error);
+        return defaultValue;
+      }
+    };
+
     const dateRange = ref({
       start: "15 May 2025",
       end: "30 May 2025",
@@ -103,58 +120,58 @@ export default {
       { name: "Loading", value: 0, color: "#e5e7eb" },
     ]);
     const upcomingInterviews = ref([]);
-    const selectedUserId = ref(userProfileStore.defaultUserId);
+    const errorMessage = ref(null);
 
-    // Computed properties
-    const userProfiles = computed(() => userProfileStore.userProfiles);
-    const selectedProfile = computed(() => userProfileStore.selectedProfile);
-
-    const userApplications = computed(() =>
-      applicationStore.applications.filter(
-        (app) => app.userId === selectedUserId.value
-      )
+    const isLoading = computed(() => 
+      applicationStore.loading || userProfileStore.loading
     );
 
-    const totalJobsApplied = ref(0);
-    const interviewedCount = ref(0);
+    const selectedProfile = computed(() => userProfileStore.selectedProfile);
 
-    // Derive upcoming interviews from application timelines
+    const userApplications = computed(() => {
+      if (!selectedProfile.value?.userId) return applicationStore.applications;
+      return applicationStore.applications.filter(
+        (app) => app.userId === selectedProfile.value.userId
+      );
+    });
+
+    const totalJobsApplied = computed(() => userApplications.value.length);
+
+    const interviewedCount = computed(() =>
+      userApplications.value.filter((app) => app.status === "Interviewing").length
+    );
+
     const computeUpcomingInterviews = () => {
       const interviews = [];
       userApplications.value.forEach((app) => {
-        const interviewSteps = app.timeline.filter(
+        const interviewSteps = (app.timeline || []).filter(
           (step) =>
             !step.completed &&
-            ["Phone Screening", "Technical Interview", "Interview"].includes(
-              step.title
-            )
+            ["Phone Screening", "Technical Interview", "Interview"].includes(step.title)
         );
+        
         interviewSteps.forEach((step) => {
           interviews.push({
             id: app.id,
             time: step.date !== "Pending" ? step.date : "TBD",
-            name: app.recruiter.name,
-            position: `${app.recruiter.role} at ${app.companyName}`,
-            avatar: app.recruiter.avatar,
+            name: app.recruiter?.name || "Unknown",
+            position: `${app.recruiter?.role || "Recruiter"} at ${app.companyName || "Unknown"}`,
+            avatar: app.recruiter?.avatar || null,
             date: step.date !== "Pending" ? step.date : null,
           });
         });
       });
-      return interviews.slice(0, 5); // Limit to 5 upcoming interviews
+      return interviews.slice(0, 5);
     };
 
-    // Watchers
     watch(
       dateRange,
-      () => {
+      (newDateRange) => {
+        saveToStorage(STORAGE_KEYS.DATE_RANGE, newDateRange);
         loadDashboardData();
       },
       { deep: true }
     );
-
-    watch(selectedUserId, () => {
-      loadDashboardData();
-    });
 
     watch(
       () => applicationStore.applications,
@@ -164,106 +181,76 @@ export default {
       { deep: true }
     );
 
-    // Load dashboard data
+    const saveDashboardState = () => {
+      const dashboardState = {
+        totalJobsApplied: totalJobsApplied.value,
+        interviewedCount: interviewedCount.value,
+        applicationStatus: applicationStatus.value,
+        lastUpdated: new Date().toISOString(),
+      };
+      saveToStorage(STORAGE_KEYS.DASHBOARD_STATE, dashboardState);
+    };
+
     const loadDashboardData = async () => {
       try {
-        // Fetch profiles if not loaded
-        if (!userProfiles.value.length) {
-          await userProfileStore.fetchAllProfiles();
+        errorMessage.value = null;
+
+        if (!selectedProfile.value) {
+          await userProfileStore.fetchProfile();
         }
 
-        // Fetch profile for selected user
-        if (
-          !selectedProfile.value ||
-          selectedProfile.value.userId !== selectedUserId.value
-        ) {
-          await userProfileStore.fetchProfileByUserId(selectedUserId.value);
-        }
-
-        // Fetch applications if not loaded
         if (!applicationStore.applications.length) {
           await applicationStore.fetchApplications();
         }
 
-        // Filter applications by date range
         recentApplications.value = applicationStore
-          .getApplicationsInDateRange(
-            dateRange.value.start,
-            dateRange.value.end
-          )
+          .getApplicationsInDateRange(dateRange.value.start, dateRange.value.end)
           .slice(0, 3);
 
-        // Update total jobs applied and interviewed count
-        totalJobsApplied.value = applicationStore.getApplicationsInDateRange(
-          dateRange.value.start,
-          dateRange.value.end
-        ).length;
-
-        interviewedCount.value = applicationStore
-          .getApplicationsInDateRange(
-            dateRange.value.start,
-            dateRange.value.end
-          )
-          .filter((app) => ["Interviewing"].includes(app.status)).length;
-
-        // Update upcoming interviews
         upcomingInterviews.value = computeUpcomingInterviews();
 
-        // Get status counts for chart
         const statusData = applicationStore.getStatusCounts();
-        const chartData = [
+        applicationStatus.value = [
           {
             name: "Hired",
             value: statusData.hired || 0,
             color: "#4640DE",
-            percentage: statusData.percentage.hired || 0,
+            percentage: statusData.percentage?.hired || 0,
           },
           {
             name: "Interviewed",
             value: statusData.interviewed || 0,
             color: "#E9EBFD",
-            percentage: statusData.percentage.interviewed || 0,
+            percentage: statusData.percentage?.interviewed || 0,
           },
         ];
-        applicationStatus.value = chartData;
+
+        saveDashboardState();
       } catch (err) {
         console.error("Error loading dashboard data:", err);
-        applicationStore.error = "Failed to load dashboard data";
+        errorMessage.value = "Failed to load dashboard data";
       }
     };
 
-    // Handle date range changes
     const handleDateRangeChange = (newDateRange) => {
-      applicationStore.updateDateRange(newDateRange);
-      dateRange.value = { ...newDateRange };
+      if (newDateRange?.start && newDateRange?.end) {
+        applicationStore.updateDateRange(newDateRange);
+        dateRange.value = { ...newDateRange };
+      }
     };
 
-    // Handle user profile change
-    const handleUserChange = async (userId) => {
-      selectedUserId.value = userId;
-      await userProfileStore.fetchProfileByUserId(userId);
-      loadDashboardData();
-    };
-
-    // Clear stored data
-    const clearStoredData = () => {
-      selectedUserId.value = userProfileStore.defaultUserId;
-      applicationStore.init();
-      userProfileStore.init();
-      loadDashboardData();
-    };
-
-    // Initialize on mount
     onMounted(async () => {
+      const storedDateRange = loadFromStorage(STORAGE_KEYS.DATE_RANGE);
+      if (storedDateRange?.start && storedDateRange?.end) {
+        dateRange.value = storedDateRange;
+      }
       await loadDashboardData();
     });
 
     return {
       userProfileStore,
       applicationStore,
-      userProfiles,
       selectedProfile,
-      selectedUserId,
       dateRange,
       applicationStatus,
       upcomingInterviews,
@@ -272,30 +259,53 @@ export default {
       interviewedCount,
       loadDashboardData,
       handleDateRangeChange,
-      handleUserChange,
-      clearStoredData,
+      errorMessage,
+      isLoading,
     };
   },
   methods: {
     async handleViewApplication(application) {
-      await this.applicationStore.fetchApplicationById(application.id);
-      this.$router.push(`/applications/${application.id}`);
+      if (!application?.id) return;
+      try {
+        await this.applicationStore.fetchApplicationById(application.id);
+        await this.$router.push(`/applications/${application.id}`);
+      } catch (error) {
+        console.error("Error viewing application:", error);
+        this.errorMessage = "Failed to view application";
+      }
     },
     async handleEditApplication(application) {
-      this.$router.push(`/applications/${application.id}/edit`);
+      if (!application?.id) return;
+      try {
+        await this.$router.push(`/applications/${application.id}/edit`);
+      } catch (error) {
+        console.error("Error editing application:", error);
+        this.errorMessage = "Failed to edit application";
+      }
     },
     async handleDeleteApplication(application) {
+      if (!application?.id || !application?.companyName) return;
       if (
         confirm(
           `Are you sure you want to delete the application for ${application.companyName}?`
         )
       ) {
-        await this.applicationStore.deleteApplication(application.id);
-        await this.loadDashboardData();
+        try {
+          await this.applicationStore.deleteApplication(application.id);
+          await this.loadDashboardData();
+        } catch (error) {
+          console.error("Error deleting application:", error);
+          this.errorMessage = "Failed to delete application";
+        }
       }
     },
     async handleViewAllApplications() {
-      this.$router.push("/applications");
+      try {
+        await this.$router.push("/applications");
+      } catch (error) {
+        console.error("Error viewing all applications:", error);
+        this.errorMessage = "Failed to view applications";
+      }
     },
   },
 };
