@@ -342,7 +342,7 @@ async function handleSubmit() {
 
     // Fetch company by user ID
     let companyId = null;
-    if (activeRole.value !== "job-seeker") {
+    if (role.type !== "JOB SEEKER") {
       const companyResponse = await axios.get(
         `http://localhost:3000/companies/profile`,
         {
@@ -363,7 +363,7 @@ async function handleSubmit() {
 
     // Redirect based on role
     setTimeout(() => {
-      if (role.type === "job-seeker") {
+      if (role.type === "JOB SEEKER") {
         router.push("/applicant");
       } else {
         console.log("Company_id:");

@@ -30,7 +30,8 @@
             d="M14 6V4h-4v2h4zM4 8v11h16V8H4zm16-2c1.11 0 2 .89 2 2v11c0 1.11-.89 2-2 2H4c-1.11 0-2-.89-2-2V8c0-1.11.89-2 2-2h16z"
           />
         </svg>
-        {{ countJobs(company) }} {{ countJobs(company) === 1 ? "Job" : "Jobs" }}
+        {{ 10 }}
+        {{ company.applicant_applied === 1 ? "Job" : "Jobs" }}
       </div>
     </div>
 
