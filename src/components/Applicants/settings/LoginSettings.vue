@@ -35,10 +35,15 @@
       </div>
 
       <div>
-        <button class="btn btn-primary" @click="updateEmail">
-          Update Email
+        <button
+          class="btn btn-primary"
+          @click="updateEmail"
+          :disabled="isSaving || !newEmail"
+        >
+          {{ isSaving ? "Updating..." : "Update Email" }}
         </button>
       </div>
+      <div v-if="error" class="text-danger mt-2">{{ error }}</div>
     </div>
 
     <div class="section mb-4">
@@ -68,22 +73,19 @@
           v-model="passwordData.newPassword"
           placeholder="Enter your new password"
         />
-        <div class="form-text">Minimum 8 characters</div>
+        <div class="form-text">Minimum 8 characters, include letters and numbers</div>
       </div>
 
       <div>
         <button
           class="btn btn-primary"
           @click="changePassword"
-          :disabled="
-            !passwordData.oldPassword ||
-            !passwordData.newPassword ||
-            passwordData.newPassword.length < 8
-          "
+          :disabled="isSaving || !isPasswordValid"
         >
-          Change Password
+          {{ isSaving ? "Changing..." : "Change Password" }}
         </button>
       </div>
+      <div v-if="error" class="text-danger mt-2">{{ error }}</div>
     </div>
 
     <div class="d-flex justify-content-between align-items-center">
@@ -98,6 +100,8 @@
 </template>
 
 <script>
+import { useUserProfileStore } from "@/stores/ApplicantStore/userProfile";
+
 export default {
   name: "LoginSettings",
   props: {
@@ -106,6 +110,10 @@ export default {
       required: true,
     },
   },
+  setup() {
+    const profileStore = useUserProfileStore();
+    return { profileStore };
+  },
   data() {
     return {
       newEmail: "",
@@ -113,38 +121,96 @@ export default {
         oldPassword: "",
         newPassword: "",
       },
+      error: null,
+      isSaving: false,
     };
   },
-  methods: {
-    updateEmail() {
-      if (this.newEmail && this.validateEmail(this.newEmail)) {
-        this.$emit("update-email", this.newEmail);
-        this.newEmail = "";
-      } else {
-        alert("Please enter a valid email address");
-      }
-    },
-    changePassword() {
-      if (
+  computed: {
+    isPasswordValid() {
+      return (
         this.passwordData.oldPassword &&
         this.passwordData.newPassword &&
-        this.passwordData.newPassword.length >= 8
-      ) {
-        this.$emit("change-password", this.passwordData);
-        this.passwordData = {
-          oldPassword: "",
-          newPassword: "",
-        };
+        this.passwordData.newPassword.length >= 8 &&
+        /[a-zA-Z]/.test(this.passwordData.newPassword) &&
+        /[0-9]/.test(this.passwordData.newPassword)
+      );
+    },
+  },
+  methods: {
+    async updateEmail() {
+      if (!this.validateEmail(this.newEmail)) {
+        this.error = "Please enter a valid email address.";
+        return;
+      }
+
+      this.error = null;
+      this.isSaving = true;
+
+      try {
+        const profileData = { jobseeker_email: this.newEmail };
+        const success = await this.profileStore.updateProfile(profileData);
+        if (success) {
+          await this.profileStore.fetchProfile();
+          this.newEmail = "";
+          this.$emit("email-updated", profileData.jobseeker_email);
+        } else {
+          throw new Error("Email update failed.");
+        }
+      } catch (err) {
+        this.error = this.profileStore.error || "Failed to update email. Please try again.";
+        console.error("Update email error:", err);
+      } finally {
+        this.isSaving = false;
       }
     },
-    confirmCloseAccount() {
+    async changePassword() {
+      if (!this.isPasswordValid) {
+        this.error = "Please enter valid passwords (minimum 8 characters, letters, and numbers).";
+        return;
+      }
+
+      this.error = null;
+      this.isSaving = true;
+
+      try {
+        const success = await this.profileStore.changePassword({
+          currentPassword: this.passwordData.oldPassword,
+          newPassword: this.passwordData.newPassword,
+        });
+        if (success) {
+          this.passwordData = { oldPassword: "", newPassword: "" };
+          this.$emit("password-changed");
+        } else {
+          throw new Error("Password change failed.");
+        }
+      } catch (err) {
+        this.error = this.profileStore.error || "Failed to change password. Please try again.";
+        console.error("Change password error:", err);
+      } finally {
+        this.isSaving = false;
+      }
+    },
+    async confirmCloseAccount() {
       if (
-        confirm(
+        !confirm(
           "Are you sure you want to close your account? This action cannot be undone."
         )
       ) {
-        // Handle account closure
-        console.log("Account closure requested");
+        return;
+      }
+
+      this.error = null;
+      this.isSaving = true;
+
+      try {
+        // Placeholder: No backend endpoint exists
+        console.warn("Account closure requested - no backend endpoint available.");
+        this.error = "Account closure is not supported yet. Please contact support.";
+      } catch (err) {
+        this.error = "Failed to close account. Please try again.";
+        console.error("Close account error:", err);
+      } finally {
+        this.isSaving = false;
       }
     },
     validateEmail(email) {

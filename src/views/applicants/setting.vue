@@ -1,69 +1,75 @@
 <template>
-  <div class="sd-flex">
-    <!-- Header -->
-      <div class="container py-4">
-
-    <!-- Tabs -->
-    <ul class="nav nav-tabs mb-4">
-      <li class="nav-item">
-        <a
-          class="nav-link"
-          :class="{ active: activeTab === 'profile' }"
-          @click.prevent="activeTab = 'profile'"
-          href="#"
-        >
-          My Profile
-        </a>
-      </li>
-      <li class="nav-item">
-        <a
-          class="nav-link"
-          :class="{ active: activeTab === 'login' }"
-          @click.prevent="activeTab = 'login'"
-          href="#"
-        >
-          Login Details
-        </a>
-      </li>
-      <li class="nav-item">
-        <a
-          class="nav-link"
-          :class="{ active: activeTab === 'notifications' }"
-          @click.prevent="activeTab = 'notifications'"
-          href="#"
-        >
-          Notifications
-        </a>
-      </li>
-    </ul>
-
-    <!-- Tab Content -->
-    <div class="tab-content">
-      <!-- Profile Tab -->
-      <div v-if="activeTab === 'profile'" class="tab-pane fade show active">
-        <ProfileSetting :user="user" @save="saveProfile" />
+  <div class="d-flex">
+    <div class="container py-4">
+      <!-- Loading State -->
+      <div v-if="userProfileStore.loading" class="text-center">
+        <p>Loading settings...</p>
       </div>
-
-      <!-- Login Details Tab -->
-      <div v-if="activeTab === 'login'" class="tab-pane fade show active">
-        <login-settings
-          :user="user"
-          @update-email="updateEmail"
-          @change-password="changePassword"
-        />
+      <!-- Error State -->
+      <div v-else-if="userProfileStore.error" class="alert alert-danger">
+        {{ userProfileStore.error }}
       </div>
+      <!-- Tabs -->
+      <ul v-else class="nav nav-tabs mb-4">
+        <li class="nav-item">
+          <a
+            class="nav-link"
+            :class="{ active: activeTab === 'profile' }"
+            @click.prevent="activeTab = 'profile'"
+            href="#"
+          >
+            My Profile
+          </a>
+        </li>
+        <li class="nav-item">
+          <a
+            class="nav-link"
+            :class="{ active: activeTab === 'login' }"
+            @click.prevent="activeTab = 'login'"
+            href="#"
+          >
+            Login Details
+          </a>
+        </li>
+        <li class="nav-item">
+          <a
+            class="nav-link"
+            :class="{ active: activeTab === 'notifications' }"
+            @click.prevent="activeTab = 'notifications'"
+            href="#"
+          >
+            Notifications
+          </a>
+        </li>
+      </ul>
 
-      <!-- Notifications Tab -->
-      <div
-        v-if="activeTab === 'notifications'"
-        class="tab-pane fade show active"
-      >
-        <notification-settings
-          :notifications="notifications"
-          @update="updateNotifications"
-        />
+      <!-- Tab Content -->
+      <div class="tab-content">
+        <!-- Profile Tab -->
+        <div v-if="activeTab === 'profile'" class="tab-pane fade show active">
+          <ProfileSetting :user="user" @save="saveProfile" />
+        </div>
+
+        <!-- Login Details Tab -->
+        <div v-if="activeTab === 'login'" class="tab-pane fade show active">
+          <login-settings
+            :user="user"
+            @update-email="updateEmail"
+            @change-password="changePassword"
+          />
+        </div>
+
+        <!-- Notifications Tab -->
+        <div
+          v-if="activeTab === 'notifications'"
+          class="tab-pane fade show active"
+        >
+          <notification-settings
+            :notifications="notifications"
+            @update="updateNotifications"
+          />
+        </div>
       </div>
-    </div>
     </div>
   </div>
 </template>
@@ -74,69 +80,122 @@ import LoginSettings from "@/components/Applicants/settings/LoginSettings.vue";
 import NotificationSettings from "@/components/Applicants/settings/NotificationSettings.vue";
 import ProfileSetting from "@/components/Applicants/settings/ProfileSetting.vue";
 
+import { useUserProfileStore } from "@/stores/ApplicantStore/userProfile";
+import {  ref } from "vue";
+
 export default {
   name: "SettingsPage",
   components: {
-  DashboardHeader,
-  NotificationSettings,
-  ProfileSetting,
-  LoginSettings
-  
+    DashboardHeader,
+    NotificationSettings,
+    ProfileSetting,
+    LoginSettings,
+  },
+  setup() {
+    const userProfileStore = useUserProfileStore();
+    const errorMessage = ref(null); // Added for user feedback
+    return { userProfileStore, errorMessage };
   },
   data() {
     return {
       activeTab: "profile",
-      user: {
-        fullName: "Jake Gyll",
-        email: "jakegyll@email.com",
-        phone: "+44 1245 572 135",
-        dateOfBirth: "09/08/1997",
-        gender: "Male",
-        accountType: "jobSeeker",
-        profilePhoto: null,
-      },
-      notifications: {
+    };
+  },
+  computed: {
+    user() {
+      const profile = this.userProfileStore.selectedProfile;
+      return profile
+        ? {
+            fullName: profile.name,
+            email: profile.email,
+            phone: profile.phone || "Not specified",
+            dateOfBirth: profile.dateOfBirth || "",
+            gender: profile.gender || "",
+            accountType: profile.accountType || "jobSeeker",
+            profilePhoto: profile.profileImage || null,
+          }
+        : {
+            fullName: "Loading...",
+            email: "",
+            phone: "",
+            dateOfBirth: "",
+            gender: "",
+            accountType: "jobSeeker",
+            profilePhoto: null,
+          };
+    },
+    notifications() {
+      return this.userProfileStore.notifications || {
         applications: true,
         jobs: false,
         recommendations: false,
-      },
-    };
+      };
+    },
+    isLoading() {
+      return this.userProfileStore.loading;
+    },
   },
   methods: {
-    saveProfile(profileData) {
-      // Handle profile save
-      console.log("Saving profile:", profileData);
-      // API call would go here
+    async saveProfile(profileData) {
+      errorMessage.value = null;
+      try {
+        const success = await this.userProfileStore.updateProfile({
+          name: profileData.fullName,
+          email: profileData.email, // Handle email updates here
+          phone: profileData.phone,
+          dateOfBirth: profileData.dateOfBirth,
+          gender: profileData.gender,
+          profileImage: profileData.profilePhoto,
+        });
+        if (!success) {
+          errorMessage.value = this.userProfileStore.error || "Failed to save profile";
+        }
+      } catch (error) {
+        errorMessage.value = "Failed to save profile. Please try again.";
+        console.error("Failed to save profile:", error);
+      }
     },
-    updateEmail(newEmail) {
-      // Handle email update
-      console.log("Updating email to:", newEmail);
-      // API call would go here
+    async changePassword(passwordData) {
+      errorMessage.value = null;
+      try {
+        const success = await this.userProfileStore.changePassword(passwordData);
+        if (!success) {
+          errorMessage.value = this.userProfileStore.error || "Failed to change password";
+        }
+      } catch (error) {
+        errorMessage.value = "Failed to change password. Please try again.";
+        console.error("Failed to change password:", error);
+      }
     },
-    changePassword(passwordData) {
-      // Handle password change
-      console.log("Changing password");
-      // API call would go here
-    },
-    updateNotifications(notificationSettings) {
-      // Handle notification settings update
-      console.log("Updating notifications:", notificationSettings);
-      this.notifications = notificationSettings;
-      // API call would go here
+    async updateNotifications(notificationSettings) {
+      errorMessage.value = null;
+      try {
+        const success = await this.userProfileStore.updateNotifications(notificationSettings);
+        if (!success) {
+          errorMessage.value = this.userProfileStore.error || "Failed to update notifications";
+        }
+      } catch (error) {
+        errorMessage.value = "Failed to update notifications. Please try again.";
+        console.error("Failed to update notifications:", error);
+      }
     },
   },
-   
+  async mounted() {
+    if (!this.userProfileStore.selectedProfile) {
+      await this.userProfileStore.fetchProfile();
+      if (this.userProfileStore.error) {
+        errorMessage.value = this.userProfileStore.error;
+      }
+    }
+    await this.userProfileStore.fetchNotifications();
+    if (this.userProfileStore.error) {
+      errorMessage.value = this.userProfileStore.error;
+    }
+  },
 };
 </script>
 
 <style lang="scss" scoped>
-@use "@/style/variables.css" as *;
-.settings-container {
-  padding: 20px;
-  background-color: #fff;
-  border-radius: 4px;
-}
-
 .nav-tabs .nav-link {
   color: #495057;
   border: none;
