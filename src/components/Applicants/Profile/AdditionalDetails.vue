@@ -16,11 +16,11 @@
       <div v-if="!isEditing">
         <div class="detail-item mb-3">
           <p class="text-muted mb-1">Email</p>
-          <p class="mb-0">{{ currentData.email || "Not specified" }}</p>
+          <p class="mb-0">{{ email || "Not specified" }}</p>
         </div>
         <div class="detail-item mb-3">
           <p class="text-muted mb-1">Phone</p>
-          <p class="mb-0">{{ currentData.phone || "Not specified" }}</p>
+          <p class="mb-0">{{ phone || "Not specified" }}</p>
         </div>
         <div class="detail-item">
           <p class="text-muted mb-1">Languages</p>
@@ -40,6 +40,7 @@
               class="form-control"
               placeholder="your.email@example.com"
               required
+              @input="validateEmail"
             />
             <div v-if="emailError" class="text-danger small mt-1">
               {{ emailError }}
@@ -126,28 +127,9 @@
 export default {
   name: "AdditionalDetails",
   props: {
-    email: {
-      type: String,
-      default: "",
-    },
-    phone: {
-      type: String,
-      default: "",
-    },
-    languages: {
-      type: Array,
-      default: () => [],
-    },
-    // Add a prop to control whether to use localStorage
-    useLocalStorage: {
-      type: Boolean,
-      default: true,
-    },
-    // Add a storage key prop for flexibility
-    storageKey: {
-      type: String,
-      default: "additional-details",
-    },
+    email: { type: String, default: "" },
+    phone: { type: String, default: "" },
+    languages: { type: Array, default: () => [] },
   },
   data() {
     return {
@@ -160,24 +142,21 @@ export default {
         phone: "",
         languages: [],
       },
-      // Store current data locally in component
-      currentData: {
-        email: "",
-        phone: "",
-        languages: [],
-      },
     };
   },
   computed: {
     displayLanguages() {
-      return this.currentData.languages.length > 0
-        ? this.currentData.languages.join(", ")
+      return this.languages && this.languages.length > 0
+        ? this.languages.join(", ")
         : "Not specified";
     },
     canSave() {
       return (
         this.editData.email.trim() !== "" &&
-        this.isValidEmail(this.editData.email.trim())
+        !this.emailError &&
+        (this.editData.email !== this.email ||
+          this.editData.phone !== this.phone ||
+          JSON.stringify(this.editData.languages) !== JSON.stringify(this.languages))
       );
     },
     canAddLanguage() {
@@ -185,57 +164,10 @@ export default {
     },
   },
   methods: {
-    // Load data from localStorage
-    loadFromStorage() {
-      if (!this.useLocalStorage) return null;
-
-      try {
-        const stored = localStorage.getItem(this.storageKey);
-        return stored ? JSON.parse(stored) : null;
-      } catch (error) {
-        console.warn("Error loading from localStorage:", error);
-        return null;
-      }
-    },
-
-    // Save data to localStorage
-    saveToStorage(data) {
-      if (!this.useLocalStorage) return;
-
-      try {
-        localStorage.setItem(this.storageKey, JSON.stringify(data));
-      } catch (error) {
-        console.warn("Error saving to localStorage:", error);
-      }
-    },
-
-    // Initialize current data
-    initializeData() {
-      // First try to load from localStorage
-      const storedData = this.loadFromStorage();
-
-      if (storedData) {
-        // Use stored data if available
-        this.currentData = {
-          email: storedData.email || "",
-          phone: storedData.phone || "",
-          languages: storedData.languages || [],
-        };
-      } else {
-        // Fall back to props
-        this.currentData = {
-          email: this.email || "",
-          phone: this.phone || "",
-          languages: [...(this.languages || [])],
-        };
-      }
-    },
-
     isValidEmail(email) {
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       return emailRegex.test(email);
     },
-
     validateEmail() {
       const email = this.editData.email.trim();
       if (!email) {
@@ -249,7 +181,6 @@ export default {
       this.emailError = "";
       return true;
     },
-
     toggleEditMode() {
       if (this.isEditing) {
         this.cancelEdit();
@@ -257,157 +188,101 @@ export default {
         this.startEdit();
       }
     },
-
     startEdit() {
       this.isEditing = true;
-      // Clone current data for editing
       this.editData = {
-        email: this.currentData.email || "",
-        phone: this.currentData.phone || "",
-        languages: [...(this.currentData.languages || [])],
+        email: this.email || "",
+        phone: this.phone || "",
+        languages: [...(this.languages || [])],
       };
       this.newLanguage = "";
       this.emailError = "";
       this.languageError = "";
-
-      // Focus on email input after DOM update
       this.$nextTick(() => {
-        if (this.$refs.emailInput) {
-          this.$refs.emailInput.focus();
-        }
+        if (this.$refs.emailInput) this.$refs.emailInput.focus();
       });
     },
-
     addLanguage() {
       const language = this.newLanguage.trim();
-
       if (!language) {
         this.languageError = "Please enter a language";
         return;
       }
-
-      if (
-        this.editData.languages.some(
-          (lang) => lang.toLowerCase() === language.toLowerCase()
-        )
-      ) {
+      if (this.editData.languages.some((lang) => lang.toLowerCase() === language.toLowerCase())) {
         this.languageError = "This language is already added";
         return;
       }
-
       this.editData.languages.push(language);
       this.newLanguage = "";
       this.languageError = "";
-
-      // Focus back on language input
       this.$nextTick(() => {
-        if (this.$refs.languageInput) {
-          this.$refs.languageInput.focus();
-        }
+        if (this.$refs.languageInput) this.$refs.languageInput.focus();
       });
     },
-
     removeLanguage(index) {
       this.editData.languages.splice(index, 1);
     },
-
     clearLanguageError() {
       this.languageError = "";
     },
-
     saveChanges() {
-      if (!this.validateEmail()) {
-        return;
-      }
-
+      if (!this.validateEmail()) return;
       if (!this.canSave) return;
 
-      // Clean and validate data before saving
-      const cleanedData = {
+      const updatedData = {
         email: this.editData.email.trim(),
         phone: this.editData.phone.trim(),
-        languages: this.editData.languages
-          .map((lang) => lang.trim())
-          .filter((lang) => lang !== ""),
+        languages: this.editData.languages.map((lang) => lang.trim()).filter((lang) => lang !== ""),
       };
 
-      // Update current data
-      this.currentData = { ...cleanedData };
-
-      // Save to localStorage
-      this.saveToStorage(cleanedData);
-
-      // Emit update event for parent component
-      this.$emit("update-details", cleanedData);
+      this.$emit("update-email", updatedData.email);
+      this.$emit("update-phone", updatedData.phone);
+      this.$emit("update-languages", updatedData.languages);
 
       this.isEditing = false;
       this.newLanguage = "";
       this.emailError = "";
       this.languageError = "";
 
-      // Show success message (optional)
       this.$emit("data-saved", "Details saved successfully!");
     },
-
     cancelEdit() {
       this.isEditing = false;
       this.newLanguage = "";
       this.emailError = "";
       this.languageError = "";
-      // Reset edit data
       this.editData = {
-        email: "",
-        phone: "",
-        languages: [],
-      };
-    },
-
-    // Method to clear all stored data
-    clearStoredData() {
-      if (this.useLocalStorage) {
-        localStorage.removeItem(this.storageKey);
-      }
-      this.currentData = {
-        email: "",
-        phone: "",
-        languages: [],
+        email: this.email || "",
+        phone: this.phone || "",
+        languages: [...(this.languages || [])],
       };
     },
   },
-
   watch: {
-    "editData.email"() {
-      if (this.emailError) {
-        this.validateEmail();
-      }
-    },
-
-    // Watch for prop changes and update if no stored data
     email(newVal) {
-      if (!this.loadFromStorage()) {
-        this.currentData.email = newVal || "";
+      if (!this.isEditing) {
+        this.editData.email = newVal || "";
       }
     },
-
     phone(newVal) {
-      if (!this.loadFromStorage()) {
-        this.currentData.phone = newVal || "";
+      if (!this.isEditing) {
+        this.editData.phone = newVal || "";
       }
     },
-
     languages(newVal) {
-      if (!this.loadFromStorage()) {
-        this.currentData.languages = [...(newVal || [])];
+      if (!this.isEditing) {
+        this.editData.languages = [...(newVal || [])];
       }
     },
   },
-
-  // Initialize data when component is created
   created() {
-    this.initializeData();
+    this.editData = {
+      email: this.email || "",
+      phone: this.phone || "",
+      languages: [...(this.languages || [])],
+    };
   },
-
-  emits: ["update-details", "data-saved"],
+  emits: ["update-email", "update-phone", "update-languages", "data-saved"],
 };
 </script>
 

@@ -55,7 +55,7 @@ export default [
       },
       // a route for company details
       {
-        path: "BrowseCom/:id",
+        path: "BrowseCompany/:id",
         name: "ApplicantCompany-Profile",
         component: () => import("@/views/landing/CompanyProfile.vue"),
         meta: { title: "Job Hunter - Companies Profile" },

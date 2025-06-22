@@ -1,422 +1,258 @@
 <template>
   <div class="d-flex">
     <div class="container py-4">
-      <div v-if="error" class="alert alert-danger">
-        {{ error }}
+      <!-- Loading State -->
+      <div v-if="userProfileStore.loading" class="text-center">
+        <p>Loading profile...</p>
       </div>
-      <div v-else-if="selectedProfile" class="row">
+      <!-- Error State -->
+      <div v-else-if="userProfileStore.error" class="alert alert-danger">
+        {{ userProfileStore.error }}
+      </div>
+      <!-- Profile Data -->
+      <div v-else-if="userProfileStore.selectedProfile" class="row">
         <div class="col-md-8">
           <profile-header
-            :profile="selectedProfile"
+            :profile="userProfileStore.selectedProfile"
             @update-profile="updateProfile"
           />
-          <about-me :about="selectedProfile?.about" />
+          <about-me :about="userProfileStore.selectedProfile.bio || ''" />
           <experience-section
-            :experiences="selectedProfile?.experiences"
-            :more-count="selectedProfile?.moreExperiences"
+            :experiences="userProfileStore.selectedProfile.workExperience || []"
+            :more-count="3"
             @add-experience="handleAddExperience"
             @update-experience="handleUpdateExperience"
             @delete-experience="handleDeleteExperience"
           />
           <education-section
-            :education="selectedProfile?.education"
+            :education="userProfileStore.selectedProfile.educationHistory || []"
             @add-education="handleAddEducation"
             @update-education="handleUpdateEducation"
             @delete-education="handleDeleteEducation"
           />
           <skills-section
-            :skills="selectedProfile?.skills"
+            :skills="userProfileStore.selectedProfile.skillTags || []"
             @add-skill="handleAddSkill"
             @remove-skill="handleRemoveSkill"
           />
           <portfolio-section
-            :portfolios="selectedProfile?.portfolios"
+            :portfolios="userProfileStore.selectedProfile.portfolios || []"
             @add-portfolio="handleAddPortfolio"
-            @edit-portfolio="handleEditPortfolio"
+            @update-portfolio="handleUpdatePortfolio"
             @delete-portfolio="handleDeletePortfolio"
           />
         </div>
         <div class="col-md-4">
           <additional-details
-            :email="selectedProfile?.email"
-            :phone="selectedProfile?.phone"
-            :languages="selectedProfile?.languages"
+            :email="userProfileStore.selectedProfile.email || 'Not specified'"
+            :phone="userProfileStore.selectedProfile.phone || 'Not specified'"
+            :languages="userProfileStore.selectedProfile.languages || []"
+            @update-email="handleUpdateEmail"
+            @update-phone="handleUpdatePhone"
+            @update-languages="handleUpdateLanguages"
           />
           <social-links
-            :social-links="selectedProfile?.socialLinks"
-            @save-social-links="handleSocialLinksSave"
+            :social-links="userProfileStore.selectedProfile.socialLinks || []"
+            @save-social-links="handleSaveSocialLinks"
           />
         </div>
+      </div>
+      <!-- No Profile Found -->
+      <div v-else class="text-center py-4">
+        <p>No profile data available. Please create a profile.</p>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import { onMounted } from "vue";
 import ProfileHeader from "@/components/Applicants/Profile/ProfileHeader.vue";
 import AboutMe from "@/components/Applicants/Profile/AboutMe.vue";
 import ExperienceSection from "@/components/Applicants/Profile/ExperienceSection.vue";
 import EducationSection from "@/components/Applicants/Profile/EducationSection.vue";
 import SkillsSection from "@/components/Applicants/Profile/SkillsSection.vue";
-import PortfolioSection from "@/components/Applicants/Profile/PortfolioSection.vue";
 import AdditionalDetails from "@/components/Applicants/Profile/AdditionalDetails.vue";
+import PortfolioSection from "@/components/Applicants/Profile/PortfolioSection.vue";
 import SocialLinks from "@/components/Applicants/Profile/SocialLinks.vue";
 import { useUserProfileStore } from "@/stores/ApplicantStore/userProfile";
 
 export default {
-  name: "App",
+  name: "Profile",
   components: {
     ProfileHeader,
     AboutMe,
     ExperienceSection,
     EducationSection,
     SkillsSection,
-    PortfolioSection,
     AdditionalDetails,
+    PortfolioSection,
     SocialLinks,
   },
-
   setup() {
     const userProfileStore = useUserProfileStore();
-    return { userProfileStore };
-  },
 
-  async created() {
-    await this.userProfileStore.fetchAllProfiles();
-    if (this.userProfileStore.userProfiles.length > 0) {
-      await this.userProfileStore.fetchProfileByUserId(
-        this.userProfileStore.userProfiles[0].userId
-      );
-      console.log("Fetched profile:", this.userProfileStore.selectedProfile);
-    } else {
-      console.warn("No profiles available");
-      this.userProfileStore.error =
-        "No profiles available. Please add a profile.";
-    }
-  },
-
-  computed: {
-    selectedProfile() {
-      return this.userProfileStore.selectedProfile;
-    },
-    error() {
-      return this.userProfileStore.error;
-    },
-  },
-
-  methods: {
-    async updateProfile(updatedProfile) {
-      if (this.selectedProfile?.userId) {
-        const success = await this.userProfileStore.updateUserProfile(
-          this.selectedProfile.userId,
-          updatedProfile
-        );
-        if (success) {
-          console.log("Updated profile:", updatedProfile);
-        } else {
-          console.error(
-            "Failed to update profile:",
-            this.userProfileStore.error
-          );
-        }
+    // Fetch profile data on mount
+    onMounted(async () => {
+      if (!userProfileStore.selectedProfile) {
+        await userProfileStore.fetchProfile();
       }
-    },
+      console.log("Mounted - Selected Profile:", userProfileStore.selectedProfile);
+    });
 
-    async handleAddEducation(educationData) {
-      if (this.selectedProfile?.userId) {
-        const updatedEducation = [
-          ...(this.selectedProfile.education || []),
-          { ...educationData, id: Date.now() },
-        ];
-        const success = await this.userProfileStore.updateUserProfile(
-          this.selectedProfile.userId,
-          {
-            education: updatedEducation,
-          }
-        );
-        if (success) {
-          console.log("Added education:", educationData);
-        } else {
-          console.error(
-            "Failed to add education:",
-            this.userProfileStore.error
-          );
-        }
+    // Methods
+    const updateProfile = async (updatedProfile) => {
+      try {
+        await userProfileStore.updateProfile(updatedProfile);
+      } catch (error) {
+        console.error("Failed to update profile:", error);
       }
-    },
+    };
 
-    async handleUpdateEducation(index, educationData) {
-      if (
-        this.selectedProfile?.userId &&
-        index >= 0 &&
-        index < this.selectedProfile.education.length
-      ) {
-        const updatedEducation = [...this.selectedProfile.education];
-        updatedEducation.splice(index, 1, educationData);
-        const success = await this.userProfileStore.updateUserProfile(
-          this.selectedProfile.userId,
-          {
-            education: updatedEducation,
-          }
-        );
-        if (success) {
-          console.log("Updated education at index", index, ":", educationData);
-        } else {
-          console.error(
-            "Failed to update education:",
-            this.userProfileStore.error
-          );
-        }
+    const handleUpdateEmail = async (email) => {
+      try {
+        await userProfileStore.updateProfile({ email });
+      } catch (error) {
+        console.error("Failed to update email:", error);
       }
-    },
+    };
 
-    async handleDeleteEducation(index) {
-      if (
-        this.selectedProfile?.userId &&
-        index >= 0 &&
-        index < this.selectedProfile.education.length
-      ) {
-        const updatedEducation = [...this.selectedProfile.education];
-        updatedEducation.splice(index, 1);
-        const success = await this.userProfileStore.updateUserProfile(
-          this.selectedProfile.userId,
-          {
-            education: updatedEducation,
-          }
-        );
-        if (success) {
-          console.log("Deleted education at index:", index);
-        } else {
-          console.error(
-            "Failed to delete education:",
-            this.userProfileStore.error
-          );
-        }
+    const handleUpdatePhone = async (phone) => {
+      try {
+        await userProfileStore.updateProfile({ phone });
+      } catch (error) {
+        console.error("Failed to update phone:", error);
       }
-    },
+    };
 
-    async handleAddSkill(skill) {
-      if (
-        this.selectedProfile?.userId &&
-        skill &&
-        !this.selectedProfile.skills.includes(skill)
-      ) {
-        const updatedSkills = [...(this.selectedProfile.skills || []), skill];
-        const success = await this.userProfileStore.updateUserProfile(
-          this.selectedProfile.userId,
-          {
-            skills: updatedSkills,
-          }
-        );
-        if (success) {
-          console.log("Added skill:", skill);
-        } else {
-          console.error("Failed to add skill:", this.userProfileStore.error);
-        }
+    const handleUpdateLanguages = async (languages) => {
+      try {
+        await userProfileStore.updateProfile({ languages });
+      } catch (error) {
+        console.error("Failed to update languages:", error);
       }
-    },
+    };
 
-    async handleRemoveSkill(index) {
-      if (
-        this.selectedProfile?.userId &&
-        Number.isInteger(index) &&
-        index >= 0 &&
-        index < this.selectedProfile.skills.length
-      ) {
-        const updatedSkills = [...this.selectedProfile.skills];
-        const removedSkill = updatedSkills.splice(index, 1)[0];
-        const success = await this.userProfileStore.updateUserProfile(
-          this.selectedProfile.userId,
-          {
-            skills: updatedSkills,
-          }
-        );
-        if (success) {
-          console.log("Removed skill:", removedSkill);
-        } else {
-          console.error("Failed to remove skill:", this.userProfileStore.error);
-        }
-      } else {
-        console.error("Invalid skill index or no profile selected:", index);
-        this.userProfileStore.error =
-          "Cannot remove skill: Invalid index or no profile selected";
+    const handleAddEducation = async (educationData) => {
+      try {
+        await userProfileStore.addEducation(educationData);
+      } catch (error) {
+        console.error("Failed to add education:", error);
       }
-    },
+    };
 
-    async handleAddPortfolio(portfolioData) {
-      if (this.selectedProfile?.userId) {
-        const updatedPortfolios = [
-          ...(this.selectedProfile.portfolios || []),
-          { ...portfolioData, id: Date.now() },
-        ];
-        const success = await this.userProfileStore.updateUserProfile(
-          this.selectedProfile.userId,
-          {
-            portfolios: updatedPortfolios,
-          }
-        );
-        if (success) {
-          console.log("Added portfolio:", portfolioData);
-        } else {
-          console.error(
-            "Failed to add portfolio:",
-            this.userProfileStore.error
-          );
-        }
+    const handleUpdateEducation = async (index, educationData) => {
+      try {
+        await userProfileStore.updateEducation(index, educationData);
+      } catch (error) {
+        console.error("Failed to update education:", error);
       }
-    },
+    };
 
-    async handleEditPortfolio(index, portfolioData) {
-      if (
-        this.selectedProfile?.userId &&
-        index >= 0 &&
-        index < this.selectedProfile.portfolios.length
-      ) {
-        const updatedPortfolios = [...this.selectedProfile.portfolios];
-        updatedPortfolios.splice(index, 1, portfolioData);
-        const success = await this.userProfileStore.updateUserProfile(
-          this.selectedProfile.userId,
-          {
-            portfolios: updatedPortfolios,
-          }
-        );
-        if (success) {
-          console.log("Updated portfolio at index:", index, portfolioData);
-        } else {
-          console.error(
-            "Failed to update portfolio:",
-            this.userProfileStore.error
-          );
-        }
+    const handleDeleteEducation = async (index) => {
+      try {
+        await userProfileStore.deleteEducation(index);
+      } catch (error) {
+        console.error("Failed to delete education:", error);
       }
-    },
+    };
 
-    async handleDeletePortfolio(index) {
-      if (
-        this.selectedProfile?.userId &&
-        index >= 0 &&
-        index < this.selectedProfile.portfolios.length
-      ) {
-        const updatedPortfolios = [...this.selectedProfile.portfolios];
-        const removedPortfolio = updatedPortfolios.splice(index, 1)[0];
-        const success = await this.userProfileStore.updateUserProfile(
-          this.selectedProfile.userId,
-          {
-            portfolios: updatedPortfolios,
-          }
-        );
-        if (success) {
-          console.log("Deleted portfolio:", removedPortfolio);
-        } else {
-          console.error(
-            "Failed to delete portfolio:",
-            this.userProfileStore.error
-          );
-        }
+    const handleAddSkill = async (skill) => {
+      try {
+        await userProfileStore.addSkill({ skill });
+      } catch (error) {
+        console.error("Failed to add skill:", error);
       }
-    },
+    };
 
-    async handleSocialLinksSave(updatedLinks) {
-      if (this.selectedProfile?.userId) {
-        const success = await this.userProfileStore.updateUserProfile(
-          this.selectedProfile.userId,
-          {
-            socialLinks: updatedLinks,
-          }
-        );
-        if (success) {
-          console.log("Updated social links:", updatedLinks);
-        } else {
-          console.error(
-            "Failed to update social links:",
-            this.userProfileStore.error
-          );
-        }
+    const handleRemoveSkill = async (index) => {
+      try {
+        await userProfileStore.removeSkill(index);
+      } catch (error) {
+        console.error("Failed to remove skill:", error);
       }
-    },
+    };
 
-    async handleAddExperience(experienceData) {
-      if (this.selectedProfile?.userId) {
-        const updatedExperiences = [
-          ...(this.selectedProfile.experiences || []),
-          { ...experienceData, id: Date.now() },
-        ];
-        const success = await this.userProfileStore.updateUserProfile(
-          this.selectedProfile.userId,
-          {
-            experiences: updatedExperiences,
-          }
-        );
-        if (success) {
-          console.log("Added experience:", experienceData);
-        } else {
-          console.error(
-            "Failed to add experience:",
-            this.userProfileStore.error
-          );
-        }
+    const handleAddPortfolio = async (portfolioData) => {
+      try {
+        await userProfileStore.addPortfolio(portfolioData);
+      } catch (error) {
+        console.error("Failed to add portfolio:", error);
       }
-    },
+    };
 
-    async handleUpdateExperience(index, experienceData) {
-      if (
-        this.selectedProfile?.userId &&
-        index >= 0 &&
-        index < this.selectedProfile.experiences.length
-      ) {
-        const updatedExperiences = [...this.selectedProfile.experiences];
-        updatedExperiences.splice(index, 1, experienceData);
-        const success = await this.userProfileStore.updateUserProfile(
-          this.selectedProfile.userId,
-          {
-            experiences: updatedExperiences,
-          }
-        );
-        if (success) {
-          console.log(
-            "Updated experience at index",
-            index,
-            ":",
-            experienceData
-          );
-        } else {
-          console.error(
-            "Failed to update experience:",
-            this.userProfileStore.error
-          );
-        }
+    const handleUpdatePortfolio = async (index, portfolioData) => {
+      try {
+        await userProfileStore.updatePortfolio(index, portfolioData);
+      } catch (error) {
+        console.error("Failed to update portfolio:", error);
       }
-    },
+    };
 
-    async handleDeleteExperience(index) {
-      if (
-        this.selectedProfile?.userId &&
-        index >= 0 &&
-        index < this.selectedProfile.experiences.length
-      ) {
-        const updatedExperiences = [...this.selectedProfile.experiences];
-        updatedExperiences.splice(index, 1);
-        const success = await this.userProfileStore.updateUserProfile(
-          this.selectedProfile.userId,
-          {
-            experiences: updatedExperiences,
-          }
-        );
-        if (success) {
-          console.log("Deleted experience at index:", index);
-        } else {
-          console.error(
-            "Failed to delete experience:",
-            this.userProfileStore.error
-          );
-        }
+    const handleDeletePortfolio = async (index) => {
+      try {
+        await userProfileStore.deletePortfolio(index);
+      } catch (error) {
+        console.error("Failed to delete portfolio:", error);
       }
-    },
+    };
+
+    const handleSaveSocialLinks = async (socialLinks) => {
+      try {
+        await userProfileStore.saveSocialLinks(socialLinks);
+      } catch (error) {
+        console.error("Failed to save social links:", error);
+      }
+    };
+
+    const handleAddExperience = async (experienceData) => {
+      try {
+        await userProfileStore.addExperience(experienceData);
+      } catch (error) {
+        console.error("Failed to add experience:", error);
+      }
+    };
+
+    const handleUpdateExperience = async (index, experienceData) => {
+      try {
+        await userProfileStore.updateExperience(index, experienceData);
+      } catch (error) {
+        console.error("Failed to update experience:", error);
+      }
+    };
+
+    const handleDeleteExperience = async (index) => {
+      try {
+        await userProfileStore.deleteExperience(index);
+      } catch (error) {
+        console.error("Failed to delete experience:", error);
+      }
+    };
+
+    return {
+      userProfileStore,
+      updateProfile,
+      handleUpdateEmail,
+      handleUpdatePhone,
+      handleUpdateLanguages,
+      handleAddEducation,
+      handleUpdateEducation,
+      handleDeleteEducation,
+      handleAddSkill,
+      handleRemoveSkill,
+      handleAddPortfolio,
+      handleUpdatePortfolio,
+      handleDeletePortfolio,
+      handleSaveSocialLinks,
+      handleAddExperience,
+      handleUpdateExperience,
+      handleDeleteExperience,
+    };
   },
 };
 </script>
 
-<style>
+<style lang="scss" scoped>
 @import "bootstrap/dist/css/bootstrap.min.css";
 @import "bootstrap-icons/font/bootstrap-icons.css";
 
@@ -443,5 +279,21 @@ export default {
 
 .btn-link.text-primary {
   color: #6366f1 !important;
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  .row {
+    flex-direction: column;
+  }
+
+  .col-md-8,
+  .col-md-4 {
+    max-width: 100%;
+  }
 }
 </style>

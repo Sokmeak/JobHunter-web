@@ -36,11 +36,12 @@
               type="file"
               class="file-input"
               @change="handleFileUpload"
-              accept="image/*"
+              accept="image/svg+xml,image/png,image/jpeg,image/gif"
             />
           </div>
         </div>
       </div>
+      <div v-if="error" class="text-danger mt-2">{{ error }}</div>
     </div>
 
     <div class="section mb-4">
@@ -95,16 +96,16 @@
             >Date of Birth <span class="text-danger">*</span></label
           >
           <div class="input-group">
-            <input
-              type="text"
-              class="form-control"
-              id="dateOfBirth"
-              v-model="formData.dateOfBirth"
-              required
-            />
-            <span class="input-group-text">
-              <i class="bi bi-calendar"></i>
-            </span>
+      <input
+        type="date"
+        class="form-control"
+        id="dateOfBirth"
+        v-model="formData.dateOfBirth"
+        required
+      />
+      <span class="input-group-text">
+        <i class="bi bi-calendar"></i>
+      </span>
           </div>
         </div>
         <div class="col-md-6">
@@ -128,7 +129,7 @@
 
     <div class="section mb-4">
       <h5 class="mb-3">Account Type</h5>
-      <p class="text-muted mb-3">You can update your account type</p>
+      <p class="text-muted mb-3">My account type</p>
 
       <div class="form-check mb-2">
         <input
@@ -138,40 +139,30 @@
           id="jobSeeker"
           value="jobSeeker"
           v-model="formData.accountType"
+          disabled
         />
         <label class="form-check-label" for="jobSeeker">
           <div class="fw-bold">Job Seeker</div>
           <div class="text-muted">Looking for a job</div>
         </label>
       </div>
-
-      <div class="form-check">
-        <input
-          class="form-check-input"
-          type="radio"
-          name="accountType"
-          id="employer"
-          value="employer"
-          v-model="formData.accountType"
-        />
-        <label class="form-check-label" for="employer">
-          <div class="fw-bold">Employer</div>
-          <div class="text-muted">
-            Hiring, sourcing candidates, or posting a jobs
-          </div>
-        </label>
-      </div>
     </div>
 
     <div class="d-flex justify-content-end">
-      <button class="btn btn-primary px-4" @click="saveProfile">
-        Save Profile
+      <button
+        class="btn btn-primary px-4"
+        @click="saveProfile"
+        :disabled="isSaving"
+      >
+        {{ isSaving ? "Saving..." : "Save Profile" }}
       </button>
     </div>
   </div>
 </template>
 
 <script>
+import { useUserProfileStore } from "@/stores/ApplicantStore/userProfile";
+
 export default {
   name: "ProfileSettings",
   props: {
@@ -180,31 +171,109 @@ export default {
       required: true,
     },
   },
+  setup() {
+    const profileStore = useUserProfileStore();
+    return { profileStore };
+  },
   data() {
     return {
       formData: {
-        fullName: this.user.fullName,
-        email: this.user.email,
-        phone: this.user.phone,
-        dateOfBirth: this.user.dateOfBirth,
-        gender: this.user.gender,
-        accountType: this.user.accountType,
-        profilePhoto: this.user.profilePhoto,
+        fullName: this.user.fullName || "",
+        email: this.user.email || "",
+        phone: this.user.phone || "",
+        dateOfBirth: this.user.dateOfBirth || "",
+        gender: this.user.gender || "",
+        accountType: this.user.accountType || "jobSeeker",
+        profilePhoto: null,
       },
       profilePhotoUrl:
         this.user.profilePhoto || "https://via.placeholder.com/80",
+      error: null,
+      isSaving: false,
     };
   },
   methods: {
-    handleFileUpload(event) {
+    async handleFileUpload(event) {
       const file = event.target.files[0];
-      if (file) {
-        this.formData.profilePhoto = file;
-        this.profilePhotoUrl = URL.createObjectURL(file);
+      if (!file) return;
+
+      // Validate file type and size
+      const allowedTypes = [
+        "image/svg+xml",
+        "image/png",
+        "image/jpeg",
+        "image/gif",
+      ];
+      if (!allowedTypes.includes(file.type)) {
+        this.error = "Invalid file type. Please upload SVG, PNG, JPG, or GIF.";
+        return;
+      }
+      if (file.size > 400 * 400 * 4) { // Approx 400x400px image
+        this.error = "File size too large. Max 400x400px.";
+        return;
+      }
+
+      this.formData.profilePhoto = file;
+      this.profilePhotoUrl = URL.createObjectURL(file);
+      this.error = null;
+
+      // Upload immediately
+      try {
+        this.isSaving = true;
+        const formData = new FormData();
+        formData.append("file", file);
+        await this.profileStore.uploadProfileImage(formData);
+        this.profilePhotoUrl = (await this.profileStore.fetchProfile()).profileImage;
+      } catch (err) {
+        this.error = "Failed to upload profile photo. Please try again.";
+        console.error("Profile photo upload error:", err);
+      } finally {
+        this.isSaving = false;
       }
     },
-    saveProfile() {
-      this.$emit("save", this.formData);
+    async saveProfile() {
+      // Validate form data
+      if (!this.formData.fullName.trim()) {
+        this.error = "Full name is required.";
+        return;
+      }
+      if (!this.formData.phone.trim()) {
+        this.error = "Phone number is required.";
+        return;
+      }
+      if (!this.formData.dateOfBirth) {
+        this.error = "Date of birth is required.";
+        return;
+      }
+      if (!this.formData.gender) {
+        this.error = "Gender is required.";
+        return;
+      }
+
+      this.error = null;
+      this.isSaving = true;
+
+      try {
+        const profileData = {
+          jobseeker_name: this.formData.fullName,
+          phone: this.formData.phone,
+          dateOfBirth: this.formData.dateOfBirth,
+          gender: this.formData.gender,
+          accountType: this.formData.accountType,
+        };
+        const success = await this.profileStore.updateProfile(profileData);
+        if (success) {
+          await this.profileStore.fetchProfile(); // Refresh profile
+          this.$emit("saved", profileData);
+        } else {
+          throw new Error("Profile update failed.");
+        }
+      } catch (err) {
+        this.error = this.profileStore.error || "Failed to save profile. Please try again.";
+        console.error("Save profile error:", err);
+      } finally {
+        this.isSaving = false;
+      }
     },
   },
 };

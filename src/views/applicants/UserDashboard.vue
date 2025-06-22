@@ -78,7 +78,6 @@ import UpcomingInterviews from "@/components/Applicants/dashboard/UpcomingInterv
 import RecentApplications from "@/components/Applicants/dashboard/RecentApplications.vue";
 import { useUserProfileStore } from "@/stores/ApplicantStore/userProfile";
 import { useApplicationStore } from "@/stores/ApplicantStore/Applications";
-
 import { useRouter } from "vue-router";
 
 export default {
@@ -145,29 +144,27 @@ export default {
 
     const totalJobsApplied = computed(() => userApplications.value.length);
 
-    const interviewedCount = computed(
-      () =>
-        userApplications.value.filter((app) =>
-          ["Interviewing"].includes(app.status)
-        ).length
+    const interviewedCount = computed(() =>
+      userApplications.value.filter((app) =>
+        ["Interviewing"].includes(app.status)
+      ).length
     );
 
     // Derive upcoming interviews from application timelines
     const computeUpcomingInterviews = () => {
       const interviews = [];
       userApplications.value.forEach((app) => {
-        const interviewSteps =
-          app.timeline?.filter(
-            (step) =>
-              !step.completed &&
-              ["Phone Screening", "Technical Interview", "Interview"].includes(
-                step.title
-              )
-          ) || [];
+        const interviewSteps = app.timeline?.filter(
+          (step) =>
+            !step.completed &&
+            ["Phone Screening", "Technical Interview", "Interview"].includes(
+              step.title
+            )
+        ) || [];
         interviewSteps.forEach((step) => {
           interviews.push({
             id: app.id,
-            time: step.date !== "Pending" ? "TBD" : "TBD",
+            time: step.date !== "Pending" ? step.date : "TBD",
             name: app.recruiter?.name || "Unknown",
             position: `${app.recruiter?.role || "Recruiter"} at ${
               app.companyName
@@ -213,6 +210,7 @@ export default {
     const loadDashboardData = async () => {
       try {
         // Check authentication
+        // Placeholder for auth check
 
         // Fetch profile if not loaded
         if (!selectedProfile.value) {
@@ -271,19 +269,13 @@ export default {
 
     // Initialize on mount
     onMounted(async () => {
-      dateRange.value = loadFromStorage(
-        STORAGE_KEYS.DATE_RANGE,
-        dateRange.value
-      );
-      // Fetch user profile
-
+      dateRange.value = loadFromStorage(STORAGE_KEYS.DATE_RANGE, dateRange.value);
       await loadDashboardData();
     });
 
     return {
       userProfileStore,
       applicationStore,
-
       selectedProfile,
       dateRange,
       applicationStatus,
@@ -322,11 +314,5 @@ export default {
 </script>
 
 <style scoped>
-@import "bootstrap/dist/css/bootstrap.min.css";
-@import "bootstrap-icons/font/bootstrap-icons.css";
-
-body {
-  font-family: "Inter", sans-serif;
-  background-color: #f8f9fa;
-}
+/* Bootstrap and Bootstrap Icons should be imported globally */
 </style>

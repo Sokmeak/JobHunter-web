@@ -50,7 +50,6 @@
 import SidebarNavigation from "@/components/Applicants/layout/SidebarNavigation.vue";
 import DashboardHeader from "@/components/Applicants/layout/DashboardHeader.vue";
 import { useUserProfileStore } from "@/stores/ApplicantStore/userProfile";
- // Import auth store if needed
 
 export default {
   name: "ApplicantLayout",
@@ -61,7 +60,6 @@ export default {
   setup() {
     // Initialize stores
     const userProfileStore = useUserProfileStore();
-    // const authStore = useAuthStore(); // Optional: for auth checks
     return { userProfileStore };
   },
   data() {
@@ -224,14 +222,6 @@ export default {
   .main-content.sidebar-expanded,
   .main-content.sidebar-collapsed {
     margin-left: 0;
-  }
-
-  .sidebar {
-    transform: translateX(-100%);
-  }
-
-  .sidebar.show {
-    transform: translateX(0);
   }
 }
 </style>
