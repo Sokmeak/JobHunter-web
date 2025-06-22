@@ -3,7 +3,6 @@
     <!-- Sidebar -->
     <SidebarNavigation
       :user="userProfile"
-      :user="userProfile"
       :is-collapsed="isSidebarCollapsed"
       @toggle-collapse="toggleSidebarCollapse"
     />
@@ -21,18 +20,13 @@
         :show-back-button="showBackButton"
         :notification-count="notificationCount"
         :user="userProfile"
-        :user="userProfile"
         @toggle-collapse="toggleSidebarCollapse"
       />
       <div class="content-wrapper">
         <!-- Display loading or error states if needed -->
         <div v-if="loading" class="loading">Loading profile...</div>
         <div v-else-if="error" class="error">{{ error }}</div>
-        <!-- Display loading or error states if needed -->
-        <div v-if="loading" class="loading">Loading profile...</div>
-        <div v-else-if="error" class="error">{{ error }}</div>
         <router-view
-          v-else
           v-else
           v-slot="{ Component }"
           @update-page-title="updatePageTitle"
@@ -56,9 +50,6 @@
 import SidebarNavigation from "@/components/Applicants/layout/SidebarNavigation.vue";
 import DashboardHeader from "@/components/Applicants/layout/DashboardHeader.vue";
 import { useUserProfileStore } from "@/stores/ApplicantStore/userProfile";
- // Import auth store if needed
-import { useUserProfileStore } from "@/stores/ApplicantStore/userProfile";
- // Import auth store if needed
 
 export default {
   name: "ApplicantLayout",
@@ -69,13 +60,6 @@ export default {
   setup() {
     // Initialize stores
     const userProfileStore = useUserProfileStore();
-    // const authStore = useAuthStore(); // Optional: for auth checks
-    return { userProfileStore };
-  },
-  setup() {
-    // Initialize stores
-    const userProfileStore = useUserProfileStore();
-    // const authStore = useAuthStore(); // Optional: for auth checks
     return { userProfileStore };
   },
   data() {
@@ -83,7 +67,6 @@ export default {
       pageTitle: "Dashboard",
       showBackButton: false,
       notificationCount: 2,
-      isSidebarCollapsed: false,
       isSidebarCollapsed: false,
       routeTitles: {
         "/applicant/dashboard": "Dashboard",
@@ -120,31 +103,7 @@ export default {
       return this.userProfileStore.error;
     },
   },
-  computed: {
-    userProfile() {
-      // Map store's selectedProfile to the expected user object format
-      const profile = this.userProfileStore.selectedProfile;
-      return profile
-        ? {
-            name: profile.name,
-            email: profile.email,
-            avatar: profile.profileImage || "https://v0.dev/placeholder.svg?height=40&width=40",
-          }
-        : {
-            name: "Loading...",
-            email: "",
-            avatar: "https://v0.dev/placeholder.svg?height=40&width=40",
-          };
-    },
-    loading() {
-      return this.userProfileStore.loading;
-    },
-    error() {
-      return this.userProfileStore.error;
-    },
-  },
   watch: {
-    // Watch for route changes to update page title
     // Watch for route changes to update page title
     $route(to) {
       if (to.path.startsWith("/applicant/find-jobs/") && to.path.split("/").length === 4) {
@@ -156,8 +115,6 @@ export default {
       console.log("Route changed, showBackButton set to:", this.showBackButton);
     },
   },
-  async mounted() {
-    // Set initial page title and back button state
   async mounted() {
     // Set initial page title and back button state
     if (this.$route.path.startsWith("/applicant/find-jobs/") && this.$route.path.split("/").length === 4) {
@@ -173,23 +130,8 @@ export default {
 
     // Fetch user profile
     await this.fetchUserProfile();
-
-    // Fetch user profile
-    await this.fetchUserProfile();
   },
   methods: {
-    async fetchUserProfile() {
-      // Check if user is authenticated
-      // if (!this.authStore.isLoggedIn) {
-      //   console.warn("User not authenticated, cannot fetch profile");
-      //   this.userProfileStore.error = "Please log in to view your profile";
-      //   this.$router.push("/login"); // Redirect to login if not authenticated
-      //   return;
-      // }
-
-      // Fetch the authenticated user's profile
-      await this.userProfileStore.fetchProfile();
-    },
     async fetchUserProfile() {
       // Check if user is authenticated
       // if (!this.authStore.isLoggedIn) {
@@ -238,16 +180,13 @@ export default {
   background-color: #ffffff;
   transition: margin-left 0.3s ease-in-out;
   min-width: 0;
-  min-width: 0;
 }
 
 .main-content.sidebar-expanded {
   margin-left: 15rem;
-  margin-left: 15rem;
 }
 
 .main-content.sidebar-collapsed {
-  margin-left: 80px;
   margin-left: 80px;
 }
 
@@ -257,6 +196,7 @@ export default {
   overflow-y: auto;
   background-color: #ffffff;
 }
+
 .fade-enter-active,
 .fade-leave-active {
   transition: opacity 0.2s ease;
@@ -278,33 +218,10 @@ export default {
   color: #d32f2f;
 }
 
-.loading,
-.error {
-  padding: 24px;
-  text-align: center;
-  color: #333;
-}
-
-.error {
-  color: #d32f2f;
-}
-
 @media (max-width: 768px) {
   .main-content.sidebar-expanded,
   .main-content.sidebar-collapsed {
     margin-left: 0;
-  }
-  .main-content.sidebar-expanded,
-  .main-content.sidebar-collapsed {
-    margin-left: 0;
-  }
-
-  .sidebar {
-    transform: translateX(-100%);
-  }
-
-  .sidebar.show {
-    transform: translateX(0);
   }
 }
 </style>

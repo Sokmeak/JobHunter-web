@@ -3,18 +3,24 @@
     <div class="container py-2">
       <div class="container-fluid py-1">
         <!-- Loading and Error States -->
-        <div v-if="isLoading" class="text-center">
+        <div
+          v-if="applicationStore.loading || userProfileStore.loading"
+          class="text-center"
+        >
           <p>Loading dashboard...</p>
         </div>
-        <div v-else-if="errorMessage" class="alert alert-danger">
-          {{ errorMessage }}
+        <div
+          v-else-if="applicationStore.error || userProfileStore.error"
+          class="alert alert-danger"
+        >
+          {{ applicationStore.error || userProfileStore.error }}
         </div>
         <div v-else>
           <!-- Greeting Section -->
           <GreetingSection
             :user-name="selectedProfile?.name || 'User'"
             :date-range="dateRange"
-            @date-range-changed="handleDateRangeChange"
+            @dateRangeChanged="handleDateRangeChange"
           />
 
           <div class="row mt-1">
@@ -84,16 +90,18 @@ export default {
     RecentApplications,
   },
   setup() {
+    // LocalStorage keys with versioning
     const STORAGE_KEYS = {
       DATE_RANGE: "dashboard_date_range_v1",
       DASHBOARD_STATE: "dashboard_state_v1",
     };
 
+    // Use Pinia stores and router
     const userProfileStore = useUserProfileStore();
     const applicationStore = useApplicationStore();
     const router = useRouter();
-    const router = useRouter();
 
+    // LocalStorage utility functions
     const saveToStorage = (key, data) => {
       try {
         localStorage.setItem(key, JSON.stringify(data));
@@ -112,61 +120,64 @@ export default {
       }
     };
 
+    // Reactive state
     const dateRange = ref({
       start: "15 May 2025",
       end: "30 May 2025",
-    });
     });
     const recentApplications = ref([]);
     const applicationStatus = ref([
       { name: "Loading", value: 0, color: "#e5e7eb" },
     ]);
     const upcomingInterviews = ref([]);
-    const errorMessage = ref(null);
 
-    const isLoading = computed(() => 
-      applicationStore.loading || userProfileStore.loading
-    );
-
+    // Computed properties
     const selectedProfile = computed(() => userProfileStore.selectedProfile);
 
     const userApplications = computed(() => {
-      if (!selectedProfile.value?.userId) return applicationStore.applications;
+      // If applications have userId, filter by selectedProfile.userId
+      // Otherwise, assume all applications belong to the authenticated user
       return applicationStore.applications.filter(
-        (app) => app.userId === selectedProfile.value.userId
+        (app) => !app.userId || app.userId === selectedProfile.value?.userId
       );
     });
 
     const totalJobsApplied = computed(() => userApplications.value.length);
-    const totalJobsApplied = computed(() => userApplications.value.length);
 
     const interviewedCount = computed(() =>
-      userApplications.value.filter((app) => app.status === "Interviewing").length
+      userApplications.value.filter((app) =>
+        ["Interviewing"].includes(app.status)
+      ).length
     );
 
+    // Derive upcoming interviews from application timelines
     const computeUpcomingInterviews = () => {
       const interviews = [];
       userApplications.value.forEach((app) => {
-        const interviewSteps = (app.timeline || []).filter(
+        const interviewSteps = app.timeline?.filter(
           (step) =>
             !step.completed &&
-            ["Phone Screening", "Technical Interview", "Interview"].includes(step.title)
-        );
-        
+            ["Phone Screening", "Technical Interview", "Interview"].includes(
+              step.title
+            )
+        ) || [];
         interviewSteps.forEach((step) => {
           interviews.push({
             id: app.id,
             time: step.date !== "Pending" ? step.date : "TBD",
             name: app.recruiter?.name || "Unknown",
-            position: `${app.recruiter?.role || "Recruiter"} at ${app.companyName || "Unknown"}`,
+            position: `${app.recruiter?.role || "Recruiter"} at ${
+              app.companyName
+            }`,
             avatar: app.recruiter?.avatar || null,
             date: step.date !== "Pending" ? step.date : null,
           });
         });
       });
-      return interviews.slice(0, 5);
+      return interviews.slice(0, 5); // Limit to 5 upcoming interviews
     };
 
+    // Watchers
     watch(
       dateRange,
       (newDateRange) => {
@@ -184,6 +195,7 @@ export default {
       { deep: true }
     );
 
+    // Save dashboard state
     const saveDashboardState = () => {
       const dashboardState = {
         totalJobsApplied: totalJobsApplied.value,
@@ -194,31 +206,44 @@ export default {
       saveToStorage(STORAGE_KEYS.DASHBOARD_STATE, dashboardState);
     };
 
+    // Load dashboard data
     const loadDashboardData = async () => {
       try {
-        errorMessage.value = null;
+        // Check authentication
+        // Placeholder for auth check
 
+        // Fetch profile if not loaded
         if (!selectedProfile.value) {
           await userProfileStore.fetchProfile();
         }
 
+        // Fetch applications if not loaded
         if (!applicationStore.applications.length) {
           await applicationStore.fetchApplications();
         }
 
+        // Filter applications by date range
         recentApplications.value = applicationStore
-          .getApplicationsInDateRange(dateRange.value.start, dateRange.value.end)
+          .getApplicationsInDateRange(
+            dateRange.value.start,
+            dateRange.value.end
+          )
           .slice(0, 3);
 
+        console.log("Recent Applications:", recentApplications.value);
+
+        // Update upcoming interviews
         upcomingInterviews.value = computeUpcomingInterviews();
 
+        // Get status counts for chart
         const statusData = applicationStore.getStatusCounts();
-        applicationStatus.value = [
+        console.log("Status Data:", statusData);
+
+        const chartData = [
           {
             name: "Hired",
             value: statusData.hired || 0,
             color: "#4640DE",
-            percentage: statusData.percentage?.hired || 0,
             percentage: statusData.percentage?.hired || 0,
           },
           {
@@ -226,29 +251,25 @@ export default {
             value: statusData.interviewed || 0,
             color: "#E9EBFD",
             percentage: statusData.percentage?.interviewed || 0,
-            percentage: statusData.percentage?.interviewed || 0,
           },
         ];
-
+        applicationStatus.value = chartData;
         saveDashboardState();
       } catch (err) {
         console.error("Error loading dashboard data:", err);
-        errorMessage.value = "Failed to load dashboard data";
+        applicationStore.error = "Failed to load dashboard data";
       }
     };
 
+    // Handle date range changes
     const handleDateRangeChange = (newDateRange) => {
-      if (newDateRange?.start && newDateRange?.end) {
-        applicationStore.updateDateRange(newDateRange);
-        dateRange.value = { ...newDateRange };
-      }
+      applicationStore.updateDateRange(newDateRange);
+      dateRange.value = { ...newDateRange };
     };
 
+    // Initialize on mount
     onMounted(async () => {
-      const storedDateRange = loadFromStorage(STORAGE_KEYS.DATE_RANGE);
-      if (storedDateRange?.start && storedDateRange?.end) {
-        dateRange.value = storedDateRange;
-      }
+      dateRange.value = loadFromStorage(STORAGE_KEYS.DATE_RANGE, dateRange.value);
       await loadDashboardData();
     });
 
@@ -264,64 +285,34 @@ export default {
       interviewedCount,
       loadDashboardData,
       handleDateRangeChange,
-      errorMessage,
-      isLoading,
     };
   },
   methods: {
     async handleViewApplication(application) {
-      if (!application?.id) return;
-      try {
-        await this.applicationStore.fetchApplicationById(application.id);
-        await this.$router.push(`/applications/${application.id}`);
-      } catch (error) {
-        console.error("Error viewing application:", error);
-        this.errorMessage = "Failed to view application";
-      }
+      await this.applicationStore.fetchApplicationById(application.id);
+      this.$router.push(`/applications/${application.id}`);
     },
     async handleEditApplication(application) {
-      if (!application?.id) return;
-      try {
-        await this.$router.push(`/applications/${application.id}/edit`);
-      } catch (error) {
-        console.error("Error editing application:", error);
-        this.errorMessage = "Failed to edit application";
-      }
+      console.log("Edit application:", application);
+      this.$router.push(`/applications/${application.id}/edit`);
     },
     async handleDeleteApplication(application) {
-      if (!application?.id || !application?.companyName) return;
       if (
         confirm(
           `Are you sure you want to delete the application for ${application.companyName}?`
         )
       ) {
-        try {
-          await this.applicationStore.deleteApplication(application.id);
-          await this.loadDashboardData();
-        } catch (error) {
-          console.error("Error deleting application:", error);
-          this.errorMessage = "Failed to delete application";
-        }
+        await this.applicationStore.deleteApplication(application.id);
+        await this.loadDashboardData();
       }
     },
     async handleViewAllApplications() {
-      try {
-        await this.$router.push("/applications");
-      } catch (error) {
-        console.error("Error viewing all applications:", error);
-        this.errorMessage = "Failed to view applications";
-      }
+      this.$router.push("/applications");
     },
   },
 };
 </script>
 
 <style scoped>
-@import "bootstrap/dist/css/bootstrap.min.css";
-@import "bootstrap-icons/font/bootstrap-icons.css";
-
-body {
-  font-family: "Inter", sans-serif;
-  background-color: #f8f9fa;
-}
+/* Bootstrap and Bootstrap Icons should be imported globally */
 </style>

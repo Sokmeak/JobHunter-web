@@ -575,7 +575,7 @@ const sampleCompanyData = {
       location: "Tokyo, Japan",
       type: "Full-time",
       description:
-        "Develop innovative software solutions for Adobe's creative tools.",
+        "Develop innovative software solutions for Adobe's c  ,mkreative tools.",
       tags: ["Engineering", "Full-time"],
     },
     {
