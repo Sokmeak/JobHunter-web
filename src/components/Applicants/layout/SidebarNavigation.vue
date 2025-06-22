@@ -105,9 +105,9 @@
             </li>
             <li><hr class="dropdown-divider" /></li>
             <li>
-              <router-link class="dropdown-item text-danger" to="/signin">
+              <button class="dropdown-item text-danger" @click="logout">
                 <i class="bi bi-box-arrow-right me-2"></i> Log out
-              </router-link>
+              </button>
             </li>
           </ul>
         </div>
@@ -118,7 +118,15 @@
 
 <script>
 import PrimaryLogo from "@/components/sharecomponents/PrimaryLogo.vue";
+import { useAuthLocalStore } from "@/stores/authLocalStore";
 export default {
+  setup() {
+    const authStore = useAuthLocalStore();
+
+    return {
+      authStore,
+    };
+  },
   name: "SidebarNavigation",
   components: {
     PrimaryLogo,
@@ -198,6 +206,7 @@ export default {
       this.$emit("toggle-collapse");
     },
     logout() {
+      this.authStore.clearAuthData();
       console.log("Logging out...");
       this.$router.push("/signin");
     },

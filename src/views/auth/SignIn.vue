@@ -59,7 +59,6 @@
                 class="btn btn-google w-100 mb-2 d-flex align-items-center justify-content-center gap-2"
               >
                 <i class="bi bi-google me-2"></i>
-
                 <span>Continue with Google</span>
               </button>
               <button
@@ -134,14 +133,14 @@
                 </label>
               </div>
 
-              <RouterLink
-                to="/applicant"
+              <button
                 type="submit"
                 class="btn btn-primary w-100 py-3 d-flex align-items-center justify-content-center"
               >
-                <span>Sign In</span>
-                <i class="bi bi-box-arrow-in-right ms-2"></i>
-              </RouterLink>
+                <span v-if="!isLoading">Sign In</span>
+                <span v-else>Loading...</span>
+                <i class="bi bi-box-arrow-in-right ms-2" v-if="!isLoading"></i>
+              </button>
             </form>
 
             <p class="text-center mt-4 mb-0">
@@ -228,7 +227,7 @@
                 />
                 <img
                   src="https://logo.clearbit.com/digitalocean.com"
-                  alt="Amazon"
+                  alt="DigitalOcean"
                   class="company-logo"
                 />
               </div>
@@ -257,76 +256,120 @@
     </footer>
   </div>
 </template>
-
 <script setup>
-import PrimaryLogo from "@/components/sharecomponents/PrimaryLogo.vue";
-
 import { ref } from "vue";
+import { useRouter } from "vue-router";
+import axios from "axios";
+import { jwtDecode } from "jwt-decode";
 
-// Form data
-const form = ref({
-  email: "",
-  password: "",
-  rememberMe: false,
-});
+import PrimaryLogo from "@/components/sharecomponents/PrimaryLogo.vue";
+import { useAuthLocalStore } from "@/stores/authLocalStore";
 
-// Role toggle state
+// State
+const form = ref({ email: "", password: "", rememberMe: false });
 const activeRole = ref("job-seeker");
-
-// Password visibility toggle
 const showPassword = ref(false);
+const isLoading = ref(false);
 
-// Set active role with animation
+const router = useRouter();
+const authStore = useAuthLocalStore();
+
+// Role toggle with animation
 function setActiveRole(role) {
-  // Only update if role is changing
-  if (role !== activeRole.value) {
-    // Add transition class
-    document.querySelector(".login-box").classList.add("fade-transition");
-    document.querySelector(".info-content").classList.add("fade-transition");
+  if (role === activeRole.value) return;
 
-    // Set timeout to remove class after animation completes
+  const loginBox = document.querySelector(".login-box");
+  const infoContent = document.querySelector(".info-content");
+
+  loginBox?.classList.add("fade-transition");
+  infoContent?.classList.add("fade-transition");
+
+  setTimeout(() => {
+    activeRole.value = role;
     setTimeout(() => {
-      activeRole.value = role;
-
-      // Set another timeout to remove transition class
-      setTimeout(() => {
-        document
-          .querySelector(".login-box")
-          .classList.remove("fade-transition");
-        document
-          .querySelector(".info-content")
-          .classList.remove("fade-transition");
-      }, 50);
-    }, 100);
-  }
+      loginBox?.classList.remove("fade-transition");
+      infoContent?.classList.remove("fade-transition");
+    }, 50);
+  }, 100);
 }
 
-// Handle form submission
-function handleSubmit() {
-  console.log(`${activeRole.value} login:`, {
-    email: form.value.email,
-    password: form.value.password,
-    rememberMe: form.value.rememberMe,
-  });
-
-  // Add logic for login (e.g., API call) here
-
-  // Show success animation
+// Handle login
+async function handleSubmit() {
+  isLoading.value = true;
   const loginButton = document.querySelector('button[type="submit"]');
-  loginButton.innerHTML = '<i class="bi bi-check-circle"></i> Success!';
-  loginButton.classList.add("btn-success");
 
-  // Reset after 2 seconds
-  setTimeout(() => {
-    loginButton.innerHTML =
-      '<span>Sign In</span><i class="bi bi-box-arrow-in-right ms-2"></i>';
-    loginButton.classList.remove("btn-success");
-  }, 2000);
+  try {
+    const { data } = await axios.post("http://localhost:3000/auth/login", {
+      email: form.value.email,
+      password: form.value.password,
+    });
+
+    const decoded = jwtDecode(data.access_token);
+    const { id, email, role } = decoded;
+
+    let companyId = null;
+
+    if (role.type === "EMPLOYER") {
+      const { data: companyData } = await axios.get(
+        "http://localhost:3000/companies/profile",
+        { headers: { Authorization: `Bearer ${data.access_token}` } }
+      );
+      companyId = companyData.id;
+    }
+
+    // Store login state
+    authStore.setAuthData({
+      accessToken: data.access_token,
+      userId: id,
+      role: role.type,
+      email: form.value.rememberMe ? email : null,
+      companyId,
+    });
+
+    // Redirect based on role and UI role selection
+    const isMatchingRole =
+      (role.type === "JOB SEEKER" && activeRole.value === "job-seeker") ||
+      (role.type === "EMPLOYER" && activeRole.value === "company");
+
+    if (isMatchingRole) {
+      loginButton.innerHTML = '<i class="bi bi-check-circle"></i> Success!';
+      loginButton.classList.add("btn-success");
+
+      setTimeout(() => {
+        router.push(
+          role.type === "JOB SEEKER" ? "/applicant" : "/company/dashboard"
+        );
+      }, 1000);
+    } else {
+      loginButton.innerHTML =
+        '<i class="bi bi-exclamation-circle"></i> Error, Role mismatch! ';
+      loginButton.classList.add("btn-danger");
+
+      setTimeout(() => {
+        loginButton.innerHTML =
+          '<span>Sign In</span><i class="bi bi-box-arrow-in-right ms-2"></i>';
+        loginButton.classList.remove("btn-danger");
+        isLoading.value = false;
+      }, 3000);
+
+      // throw new Error("Role mismatch");
+    }
+  } catch (err) {
+    console.error("Login error:", err);
+    loginButton.innerHTML = '<i class="bi bi-exclamation-circle"></i> Error!';
+    loginButton.classList.add("btn-danger");
+
+    setTimeout(() => {
+      loginButton.innerHTML =
+        '<span>Sign In</span><i class="bi bi-box-arrow-in-right ms-2"></i>';
+      loginButton.classList.remove("btn-danger");
+      isLoading.value = false;
+    }, 3000);
+  }
 }
 </script>
 
 <style scoped>
-/* Import Bootstrap CSS and icons */
 /* Import Bootstrap CSS and icons */
 :root {
   --primary-color: #4640de;
@@ -351,68 +394,8 @@ body {
 .company-logo {
   width: 90px;
   height: 30px;
-  object-fit: contain; /* Ensures logos scale without distortion */
+  object-fit: contain;
 }
-
-/* Animated background shapes */
-/* .shape {
-  position: absolute;
-  border-radius: 50%;
-  z-index: 0;
-  animation: float 15s infinite ease-in-out;
-}
-
-.shape-1 {
-  width: 300px;
-  height: 300px;
-  background: linear-gradient(
-    45deg,
-    var(--primary-subtle),
-    rgba(107, 103, 232, 0.1)
-  );
-  top: -100px;
-  right: -100px;
-  animation-delay: 0s;
-}
-
-.shape-2 {
-  width: 200px;
-  height: 200px;
-  background: linear-gradient(
-    45deg,
-    rgba(107, 103, 232, 0.1),
-    var(--primary-subtle)
-  );
-  bottom: 20%;
-  left: -100px;
-  animation-delay: -5s;
-}
-
-.shape-3 {
-  width: 150px;
-  height: 150px;
-  background: linear-gradient(
-    45deg,
-    rgba(107, 103, 232, 0.05),
-    var(--primary-subtle)
-  );
-  bottom: 10%;
-  right: 10%;
-  animation-delay: -10s;
-}
-
-.shape-4 {
-  width: 100px;
-  height: 100px;
-  background: linear-gradient(
-    45deg,
-    var(--primary-subtle),
-    rgba(107, 103, 232, 0.2)
-  );
-  top: 30%;
-  left: 20%;
-  animation-delay: -7s;
-} */
 
 @keyframes float {
   0% {
@@ -440,23 +423,6 @@ header {
   backdrop-filter: blur(10px);
 }
 
-.logo span {
-  background: linear-gradient(
-    45deg,
-    var(--primary-color),
-    var(--primary-light)
-  );
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-/* .role-toggle {
-  font-size: 0.95rem;
-  transition: all 0.3s ease;
-  font-weight: 500;
-} */
-
 .btn-primary {
   background-color: var(--primary-color);
   border-color: var(--primary-color);
@@ -465,7 +431,6 @@ header {
 
 .btn-primary:hover,
 .btn-primary:focus {
-  /* background-color: var(--primary-dark); */
   border-color: var(--primary-dark);
   box-shadow: 0 4px 8px rgba(70, 64, 222, 0.3);
   transform: translateY(-1px);
@@ -530,12 +495,6 @@ header {
 .btn-linkedin:hover {
   background-color: #f8f9fa;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-}
-
-.social-icon {
-  width: 24px;
-  height: 24px;
-  object-fit: contain;
 }
 
 .divider {
@@ -614,7 +573,6 @@ header {
   text-decoration: underline;
 }
 
-/* Info Content Styling */
 .info-content {
   padding: 20px;
 }
@@ -715,7 +673,6 @@ header {
   }
 }
 
-/* Animations */
 .slide-up {
   animation: slideUp 0.8s ease-out forwards;
 }
@@ -775,11 +732,15 @@ header {
   }
 }
 
-/* Success animation for login button */
 .btn-success {
   background-color: #22c55e;
   border-color: #22c55e;
   animation: successPulse 0.5s;
+}
+
+.btn-danger {
+  background-color: #ef4444;
+  border-color: #ef4444;
 }
 
 @keyframes successPulse {
@@ -794,7 +755,6 @@ header {
   }
 }
 
-/* Responsive styles */
 @media (max-width: 992px) {
   .login-box {
     padding: 30px;

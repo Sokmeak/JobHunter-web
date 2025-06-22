@@ -1,5 +1,15 @@
 <template>
-  <RouterLink to="/company/1" class="link">
+  <RouterLink
+    :to="{
+      name:
+    context === 'Landing'
+      ? 'CompanyProfile'
+      : 'CompanyProfile-Applicant',
+      params: { id: companyId(company) },
+      query: { from: 'search' },
+    }"
+    class="link"
+  >
     <div class="company-result-card" @click="$emit('click', company.id)">
       <div
         class="company-result-logo"
@@ -17,8 +27,13 @@
 import { defineProps, defineEmits } from "vue";
 
 const props = defineProps({
+  context: {
+      type: String,
+      default: "Landing",
+    },
   company: {
     type: Object,
+   
     required: true,
     validator: (value) => {
       return (
@@ -30,6 +45,9 @@ const props = defineProps({
     },
   },
 });
+const companyId = (company) => {
+  return company.id;
+};
 
 defineEmits(["click"]);
 </script>
