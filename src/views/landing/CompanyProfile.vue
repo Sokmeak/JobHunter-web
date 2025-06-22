@@ -16,11 +16,23 @@
           <div class="col-lg-3 col-md-4 mb-3 mb-md-0">
             <div class="company-logo-container">
               <div
-                class="company-logo rounded-3 d-flex align-items-center justify-content-center"
+                class="company-logo rounded-3 d-flex align-items-center justify-content-center position-relative overflow-hidden"
+                :style="logoStyle"
+                role="img"
+                :aria-label="`Logo for ${company.name}`"
               >
-                <span class="display-4 fw-bold text-white">{{
-                  company.logoInitial
-                }}</span>
+                <img
+                  v-if="company.logoUrl"
+                  :src="company.logoUrl"
+                  :alt="`${company.name} logo`"
+                  class="logo-image"
+                />
+                <span
+                  v-else
+                  class="display-4 fw-bold text-white logo-initial"
+                  >{{ company.logoInitial }}</span
+                >
+                <div class="logo-overlay"></div>
               </div>
             </div>
           </div>
@@ -223,27 +235,30 @@
               <p class="text-muted mb-4">
                 This job comes with several perks and benefits
               </p>
-              <div v-if="company.benefits.length > 0" class="row g-4">
-                <div
-                  v-for="(benefit, index) in company.benefits"
-                  :key="index"
-                  class="col-md-6"
-                >
-                  <div class="d-flex">
-                    <div
-                      class="benefit-icon rounded-circle p-3 text-primary me-3 d-flex align-items-center justify-content-center"
-                    >
-                      <i :class="`bi ${benefit.icon}`"></i>
-                    </div>
-                    <div>
-                      <h3 class="fs-6 fw-bold mb-1">{{ benefit.title }}</h3>
-                      <p class="text-muted small mb-0">
-                        {{ benefit.description }}
-                      </p>
+
+              <div
+                v-if="
+                  company.benefits &&
+                  company.benefits.length > 0 &&
+                  company.benefits[0].title !== 'N/A'
+                "
+              >
+                <div class="row">
+                  <div
+                    class="col-md-6 mb-3"
+                    v-for="(benefit, index) in company.benefits"
+                    :key="index"
+                  >
+                    <div class="d-flex align-items-start">
+                      <div class="me-2 text-primary">
+                        <i class="bi bi-check-circle-fill"></i>
+                      </div>
+                      <span class="text-muted">{{ benefit }}</span>
                     </div>
                   </div>
                 </div>
               </div>
+
               <p v-else class="text-muted mb-0">No perks or benefits listed.</p>
             </div>
           </div>
@@ -400,6 +415,7 @@ const company = ref({
   id: 0,
   name: "",
   logoInitial: "",
+  brand_logo: "",
   jobs: [],
   employees: "",
   locations: "",
@@ -442,15 +458,16 @@ const transformCompanyData = (data) => {
     id: data.id || 0,
     name: data.name || "Unknown Company",
     logoInitial: data.name ? data.name.charAt(0).toUpperCase() : "U",
-    jobs: data.jobs || [],
+    brand_logo: data.brand_logo || data.brand_logo_thumbnail || null, // Add logoUrl
 
+    jobs: data.jobs || [],
     employees: data.employee_count || "N/A",
     locations: data.headquartersLocation || "N/A",
     website: data.website_url || "#",
     founded: data.founded_date || "N/A",
     industry: data.industry || "N/A",
     profile: data.cultureDescription || "No description available.",
-    isVerified: data.isActive || false, // Assuming isActive indicates verification status
+    isVerified: data.isActive || false,
     contacts: [
       data.twitter_url && {
         icon: "twitter",
@@ -496,23 +513,11 @@ const transformCompanyData = (data) => {
           twitter: member.twitter_url || "#",
         },
       })) || [],
-    benefits: data.benefits || ["a", "b"],
-
-    // ?.map((benefit) => ({
-    //   title: benefit| "N/A",
-    //   description: benefit.description || "No description available.",
-    //   icon: benefit.icon || "bi-star-fill",
-    // })) || [
-    //   {
-    //     title: "N/A",
-    //     description: "No benefits available.",
-    //     icon: "bi-star-fill",
-    //   }
-
+    benefits: data.benefits,
     techStack:
       data.technologies?.map((tech) => ({
-        name: tech.technology.name || "Unknown",
-        icon: tech.technology.icon || "https://via.placeholder.com/40",
+        name: tech.technology?.name || "Unknown",
+        icon: tech.technology?.icon || "https://via.placeholder.com/40",
       })) || [],
     officeLocations:
       data.office_location?.map((loc) => ({
@@ -688,10 +693,12 @@ onMounted(async () => {
   isLoading.value = true;
   try {
     const companyData = await companyStore.fetchCompanyDetails(companyId);
+    console.log("API Response:", companyData); // Debug API response
     company.value = transformCompanyData(companyData);
   } catch (err) {
-    console.error("API fetch failed, using sample data for demo purposes");
+    console.error("API fetch failed:", err);
     company.value = transformCompanyData(sampleCompanyData); // Fallback to sample data
+    error.value = "Failed to load company details, using sample data.";
   } finally {
     isLoading.value = false;
   }
@@ -860,6 +867,12 @@ onMounted(async () => {
 
 .object-fit-cover {
   object-fit: cover;
+}
+
+.benefit-icon {
+  background-color: var(--tertiary-color);
+  width: 48px;
+  height: 48px;
 }
 
 /* Bootstrap overrides */

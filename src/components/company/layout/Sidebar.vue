@@ -163,9 +163,11 @@
 <script setup>
 import { computed, onMounted } from "vue";
 import { useAuthStore } from "@/stores/company/auth";
+import { useAuthLocalStore } from "@/stores/authLocalStore";
 import PrimaryLogo from "@/components/sharecomponents/PrimaryLogo.vue";
 
 const auth = useAuthStore();
+const localAuth = useAuthLocalStore();
 const currentCompany = computed(() => auth.currentCompany);
 
 onMounted(() => {
@@ -176,6 +178,7 @@ onMounted(() => {
 
 function logout() {
   auth.logout();
+  localAuth.clearAuthData();
   window.location.href = "/signin"; // Redirect after logout
 }
 

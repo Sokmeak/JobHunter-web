@@ -136,7 +136,6 @@
               <button
                 type="submit"
                 class="btn btn-primary w-100 py-3 d-flex align-items-center justify-content-center"
-                :disabled="isLoading"
               >
                 <span v-if="!isLoading">Sign In</span>
                 <span v-else>Loading...</span>
@@ -257,132 +256,115 @@
     </footer>
   </div>
 </template>
-
 <script setup>
-import PrimaryLogo from "@/components/sharecomponents/PrimaryLogo.vue";
 import { ref } from "vue";
 import { useRouter } from "vue-router";
 import axios from "axios";
 import { jwtDecode } from "jwt-decode";
 
-// Form data
-const form = ref({
-  email: "",
-  password: "",
-  rememberMe: false,
-});
+import PrimaryLogo from "@/components/sharecomponents/PrimaryLogo.vue";
+import { useAuthLocalStore } from "@/stores/authLocalStore";
 
-// Role toggle state
+// State
+const form = ref({ email: "", password: "", rememberMe: false });
 const activeRole = ref("job-seeker");
-
-// Password visibility toggle
 const showPassword = ref(false);
-
-// Loading state for submit button
 const isLoading = ref(false);
 
-// Router instance
 const router = useRouter();
+const authStore = useAuthLocalStore();
 
-// Set active role with animation
+// Role toggle with animation
 function setActiveRole(role) {
-  if (role !== activeRole.value) {
-    document.querySelector(".login-box").classList.add("fade-transition");
-    document.querySelector(".info-content").classList.add("fade-transition");
+  if (role === activeRole.value) return;
 
+  const loginBox = document.querySelector(".login-box");
+  const infoContent = document.querySelector(".info-content");
+
+  loginBox?.classList.add("fade-transition");
+  infoContent?.classList.add("fade-transition");
+
+  setTimeout(() => {
+    activeRole.value = role;
     setTimeout(() => {
-      activeRole.value = role;
-      setTimeout(() => {
-        document
-          .querySelector(".login-box")
-          .classList.remove("fade-transition");
-        document
-          .querySelector(".info-content")
-          .classList.remove("fade-transition");
-      }, 50);
-    }, 100);
-  }
+      loginBox?.classList.remove("fade-transition");
+      infoContent?.classList.remove("fade-transition");
+    }, 50);
+  }, 100);
 }
 
-// Handle form submission
+// Handle login
 async function handleSubmit() {
   isLoading.value = true;
   const loginButton = document.querySelector('button[type="submit"]');
 
   try {
-    const response = await axios.post("http://localhost:3000/auth/login", {
+    const { data } = await axios.post("http://localhost:3000/auth/login", {
       email: form.value.email,
       password: form.value.password,
     });
 
-    // Store token and role in localStorage
+    const decoded = jwtDecode(data.access_token);
+    const { id, email, role } = decoded;
 
-    // If rememberMe is checked, store additional user info
-    if (form.value.rememberMe) {
-      localStorage.setItem("user_email", form.value.email);
-    } else {
-      // Clear stored email if rememberMe is not checked
-      localStorage.removeItem("user_email");
-    }
-
-    // Show success animation
-    loginButton.innerHTML = '<i class="bi bi-check-circle"></i> Success!';
-    loginButton.classList.add("btn-success");
-
-    // Decode the JWT token to extract payload data
-    const decodedToken = jwtDecode(response.data.access_token);
-    const { id, email, role } = decodedToken;
-
-    console.log(decodedToken);
-
-    localStorage.setItem("access_token", response.data.access_token);
-    localStorage.setItem("user_role", role.type);
-
-    // use user id => company_id
-
-    // Fetch company by user ID
     let companyId = null;
-    if (role.type !== "JOB SEEKER") {
-      const companyResponse = await axios.get(
-        `http://localhost:3000/companies/profile`,
-        {
-          headers: {
-            Authorization: `Bearer ${response.data.access_token}`,
-          },
-        }
-      );
-      companyId = companyResponse.data.id;
-      localStorage.setItem("company_id", companyId);
 
-      console.log("Company_id:", companyId);
+    if (role.type === "EMPLOYER") {
+      const { data: companyData } = await axios.get(
+        "http://localhost:3000/companies/profile",
+        { headers: { Authorization: `Bearer ${data.access_token}` } }
+      );
+      companyId = companyData.id;
     }
 
-    // Optionally store extracted data in localStorage or use directly
-    localStorage.setItem("user_id", id);
-    console.log("Decoded token data:", { id, email, role });
+    // Store login state
+    authStore.setAuthData({
+      accessToken: data.access_token,
+      userId: id,
+      role: role.type,
+      email: form.value.rememberMe ? email : null,
+      companyId,
+    });
 
-    // Redirect based on role
-    setTimeout(() => {
-      if (role.type === "JOB SEEKER") {
-        router.push("/applicant");
-      } else {
-        console.log("Company_id:");
+    // Redirect based on role and UI role selection
+    const isMatchingRole =
+      (role.type === "JOB SEEKER" && activeRole.value === "job-seeker") ||
+      (role.type === "EMPLOYER" && activeRole.value === "company");
 
-        router.push("/company");
-      }
-    }, 1000);
-  } catch (error) {
-    console.error("Login error:", error);
+    if (isMatchingRole) {
+      loginButton.innerHTML = '<i class="bi bi-check-circle"></i> Success!';
+      loginButton.classList.add("btn-success");
+
+      setTimeout(() => {
+        router.push(
+          role.type === "JOB SEEKER" ? "/applicant" : "/company/dashboard"
+        );
+      }, 1000);
+    } else {
+      loginButton.innerHTML =
+        '<i class="bi bi-exclamation-circle"></i> Error, Role mismatch! ';
+      loginButton.classList.add("btn-danger");
+
+      setTimeout(() => {
+        loginButton.innerHTML =
+          '<span>Sign In</span><i class="bi bi-box-arrow-in-right ms-2"></i>';
+        loginButton.classList.remove("btn-danger");
+        isLoading.value = false;
+      }, 3000);
+
+      // throw new Error("Role mismatch");
+    }
+  } catch (err) {
+    console.error("Login error:", err);
     loginButton.innerHTML = '<i class="bi bi-exclamation-circle"></i> Error!';
     loginButton.classList.add("btn-danger");
 
-    // Reset button after 2 seconds
     setTimeout(() => {
       loginButton.innerHTML =
         '<span>Sign In</span><i class="bi bi-box-arrow-in-right ms-2"></i>';
       loginButton.classList.remove("btn-danger");
       isLoading.value = false;
-    }, 2000);
+    }, 3000);
   }
 }
 </script>

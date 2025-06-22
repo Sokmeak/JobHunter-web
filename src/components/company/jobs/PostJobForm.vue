@@ -531,6 +531,8 @@ export default {
         qualification: localJobData.value.education,
         job_type: localJobData.value.jobType,
         skill_required: localJobData.value.category,
+        tags: [localJobData.value.category, localJobData.value.jobLevel],
+        level: localJobData.value.jobLevel,
         salary_range:
           localJobData.value.salaryType === "Range" &&
           localJobData.value.salaryMin &&
