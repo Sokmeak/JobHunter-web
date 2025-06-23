@@ -1,13 +1,13 @@
 <template>
-  <Transition name="loader-fade" mode="out-in">
-    <!-- <Loader v-if="showLoader" :loading-duration="loaderDuration" /> -->
-  </Transition>
+  <!-- <Transition name="loader-fade" mode="out-in">
+    <Loader v-if="showLoader" :loading-duration="loaderDuration" />
+  </Transition> -->
   <RouterView />
 </template>
 
 <script setup>
 import { ref } from "vue";
-import Loader from "@/components/Loader.vue";
+
 
 // State
 const showLoader = ref(true);
