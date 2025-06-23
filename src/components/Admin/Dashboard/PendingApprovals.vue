@@ -120,6 +120,9 @@ const rejectItem = (id) => {
 </script>
 
 <style scoped>
+
+@import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css");
+
 .pending-approvals {
   background-color: white;
   border-radius: 8px;

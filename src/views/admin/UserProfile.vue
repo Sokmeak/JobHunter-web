@@ -1,225 +1,211 @@
 <template>
-    <div class="user-profile">
-      <div class="page-header">
-        <div class="header-content">
-          <h1 class="page-title">Users Management</h1>
-          <p class="page-subtitle">Manage user accounts, verify users and handle suspensions</p>
-        </div>
-        <button class="finish-review-btn">
-          <Clock class="btn-icon" />
-          Finish Review
-        </button>
+  <div class="user-profile">
+    <div class="page-header">
+      <div class="header-content">
+        <h1 class="page-title">Users Management</h1>
+        <p class="page-subtitle">Manage user accounts, verify users and handle suspensions</p>
       </div>
-  
-      <div class="profile-section">
-        <div class="section-header">
-          <h2 class="section-title">View Detail Info</h2>
-        </div>
-  
-        <div class="profile-content">
-          <UserProfileCard :user="userProfile" />
-          <UserAboutSection :about="userProfile.about" />
-          <UserExperienceSection :experiences="userProfile.experiences" />
-          <UserEducationSection :educations="userProfile.educations" />
-          <UserSkillsSection :skills="userProfile.skills" />
-          <UserPortfolioSection :portfolios="userProfile.portfolios" />
-        </div>
+      <button class="finish-review-btn">
+        <Clock class="btn-icon" />
+        Finish Review
+      </button>
+    </div>
+
+    <div class="profile-section">
+      <div class="section-header">
+        <h2 class="section-title">View Detail Info</h2>
+      </div>
+
+      <div class="profile-content">
+        <template v-if="userStore.loading">
+          <p>Chargement du profil utilisateur...</p>
+        </template>
+        <template v-else-if="userStore.error">
+          <p class="error-message">Erreur : {{ userStore.error }}</p>
+        </template>
+        <template v-else-if="userStore.selectedProfile">
+          <div class="profile-block">
+            <UserProfileCard :user="userStore.selectedProfile" />
+          </div>
+          <div class="profile-block">
+            <UserAboutSection :about="userStore.selectedProfile.about" />
+          </div>
+          <div class="profile-block">
+            <UserExperienceSection :experiences="userStore.selectedProfile.experiences" />
+          </div>
+          <div class="profile-block">
+            <UserEducationSection :educations="userStore.selectedProfile.education" />
+          </div>
+          <div class="profile-block">
+            <UserSkillsSection :skills="userStore.selectedProfile.skills" />
+          </div>
+          <div class="profile-block">
+            <UserPortfolioSection :portfolios="userStore.selectedProfile.portfolios" />
+          </div>
+        </template>
+        <template v-else>
+          <p>Profil utilisateur non trouvé.</p>
+        </template>
       </div>
     </div>
-  </template>
-  
-  <script setup>
-  import { ref, onMounted } from 'vue';
-  import { useRoute } from 'vue-router';
-  import { Clock } from 'lucide-vue-next';
-  import UserProfileCard from '@/components/Admin/Users/UserProfileCard.vue';
-  import UserAboutSection from '@/components/Admin/Users/UserAboutSection.vue';
-  import UserExperienceSection from '@/components/Admin/Users/UserExperienceSection.vue';
-  import UserEducationSection from '@/components/Admin/Users/UserEducationSection.vue';
-  import UserSkillsSection from '@/components/Admin/Users/UserSkillsSection.vue';
-  import UserPortfolioSection from '@/components/Admin/Users/UserPortfolioSection.vue';
-  
-  const route = useRoute();
-  
-  const userProfile = ref({
-    id: route.params.id,
-    name: 'Jake Gyll',
-    title: 'Product Designer at Twitter',
-    location: 'Manchester, UK',
-    status: 'OPEN FOR OPPORTUNITIES',
-    avatar: '/placeholder.svg?height=120&width=120',
-    about: "I'm a product designer + filmmaker currently working remotely at Twitter from beautiful Manchester, United Kingdom. I'm passionate about designing digital products that have a positive impact on the world.\n\nFor 10 years, I've specialised in interface, experience & interaction design as well as working in user research and product strategy for product agencies, big tech companies & start-ups.",
-    experiences: [
-      {
-        id: 1,
-        company: 'Twitter',
-        position: 'Product Designer',
-        type: 'Full-time',
-        duration: 'Jun 2019 - Present (1y 1m)',
-        location: 'Manchester, UK',
-        description: 'Created and executed social media plan for 10 brands utilizing multiple features and content types to increase brand outreach, engagement and leads.',
-        logo: '/placeholder.svg?height=48&width=48'
-      },
-      {
-        id: 2,
-        company: 'GoDaddy',
-        position: 'Growth Marketing Designer',
-        type: 'Full-time',
-        duration: 'Jun 2011 - May 2019 (8y)',
-        location: 'Manchester, UK',
-        description: 'Developed digital marketing strategies, activation plans, proposals, contests and promotions for client initiatives',
-        logo: '/placeholder.svg?height=48&width=48'
-      }
-    ],
-    educations: [
-      {
-        id: 1,
-        institution: 'Harvard University',
-        degree: 'Postgraduate degree, Applied Psychology',
-        duration: '2010 - 2012',
-        description: 'As an Applied Psychologist in the field of Consumer and Society, I am specialized in creating business opportunities by observing, analysing, researching and changing behaviour.',
-        logo: '/placeholder.svg?height=48&width=48'
-      },
-      {
-        id: 2,
-        institution: 'University of Toronto',
-        degree: 'Bachelor of Arts, Visual Communication',
-        duration: '2005 - 2009',
-        description: '',
-        logo: '/placeholder.svg?height=48&width=48'
-      }
-    ],
-    skills: [
-      'Communication',
-      'Analytics',
-      'Facebook Ads',
-      'Content Planning',
-      'Community Manager'
-    ],
-    portfolios: [
-      {
-        id: 1,
-        title: 'Clinically - clinic & health care website',
-        image: '/placeholder.svg?height=200&width=300',
-        category: 'Web Design'
-      },
-      {
-        id: 2,
-        title: 'GrowthX - SaaS Analytics & Sales Website',
-        image: '/placeholder.svg?height=200&width=300',
-        category: 'Web Design'
-      },
-      {
-        id: 3,
-        title: 'Planner - Project Management App',
-        image: '/placeholder.svg?height=200&width=300',
-        category: 'Mobile App'
-      },
-      {
-        id: 4,
-        title: 'Furno - Furniture Store',
-        image: '/placeholder.svg?height=200&width=300',
-        category: 'E-commerce'
-      }
-    ]
-  });
-  
-  onMounted(() => {
-    // In a real app, you would fetch user data based on route.params.id
-    console.log('Loading user profile for ID:', route.params.id);
-  });
-  </script>
-  
-  <style scoped>
-  .user-profile {
-    padding: 0;
+  </div>
+</template>
+
+<script setup>
+import { onMounted, watch } from 'vue'; // Pas besoin de 'ref' pour userProfile car il vient du store
+import { useRoute } from 'vue-router';
+import { Clock } from 'lucide-vue-next';
+
+// Importez vos composants enfants
+import UserProfileCard from '@/components/Admin/Users/UserProfileCard.vue';
+import UserAboutSection from '@/components/Admin/Users/UserAboutSection.vue';
+import UserExperienceSection from '@/components/Admin/Users/UserExperienceSection.vue';
+import UserEducationSection from '@/components/Admin/Users/UserEducationSection.vue';
+import UserSkillsSection from '@/components/Admin/Users/UserSkillsSection.vue';
+import UserPortfolioSection from '@/components/Admin/Users/UserPortfolioSection.vue';
+
+// Importez votre store Pinia
+import { useUserProfileStore } from '@/stores/ApplicantStore/userProfile'; // Assurez-vous que le chemin est correct
+
+const route = useRoute();
+const userStore = useUserProfileStore(); // Initialisez votre store
+
+// Fonction pour charger le profil utilisateur
+const loadUserProfile = async () => {
+  // route.params.id est une chaîne, mais votre store attend un nombre (userId)
+  const userId = parseInt(route.params.id, 10);
+  if (isNaN(userId)) {
+    userStore.error = "ID utilisateur invalide dans l'URL.";
+    userStore.selectedProfile = null; // Réinitialiser le profil pour éviter d'afficher d'anciennes données
+    console.error("Invalid user ID in URL:", route.params.id);
+    return;
   }
-  
+  await userStore.fetchProfileByUserId(userId);
+};
+
+// Charge le profil dès que le composant est monté
+onMounted(() => {
+  loadUserProfile();
+});
+
+// Surveille les changements de l'ID dans la route et recharge le profil si l'ID change
+watch(() => route.params.id, async (newId, oldId) => {
+  if (newId !== oldId) {
+    console.log(`Route ID changed from ${oldId} to ${newId}. Reloading profile.`);
+    await loadUserProfile();
+  }
+}, { immediate: true }); // 'immediate: true' exécute le watcher une fois au montage aussi
+
+</script>
+
+<style scoped>
+/* Votre CSS reste inchangé */
+.user-profile {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 24px;
+}
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 32px;
+}
+
+.header-content {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.page-title {
+  font-size: 24px;
+  font-weight: 600;
+  color: #111827;
+  margin: 0;
+}
+
+.page-subtitle {
+  font-size: 14px;
+  color: #6b7280;
+  margin: 0;
+}
+
+.finish-review-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  background-color: #4f46e5;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.finish-review-btn:hover {
+  background-color: #4338ca;
+}
+
+.btn-icon {
+  width: 16px;
+  height: 16px;
+}
+
+.profile-section {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.profile-block {
+  border: 1px solid #e5e7eb; /* gris clair */
+  border-radius: 8px;
+  padding: 24px;
+  background-color: #fff;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02);
+}
+
+.section-header {
+  padding: 16px 24px;
+  background-color: #f8f9ff;
+  border-radius: 8px;
+  border: 1px solid #e0e7ff;
+}
+
+.section-title {
+  font-size: 16px;
+  font-weight: 500;
+  color: #4f46e5;
+  margin: 0;
+}
+
+.profile-content {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.error-message {
+  color: red;
+  font-weight: bold;
+  text-align: center;
+  margin-top: 20px;
+}
+
+@media (max-width: 768px) {
   .page-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    margin-bottom: 32px;
-  }
-  
-  .header-content {
-    display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 16px;
+    align-items: stretch;
   }
-  
-  .page-title {
-    font-size: 24px;
-    font-weight: 600;
-    color: #111827;
-    margin: 0;
-  }
-  
-  .page-subtitle {
-    font-size: 14px;
-    color: #6b7280;
-    margin: 0;
-  }
-  
+
   .finish-review-btn {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 10px 16px;
-    background-color: #4f46e5;
-    color: white;
-    border: none;
-    border-radius: 8px;
-    font-size: 14px;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.2s;
+    align-self: flex-start;
   }
-  
-  .finish-review-btn:hover {
-    background-color: #4338ca;
-  }
-  
-  .btn-icon {
-    width: 16px;
-    height: 16px;
-  }
-  
-  .profile-section {
-    display: flex;
-    flex-direction: column;
-    gap: 24px;
-  }
-  
-  .section-header {
-    padding: 16px 24px;
-    background-color: #f8f9ff;
-    border-radius: 8px;
-    border: 1px solid #e0e7ff;
-  }
-  
-  .section-title {
-    font-size: 16px;
-    font-weight: 500;
-    color: #4f46e5;
-    margin: 0;
-  }
-  
-  .profile-content {
-    display: flex;
-    flex-direction: column;
-    gap: 32px;
-  }
-  
-  @media (max-width: 768px) {
-    .page-header {
-      flex-direction: column;
-      gap: 16px;
-      align-items: stretch;
-    }
-    
-    .finish-review-btn {
-      align-self: flex-start;
-    }
-  }
-  </style>
+}
+</style>

@@ -31,6 +31,8 @@ provide('selectedDate', selectedDate);
 
 const statCardsContainer = ref(null);
 
+
+/*EXPORT FUNCTION*/
 const exportStatCardsToPdf = async () => {
   if (!statCardsContainer.value || !statCardsContainer.value.$el) {
     console.error("Le conteneur des StatCards n'est pas trouvé ou n'est pas un élément DOM.");

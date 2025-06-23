@@ -38,13 +38,13 @@ export default [
             component: UsersManagement,
             meta: { title: "Users Management" },
           },
-          {
+          /*{
             path: ":id",
             name: "UserDetails",
             component: UserDetails,
             props: true,
             meta: { title: "User Details" },
-          },
+          },*/
           {
             path: ":id/profile",
             name: "UserProfile",

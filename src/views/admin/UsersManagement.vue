@@ -181,6 +181,9 @@ import {
 } from 'lucide-vue-next'
 
 import AddUserModal from '@/components/Admin/Users/AddUserModal.vue'
+import { useRouter } from 'vue-router'
+
+const router = useRouter()
 
 // Store Pinia
 const usersStore = useUsersStore()
@@ -249,11 +252,11 @@ function deleteUser(userId) {
 }
 
 function viewUser(userId) {
-  console.log('Viewing user', userId)
+  router.push({ name: 'UserProfile', params: { id: userId } })
 }
 
 function editUser(userId) {
-  console.log('Editing user', userId)
+  router.push({ name: 'UserEdit', params: { id: userId } })
 }
 
 function toggleActionsMenu(userId) {

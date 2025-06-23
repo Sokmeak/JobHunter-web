@@ -7,18 +7,19 @@
         <ul>
           <li v-for="item in navItems" :key="item.id">
             <router-link :to="item.path" class="nav-link">
-              <component :is="item.icon" class="nav-icon" />
+              <i :class="['nav-icon', item.icon]"></i>
               <span>{{ item.label }}</span>
               <span v-if="item.badge" class="nav-badge">{{ item.badge }}</span>
             </router-link>
           </li>
+
         </ul>
 
         <div class="nav-section-title">SETTINGS</div>
         <ul>
           <li v-for="item in settingsItems" :key="item.id">
             <router-link :to="item.path" class="nav-link">
-              <component :is="item.icon" class="nav-icon" />
+              <i :class="['nav-icon', item.icon]"></i>
               <span>{{ item.label }}</span>
             </router-link>
           </li>
@@ -30,12 +31,7 @@
       <div class="user-profile">
         <div class="user-info">
           <div class="user-avatar-container">
-            <img
-              v-if="adminUser.avatar"
-              :src="adminUser.avatar"
-              :alt="adminUser.name"
-              class="user-avatar"
-            />
+            <img v-if="adminUser.avatar" :src="adminUser.avatar" :alt="adminUser.name" class="user-avatar" />
             <div v-else class="user-initials">{{ userInitials }}</div>
             <div class="status-indicator"></div>
           </div>
@@ -82,32 +78,32 @@ const navItems = ref([
   {
     id: "dashboard",
     label: "Dashboard",
-    icon: LayoutDashboard,
+    icon: "bi bi-house",
     path: "/admin/admindashboard",
   },
   {
     id: "users",
     label: "Users",
-    icon: Users,
+    icon: "bi bi-people",
     path: "/admin/users",
     badge: 12, // Example: number of pending user approvals
   },
   {
     id: "content",
     label: "Content",
-    icon: FileText,
+    icon: "bi bi-file-earmark-text",
     path: "/admin/content",
   },
   {
     id: "analytics",
     label: "Analytics",
-    icon: BarChart2,
+    icon: "bi bi-clipboard-data",
     path: "/admin/analytics",
   },
   {
     id: "notifications",
     label: "Notifications",
-    icon: Bell,
+    icon: "bi bi-bell",
     path: "/admin/notifications",
     badge: 5, // Example: unread notifications
   },
@@ -117,7 +113,7 @@ const settingsItems = ref([
   {
     id: "settings",
     label: "Settings",
-    icon: Settings,
+    icon: "bi bi-gear",
     path: "/admin/settings",
   },
 ]);
@@ -203,7 +199,7 @@ const logout = () => {
   color: #374151;
 }
 
-.router-link-active {
+.nav-menu .router-link-active {
   background-color: #f0f0ff;
   color: #4f46e5;
   font-weight: 500;

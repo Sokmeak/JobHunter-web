@@ -2,7 +2,7 @@
   <div class="stat-card">
     <div class="card-header">
       <h3 class="card-title">{{ title }}</h3>
-      <component :is="icon" class="card-icon" />
+      <i :class="icon" class="icon-class"></i>
     </div>
     <div class="card-value">{{ value }}</div>
     <div class="card-footer" :class="changeTypeClass">
@@ -75,14 +75,14 @@ const changeTypeClass = computed(() => {
 }
 
 .card-title {
-  font-size: 14px;
+  font-size: 20px;
   font-weight: 500;
   color: #6b7280;
 }
 
 .card-icon {
-  width: 20px;
-  height: 20px;
+  width: 30px;
+  height: 30px;
   color: #9ca3af;
 }
 
@@ -111,5 +111,10 @@ const changeTypeClass = computed(() => {
 
 .card-footer.neutral {
   color: #f59e0b;
+}
+
+.icon-class {
+  font-size: 24px;
+  margin-right: 8px;
 }
 </style>

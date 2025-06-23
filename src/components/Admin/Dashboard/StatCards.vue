@@ -25,6 +25,7 @@ import { ref } from "vue";
 import StatCard from "./StatCard.vue";
 import { Users, Briefcase, Flag, TicketIcon } from "lucide-vue-next";
 
+
 const statCards = ref([
   {
     id: "total-users",
@@ -34,7 +35,7 @@ const statCards = ref([
 
     changeText: " from last month",
     changeType: "positive",
-    icon: Users,
+    icon: "bi bi-people",
   },
   {
     id: "active-listings",
@@ -44,7 +45,7 @@ const statCards = ref([
 
     changeText: " from last month",
     changeType: "positive",
-    icon: Briefcase,
+    icon: "bi bi-briefcase",
   },
   {
     id: "reported-content",
@@ -54,7 +55,7 @@ const statCards = ref([
 
     changeText: " from last month",
     changeType: "warning",
-    icon: Flag,
+    icon: "bi bi-shield-exclamation",
   },
   {
     id: "support-tickets",
@@ -64,7 +65,7 @@ const statCards = ref([
 
     changeText: " from last month",
     changeType: "neutral",
-    icon: TicketIcon,
+    icon: "bi bi-chat-right-text",
   },
 ]);
 </script>
