@@ -1,6 +1,6 @@
 <template>
   <Transition name="loader-fade" mode="out-in">
-    <Loader v-if="showLoader" :loading-duration="loaderDuration" />
+    <!-- <Loader v-if="showLoader" :loading-duration="loaderDuration" /> -->
   </Transition>
   <RouterView />
 </template>
