@@ -2,7 +2,7 @@ import { createRouter, createWebHistory } from "vue-router";
 
 import companyRoutes from "./companyRoutes";
 import authRoutes from "./authRoutes";
-import testRoutes from "./testRoutes";
+
 import applicantRoutes from "./applicantRoutes";
 import baseRoutes from "./baseRoutes";
 import adminRoutes from "./adminRoutes";
@@ -10,7 +10,7 @@ import adminRoutes from "./adminRoutes";
 const routes = [
   ...companyRoutes,
   ...authRoutes,
-  ...testRoutes,
+
   ...applicantRoutes,
   ...baseRoutes,
   ...adminRoutes,
