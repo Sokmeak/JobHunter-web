@@ -125,7 +125,7 @@ export default {
     // Reactive state
     const dateRange = ref({
       start: "2025-05-15", // Standardized to yyyy-MM-dd
-      end: "2025-05-30",
+      end: "2025-07-30",
     });
     const recentApplications = ref([]);
     const applicationStatus = ref([]);
@@ -213,6 +213,9 @@ export default {
             dateRange.value.end
           )
           .slice(0, 3);
+
+        console.log("Recent Applications:", recentApplications.value);
+        
 
         // Update upcoming interviews
         upcomingInterviews.value = computeUpcomingInterviews();
