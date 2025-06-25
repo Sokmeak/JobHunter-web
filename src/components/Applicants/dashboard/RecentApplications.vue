@@ -8,7 +8,9 @@
       <div v-if="applications.length === 0" class="empty-state">
         <i class="bi bi-briefcase display-4 text-muted mb-3"></i>
         <p class="text-muted">No applications yet. Start applying to jobs!</p>
-        <button class="btn btn-primary">Find Jobs</button>
+        <RouterLink to="/applicant/find-jobs" class="btn btn-primary"
+          >Find Jobs</RouterLink
+        >
       </div>
 
       <div v-else class="applications-list">
@@ -103,6 +105,7 @@
 </template>
 
 <script>
+import { RouterLink } from "vue-router";
 import StatusBadge from "../applications/StatusBadge.vue";
 export default {
   name: "RecentApplications",
@@ -170,7 +173,6 @@ export default {
   },
 };
 </script>
-
 
 <style scoped>
 .applications-card {

@@ -68,19 +68,18 @@
     </div>
   </div>
 </template>
-
 <script>
-import { ref, computed, onMounted, watch } from "vue";
-import { useRouter } from "vue-router";
+import { ref, computed, onMounted } from "vue";
 
-import GreetingSection from "@/components/Applicants/applications/GreetingSection.vue";
-import StatCard from "@/components/Applicants/dashboard/StatCard.vue";
-import ApplicationStatusChart from "@/components/Applicants/dashboard/ApplicationStatusChart.vue";
-import RecentApplications from "@/components/Applicants/dashboard/RecentApplications.vue";
-import LoadingSpinner from "@/components/Applicants/comon/LoadingSpinner.vue";
-import UpcomingInterviews from "@/components/Applicants/dashboard/UpcomingInterviews.vue";
 import { useUserProfileStore } from "@/stores/ApplicantStore/userProfile";
 import { useApplicationStore } from "@/stores/ApplicantStore/Applications";
+import { useRouter } from "vue-router";
+import GreetingSection from "@/components/Applicants/applications/GreetingSection.vue";
+import StatCard from "@/components/Admin/Dashboard/StatCard.vue";
+import ApplicationStatusChart from "@/components/Applicants/dashboard/ApplicationStatusChart.vue";
+import UpcomingInterviews from "@/components/Applicants/dashboard/UpcomingInterviews.vue";
+import RecentApplications from "@/components/Applicants/dashboard/RecentApplications.vue";
+import LoadingSpinner from "@/components/Applicants/comon/LoadingSpinner.vue";
 
 export default {
   name: "UserDashboard",
@@ -129,9 +128,7 @@ export default {
       end: "2025-05-30",
     });
     const recentApplications = ref([]);
-    const applicationStatus = ref([
-      { name: "Loading", value: 0, color: "#e5e7eb" },
-    ]);
+    const applicationStatus = ref([]);
     const upcomingInterviews = ref([]);
 
     // Computed properties
@@ -139,7 +136,7 @@ export default {
 
     const userApplications = computed(() => {
       // Assume all applications belong to the authenticated user
-      return applicationStore.applications;
+      return applicationStore.applications || [];
     });
 
     const totalJobsApplied = computed(() => userApplications.value.length);
@@ -179,25 +176,6 @@ export default {
       return interviews.slice(0, 5); // Limit to 5 upcoming interviews
     };
 
-    // Watchers
-    watch(
-      dateRange,
-      (newDateRange) => {
-        saveToStorage(STORAGE_KEYS.DATE_RANGE, newDateRange);
-        applicationStore.updateDateRange(newDateRange);
-        loadDashboardData();
-      },
-      { deep: true }
-    );
-
-    watch(
-      () => applicationStore.applications,
-      () => {
-        loadDashboardData();
-      },
-      { deep: true }
-    );
-
     // Save dashboard state
     const saveDashboardState = () => {
       const dashboardState = {
@@ -223,7 +201,7 @@ export default {
           await userProfileStore.fetchProfile();
         }
 
-        // Fetch applications if not loaded
+        // Fetch applications only if empty
         if (!applicationStore.applications.length) {
           await applicationStore.fetchApplications();
         }
@@ -236,15 +214,11 @@ export default {
           )
           .slice(0, 3);
 
-        console.log("Recent Applications:", recentApplications.value);
-
         // Update upcoming interviews
         upcomingInterviews.value = computeUpcomingInterviews();
 
         // Get status counts for chart
         const statusData = applicationStore.getStatusCounts();
-        console.log("Status Data:", statusData);
-
         const chartData = [
           {
             name: "Hired",
@@ -273,14 +247,20 @@ export default {
     // Handle date range changes
     const handleDateRangeChange = (newDateRange) => {
       dateRange.value = { ...newDateRange };
+      applicationStore.updateDateRange(newDateRange);
+      loadDashboardData();
     };
 
     // Initialize on mount
     onMounted(async () => {
-      dateRange.value = loadFromStorage(
+      const storedDateRange = loadFromStorage(
         STORAGE_KEYS.DATE_RANGE,
         dateRange.value
       );
+      dateRange.value = {
+        start: storedDateRange.start || "2025-05-15",
+        end: storedDateRange.end || "2025-05-30",
+      };
       await loadDashboardData();
     });
 
@@ -300,8 +280,13 @@ export default {
   },
   methods: {
     async handleViewApplication(application) {
-      await this.applicationStore.fetchApplication(application.id);
-      this.$router.push(`/applications/${application.id}`);
+      try {
+        await this.applicationStore.fetchApplication(application.id);
+        this.$router.push(`/applications/${application.id}`);
+      } catch (err) {
+        console.error("Error fetching application:", err);
+        this.applicationStore.error = "Failed to load application details";
+      }
     },
     async handleEditApplication(application) {
       console.log("Edit application:", application);
@@ -313,8 +298,13 @@ export default {
           `Are you sure you want to delete the application for ${application.companyName}?`
         )
       ) {
-        await this.applicationStore.deleteApplication(application.id);
-        await this.loadDashboardData();
+        try {
+          await this.applicationStore.deleteApplication(application.id);
+          await this.loadDashboardData();
+        } catch (err) {
+          console.error("Error deleting application:", err);
+          this.applicationStore.error = "Failed to delete application";
+        }
       }
     },
     async handleViewAllApplications() {
@@ -323,7 +313,6 @@ export default {
   },
 };
 </script>
-
 <style scoped>
 @import "bootstrap/dist/css/bootstrap.min.css";
 @import "bootstrap-icons/font/bootstrap-icons.css";
