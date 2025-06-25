@@ -1,139 +1,251 @@
 <template>
-  <div class="post-job">
-    <!-- Header -->
-    <div class="d-flex justify-content-between align-items-center mb-4">
-      <div>
-        <h2 class="fw-bold mb-1">Post a Job</h2>
-        <p class="text-muted mb-0">
-          Find your next star performer with job post
-        </p>
-      </div>
-      <div class="d-flex align-items-center gap-2">
-        <button class="btn btn-outline-secondary" @click="saveDraft">
-          Save as Draft
-        </button>
-        <button class="btn btn-primary" @click="previewJob">
-          <i class="bi bi-eye me-1"></i>
-          Preview
-        </button>
-      </div>
-    </div>
-
+  <div class="post-job-wrapper">
     <!-- Progress Steps -->
     <div class="card mb-4">
       <div class="card-body">
-        <div class="row">
-          <div class="col-md-4">
+        <div class="steps-progress">
+          <div class="step-indicator">
             <div
-              class="step-item d-flex align-items-center"
-              :class="{ active: currentStep >= 1, completed: currentStep > 1 }"
+              class="step"
+              :class="{
+                active: currentStep === 1,
+                completed: currentStep > 1,
+              }"
             >
               <div class="step-number">
                 <i v-if="currentStep > 1" class="bi bi-check"></i>
                 <span v-else>1</span>
               </div>
-              <div class="ms-3">
-                <h6 class="mb-0">Job Information</h6>
-                <small class="text-muted"
-                  >Job title, type, location, etc.</small
-                >
-              </div>
+              <div class="step-label">Job Information</div>
             </div>
-          </div>
-          <div class="col-md-4">
+
             <div
-              class="step-item d-flex align-items-center"
-              :class="{ active: currentStep >= 2, completed: currentStep > 2 }"
+              class="step-connector"
+              :class="{ active: currentStep > 1 }"
+            ></div>
+
+            <div
+              class="step"
+              :class="{
+                active: currentStep === 2,
+                completed: currentStep > 2,
+              }"
             >
               <div class="step-number">
                 <i v-if="currentStep > 2" class="bi bi-check"></i>
                 <span v-else>2</span>
               </div>
-              <div class="ms-3">
-                <h6 class="mb-0">Job Description</h6>
-                <small class="text-muted"
-                  >Job description, responsibilities, etc.</small
-                >
-              </div>
+              <div class="step-label">Job Description</div>
             </div>
-          </div>
-          <div class="col-md-4">
+
             <div
-              class="step-item d-flex align-items-center"
-              :class="{ active: currentStep >= 3 }"
+              class="step-connector"
+              :class="{ active: currentStep > 2 }"
+            ></div>
+
+            <div
+              class="step"
+              :class="{
+                active: currentStep === 3,
+                completed: currentStep > 3,
+              }"
             >
               <div class="step-number">
-                <span>3</span>
+                <i v-if="currentStep > 3" class="bi bi-check"></i>
+                <span v-else>3</span>
               </div>
-              <div class="ms-3">
-                <h6 class="mb-0">Perks & Benefits</h6>
-                <small class="text-muted">Salary, benefits, etc.</small>
-              </div>
+              <div class="step-label">Perks & Benefits</div>
             </div>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- Form Content -->
+    <!-- Form Component -->
     <PostJobForm
       :current-step="currentStep"
       :job-data="jobData"
       @update-job="updateJobData"
       @next-step="nextStep"
       @prev-step="prevStep"
-      @submit="submitJob"
+      @submit="handleSubmit"
     />
   </div>
 </template>
 
 <script setup>
-import { computed } from "vue";
-import { usePostJobStore } from "@/stores/company/postJob";
+import { ref } from "vue";
+import { useRouter } from "vue-router";
 import PostJobForm from "@/components/company/jobs/PostJobForm.vue";
 
-const postJobStore = usePostJobStore();
+const router = useRouter();
 
-const currentStep = computed(() => postJobStore.currentStep);
-const jobData = computed(() => postJobStore.jobData);
+// State
+const currentStep = ref(1);
+const jobData = ref({
+  // Step 1: Basic Information
+  title: "",
+  category: "",
+  jobType: "",
+  salaryType: "",
+  currency: "USD",
+  salaryMin: "",
+  salaryMax: "",
+  education: "",
+  experience: "",
+  jobLevel: "",
+  expireDate: "",
 
-const saveDraft = () => postJobStore.saveDraft();
-const previewJob = () => postJobStore.previewJob();
-const submitJob = () => postJobStore.submitJob();
-const nextStep = () => postJobStore.nextStep();
-const prevStep = () => postJobStore.prevStep();
-const updateJobData = (data) => postJobStore.updateJobData(data);
+  // Step 2: Description
+  description: "",
+  responsibilities: [""],
+  whoYouAre: [""],
+  niceToHaves: [""],
+
+  // Step 3: Perks & Benefits
+  perks: [],
+  benefits: [],
+  is_visible: true,
+});
+
+// Methods
+const updateJobData = (newData) => {
+  jobData.value = { ...jobData.value, ...newData };
+  console.log("📝 Job data updated in wrapper:", jobData.value);
+};
+
+const nextStep = () => {
+  if (currentStep.value < 3) {
+    currentStep.value++;
+    console.log("➡️ Moving to step:", currentStep.value);
+  }
+};
+
+const prevStep = () => {
+  if (currentStep.value > 1) {
+    currentStep.value--;
+    console.log("⬅️ Moving to step:", currentStep.value);
+  }
+};
+
+const handleSubmit = (createdJob) => {
+  console.log("✅ Job submitted successfully:", createdJob);
+  // The PostJobForm handles the success modal and navigation
+  // We could add additional logic here if needed
+};
 </script>
 
 <style scoped>
-.step-item {
-  position: relative;
+.steps-progress {
+  padding: 20px 0;
+}
+
+.step-indicator {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  flex: 1;
 }
 
 .step-number {
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  background-color: var(--light-gray);
-  color: var(--text-gray);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-weight: bold;
+  font-weight: 600;
+  font-size: 16px;
+  margin-bottom: 8px;
   transition: all 0.3s ease;
+  background-color: #e9ecef;
+  color: #6c757d;
+  border: 2px solid #e9ecef;
 }
 
-.step-item.active .step-number {
-  background-color: var(--primary-color);
+.step.active .step-number {
+  background-color: #007bff;
   color: white;
+  border-color: #007bff;
 }
 
-.step-item.completed .step-number {
-  background-color: var(--secondary-color);
+.step.completed .step-number {
+  background-color: #28a745;
   color: white;
+  border-color: #28a745;
 }
 
-.step-item.active h6 {
-  color: var(--primary-color);
+.step-label {
+  font-size: 14px;
+  font-weight: 500;
+  color: #6c757d;
+  transition: color 0.3s ease;
+}
+
+.step.active .step-label {
+  color: #007bff;
+}
+
+.step.completed .step-label {
+  color: #28a745;
+}
+
+.step-connector {
+  height: 2px;
+  background-color: #e9ecef;
+  margin: 0 20px;
+  flex: 1;
+  margin-top: -20px;
+  transition: background-color 0.3s ease;
+}
+
+.step-connector.active {
+  background-color: #28a745;
+}
+
+.card {
+  border: none;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+}
+
+@media (max-width: 768px) {
+  .step-indicator {
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .step-connector {
+    width: 2px;
+    height: 40px;
+    margin: 0;
+    margin-top: 0;
+    margin-left: 19px;
+  }
+
+  .step {
+    flex-direction: row;
+    text-align: left;
+    width: 100%;
+  }
+
+  .step-number {
+    margin-bottom: 0;
+    margin-right: 12px;
+    flex-shrink: 0;
+  }
+
+  .step-label {
+    align-self: center;
+  }
 }
 </style>

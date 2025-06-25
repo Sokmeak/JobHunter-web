@@ -301,6 +301,7 @@
 </template>
 
 <script>
+import { useCompanyJobStore } from "@/stores/company/companyJob";
 import { ref, onMounted } from "vue";
 import JobAnalytics from "@/components/company/jobs/JobAnalytics.vue";
 
@@ -318,6 +319,8 @@ export default {
       hiredThisMonth: 12,
       hireRate: 15,
     });
+
+    const companyJobStore = useCompanyJobStore();
 
     const recentApplications = ref([
       {
@@ -466,10 +469,13 @@ export default {
 
     onMounted(() => {
       // Load dashboard data
+      const alljobs = companyJobStore.fetchJobs();
+      console.log("All jobs fetched:", alljobs);
       console.log("Dashboard mounted");
     });
 
     return {
+      companyJobStore,
       stats,
       recentApplications,
       upcomingInterviews,
