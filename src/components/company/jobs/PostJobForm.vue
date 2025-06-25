@@ -601,6 +601,7 @@ const handleNext = () => {
   emit("next-step");
 };
 
+// FIXED: Proper job submission that makes jobs appear in listing
 const handleSubmit = async () => {
   if (isSubmitting.value) return;
 
@@ -608,111 +609,37 @@ const handleSubmit = async () => {
     isSubmitting.value = true;
     errorMessage.value = "";
 
-    console.log("Submitting job data:", localJobData.value);
+    console.log("🚀 Submitting job data:", localJobData.value);
 
-    // Transform the data to match backend expectations
-    const transformedData = transformJobData(localJobData.value);
+    // Create the job using the store - this will add it to the jobs list automatically
+    const createdJob = await jobStore.createJob(localJobData.value);
 
-    // Create the job using the store
-    //const createdJob = await jobStore.createJob(transformedData);
-
-    //console.log("Job created successfully:", createdJob);
+    console.log("✅ Job created successfully:", createdJob);
 
     // Store the created job ID
-    // createdJobId.value = createdJob.id;
+    createdJobId.value = createdJob.id;
 
     // Emit success
-    emit("submit", transformJobData);
+    emit("submit", createdJob);
 
     // Show success modal
     showSuccessModal.value = true;
   } catch (error) {
-    console.error("Failed to create job:", error);
-    errorMessage.value =
-      handleError(error) ||
-      "An unexpected error occurred while creating the job.";
+    console.error("❌ Failed to create job:", error);
+    errorMessage.value = handleError(error);
     showErrorModal.value = true;
   } finally {
     isSubmitting.value = false;
   }
 };
 
-// Transform frontend data to backend format
-const transformJobData = (data) => {
-  return {
-    title: data.title,
-    description: data.description,
-    responsibility: data.responsibilities.filter((r) => r.trim()),
-    qualification: data.education,
-    job_type: data.jobType,
-    skill_required: data.category,
-    tags: [data.category, data.jobLevel].filter(Boolean),
-    level: data.jobLevel,
-    salary_range: getSalaryRange(data),
-    expired_date: data.expireDate || null,
-    who_you_are: data.whoYouAre.filter((q) => q.trim()),
-    nice_to_haves: data.niceToHaves.filter((n) => n.trim()),
-    perks_benefits: transformPerksAndBenefits(data),
-    is_visible: true, // Default to active
-  };
-};
-
-const getSalaryRange = (data) => {
-  if (data.salaryType === "Range" && data.salaryMin && data.salaryMax) {
-    return `${data.currency || "USD"}${data.salaryMin} - ${
-      data.currency || "USD"
-    }${data.salaryMax}`;
-  }
-  return "";
-};
-
-const transformPerksAndBenefits = (data) => {
-  const perksAndBenefits = {};
-
-  // Map perks
-  if (data.perks.includes("full-healthcare")) {
-    perksAndBenefits.health_coverage = "Comprehensive health coverage";
-  }
-  if (data.perks.includes("remote-working")) {
-    perksAndBenefits.remote_work = "Option to work from home or office";
-  }
-  if (data.perks.includes("free-gym")) {
-    perksAndBenefits.wellness_program =
-      "Gym memberships and mental health support";
-  }
-  if (data.perks.includes("team-summits")) {
-    perksAndBenefits.team_retreats = "Annual team retreats";
-  }
-  if (data.perks.includes("commuter-benefits")) {
-    perksAndBenefits.commuter_benefits = "Subsidized commuting costs";
-  }
-  if (data.perks.includes("skill-development")) {
-    perksAndBenefits.learning_stipend = "Funding for professional learning";
-  }
-
-  // Map benefits
-  if (data.benefits.includes("professional-development")) {
-    perksAndBenefits.professional_development =
-      "Mentorship and training opportunities";
-  }
-  if (data.benefits.includes("retirement-plan")) {
-    perksAndBenefits.retirement_plan = "401(k) or similar retirement plan";
-  }
-  if (data.benefits.includes("paid-time-off")) {
-    perksAndBenefits.paid_time_off = "Generous paid time off";
-  }
-  if (data.benefits.includes("flexible-schedule")) {
-    perksAndBenefits.flexible_hours = "Flexible working hours";
-  }
-
-  return perksAndBenefits;
-};
-
 // Modal actions
 const viewJob = () => {
   showSuccessModal.value = false;
   if (createdJobId.value) {
-    router.push(`/company/jobs/${createdJobId.value}`);
+    router.push(`/company/job-details/${createdJobId.value}`);
+  } else {
+    goToListing();
   }
 };
 

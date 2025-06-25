@@ -1,4 +1,4 @@
-// stores/company/companyJob.js
+// stores/company/companyJob.js - COMPLETE FINAL VERSION
 import { defineStore } from "pinia";
 import { ref, computed } from "vue";
 import axios from "axios";
@@ -14,8 +14,6 @@ export const useCompanyJobStore = defineStore("companyJobStore", () => {
   // Simple notification functions
   const showSuccess = (message) => {
     console.log("✅ Success:", message);
-    // You can replace this with any notification library you prefer
-    // For now, we'll use browser notifications or simple alerts
     if ("Notification" in window && Notification.permission === "granted") {
       new Notification("Success", { body: message, icon: "/favicon.ico" });
     }
@@ -23,7 +21,6 @@ export const useCompanyJobStore = defineStore("companyJobStore", () => {
 
   const showError = (message) => {
     console.error("❌ Error:", message);
-    // For errors, we might want to show an alert
     alert("Error: " + message);
   };
 
@@ -41,6 +38,7 @@ export const useCompanyJobStore = defineStore("companyJobStore", () => {
   // API helper function
   const getAuthHeaders = () => {
     const token = localStorage.getItem("access_token");
+    console.log("🔑 Using token:", token ? "Present" : "Missing");
     return {
       Authorization: `Bearer ${token}`,
       "Content-Type": "application/json",
@@ -48,28 +46,44 @@ export const useCompanyJobStore = defineStore("companyJobStore", () => {
   };
 
   // Fetch all jobs for the company
-  async function fetchJobs(page = 1, limit = 10) {
+  async function fetchJobs(page = 1, limit = 100) {
     try {
       loading.value = true;
       error.value = null;
+
+      console.log("🔍 Fetching jobs from API...");
 
       const response = await axios.get(`${API_BASE_URL}/companies/jobs`, {
         headers: getAuthHeaders(),
         params: { page, limit },
       });
 
-      if (response.data && response.data.jobs) {
+      console.log("📊 Jobs API response:", response.data);
+
+      // Handle different response formats
+      if (
+        response.data &&
+        response.data.jobs &&
+        Array.isArray(response.data.jobs)
+      ) {
         jobs.value = response.data.jobs;
-        console.log("Jobs fetched successfully:", jobs.value.length);
-        return response.data;
+        console.log(
+          "✅ Jobs loaded from response.data.jobs:",
+          jobs.value.length
+        );
+      } else if (Array.isArray(response.data)) {
+        jobs.value = response.data;
+        console.log("✅ Jobs loaded from direct array:", jobs.value.length);
       } else {
-        console.warn("No jobs data in response");
+        console.warn("⚠️ Unexpected response format, setting empty array");
         jobs.value = [];
-        return { jobs: [], total: 0 };
       }
+
+      return { jobs: jobs.value, total: jobs.value.length };
     } catch (err) {
-      console.error("Error fetching jobs:", err);
+      console.error("❌ Error fetching jobs:", err);
       error.value = err.message || "Failed to load jobs";
+      jobs.value = [];
       showError("Failed to load jobs");
       throw err;
     } finally {
@@ -83,10 +97,8 @@ export const useCompanyJobStore = defineStore("companyJobStore", () => {
       loading.value = true;
       error.value = null;
 
-      // Transform frontend data to backend format
       const backendJobData = transformToBackendFormat(jobData);
-
-      console.log("Creating job with data:", backendJobData);
+      console.log("🚀 Creating job with data:", backendJobData);
 
       const response = await axios.post(
         `${API_BASE_URL}/companies/jobs`,
@@ -96,16 +108,16 @@ export const useCompanyJobStore = defineStore("companyJobStore", () => {
         }
       );
 
-      console.log("Job created successfully:", response.data);
+      console.log("✅ Job created successfully:", response.data);
 
       // Add the new job to the local store immediately
       const newJob = response.data;
-      jobs.value.push(newJob);
+      jobs.value.unshift(newJob);
 
       showSuccess("Job created successfully!");
       return newJob;
     } catch (err) {
-      console.error("Error creating job:", err);
+      console.error("❌ Error creating job:", err);
       const errorMessage =
         err.response?.data?.message || "Failed to create job";
       error.value = errorMessage;
@@ -123,6 +135,7 @@ export const useCompanyJobStore = defineStore("companyJobStore", () => {
       error.value = null;
 
       const backendJobData = transformToBackendFormat(jobData);
+      console.log("📝 Updating job:", jobId, backendJobData);
 
       const response = await axios.put(
         `${API_BASE_URL}/companies/jobs/${jobId}`,
@@ -133,15 +146,16 @@ export const useCompanyJobStore = defineStore("companyJobStore", () => {
       );
 
       // Update the job in local store
-      const index = jobs.value.findIndex((job) => job.id === jobId);
+      const index = jobs.value.findIndex((job) => job.id === parseInt(jobId));
       if (index !== -1) {
         jobs.value[index] = response.data;
+        console.log("✅ Job updated in local store");
       }
 
       showSuccess("Job updated successfully!");
       return response.data;
     } catch (err) {
-      console.error("Error updating job:", err);
+      console.error("❌ Error updating job:", err);
       error.value = "Failed to update job";
       showError("Failed to update job");
       throw err;
@@ -156,19 +170,23 @@ export const useCompanyJobStore = defineStore("companyJobStore", () => {
       loading.value = true;
       error.value = null;
 
+      console.log("🗑️ Deleting job:", jobId);
+
       await axios.delete(`${API_BASE_URL}/companies/jobs/${jobId}`, {
         headers: getAuthHeaders(),
       });
 
       // Remove job from local store
-      const index = jobs.value.findIndex((job) => job.id === jobId);
+      const index = jobs.value.findIndex((job) => job.id === parseInt(jobId));
       if (index !== -1) {
         jobs.value.splice(index, 1);
+        console.log("✅ Job removed from local store");
       }
 
       showSuccess("Job deleted successfully!");
+      return true;
     } catch (err) {
-      console.error("Error deleting job:", err);
+      console.error("❌ Error deleting job:", err);
       error.value = "Failed to delete job";
       showError("Failed to delete job");
       throw err;
@@ -183,6 +201,8 @@ export const useCompanyJobStore = defineStore("companyJobStore", () => {
       loading.value = true;
       error.value = null;
 
+      console.log("🔍 Fetching job by ID:", jobId);
+
       const response = await axios.get(
         `${API_BASE_URL}/companies/jobs/${jobId}`,
         {
@@ -191,9 +211,10 @@ export const useCompanyJobStore = defineStore("companyJobStore", () => {
       );
 
       currentJob.value = response.data;
+      console.log("✅ Job fetched by ID:", response.data);
       return response.data;
     } catch (err) {
-      console.error("Error fetching job:", err);
+      console.error("❌ Error fetching job:", err);
       error.value = "Failed to load job details";
       showError("Failed to load job details");
       throw err;
@@ -202,27 +223,37 @@ export const useCompanyJobStore = defineStore("companyJobStore", () => {
     }
   }
 
-  // Get job by ID from local store (for immediate access)
+  // Get job by ID from local store
   function getJobById_Local(jobId) {
-    return jobs.value.find((job) => job.id === parseInt(jobId)) || null;
+    const job = jobs.value.find((job) => job.id === parseInt(jobId)) || null;
+    console.log(
+      "🔍 Getting job from local store:",
+      jobId,
+      job ? "Found" : "Not found"
+    );
+    return job;
   }
 
   // Duplicate a job
   async function duplicateJob(jobId) {
     try {
+      console.log("📋 Duplicating job:", jobId);
       const originalJob = getJobById_Local(jobId) || (await getJobById(jobId));
 
-      const duplicatedJobData = {
-        ...originalJob,
-        title: `${originalJob.title} Cre(Copy)`,
-        is_visible: false, // Start as draft
-        id: undefined,
-        created_at: undefined,
-        updated_at: undefined,
-      };
+      if (!originalJob) {
+        throw new Error("Original job not found");
+      }
+
+      const duplicatedJobData = transformToFrontendFormat(originalJob);
+      duplicatedJobData.title = `${originalJob.title} (Copy)`;
+      duplicatedJobData.is_visible = false;
+      delete duplicatedJobData.id;
+      delete duplicatedJobData.created_at;
+      delete duplicatedJobData.updated_at;
 
       return await createJob(duplicatedJobData);
     } catch (err) {
+      console.error("❌ Error duplicating job:", err);
       showError("Failed to duplicate job");
       throw err;
     }
@@ -230,17 +261,23 @@ export const useCompanyJobStore = defineStore("companyJobStore", () => {
 
   // Transform frontend job data to backend format
   function transformToBackendFormat(frontendData) {
-    return {
+    console.log(
+      "🔄 Transforming frontend data to backend format:",
+      frontendData
+    );
+
+    const transformed = {
       title: frontendData.title,
-      description: frontendData.description,
+      description: frontendData.description || "",
       responsibility: Array.isArray(frontendData.responsibilities)
         ? frontendData.responsibilities.filter((r) => r && r.trim())
         : [],
-      qualification: frontendData.education || frontendData.qualification,
+      qualification:
+        frontendData.education || frontendData.qualification || null,
       job_type: frontendData.jobType,
       skill_required: frontendData.category,
       salary_range: getSalaryRange(frontendData),
-      level: frontendData.jobLevel,
+      level: frontendData.jobLevel || null,
       expired_date: frontendData.expireDate || null,
       who_you_are: Array.isArray(frontendData.whoYouAre)
         ? frontendData.whoYouAre.filter((q) => q && q.trim())
@@ -250,8 +287,13 @@ export const useCompanyJobStore = defineStore("companyJobStore", () => {
         : [],
       tags: [frontendData.category, frontendData.jobLevel].filter(Boolean),
       perks_benefits: transformPerksAndBenefits(frontendData),
-      is_visible: true, // Make job visible by default
+      is_visible: frontendData.is_visible !== false,
+      location: frontendData.location || null,
+      capacity: frontendData.capacity || null,
     };
+
+    console.log("✅ Transformed data:", transformed);
+    return transformed;
   }
 
   // Helper function to format salary range
@@ -294,7 +336,6 @@ export const useCompanyJobStore = defineStore("companyJobStore", () => {
 
     const result = {};
 
-    // Add selected perks
     if (Array.isArray(data.perks)) {
       data.perks.forEach((perk) => {
         if (perksMap[perk]) {
@@ -303,7 +344,6 @@ export const useCompanyJobStore = defineStore("companyJobStore", () => {
       });
     }
 
-    // Add selected benefits
     if (Array.isArray(data.benefits)) {
       data.benefits.forEach((benefit) => {
         if (benefitsMap[benefit]) {
@@ -315,29 +355,55 @@ export const useCompanyJobStore = defineStore("companyJobStore", () => {
     return Object.keys(result).length > 0 ? result : null;
   }
 
-  // Transform backend job data to frontend format (for editing)
+  // Transform backend job data to frontend format
   function transformToFrontendFormat(backendJob) {
-    return {
+    console.log("🔄 Transforming backend data to frontend format:", backendJob);
+
+    let salaryData = {
+      salaryType: "",
+      salaryMin: "",
+      salaryMax: "",
+      currency: "USD",
+    };
+
+    if (backendJob.salary_range) {
+      const salaryRange = backendJob.salary_range;
+      if (salaryRange.includes(" - ")) {
+        salaryData.salaryType = "Range";
+        const parts = salaryRange.split(" - ");
+        salaryData.salaryMin = parts[0].replace(/[^\d]/g, "");
+        salaryData.salaryMax = parts[1].replace(/[^\d]/g, "");
+        salaryData.currency = parts[0].replace(/[\d\s-]/g, "");
+      } else if (salaryRange.includes("+")) {
+        salaryData.salaryType = "Starting Amount";
+        salaryData.salaryMin = salaryRange.replace(/[^\d]/g, "");
+        salaryData.currency = salaryRange.replace(/[\d\s+]/g, "");
+      }
+    }
+
+    const transformed = {
       id: backendJob.id,
       title: backendJob.title || "",
       category: backendJob.skill_required || "",
       jobType: backendJob.job_type || "",
-      salaryType: "Range", // Default
-      salaryMin: "",
-      salaryMax: "",
-      currency: "$",
+      ...salaryData,
       education: backendJob.qualification || "",
       experience: "",
       jobLevel: backendJob.level || "",
       expireDate: backendJob.expired_date || "",
       description: backendJob.description || "",
-      responsibilities: backendJob.responsibility || [],
-      whoYouAre: backendJob.who_you_are || [],
-      niceToHaves: backendJob.nice_to_haves || [],
-      perks: [], // Would need to reverse engineer from perks_benefits
+      responsibilities: backendJob.responsibility || [""],
+      whoYouAre: backendJob.who_you_are || [""],
+      niceToHaves: backendJob.nice_to_haves || [""],
+      perks: [],
       benefits: [],
-      status: backendJob.is_visible ? "Live" : "Draft",
+      is_visible: backendJob.is_visible !== false,
+      location: backendJob.location || "",
+      capacity: backendJob.capacity || "",
     };
+
+    console.log("✅ Transformed frontend data:", transformed);
+    return transformed;
   }
 
   return {

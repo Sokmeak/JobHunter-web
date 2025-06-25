@@ -141,14 +141,20 @@
 
           <!-- Responsibilities -->
           <div
-            v-if="job.responsibility && job.responsibility.length > 0"
+            v-if="
+              job.responsibility &&
+              job.responsibility.length > 0 &&
+              hasValidItems(job.responsibility)
+            "
             class="card mb-4"
           >
             <div class="card-body">
               <h5 class="fw-bold mb-3">Key Responsibilities</h5>
               <ul class="list-unstyled">
                 <li
-                  v-for="(responsibility, index) in job.responsibility"
+                  v-for="(responsibility, index) in filterValidItems(
+                    job.responsibility
+                  )"
                   :key="index"
                   class="mb-2"
                 >
@@ -161,14 +167,20 @@
 
           <!-- Requirements -->
           <div
-            v-if="job.who_you_are && job.who_you_are.length > 0"
+            v-if="
+              job.who_you_are &&
+              job.who_you_are.length > 0 &&
+              hasValidItems(job.who_you_are)
+            "
             class="card mb-4"
           >
             <div class="card-body">
               <h5 class="fw-bold mb-3">Who You Are</h5>
               <ul class="list-unstyled">
                 <li
-                  v-for="(requirement, index) in job.who_you_are"
+                  v-for="(requirement, index) in filterValidItems(
+                    job.who_you_are
+                  )"
                   :key="index"
                   class="mb-2"
                 >
@@ -181,14 +193,20 @@
 
           <!-- Nice to Haves -->
           <div
-            v-if="job.nice_to_haves && job.nice_to_haves.length > 0"
+            v-if="
+              job.nice_to_haves &&
+              job.nice_to_haves.length > 0 &&
+              hasValidItems(job.nice_to_haves)
+            "
             class="card mb-4"
           >
             <div class="card-body">
               <h5 class="fw-bold mb-3">Nice to Haves</h5>
               <ul class="list-unstyled">
                 <li
-                  v-for="(niceToHave, index) in job.nice_to_haves"
+                  v-for="(niceToHave, index) in filterValidItems(
+                    job.nice_to_haves
+                  )"
                   :key="index"
                   class="mb-2"
                 >
@@ -200,12 +218,15 @@
           </div>
 
           <!-- Skills & Tags -->
-          <div v-if="job.tags && job.tags.length > 0" class="card mb-4">
+          <div
+            v-if="job.tags && job.tags.length > 0 && hasValidItems(job.tags)"
+            class="card mb-4"
+          >
             <div class="card-body">
               <h5 class="fw-bold mb-3">Skills & Tags</h5>
               <div class="d-flex flex-wrap gap-2">
                 <span
-                  v-for="tag in job.tags"
+                  v-for="tag in filterValidItems(job.tags)"
                   :key="tag"
                   class="badge bg-primary-subtle text-primary border border-primary px-3 py-2"
                 >
@@ -402,6 +423,17 @@ const deleteLoading = ref(false);
 // Computed
 const jobId = computed(() => parseInt(props.id));
 
+// Helper functions for filtering empty/invalid items
+const hasValidItems = (array) => {
+  if (!Array.isArray(array)) return false;
+  return array.some((item) => item && item.trim && item.trim() !== "");
+};
+
+const filterValidItems = (array) => {
+  if (!Array.isArray(array)) return [];
+  return array.filter((item) => item && item.trim && item.trim() !== "");
+};
+
 // Handle errors locally
 const handleError = (error) => {
   let message = "An unexpected error occurred";
@@ -439,14 +471,21 @@ const handleError = (error) => {
   return message;
 };
 
-// API calls (you can replace these with your actual API service)
+// API calls - FIXED: Use correct token name and handle response properly
 const loadJob = async () => {
   loading.value = true;
   error.value = null;
 
   try {
-    // Replace with your actual API call
-    const token = localStorage.getItem("auth_token");
+    // FIXED: Use correct token name from localStorage
+    const token = localStorage.getItem("access_token"); // Changed from "auth_token"
+
+    if (!token) {
+      throw new Error("No authentication token found. Please log in again.");
+    }
+
+    console.log("🔍 Loading job with ID:", jobId.value);
+
     const response = await fetch(
       `http://localhost:3000/companies/jobs/${jobId.value}`,
       {
@@ -458,16 +497,25 @@ const loadJob = async () => {
     );
 
     if (!response.ok) {
+      if (response.status === 401) {
+        // Redirect to login if unauthorized
+        localStorage.removeItem("access_token");
+        router.push("/login");
+        return;
+      }
       throw new Error(`HTTP error! status: ${response.status}`);
     }
 
     const data = await response.json();
-    job.value = data;
+    console.log("✅ Job loaded:", data);
+
+    // FIXED: Handle different response formats
+    job.value = data.job || data; // Backend might return { job: {...} } or direct job object
 
     // Load applications for this job
     await loadApplications();
   } catch (err) {
-    console.error("Error loading job:", err);
+    console.error("❌ Error loading job:", err);
     error.value = handleError(err);
   } finally {
     loading.value = false;
@@ -476,7 +524,14 @@ const loadJob = async () => {
 
 const loadApplications = async () => {
   try {
-    const token = localStorage.getItem("auth_token");
+    // FIXED: Use correct token name
+    const token = localStorage.getItem("access_token");
+
+    if (!token) {
+      console.warn("No token found for loading applications");
+      return;
+    }
+
     const response = await fetch(
       `http://localhost:3000/companies/jobs/${jobId.value}/applications?limit=10`,
       {
@@ -489,10 +544,11 @@ const loadApplications = async () => {
 
     if (response.ok) {
       const data = await response.json();
-      applications.value = data.applications || [];
+      console.log("📋 Applications loaded:", data);
+      applications.value = data.applications || data || [];
     }
   } catch (err) {
-    console.warn("Failed to load applications:", err);
+    console.warn("⚠️ Failed to load applications:", err);
     // Don't show error for applications, just continue
   }
 };
@@ -510,7 +566,20 @@ const toggleJobStatus = async () => {
 
   statusLoading.value = true;
   try {
-    const token = localStorage.getItem("auth_token");
+    // FIXED: Use correct token name
+    const token = localStorage.getItem("access_token");
+
+    if (!token) {
+      throw new Error("No authentication token found");
+    }
+
+    console.log(
+      "🔄 Toggling job status:",
+      job.value.id,
+      "to",
+      !job.value.is_visible
+    );
+
     const response = await fetch(
       `http://localhost:3000/companies/jobs/${job.value.id}`,
       {
@@ -524,13 +593,17 @@ const toggleJobStatus = async () => {
     );
 
     if (!response.ok) {
-      throw new Error("Failed to update job status");
+      throw new Error(`Failed to update job status: ${response.status}`);
     }
 
+    const updatedJob = await response.json();
+    console.log("✅ Job status updated:", updatedJob);
+
+    // Update local job data
     job.value.is_visible = !job.value.is_visible;
   } catch (err) {
-    console.error("Error updating job status:", err);
-    alert("Failed to update job status");
+    console.error("❌ Error updating job status:", err);
+    alert("Failed to update job status: " + err.message);
   } finally {
     statusLoading.value = false;
   }
@@ -547,7 +620,15 @@ const deleteJob = async () => {
 
   deleteLoading.value = true;
   try {
-    const token = localStorage.getItem("auth_token");
+    // FIXED: Use correct token name
+    const token = localStorage.getItem("access_token");
+
+    if (!token) {
+      throw new Error("No authentication token found");
+    }
+
+    console.log("🗑️ Deleting job:", job.value.id);
+
     const response = await fetch(
       `http://localhost:3000/companies/jobs/${job.value.id}`,
       {
@@ -560,13 +641,14 @@ const deleteJob = async () => {
     );
 
     if (!response.ok) {
-      throw new Error("Failed to delete job");
+      throw new Error(`Failed to delete job: ${response.status}`);
     }
 
+    console.log("✅ Job deleted successfully");
     router.push("/company/job-listing");
   } catch (err) {
-    console.error("Error deleting job:", err);
-    alert("Failed to delete job");
+    console.error("❌ Error deleting job:", err);
+    alert("Failed to delete job: " + err.message);
   } finally {
     deleteLoading.value = false;
   }
@@ -575,22 +657,34 @@ const deleteJob = async () => {
 // Utility methods
 const formatDate = (dateString) => {
   if (!dateString) return "";
-  const date = new Date(dateString);
-  const now = new Date();
-  const diffInDays = Math.floor(
-    (now.getTime() - date.getTime()) / (1000 * 60 * 60 * 24)
-  );
 
-  if (diffInDays === 0) return "Today";
-  if (diffInDays === 1) return "Yesterday";
-  if (diffInDays < 7) return `${diffInDays} days ago`;
-  if (diffInDays < 30) return `${Math.floor(diffInDays / 7)} weeks ago`;
+  try {
+    const date = new Date(dateString);
 
-  return date.toLocaleDateString("en-US", {
-    year: "numeric",
-    month: "short",
-    day: "numeric",
-  });
+    // Check if date is valid
+    if (isNaN(date.getTime())) {
+      return "Invalid date";
+    }
+
+    const now = new Date();
+    const diffInDays = Math.floor(
+      (now.getTime() - date.getTime()) / (1000 * 60 * 60 * 24)
+    );
+
+    if (diffInDays === 0) return "Today";
+    if (diffInDays === 1) return "Yesterday";
+    if (diffInDays < 7) return `${diffInDays} days ago`;
+    if (diffInDays < 30) return `${Math.floor(diffInDays / 7)} weeks ago`;
+
+    return date.toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+    });
+  } catch (err) {
+    console.warn("Error formatting date:", dateString, err);
+    return "Invalid date";
+  }
 };
 
 const getStatusClass = (isVisible) => {
@@ -610,30 +704,42 @@ const getApplicationStatusClass = (status) => {
 };
 
 const formatBenefitTitle = (key) => {
+  if (!key) return "";
   return key.replace(/_/g, " ").replace(/\b\w/g, (l) => l.toUpperCase());
 };
 
 const getInitials = (name) => {
   if (!name) return "?";
-  return name
-    .split(" ")
-    .map((n) => n[0])
-    .join("")
-    .toUpperCase()
-    .substring(0, 2);
+  try {
+    return name
+      .split(" ")
+      .map((n) => n[0])
+      .join("")
+      .toUpperCase()
+      .substring(0, 2);
+  } catch (err) {
+    return "?";
+  }
 };
 
 const calculateFillRate = () => {
   if (!job.value || !job.value.capacity || job.value.capacity === 0) return 0;
-  return Math.round((job.value.applicant_applied / job.value.capacity) * 100);
+  try {
+    return Math.round((job.value.applicant_applied / job.value.capacity) * 100);
+  } catch (err) {
+    return 0;
+  }
 };
 
 // Lifecycle
 onMounted(() => {
-  if (jobId.value) {
+  console.log("🚀 Job details component mounted with ID:", props.id);
+
+  if (jobId.value && !isNaN(jobId.value)) {
     loadJob();
   } else {
-    error.value = "Invalid job ID";
+    error.value = "Invalid job ID provided";
+    console.error("❌ Invalid job ID:", props.id);
   }
 });
 </script>
@@ -698,14 +804,45 @@ onMounted(() => {
   background-color: #f8f9fa;
 }
 
+/* FIXED: Better responsive design */
 @media (max-width: 768px) {
   .d-flex.justify-content-between {
     flex-direction: column;
     gap: 1rem;
+    align-items: stretch;
   }
 
   .d-flex.gap-2 {
     justify-content: center;
+    flex-wrap: wrap;
   }
+
+  .d-flex.gap-2 .btn {
+    flex: 1;
+    min-width: 120px;
+  }
+
+  .col-lg-8,
+  .col-lg-4 {
+    margin-bottom: 2rem;
+  }
+}
+
+/* FIXED: Better loading state */
+.spinner-border {
+  width: 3rem;
+  height: 3rem;
+}
+
+.spinner-border-sm {
+  width: 1rem;
+  height: 1rem;
+}
+
+/* FIXED: Better error state */
+.alert {
+  border-radius: 12px;
+  border: none;
+  box-shadow: 0 2px 10px rgba(220, 53, 69, 0.1);
 }
 </style>

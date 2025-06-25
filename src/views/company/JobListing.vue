@@ -17,7 +17,8 @@
           class="btn btn-outline-secondary"
           :disabled="loading"
         >
-          <i class="bi bi-arrow-clockwise me-2"></i>Refresh
+          <i class="bi bi-arrow-clockwise me-2"></i>
+          {{ loading ? "Loading..." : "Refresh" }}
         </button>
       </div>
     </div>
@@ -72,11 +73,23 @@
     </div>
 
     <!-- Loading State -->
-    <div v-if="loading" class="text-center py-5">
+    <div v-if="loading && jobs.length === 0" class="text-center py-5">
       <div class="spinner-border text-primary" role="status">
         <span class="visually-hidden">Loading...</span>
       </div>
       <p class="mt-3 text-muted">Loading jobs...</p>
+    </div>
+
+    <!-- Error State -->
+    <div v-else-if="error && jobs.length === 0" class="alert alert-danger">
+      <h5>
+        <i class="bi bi-exclamation-triangle me-2"></i>Failed to Load Jobs
+      </h5>
+      <p><strong>Error:</strong> {{ error }}</p>
+      <button class="btn btn-danger" @click="refreshJobs">
+        <i class="bi bi-arrow-clockwise me-1"></i>
+        Try Again
+      </button>
     </div>
 
     <!-- Jobs List -->
@@ -116,10 +129,15 @@
                 <button
                   class="btn btn-sm btn-outline-secondary dropdown-toggle"
                   data-bs-toggle="dropdown"
+                  :disabled="actionLoading === job.id"
                 >
-                  <i class="bi bi-three-dots"></i>
+                  <i
+                    v-if="actionLoading === job.id"
+                    class="spinner-border spinner-border-sm"
+                  ></i>
+                  <i v-else class="bi bi-three-dots"></i>
                 </button>
-                <ul class="dropdown-menu">
+                <ul class="dropdown-menu dropdown-menu-end">
                   <li>
                     <router-link
                       :to="`/company/job-details/${job.id}`"
@@ -149,6 +167,7 @@
                     <button
                       class="dropdown-item"
                       @click="toggleJobStatus(job.id, job.is_visible)"
+                      :disabled="actionLoading === job.id"
                     >
                       <i
                         :class="
@@ -171,7 +190,8 @@
                   <li>
                     <button
                       class="dropdown-item text-danger"
-                      @click="deleteJob(job.id)"
+                      @click="deleteJobHandler(job.id)"
+                      :disabled="actionLoading === job.id"
                     >
                       <i class="bi bi-trash me-2"></i>Delete Job
                     </button>
@@ -350,15 +370,61 @@
         </div>
       </div>
     </div>
+
+    <!-- Delete Confirmation Modal -->
+    <div v-if="showDeleteModal" class="modal fade show d-block" tabindex="-1">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Confirm Delete</h5>
+            <button
+              type="button"
+              class="btn-close"
+              @click="showDeleteModal = false"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <p>Are you sure you want to delete this job?</p>
+            <p class="text-muted">
+              <strong>{{ jobToDelete?.title }}</strong>
+            </p>
+            <p class="text-danger">This action cannot be undone.</p>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              @click="showDeleteModal = false"
+            >
+              Cancel
+            </button>
+            <button
+              type="button"
+              class="btn btn-danger"
+              @click="confirmDelete"
+              :disabled="deleteLoading"
+            >
+              <span
+                v-if="deleteLoading"
+                class="spinner-border spinner-border-sm me-2"
+              ></span>
+              Delete Job
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script setup>
 import { ref, computed, onMounted, watch } from "vue";
 import { useRouter } from "vue-router";
+import { useCompanyJobStore } from "@/stores/company/companyJob";
 
 // Composables
 const router = useRouter();
+const companyJobStore = useCompanyJobStore();
 
 // State
 const loading = ref(false);
@@ -367,50 +433,16 @@ const currentPage = ref(1);
 const itemsPerPage = 12;
 const showToast = ref(false);
 const toastMessage = ref("");
-import { useCompanyJobStore } from "@/stores/company/companyJob";
-const companyJobStore = useCompanyJobStore();
+const actionLoading = ref(null);
+const deleteLoading = ref(false);
+const showDeleteModal = ref(false);
+const jobToDelete = ref(null);
+const error = ref(null);
 const filters = ref({
   status: "",
   jobType: "",
   search: "",
 });
-
-// Handle errors locally
-const handleError = (error) => {
-  let message = "An unexpected error occurred";
-
-  if (error.response) {
-    const status = error.response.status;
-    const data = error.response.data;
-
-    switch (status) {
-      case 400:
-        message = data.message || "Invalid request data";
-        break;
-      case 401:
-        message = "Authentication required. Please log in again.";
-        break;
-      case 403:
-        message = "You do not have permission to perform this action";
-        break;
-      case 404:
-        message = "Resource not found";
-        break;
-      case 500:
-        message = "Server error. Please try again later.";
-        break;
-      default:
-        message = data.message || "Unexpected error occurred";
-    }
-  } else if (error.request) {
-    message = "Network error. Please check your connection.";
-  } else if (error.message) {
-    message = error.message;
-  }
-
-  console.error("Error:", message, error);
-  return message;
-};
 
 // Computed
 const filteredJobs = computed(() => {
@@ -468,41 +500,24 @@ const visiblePages = computed(() => {
 // Methods
 const refreshJobs = async () => {
   loading.value = true;
-  companyJobStore
-    .fetchJobs()
-    .then(() => {
-      jobs.value = companyJobStore.jobs;
-      loading.value = false;
-    })
-    .catch((error) => {
-      loading.value = false;
-      const errorMessage = handleError(error);
-      showToastMessage(errorMessage);
-    });
+  error.value = null;
 
-  // loading.value = true;
-  // try {
-  //   const token = localStorage.getItem("access_token");
-  //   const response = await fetch(
-  //     "http://localhost:3000/companies/jobs?page=1&limit=100",
-  //     {
-  //       headers: {
-  //         Authorization: `Bearer ${token}`,
-  //         "Content-Type": "application/json",
-  //       },
-  //     }
-  //   );
-  //   if (!response.ok) {
-  //     throw new Error(`HTTP error! status: ${response.status}`);
-  //   }
-  //   const data = await response.json();
-  //   jobs.value = data.jobs || [];
-  // } catch (error) {
-  //   console.error("Failed to refresh jobs:", error);
-  //   showToastMessage("Failed to load jobs");
-  // } finally {
-  //   loading.value = false;
-  // }
+  try {
+    console.log("🔄 Refreshing jobs...");
+    await companyJobStore.fetchJobs();
+    jobs.value = [...companyJobStore.jobs]; // Create new array reference
+    console.log("✅ Jobs refreshed, count:", jobs.value.length);
+
+    if (jobs.value.length === 0) {
+      console.log("ℹ️ No jobs found in response");
+    }
+  } catch (err) {
+    console.error("❌ Error refreshing jobs:", err);
+    error.value = err.message || "Failed to load jobs";
+    showToastMessage("Failed to load jobs: " + error.value);
+  } finally {
+    loading.value = false;
+  }
 };
 
 const clearFilters = () => {
@@ -526,8 +541,10 @@ const viewApplications = (jobId) => {
 
 const toggleJobStatus = async (jobId, currentStatus) => {
   try {
-    loading.value = true;
-    const token = localStorage.getItem("auth_token");
+    actionLoading.value = jobId;
+    console.log("🔄 Toggling job status:", jobId, currentStatus);
+
+    const token = localStorage.getItem("access_token");
     const response = await fetch(
       `http://localhost:3000/companies/jobs/${jobId}`,
       {
@@ -544,7 +561,7 @@ const toggleJobStatus = async (jobId, currentStatus) => {
       throw new Error("Failed to update job status");
     }
 
-    // Update local state
+    // Update local state immediately
     const job = jobs.value.find((j) => j.id === jobId);
     if (job) {
       job.is_visible = !currentStatus;
@@ -554,49 +571,41 @@ const toggleJobStatus = async (jobId, currentStatus) => {
       `Job ${!currentStatus ? "activated" : "paused"} successfully`
     );
   } catch (error) {
-    console.error("Failed to update job status:", error);
+    console.error("❌ Failed to update job status:", error);
     showToastMessage("Failed to update job status");
   } finally {
-    loading.value = false;
+    actionLoading.value = null;
   }
 };
 
-const deleteJob = async (jobId) => {
-  if (
-    !confirm(
-      "Are you sure you want to delete this job? This action cannot be undone."
-    )
-  ) {
-    return;
+const deleteJobHandler = (jobId) => {
+  const job = jobs.value.find((j) => j.id === jobId);
+  if (job) {
+    jobToDelete.value = job;
+    showDeleteModal.value = true;
   }
+};
+
+const confirmDelete = async () => {
+  if (!jobToDelete.value) return;
 
   try {
-    loading.value = true;
-    const token = localStorage.getItem("auth_token");
-    const response = await fetch(
-      `http://localhost:3000/companies/jobs/${jobId}`,
-      {
-        method: "DELETE",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-      }
-    );
+    deleteLoading.value = true;
+    console.log("🗑️ Deleting job:", jobToDelete.value.id);
 
-    if (!response.ok) {
-      throw new Error("Failed to delete job");
-    }
-
-    // Remove from local state
-    jobs.value = jobs.value.filter((job) => job.id !== jobId);
+    await companyJobStore.deleteJob(jobToDelete.value.id);
 
     showToastMessage("Job deleted successfully");
+    showDeleteModal.value = false;
+    jobToDelete.value = null;
+
+    // Update local jobs array
+    jobs.value = [...companyJobStore.jobs];
   } catch (error) {
-    console.error("Failed to delete job:", error);
+    console.error("❌ Failed to delete job:", error);
     showToastMessage("Failed to delete job");
   } finally {
-    loading.value = false;
+    deleteLoading.value = false;
   }
 };
 
@@ -646,6 +655,7 @@ const formatDate = (dateString) => {
 
 // Lifecycle
 onMounted(() => {
+  console.log("🚀 Job listing component mounted");
   refreshJobs();
 });
 
@@ -656,6 +666,16 @@ watch(
     currentPage.value = 1;
   },
   { deep: true }
+);
+
+// Watch for changes in store jobs
+watch(
+  () => companyJobStore.jobs,
+  (newJobs) => {
+    console.log("👀 Store jobs changed:", newJobs.length);
+    jobs.value = [...newJobs]; // Create new array reference
+  },
+  { immediate: true, deep: true }
 );
 </script>
 
@@ -740,6 +760,20 @@ watch(
 
 .dropdown-item:hover {
   background-color: #f8f9fa;
+}
+
+.dropdown-item:disabled {
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+.modal.show {
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.spinner-border-sm {
+  width: 1rem;
+  height: 1rem;
 }
 
 @media (max-width: 768px) {
