@@ -1,86 +1,71 @@
 import { ref } from "vue";
 import { defineStore } from "pinia";
+import axios from "axios";
 
-// Mock application data
-const mockApplications = [
-  {
-    userId: 0,
-    id: 1,
-    companyName: "Nomad",
-    companyLogo: "https://logo.clearbit.com/nomadlist.com",
-    logoBackground: "#e6f7f0",
-    role: "Social Media Assistant",
-    jobTitle: "Social Media Assistant",
-    dateApplied: "24 May 2025",
-    status: "Interviewed",
-    location: "Remote",
-    employmentType: "Full-time",
-    jobType: "Full-Time",
-    salaryRange: "$40,000 - $60,000",
-    jobDescription:
-      "We are looking for a creative and enthusiastic Social Media Assistant to join our marketing team. You will be responsible for creating engaging content, managing social media accounts, and analyzing performance metrics.",
-    requirements: [
-      "Bachelor's degree in Marketing, Communications, or related field",
-      "2+ years of experience in social media management",
-      "Proficiency in social media platforms (Instagram, Facebook, Twitter, LinkedIn)",
-      "Strong written and verbal communication skills",
-      "Experience with social media analytics tools",
-    ],
-    timeline: [
-      {
-        title: "Application Submitted",
-        date: "24 May 2025",
-        description: "Your application has been successfully submitted.",
-        completed: true,
-      },
-      {
-        title: "Application Under Review",
-        date: "25 May 2025",
-        description: "Our team is currently reviewing your application.",
-        completed: true,
-      },
-      {
-        title: "Phone Screening",
-        date: "Pending",
-        description: "Initial phone screening with HR team.",
-        completed: false,
-      },
-      {
-        title: "Technical Interview",
-        date: "Pending",
-        description: "Technical interview with the hiring manager.",
-        completed: false,
-      },
-    ],
-    recruiter: {
-      name: "Sarah Johnson",
-      role: "HR Manager",
-      email: "sarah.johnson@nomad.com",
-      avatar: "https://v0.dev/placeholder.svg?height=50&width=50",
-    },
-  },
-];
+// Ensure the API base URL is set in your environment variables
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+const subPrefixJobSeeker = "job-seekers";
 
 // Mock API functions
 const mockApi = {
-  getApplications: async () => {
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        resolve(JSON.parse(JSON.stringify(mockApplications)));
-      }, 500); // Simulate network delay
-    });
+  async getApplications() {
+    const token = localStorage.getItem("access_token");
+    if (!token) throw new Error("No authentication token found");
+
+    const response = await axios.get(
+      `${API_BASE_URL}/${subPrefixJobSeeker}/applications`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    console.log("Raw /applications response:", response.data);
+
+    return response.data; // Returns array of applications
   },
-  getApplicationById: async (id) => {
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        const application = mockApplications.find((app) => app.id === id);
-        if (application) {
-          resolve(JSON.parse(JSON.stringify(application)));
-        } else {
-          reject(new Error("Application not found"));
-        }
-      }, 500); // Simulate network delay
-    });
+  async getApplicationById(id) {
+    const token = localStorage.getItem("access_token");
+    if (!token) throw new Error("No authentication token found");
+
+    const response = await axios.get(
+      `${API_BASE_URL}/${subPrefixJobSeeker}/applications/${id}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return response.data; // Returns single application
+  },
+  async updateApplication(id, updatedApplication) {
+    const token = localStorage.getItem("access_token");
+    if (!token) throw new Error("No authentication token found");
+
+    const response = await axios.patch(
+      `${API_BASE_URL}/${subPrefixJobSeeker}/applications/${id}`,
+      updatedApplication,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return response.data; // Returns updated application
+  },
+  async deleteApplication(id) {
+    const token = localStorage.getItem("access_token");
+    if (!token) throw new Error("No authentication token found");
+
+    await axios.delete(
+      `${API_BASE_URL}/${subPrefixJobSeeker}/applications/${id}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
   },
 };
 
@@ -182,29 +167,33 @@ export const useApplicationStore = defineStore("application", () => {
     );
   };
 
-  // Fetch all applications from mock API
+  // Fetch all applications
   const fetchApplications = async () => {
     loading.value = true;
     error.value = null;
     try {
       const apps = await mockApi.getApplications();
-      applications.value = apps;
+      applications.value = Array.isArray(apps) ? apps : [];
     } catch (err) {
-      error.value = err.message;
+      error.value = err.message || "Failed to fetch applications";
+      console.error("Fetch applications error:", err);
+      applications.value = [];
     } finally {
       loading.value = false;
     }
   };
 
-  // Fetch a single application by ID from mock API
-  const fetchApplicationById = async (id) => {
+  // Fetch a single application by ID
+  const fetchApplication = async (id) => {
     loading.value = true;
     error.value = null;
     try {
       const app = await mockApi.getApplicationById(id);
       selectedApplication.value = app;
     } catch (err) {
-      error.value = err.message;
+      error.value = err.message || "Failed to fetch application";
+      console.error("Error fetching application:", err);
+      selectedApplication.value = null;
     } finally {
       loading.value = false;
     }
@@ -215,23 +204,22 @@ export const useApplicationStore = defineStore("application", () => {
     loading.value = true;
     error.value = null;
     try {
+      const updatedApp = await mockApi.updateApplication(
+        id,
+        updatedApplication
+      );
       const index = applications.value.findIndex((app) => app.id === id);
       if (index !== -1) {
-        applications.value[index] = {
-          ...applications.value[index],
-          ...updatedApplication,
-        };
+        applications.value[index] = updatedApp;
         if (selectedApplication.value && selectedApplication.value.id === id) {
-          selectedApplication.value = {
-            ...selectedApplication.value,
-            ...updatedApplication,
-          };
+          selectedApplication.value = updatedApp;
         }
       } else {
         throw new Error("Application not found");
       }
     } catch (err) {
-      error.value = err.message;
+      error.value = err.message || "Failed to update application";
+      console.error("Update application error:", err);
     } finally {
       loading.value = false;
     }
@@ -242,6 +230,7 @@ export const useApplicationStore = defineStore("application", () => {
     loading.value = true;
     error.value = null;
     try {
+      await mockApi.deleteApplication(id);
       const index = applications.value.findIndex((app) => app.id === id);
       if (index !== -1) {
         applications.value.splice(index, 1);
@@ -252,7 +241,8 @@ export const useApplicationStore = defineStore("application", () => {
         throw new Error("Application not found");
       }
     } catch (err) {
-      error.value = err.message;
+      error.value = err.message || "Failed to delete application";
+      console.error("Delete application error:", err);
     } finally {
       loading.value = false;
     }
@@ -260,7 +250,8 @@ export const useApplicationStore = defineStore("application", () => {
 
   // Initialize the store
   const init = () => {
-    applications.value = [...mockApplications];
+    console.log("Initializing application store...");
+    fetchApplications();
   };
 
   // Run initialization
@@ -280,7 +271,7 @@ export const useApplicationStore = defineStore("application", () => {
     getStatusCounts,
     searchApplications,
     fetchApplications,
-    fetchApplicationById,
+    fetchApplication,
     updateApplication,
     deleteApplication,
     init,

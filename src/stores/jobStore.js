@@ -5,25 +5,33 @@ import axios from "axios";
 
 // Ensure the API base URL is set in your environment variables
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
-const subPrefix = "jobhunter-system";
+const subPrefixDefault = "jobhunter-system";
 
 const mockApi = {
   async fetchJobs(page = 1, limit = 30, searchkeyparam = "", location = "") {
-    console.log(API_BASE_URL, subPrefix);
+    console.log(API_BASE_URL, subPrefixDefault);
 
-    const response = await axios.get(`${API_BASE_URL}/${subPrefix}/all-jobs`, {
-      params: { page, limit, searchkeyparam, location },
-    });
+    const response = await axios.get(
+      `${API_BASE_URL}/${subPrefixDefault}/all-jobs`,
+      {
+        params: { page, limit, searchkeyparam, location },
+      }
+    );
     return response.data; // Returns { jobs: Job[], total: number }
   },
   async fetchJobById(id) {
-    const response = await axios.get(`${API_BASE_URL}/jobs/${id}`);
+    const response = await axios.get(
+      `${API_BASE_URL}/${subPrefixDefault}/jobs/${id}`
+    );
     return response.data; // Returns Job
   },
   async fetchSimilarJobs(id, limit = 5) {
-    const response = await axios.get(`${API_BASE_URL}/jobs/${id}/similar`, {
-      params: { limit },
-    });
+    const response = await axios.get(
+      `${API_BASE_URL}/${subPrefixDefault}/jobs/${id}/similar`,
+      {
+        params: { limit },
+      }
+    );
     return response.data; // Returns { jobs: Job[], total: number }
   },
   async fetchFilterOptions() {
