@@ -336,9 +336,8 @@ async function handleSubmit() {
       loginButton.classList.add("btn-success");
 
       setTimeout(() => {
-        router.push(
-          role.type === "JOB SEEKER" ? "/applicant" : "/company/dashboard"
-        );
+      window.location.href =
+        role.type === "JOB SEEKER" ? "/applicant" : "/company/dashboard";
       }, 1000);
     } else {
       loginButton.innerHTML =

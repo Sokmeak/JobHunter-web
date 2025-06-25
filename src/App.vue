@@ -1,13 +1,9 @@
 <template>
-  <!-- <Transition name="loader-fade" mode="out-in">
-    <Loader v-if="showLoader" :loading-duration="loaderDuration" />
-  </Transition> -->
   <RouterView />
 </template>
 
 <script setup>
 import { ref } from "vue";
-
 
 // State
 const showLoader = ref(true);
@@ -41,16 +37,4 @@ const initApp = async () => {
 // Start preloading
 
 initApp();
-
-// // Handle route changes
-// router.beforeEach((to, from, next) => {
-//   if (to.path !== from.path) {
-//     showLoader.value = true;
-//     loaderDuration.value = 600; // Fast for routes
-//     setTimeout(() => {
-//       showLoader.value = false;
-//     }, loaderDuration.value);
-//   }
-//   next();
-// });
 </script>
