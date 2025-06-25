@@ -256,6 +256,7 @@
     </footer>
   </div>
 </template>
+
 <script setup>
 import { ref } from "vue";
 import { useRouter } from "vue-router";
@@ -264,6 +265,9 @@ import { jwtDecode } from "jwt-decode";
 
 import PrimaryLogo from "@/components/sharecomponents/PrimaryLogo.vue";
 import { useAuthLocalStore } from "@/stores/authLocalStore";
+
+// API Configuration
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 // State
 const form = ref({ email: "", password: "", rememberMe: false });
@@ -299,7 +303,7 @@ async function handleSubmit() {
   const loginButton = document.querySelector('button[type="submit"]');
 
   try {
-    const { data } = await axios.post("http://localhost:3000/auth/login", {
+    const { data } = await axios.post(`${API_BASE_URL}/auth/login`, {
       email: form.value.email,
       password: form.value.password,
     });
@@ -311,7 +315,7 @@ async function handleSubmit() {
 
     if (role.type === "EMPLOYER") {
       const { data: companyData } = await axios.get(
-        "http://localhost:3000/companies/profile",
+        `${API_BASE_URL}/companies/profile`,
         { headers: { Authorization: `Bearer ${data.access_token}` } }
       );
       companyId = companyData.id;
@@ -336,12 +340,12 @@ async function handleSubmit() {
       loginButton.classList.add("btn-success");
 
       setTimeout(() => {
-      window.location.href =
-        role.type === "JOB SEEKER" ? "/applicant" : "/company/dashboard";
+        window.location.href =
+          role.type === "JOB SEEKER" ? "/applicant" : "/company/dashboard";
       }, 1000);
     } else {
       loginButton.innerHTML =
-        '<i class="bi bi-exclamation-circle"></i> Error, Role mismatch! ';
+        '<i class="bi bi-exclamation-circle"></i> Error, Role mismatch!';
       loginButton.classList.add("btn-danger");
 
       setTimeout(() => {
@@ -350,12 +354,19 @@ async function handleSubmit() {
         loginButton.classList.remove("btn-danger");
         isLoading.value = false;
       }, 3000);
-
-      // throw new Error("Role mismatch");
     }
   } catch (err) {
     console.error("Login error:", err);
-    loginButton.innerHTML = '<i class="bi bi-exclamation-circle"></i> Error!';
+    let errorMessage = "Login failed. Please try again.";
+    if (axios.isAxiosError(err)) {
+      const status = err.response?.status;
+      if (status === 401) errorMessage = "Invalid email or password.";
+      else if (status === 404) errorMessage = "User not found.";
+      else if (status === 500)
+        errorMessage = "Server error. Please try again later.";
+    }
+
+    loginButton.innerHTML = `<i class="bi bi-exclamation-circle"></i> ${errorMessage}`;
     loginButton.classList.add("btn-danger");
 
     setTimeout(() => {
@@ -367,7 +378,6 @@ async function handleSubmit() {
   }
 }
 </script>
-
 <style scoped>
 /* Import Bootstrap CSS and icons */
 :root {
