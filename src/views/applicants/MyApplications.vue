@@ -6,22 +6,20 @@
       @dateRangeChanged="handleDateRangeChange"
     />
 
-    <!-- Feature Banner -->
     <ApplicationBanner
+      v-if="showBanner"
       :show="showBanner"
       title="New Feature"
       message="You can request a follow-up 7 days after applying for a job if the application status is in review. Only one follow-up is allowed per job."
       @close="showBanner = false"
     />
 
-    <!-- Status Tabs Component -->
     <StatusTabs
       :tabs="statusTabs"
-      :activeTab="activeTab"
+      :active-tab="activeTab"
       @update:activeTab="setActiveTab"
     />
 
-    <!-- Main Content -->
     <div class="content-section">
       <div class="header-section">
         <h1 class="section-title">Applications History</h1>
@@ -31,7 +29,10 @@
         </div>
       </div>
 
-      <!-- Loading and Error States -->
+      <div v-if="showFilters" class="filters-section">
+        <!-- Add filter inputs if needed -->
+      </div>
+
       <div
         v-if="applicationStore.loading || userProfileStore.loading"
         class="text-center"
@@ -45,13 +46,12 @@
         {{ applicationStore.error || userProfileStore.error }}
       </div>
       <div v-else>
-        <!-- Applications Table Component -->
         <ApplicationsTable
           :applications="paginatedApplications"
           @view-application="openApplicationDetails"
           @action-menu="openActionMenu"
+          @follow-up="requestFollowUp"
         />
-        <!-- Empty State -->
         <EmptyState
           v-if="paginatedApplications.length === 0"
           :message="emptyStateMessage"
@@ -59,15 +59,13 @@
         />
       </div>
 
-      <!-- Pagination Component -->
       <Pagination
-        v-if="filteredApplications.length > 0"
-        :currentPage="currentPage"
-        :totalPages="totalPages"
+        v-if="filteredApplications.length > itemsPerPage"
+        :current-page="currentPage"
+        :total-pages="totalPages"
         @update:page="currentPage = $event"
       />
 
-      <!-- Application Details Modal Component -->
       <ApplicationDetailsModal
         v-if="showDetailsModal"
         :application="selectedApplication"
@@ -81,7 +79,7 @@
 
 <script>
 import { ref, computed, onMounted } from "vue";
-import { parse, isAfter, addDays } from "date-fns";
+import { parseISO, isAfter, addDays } from "date-fns";
 import ApplicationBanner from "@/components/Applicants/applications/ApplicationBanner.vue";
 import ApplicationDetailsModal from "@/components/Applicants/applications/ApplicationDetailsModal.vue";
 import ApplicationsTable from "@/components/Applicants/applications/ApplicationsTable.vue";
@@ -110,14 +108,12 @@ export default {
     ApplicationDetailsModal,
   },
   setup() {
-    // Use Pinia stores
     const applicationStore = useApplicationStore();
     const userProfileStore = useUserProfileStore();
 
-    // Reactive state
     const dateRange = ref({
-      start: "15 May 2025",
-      end: "30 May 2025",
+      start: "2025-06-01",
+      end: "2025-06-30",
     });
     const activeTab = ref("all");
     const searchQuery = ref("");
@@ -127,10 +123,11 @@ export default {
     const showFilters = ref(false);
     const showBanner = ref(true);
     const selectedApplication = ref(null);
+    const actionMenuApplication = ref(null);
 
-    // Status tabs aligned with useApplicationStore statuses
     const statusTabs = ref([
       { status: "all", label: "All", count: 0 },
+      { status: "submitted", label: "Submitted", count: 0 },
       { status: "in-review", label: "In Review", count: 0 },
       { status: "interviewing", label: "Interviewing", count: 0 },
       { status: "shortlisted", label: "Shortlisted", count: 0 },
@@ -142,49 +139,40 @@ export default {
       { status: "unsuitable", label: "Unsuitable", count: 0 },
     ]);
 
-    // Computed properties
     const selectedProfile = computed(() => userProfileStore.selectedProfile);
     const userApplications = computed(() =>
-      applicationStore.applications.filter(
-        (app) => app.userId === userProfileStore.defaultUserId
-      )
+      applicationStore.applications
+        .filter((app) => app.user_id === userProfileStore.defaultUserId)
+        .map((app) => ({
+          ...app,
+          companyName: app.job?.CompanyName || app.companyName,
+          jobTitle: app.job?.title || app.jobTitle,
+          dateApplied: app.createdAt || app.dateApplied,
+          companyLogo: app.job?.CompanyLogo || app.companyLogo,
+          recruiter: app.recruiter || { name: "Unknown", email: "" },
+        }))
     );
 
     const filteredApplications = computed(() => {
       let filtered = userApplications.value;
 
-      // Filter by date range
       filtered = applicationStore.getApplicationsInDateRange(
         dateRange.value.start,
         dateRange.value.end
       );
 
-      // Filter by active tab
       if (activeTab.value !== "all") {
-        filtered = applicationStore.getApplicationsByStatus(activeTab.value);
+        filtered = filtered.filter(
+          (app) =>
+            app.status.toLowerCase() === activeTab.value.replace("-", " ")
+        );
       }
 
-      // Filter by search query
       if (searchQuery.value.trim()) {
         filtered = applicationStore.searchApplications(searchQuery.value);
-        if (activeTab.value !== "all") {
-          const statusMap = {
-            "in-review": "In Review",
-            interviewing: "Interviewing",
-            shortlisted: "Shortlisted",
-            interviewed: "Interviewed",
-            assessment: "Assessment",
-            offered: "Offered",
-            hired: "Hired",
-            declined: "Declined",
-            unsuitable: "Unsuitable",
-          };
-          filtered = filtered.filter(
-            (app) => app.status === statusMap[activeTab.value]
-          );
-        }
       }
 
+      console.log("Filtered applications:", filtered);
       return filtered;
     });
 
@@ -199,18 +187,17 @@ export default {
     );
 
     const emptyStateMessage = computed(() => {
+      if (searchQuery.value) {
+        return "No applications match your search criteria.";
+      }
       if (activeTab.value !== "all") {
         return `You don't have any applications with "${getStatusLabel(
           activeTab.value
         )}" status.`;
-      } else if (searchQuery.value) {
-        return "No applications match your search criteria.";
-      } else {
-        return "You haven't applied to any jobs in this period.";
       }
+      return "You haven't applied to any jobs in this period.";
     });
 
-    // Methods
     const loadData = async () => {
       try {
         await Promise.all([
@@ -228,33 +215,52 @@ export default {
       statusTabs.value.forEach((tab) => {
         tab.count = statusCounts[tab.status] || 0;
       });
+      console.log("Updated status counts:", statusTabs.value);
     };
 
     const getStatusLabel = (statusKey) => {
       const tab = statusTabs.value.find((t) => t.status === statusKey);
-      return tab ? tab.label : statusKey;
+      return tab
+        ? tab.label
+        : statusKey.replace("-", " ").replace(/\b\w/g, (c) => c.toUpperCase());
     };
 
     const setActiveTab = (tab) => {
       activeTab.value = tab;
-      currentPage.value = 1; // Reset to first page
+      currentPage.value = 1;
+      updateStatusCounts();
     };
 
     const handleSearch = () => {
-      currentPage.value = 1; // Reset to first page
+      currentPage.value = 1;
     };
 
     const handleDateRangeChange = (newDateRange) => {
       applicationStore.updateDateRange(newDateRange);
       dateRange.value = { ...newDateRange };
       currentPage.value = 1;
+      updateStatusCounts();
     };
 
     const openApplicationDetails = async (application) => {
-      await applicationStore.fetchApplicationById(application.id);
-      selectedApplication.value = applicationStore.selectedApplication;
-      showDetailsModal.value = true;
-      document.body.style.overflow = "hidden";
+      try {
+        await applicationStore.fetchApplication(application.id);
+        selectedApplication.value = {
+          ...applicationStore.selectedApplication,
+          companyName: applicationStore.selectedApplication.job?.CompanyName,
+          jobTitle: applicationStore.selectedApplication.job?.title,
+          dateApplied: applicationStore.selectedApplication.createdAt,
+          companyLogo: applicationStore.selectedApplication.job?.CompanyLogo,
+          recruiter: applicationStore.selectedApplication.recruiter || {
+            name: "Unknown",
+            email: "",
+          },
+        };
+        showDetailsModal.value = true;
+        document.body.style.overflow = "hidden";
+      } catch (err) {
+        console.error("Error fetching application details:", err);
+      }
     };
 
     const closeDetailsModal = () => {
@@ -264,8 +270,31 @@ export default {
     };
 
     const openActionMenu = (application) => {
-      console.log("Action menu for:", application.companyName);
-      // Implement action menu logic (e.g., open dropdown)
+      actionMenuApplication.value = application;
+      console.log("Action menu opened for:", application.jobTitle);
+    };
+
+    const canRequestFollowUp = (application) => {
+      if (!application || application.status !== "In Review") return false;
+      const appliedDate = parseISO(application.dateApplied);
+      const sevenDaysAfter = addDays(appliedDate, 7);
+      return (
+        isAfter(new Date(), sevenDaysAfter) && !application.followUpRequested
+      );
+    };
+
+    const requestFollowUp = async (application) => {
+      if (!application || !canRequestFollowUp(application)) return;
+      try {
+        await applicationStore.updateApplication(application.id, {
+          ...application,
+          followUpRequested: true,
+        });
+        console.log("Follow-up requested for:", application.jobTitle);
+        actionMenuApplication.value = null;
+      } catch (err) {
+        console.error("Error requesting follow-up:", err);
+      }
     };
 
     const withdrawApplication = async () => {
@@ -283,18 +312,12 @@ export default {
     };
 
     const contactRecruiter = () => {
-      if (selectedApplication.value) {
-        console.log(
-          "Contacting recruiter:",
-          selectedApplication.value.recruiter.name
-        );
-        // Implement contact logic (e.g., open email client)
+      if (selectedApplication.value?.recruiter?.email) {
         window.location.href = `mailto:${selectedApplication.value.recruiter.email}`;
       }
       closeDetailsModal();
     };
 
-    // Initialize
     onMounted(loadData);
 
     return {
@@ -323,6 +346,7 @@ export default {
       openActionMenu,
       withdrawApplication,
       contactRecruiter,
+      requestFollowUp,
     };
   },
 };
@@ -345,7 +369,7 @@ export default {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 20px;
+  margin-bottom: 24px;
 }
 
 .section-title {
@@ -357,15 +381,34 @@ export default {
 
 .action-buttons {
   display: flex;
-  gap: 10px;
+  gap: 12px;
+}
+
+.filters-section {
+  background: #f9fafb;
+  padding: 16px;
+  border-radius: 8px;
+  margin-bottom: 24px;
 }
 
 .alert-danger {
   margin: 20px 0;
+  padding: 16px;
+  border-radius: 8px;
 }
 
-/* Responsive adjustments */
+.content-section {
+  background: white;
+  padding: 24px;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
 @media (max-width: 768px) {
+  .applications-container {
+    padding: 16px;
+  }
+
   .header-section {
     flex-direction: column;
     align-items: flex-start;
@@ -375,6 +418,11 @@ export default {
   .action-buttons {
     width: 100%;
     flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .content-section {
+    padding: 16px;
   }
 }
 </style>
