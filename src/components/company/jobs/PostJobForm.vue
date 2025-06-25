@@ -614,15 +614,15 @@ const handleSubmit = async () => {
     const transformedData = transformJobData(localJobData.value);
 
     // Create the job using the store
-    const createdJob = await jobStore.createJob(transformedData);
+    //const createdJob = await jobStore.createJob(transformedData);
 
-    console.log("Job created successfully:", createdJob);
+    //console.log("Job created successfully:", createdJob);
 
     // Store the created job ID
-    createdJobId.value = createdJob.id;
+    // createdJobId.value = createdJob.id;
 
     // Emit success
-    emit("submit", createdJob);
+    emit("submit", transformJobData);
 
     // Show success modal
     showSuccessModal.value = true;

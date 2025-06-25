@@ -100,7 +100,7 @@ export const useCompanyJobStore = defineStore("companyJobStore", () => {
 
       // Add the new job to the local store immediately
       const newJob = response.data;
-      jobs.value.unshift(newJob);
+      jobs.value.push(newJob);
 
       showSuccess("Job created successfully!");
       return newJob;
@@ -214,7 +214,7 @@ export const useCompanyJobStore = defineStore("companyJobStore", () => {
 
       const duplicatedJobData = {
         ...originalJob,
-        title: `${originalJob.title} (Copy)`,
+        title: `${originalJob.title} Cre(Copy)`,
         is_visible: false, // Start as draft
         id: undefined,
         created_at: undefined,
@@ -325,7 +325,7 @@ export const useCompanyJobStore = defineStore("companyJobStore", () => {
       salaryType: "Range", // Default
       salaryMin: "",
       salaryMax: "",
-      currency: "USD",
+      currency: "$",
       education: backendJob.qualification || "",
       experience: "",
       jobLevel: backendJob.level || "",

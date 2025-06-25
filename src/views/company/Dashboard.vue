@@ -320,6 +320,8 @@ export default {
       hireRate: 15,
     });
 
+    const companyJobStore = useCompanyJobStore();
+
     const recentApplications = ref([
       {
         id: 1,
@@ -467,10 +469,13 @@ export default {
 
     onMounted(() => {
       // Load dashboard data
+      const alljobs = companyJobStore.fetchJobs();
+      console.log("All jobs fetched:", alljobs);
       console.log("Dashboard mounted");
     });
 
     return {
+      companyJobStore,
       stats,
       recentApplications,
       upcomingInterviews,

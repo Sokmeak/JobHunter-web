@@ -367,7 +367,8 @@ const currentPage = ref(1);
 const itemsPerPage = 12;
 const showToast = ref(false);
 const toastMessage = ref("");
-
+import { useCompanyJobStore } from "@/stores/company/companyJob";
+const companyJobStore = useCompanyJobStore();
 const filters = ref({
   status: "",
   jobType: "",
@@ -467,30 +468,41 @@ const visiblePages = computed(() => {
 // Methods
 const refreshJobs = async () => {
   loading.value = true;
-  try {
-    const token = localStorage.getItem("access_token");
-    const response = await fetch(
-      "http://localhost:3000/companies/jobs?page=1&limit=100",
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-      }
-    );
+  companyJobStore
+    .fetchJobs()
+    .then(() => {
+      jobs.value = companyJobStore.jobs;
+      loading.value = false;
+    })
+    .catch((error) => {
+      loading.value = false;
+      const errorMessage = handleError(error);
+      showToastMessage(errorMessage);
+    });
 
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-
-    const data = await response.json();
-    jobs.value = data.jobs || [];
-  } catch (error) {
-    console.error("Failed to refresh jobs:", error);
-    showToastMessage("Failed to load jobs");
-  } finally {
-    loading.value = false;
-  }
+  // loading.value = true;
+  // try {
+  //   const token = localStorage.getItem("access_token");
+  //   const response = await fetch(
+  //     "http://localhost:3000/companies/jobs?page=1&limit=100",
+  //     {
+  //       headers: {
+  //         Authorization: `Bearer ${token}`,
+  //         "Content-Type": "application/json",
+  //       },
+  //     }
+  //   );
+  //   if (!response.ok) {
+  //     throw new Error(`HTTP error! status: ${response.status}`);
+  //   }
+  //   const data = await response.json();
+  //   jobs.value = data.jobs || [];
+  // } catch (error) {
+  //   console.error("Failed to refresh jobs:", error);
+  //   showToastMessage("Failed to load jobs");
+  // } finally {
+  //   loading.value = false;
+  // }
 };
 
 const clearFilters = () => {
