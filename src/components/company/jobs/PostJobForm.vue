@@ -363,291 +363,491 @@
               <i class="bi bi-arrow-left me-1"></i>
               Previous
             </button>
-            <button type="submit" class="btn btn-primary">
-              <i class="bi bi-check me-1"></i>
-              Post Job
+            <button
+              type="submit"
+              class="btn btn-primary"
+              :disabled="isSubmitting"
+            >
+              <span
+                v-if="isSubmitting"
+                class="spinner-border spinner-border-sm me-2"
+              ></span>
+              <i v-else class="bi bi-check me-1"></i>
+              {{ isSubmitting ? "Creating Job..." : "Post Job" }}
             </button>
           </div>
         </form>
       </div>
     </div>
+
+    <!-- Success Modal -->
+    <div v-if="showSuccessModal" class="modal fade show d-block" tabindex="-1">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-body text-center p-4">
+            <div class="success-icon mb-3">
+              <i
+                class="bi bi-check-circle-fill text-success"
+                style="font-size: 4rem"
+              ></i>
+            </div>
+            <h4 class="mb-3">Job Posted Successfully!</h4>
+            <p class="text-muted mb-4">
+              Your job posting has been created and is now live. You can start
+              receiving applications immediately.
+            </p>
+            <div class="d-flex gap-2 justify-content-center">
+              <button @click="viewJob" class="btn btn-primary">View Job</button>
+              <button @click="goToListing" class="btn btn-outline-secondary">
+                All Jobs
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Error Modal -->
+    <div v-if="showErrorModal" class="modal fade show d-block" tabindex="-1">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-body text-center p-4">
+            <div class="error-icon mb-3">
+              <i
+                class="bi bi-exclamation-circle-fill text-danger"
+                style="font-size: 4rem"
+              ></i>
+            </div>
+            <h4 class="mb-3">Failed to Create Job</h4>
+            <p class="text-muted mb-4">
+              {{ errorMessage }}
+            </p>
+            <button @click="showErrorModal = false" class="btn btn-secondary">
+              Try Again
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div v-if="isSubmitting" class="loading-overlay">
+      <div class="loading-content">
+        <div class="spinner-border text-primary mb-3" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+        <h5>Creating your job posting...</h5>
+        <p class="text-muted">Please wait while we process your job details.</p>
+      </div>
+    </div>
   </div>
 </template>
 
-<script>
+<script setup>
 import { ref, watch } from "vue";
-import axios from "axios";
+import { useRouter } from "vue-router";
+import { useCompanyJobStore } from "@/stores/company/companyJob";
 
-export default {
-  name: "PostJobForm",
-  props: {
-    currentStep: {
-      type: Number,
-      required: true,
-    },
-    jobData: {
-      type: Object,
-      required: true,
-    },
+const router = useRouter();
+const jobStore = useCompanyJobStore();
+
+const props = defineProps({
+  currentStep: {
+    type: Number,
+    required: true,
   },
-  emits: ["update-job", "next-step", "prev-step", "submit"],
-  setup(props, { emit }) {
-    const localJobData = ref({ ...props.jobData });
-    const jobObject = ref({}); // Object to store final job data
-
-    const availablePerks = ref([
-      {
-        id: "full-healthcare",
-        name: "Full Healthcare",
-        icon: "bi bi-heart-pulse",
-      },
-      {
-        id: "unlimited-vacation",
-        name: "Unlimited Vacation",
-        icon: "bi bi-calendar-heart",
-      },
-      {
-        id: "skill-development",
-        name: "Skill Development",
-        icon: "bi bi-mortarboard",
-      },
-      { id: "team-summits", name: "Team Summits", icon: "bi bi-people" },
-      { id: "remote-working", name: "Remote Working", icon: "bi bi-house" },
-      {
-        id: "commuter-benefits",
-        name: "Commuter Benefits",
-        icon: "bi bi-bus-front",
-      },
-      { id: "we-give-back", name: "We Give Back", icon: "bi bi-heart" },
-      { id: "free-gym", name: "Free Gym Membership", icon: "bi bi-activity" },
-    ]);
-
-    const availableBenefits = ref([
-      {
-        id: "health-insurance",
-        name: "Health Insurance",
-        icon: "bi bi-shield-plus",
-      },
-      {
-        id: "dental-insurance",
-        name: "Dental Insurance",
-        icon: "bi bi-emoji-smile",
-      },
-      { id: "vision-insurance", name: "Vision Insurance", icon: "bi bi-eye" },
-      {
-        id: "life-insurance",
-        name: "Life Insurance",
-        icon: "bi bi-shield-check",
-      },
-      {
-        id: "paid-time-off",
-        name: "Paid Time Off",
-        icon: "bi bi-calendar-check",
-      },
-      {
-        id: "retirement-plan",
-        name: "Retirement Plan",
-        icon: "bi bi-piggy-bank",
-      },
-      {
-        id: "flexible-schedule",
-        name: "Flexible Schedule",
-        icon: "bi bi-clock",
-      },
-      {
-        id: "professional-development",
-        name: "Professional Development",
-        icon: "bi bi-graph-up-arrow",
-      },
-    ]);
-
-    // Initialize arrays if they don't exist
-    if (!localJobData.value.responsibilities)
-      localJobData.value.responsibilities = [""];
-    if (!localJobData.value.whoYouAre) localJobData.value.whoYouAre = [""];
-    if (!localJobData.value.niceToHaves) localJobData.value.niceToHaves = [""];
-    if (!localJobData.value.perks) localJobData.value.perks = [];
-    if (!localJobData.value.benefits) localJobData.value.benefits = [];
-
-    // Watch for changes and emit updates
-    watch(
-      localJobData,
-      (newData) => {
-        emit("update-job", newData);
-      },
-      { deep: true }
-    );
-
-    const handleNext = () => {
-      emit("update-job", localJobData.value);
-      emit("next-step");
-    };
-
-    // const handleSubmit = () => {
-    //   // Save data to jobObject
-    //   jobObject.value = { ...localJobData.value };
-    //   // Log the jobObject data to the console
-    //   console.log(
-    //     "Job Data Submitted:",
-    //     JSON.stringify(jobObject.value, null, 2)
-    //   );
-    //   emit("update-job", localJobData.value);
-    //   emit("submit");
-    // };
-
-    const handleSubmit = async () => {
-      // Save data to jobObject
-
-      // emit("submit");
-      jobObject.value = { ...localJobData.value };
-      console.log(
-        "Job Data Submitted:",
-        JSON.stringify(jobObject.value, null, 2)
-      );
-
-      // Get token and company_id from localStorage
-      const token = localStorage.getItem("access_token");
-      console.log(token);
-
-      const companyId = localStorage.getItem("company_id");
-
-      if (!token) {
-        console.error("No access token found in localStorage");
-        return;
-      }
-      if (!companyId) {
-        console.error("No company_id found in localStorage");
-        return;
-      }
-
-      // Transform frontend data to backend format
-      const backendData = {
-        title: localJobData.value.title,
-        description: localJobData.value.description,
-        responsibility: localJobData.value.responsibilities.filter((r) =>
-          r.trim()
-        ),
-
-        qualification: localJobData.value.education,
-        job_type: localJobData.value.jobType,
-        skill_required: localJobData.value.category,
-        tags: [localJobData.value.category, localJobData.value.jobLevel],
-        level: localJobData.value.jobLevel,
-        salary_range:
-          localJobData.value.salaryType === "Range" &&
-          localJobData.value.salaryMin &&
-          localJobData.value.salaryMax
-            ? `${localJobData.value.currency}${localJobData.value.salaryMin} - ${localJobData.value.currency}${localJobData.value.salaryMax}`
-            : "",
-        expired_date: localJobData.value.expireDate || null,
-        who_you_are: localJobData.value.whoYouAre.filter((q) => q.trim()),
-        nice_to_haves: localJobData.value.niceToHaves.filter((n) => n.trim()),
-        perks_benefits: {
-          health_coverage: localJobData.value.perks.includes("full-healthcare")
-            ? "Comprehensive health coverage."
-            : undefined,
-          remote_work: localJobData.value.perks.includes("remote-working")
-            ? "Option to work from home or office."
-            : undefined,
-          wellness_program: localJobData.value.perks.includes("free-gym")
-            ? "Gym memberships and mental health support."
-            : undefined,
-          team_retreats: localJobData.value.perks.includes("team-summits")
-            ? "Annual team retreats."
-            : undefined,
-          commuter_benefits: localJobData.value.perks.includes(
-            "commuter-benefits"
-          )
-            ? "Subsidized commuting costs."
-            : undefined,
-          learning_stipend: localJobData.value.perks.includes(
-            "skill-development"
-          )
-            ? "Funding for professional learning."
-            : undefined,
-          professional_development: localJobData.value.benefits.includes(
-            "professional-development"
-          )
-            ? "Mentorship and training opportunities."
-            : undefined,
-          retirement_plan: localJobData.value.benefits.includes(
-            "retirement-plan"
-          )
-            ? "401(k) or similar retirement plan."
-            : undefined,
-          paid_time_off: localJobData.value.benefits.includes("paid-time-off")
-            ? "Generous paid time off."
-            : undefined,
-          flexible_hours: localJobData.value.benefits.includes(
-            "flexible-schedule"
-          )
-            ? "Flexible working hours."
-            : undefined,
-        },
-        // company_id: companyId || 1, // Default if not provided
-        // created_by: userId || 1, // Default user ID
-      };
-
-      try {
-        console.log("tokent in the try catch", token);
-
-        console.log(backendData);
-
-        const response = await axios.post(
-          "http://localhost:3000/companies/jobs",
-          backendData,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-
-        console.log("Job created successfully:", response.data);
-        emit("update-job", localJobData.value);
-        emit("submit");
-      } catch (error) {
-        console.error("Error creating job:", error);
-      }
-    };
-
-    const addResponsibility = () => {
-      localJobData.value.responsibilities.push("");
-    };
-
-    const removeResponsibility = (index) => {
-      localJobData.value.responsibilities.splice(index, 1);
-    };
-
-    const addRequirement = () => {
-      localJobData.value.whoYouAre.push("");
-    };
-
-    const removeRequirement = (index) => {
-      localJobData.value.whoYouAre.splice(index, 1);
-    };
-
-    const addNiceToHave = () => {
-      localJobData.value.niceToHaves.push("");
-    };
-
-    const removeNiceToHave = (index) => {
-      localJobData.value.niceToHaves.splice(index, 1);
-    };
-
-    return {
-      localJobData,
-      availablePerks,
-      availableBenefits,
-      handleNext,
-      handleSubmit,
-      addResponsibility,
-      removeResponsibility,
-      addRequirement,
-      removeRequirement,
-      addNiceToHave,
-      removeNiceToHave,
-    };
+  jobData: {
+    type: Object,
+    required: true,
   },
+});
+
+const emit = defineEmits(["update-job", "next-step", "prev-step", "submit"]);
+
+// Component state
+const localJobData = ref({ ...props.jobData });
+const isSubmitting = ref(false);
+const showSuccessModal = ref(false);
+const showErrorModal = ref(false);
+const errorMessage = ref("");
+const createdJobId = ref(null);
+
+const availablePerks = ref([
+  {
+    id: "full-healthcare",
+    name: "Full Healthcare",
+    icon: "bi bi-heart-pulse",
+  },
+  {
+    id: "unlimited-vacation",
+    name: "Unlimited Vacation",
+    icon: "bi bi-calendar-heart",
+  },
+  {
+    id: "skill-development",
+    name: "Skill Development",
+    icon: "bi bi-mortarboard",
+  },
+  { id: "team-summits", name: "Team Summits", icon: "bi bi-people" },
+  { id: "remote-working", name: "Remote Working", icon: "bi bi-house" },
+  {
+    id: "commuter-benefits",
+    name: "Commuter Benefits",
+    icon: "bi bi-bus-front",
+  },
+  { id: "we-give-back", name: "We Give Back", icon: "bi bi-heart" },
+  { id: "free-gym", name: "Free Gym Membership", icon: "bi bi-activity" },
+]);
+
+const availableBenefits = ref([
+  {
+    id: "health-insurance",
+    name: "Health Insurance",
+    icon: "bi bi-shield-plus",
+  },
+  {
+    id: "dental-insurance",
+    name: "Dental Insurance",
+    icon: "bi bi-emoji-smile",
+  },
+  { id: "vision-insurance", name: "Vision Insurance", icon: "bi bi-eye" },
+  {
+    id: "life-insurance",
+    name: "Life Insurance",
+    icon: "bi bi-shield-check",
+  },
+  {
+    id: "paid-time-off",
+    name: "Paid Time Off",
+    icon: "bi bi-calendar-check",
+  },
+  {
+    id: "retirement-plan",
+    name: "Retirement Plan",
+    icon: "bi bi-piggy-bank",
+  },
+  {
+    id: "flexible-schedule",
+    name: "Flexible Schedule",
+    icon: "bi bi-clock",
+  },
+  {
+    id: "professional-development",
+    name: "Professional Development",
+    icon: "bi bi-graph-up-arrow",
+  },
+]);
+
+// Initialize arrays if they don't exist
+if (!localJobData.value.responsibilities)
+  localJobData.value.responsibilities = [""];
+if (!localJobData.value.whoYouAre) localJobData.value.whoYouAre = [""];
+if (!localJobData.value.niceToHaves) localJobData.value.niceToHaves = [""];
+if (!localJobData.value.perks) localJobData.value.perks = [];
+if (!localJobData.value.benefits) localJobData.value.benefits = [];
+
+// Watch for changes and emit updates
+watch(
+  localJobData,
+  (newData) => {
+    emit("update-job", newData);
+  },
+  { deep: true }
+);
+
+// Handle errors locally
+const handleError = (error) => {
+  let message = "An unexpected error occurred";
+
+  if (error.response) {
+    const status = error.response.status;
+    const data = error.response.data;
+
+    switch (status) {
+      case 400:
+        message = data.message || "Invalid request data";
+        break;
+      case 401:
+        message = "Authentication required. Please log in again.";
+        break;
+      case 403:
+        message = "You do not have permission to perform this action";
+        break;
+      case 404:
+        message = "Resource not found";
+        break;
+      case 409:
+        message = data.message || "A conflict occurred";
+        break;
+      case 500:
+        message = "Server error. Please try again later.";
+        break;
+      default:
+        message = data.message || "Unexpected error occurred";
+    }
+  } else if (error.request) {
+    message = "Network error. Please check your connection.";
+  } else if (error.message) {
+    message = error.message;
+  }
+
+  console.error("Error:", message, error);
+  return message;
+};
+
+// Methods
+const handleNext = () => {
+  emit("update-job", localJobData.value);
+  emit("next-step");
+};
+
+const handleSubmit = async () => {
+  if (isSubmitting.value) return;
+
+  try {
+    isSubmitting.value = true;
+    errorMessage.value = "";
+
+    console.log("Submitting job data:", localJobData.value);
+
+    // Transform the data to match backend expectations
+    const transformedData = transformJobData(localJobData.value);
+
+    // Create the job using the store
+    const createdJob = await jobStore.createJob(transformedData);
+
+    console.log("Job created successfully:", createdJob);
+
+    // Store the created job ID
+    createdJobId.value = createdJob.id;
+
+    // Emit success
+    emit("submit", createdJob);
+
+    // Show success modal
+    showSuccessModal.value = true;
+  } catch (error) {
+    console.error("Failed to create job:", error);
+    errorMessage.value =
+      handleError(error) ||
+      "An unexpected error occurred while creating the job.";
+    showErrorModal.value = true;
+  } finally {
+    isSubmitting.value = false;
+  }
+};
+
+// Transform frontend data to backend format
+const transformJobData = (data) => {
+  return {
+    title: data.title,
+    description: data.description,
+    responsibility: data.responsibilities.filter((r) => r.trim()),
+    qualification: data.education,
+    job_type: data.jobType,
+    skill_required: data.category,
+    tags: [data.category, data.jobLevel].filter(Boolean),
+    level: data.jobLevel,
+    salary_range: getSalaryRange(data),
+    expired_date: data.expireDate || null,
+    who_you_are: data.whoYouAre.filter((q) => q.trim()),
+    nice_to_haves: data.niceToHaves.filter((n) => n.trim()),
+    perks_benefits: transformPerksAndBenefits(data),
+    is_visible: true, // Default to active
+  };
+};
+
+const getSalaryRange = (data) => {
+  if (data.salaryType === "Range" && data.salaryMin && data.salaryMax) {
+    return `${data.currency || "USD"}${data.salaryMin} - ${
+      data.currency || "USD"
+    }${data.salaryMax}`;
+  }
+  return "";
+};
+
+const transformPerksAndBenefits = (data) => {
+  const perksAndBenefits = {};
+
+  // Map perks
+  if (data.perks.includes("full-healthcare")) {
+    perksAndBenefits.health_coverage = "Comprehensive health coverage";
+  }
+  if (data.perks.includes("remote-working")) {
+    perksAndBenefits.remote_work = "Option to work from home or office";
+  }
+  if (data.perks.includes("free-gym")) {
+    perksAndBenefits.wellness_program =
+      "Gym memberships and mental health support";
+  }
+  if (data.perks.includes("team-summits")) {
+    perksAndBenefits.team_retreats = "Annual team retreats";
+  }
+  if (data.perks.includes("commuter-benefits")) {
+    perksAndBenefits.commuter_benefits = "Subsidized commuting costs";
+  }
+  if (data.perks.includes("skill-development")) {
+    perksAndBenefits.learning_stipend = "Funding for professional learning";
+  }
+
+  // Map benefits
+  if (data.benefits.includes("professional-development")) {
+    perksAndBenefits.professional_development =
+      "Mentorship and training opportunities";
+  }
+  if (data.benefits.includes("retirement-plan")) {
+    perksAndBenefits.retirement_plan = "401(k) or similar retirement plan";
+  }
+  if (data.benefits.includes("paid-time-off")) {
+    perksAndBenefits.paid_time_off = "Generous paid time off";
+  }
+  if (data.benefits.includes("flexible-schedule")) {
+    perksAndBenefits.flexible_hours = "Flexible working hours";
+  }
+
+  return perksAndBenefits;
+};
+
+// Modal actions
+const viewJob = () => {
+  showSuccessModal.value = false;
+  if (createdJobId.value) {
+    router.push(`/company/jobs/${createdJobId.value}`);
+  }
+};
+
+const goToListing = () => {
+  showSuccessModal.value = false;
+  router.push("/company/job-listing");
+};
+
+// Array manipulation methods
+const addResponsibility = () => {
+  localJobData.value.responsibilities.push("");
+};
+
+const removeResponsibility = (index) => {
+  if (localJobData.value.responsibilities.length > 1) {
+    localJobData.value.responsibilities.splice(index, 1);
+  }
+};
+
+const addRequirement = () => {
+  localJobData.value.whoYouAre.push("");
+};
+
+const removeRequirement = (index) => {
+  if (localJobData.value.whoYouAre.length > 1) {
+    localJobData.value.whoYouAre.splice(index, 1);
+  }
+};
+
+const addNiceToHave = () => {
+  localJobData.value.niceToHaves.push("");
+};
+
+const removeNiceToHave = (index) => {
+  if (localJobData.value.niceToHaves.length > 1) {
+    localJobData.value.niceToHaves.splice(index, 1);
+  }
 };
 </script>
+
+<style scoped>
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0.95);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+.loading-content {
+  text-align: center;
+  padding: 2rem;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+.modal.show {
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.success-icon i,
+.error-icon i {
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.1));
+}
+
+.form-control:focus,
+.form-select:focus {
+  border-color: #6366f1;
+  box-shadow: 0 0 0 0.2rem rgba(99, 102, 241, 0.25);
+}
+
+.btn-primary {
+  background-color: #6366f1;
+  border-color: #6366f1;
+}
+
+.btn-primary:hover {
+  background-color: #5856eb;
+  border-color: #5856eb;
+}
+
+.btn-primary:disabled {
+  background-color: #a5b4fc;
+  border-color: #a5b4fc;
+}
+
+.input-group .btn-outline-danger:hover {
+  background-color: #dc3545;
+  border-color: #dc3545;
+  color: white;
+}
+
+.form-check-input:checked {
+  background-color: #6366f1;
+  border-color: #6366f1;
+}
+
+.card {
+  border: none;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+}
+
+.card-header {
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
+}
+
+.form-label {
+  color: #374151;
+  margin-bottom: 0.5rem;
+}
+
+.text-danger {
+  color: #dc3545 !important;
+}
+
+.text-muted {
+  color: #6b7280 !important;
+}
+
+@media (max-width: 768px) {
+  .loading-content {
+    margin: 1rem;
+    padding: 1.5rem;
+  }
+
+  .modal-dialog {
+    margin: 1rem;
+  }
+}
+</style>

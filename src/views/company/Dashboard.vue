@@ -301,6 +301,7 @@
 </template>
 
 <script>
+import { useCompanyJobStore } from "@/stores/company/companyJob";
 import { ref, onMounted } from "vue";
 import JobAnalytics from "@/components/company/jobs/JobAnalytics.vue";
 

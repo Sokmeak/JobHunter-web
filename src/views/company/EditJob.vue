@@ -30,8 +30,8 @@
 import { ref, onMounted } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import PostJobForm from "@/components/company/jobs/PostJobForm.vue";
-import { useJobStore } from "@/stores/company/jobStore";
 
+import { useCompanyJobStore } from "@/stores/company/companyJob";
 export default {
   name: "EditJob",
   components: {
@@ -40,7 +40,7 @@ export default {
   setup() {
     const route = useRoute();
     const router = useRouter();
-    const store = useJobStore();
+    const store = useCompanyJobStore();
 
     const currentStep = ref(1);
     const jobData = ref({
