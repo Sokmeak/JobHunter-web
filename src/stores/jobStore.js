@@ -3,11 +3,15 @@ import { ref, computed } from "vue";
 import { useCompanyStore } from "./companyStore";
 import axios from "axios";
 
-const API_BASE_URL = "http://localhost:3000/jobhunter-system";
+// Ensure the API base URL is set in your environment variables
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+const subPrefix = "jobhunter-system";
 
 const mockApi = {
   async fetchJobs(page = 1, limit = 30, searchkeyparam = "", location = "") {
-    const response = await axios.get(`${API_BASE_URL}/all-jobs`, {
+    console.log(API_BASE_URL, subPrefix);
+
+    const response = await axios.get(`${API_BASE_URL}/${subPrefix}/all-jobs`, {
       params: { page, limit, searchkeyparam, location },
     });
     return response.data; // Returns { jobs: Job[], total: number }
