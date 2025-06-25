@@ -26,7 +26,7 @@
               href="#" 
               @click.prevent="$emit('update:active-filter', 'all')"
             >
-              All
+              
             </a>
           </li>
           <li class="nav-item">
