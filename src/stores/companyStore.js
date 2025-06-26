@@ -1,14 +1,16 @@
-
-
 import { ref, computed } from "vue";
 import { defineStore } from "pinia";
 import axios from "axios";
 
-const API_BASE_URL = "http://localhost:3000/jobhunter-system";
+//const API_BASE_URL = "http://localhost:3000/jobhunter-system";
+
+const API_BASE_URL =
+  import.meta.env.VITE_API_BASE_URL || "http://localhost:3000";
+const subPrefix = "jobhunter-system";
 
 export const useCompanyStore = defineStore("companies", () => {
   // State
-  const searchQuery = ref({ keyword : "", location: "" });
+  const searchQuery = ref({ keyword: "", location: "" });
   const recommendedCompanies = ref([]);
   const isLoading = ref(false);
   const error = ref(null);
@@ -17,11 +19,15 @@ export const useCompanyStore = defineStore("companies", () => {
   const totalCompanyCount = computed(() => recommendedCompanies.value.length);
 
   const getCompaniesByTag = computed(() => {
-    return (tag) => recommendedCompanies.value.filter((company) => company.tags.includes(tag));
+    return (tag) =>
+      recommendedCompanies.value.filter((company) =>
+        company.tags.includes(tag)
+      );
   });
 
   const getCompanyById = computed(() => {
-    return (companyId) => recommendedCompanies.value.find((company) => company.id === companyId);
+    return (companyId) =>
+      recommendedCompanies.value.find((company) => company.id === companyId);
   });
 
   const searchedCompanies = computed(() => {
@@ -70,7 +76,11 @@ export const useCompanyStore = defineStore("companies", () => {
         locationMatch =
           company.location.toLowerCase().includes(location) ||
           locationText.split(/\s+/).some((word) => word.startsWith(location)) ||
-          company.location.toLowerCase().split(",")[0].trim().includes(location);
+          company.location
+            .toLowerCase()
+            .split(",")[0]
+            .trim()
+            .includes(location);
       }
 
       return keywordMatch && locationMatch;
@@ -80,13 +90,21 @@ export const useCompanyStore = defineStore("companies", () => {
   });
 
   // Actions
-  async function fetchCompanies({ keyword = "", location = "", page = 1, limit = 30 } = {}) {
+  async function fetchCompanies({
+    keyword = "",
+    location = "",
+    page = 1,
+    limit = 30,
+  } = {}) {
     isLoading.value = true;
     error.value = null;
     try {
-      const response = await axios.get(`${API_BASE_URL}/all-companies`, {
-        params: { searchkeyparam: keyword, location, page, limit },
-      });
+      const response = await axios.get(
+        `${API_BASE_URL}/${subPrefix}/all-companies`,
+        {
+          params: { searchkeyparam: keyword, location, page, limit },
+        }
+      );
       console.log("Raw /all-companies response:", response.data);
       let data = response.data;
 
@@ -104,7 +122,9 @@ export const useCompanyStore = defineStore("companies", () => {
       // Validate that data is an array
       if (!Array.isArray(data)) {
         console.error("Invalid /all-companies response structure:", data);
-        throw new Error(`API response is not an array. Received: ${typeof data}`);
+        throw new Error(
+          `API response is not an array. Received: ${typeof data}`
+        );
       }
 
       // Only update recommendedCompanies if fetching all companies (no filters, default pagination)
@@ -126,7 +146,9 @@ export const useCompanyStore = defineStore("companies", () => {
     isLoading.value = true;
     error.value = null;
     try {
-      const response = await axios.get(`${API_BASE_URL}/companies/${companyId}`);
+      const response = await axios.get(
+        `${API_BASE_URL}/${subPrefix}/companies/${companyId}`
+      );
       console.log("Raw /companies/:id response:", response.data);
       const company = response.data;
 
@@ -137,7 +159,9 @@ export const useCompanyStore = defineStore("companies", () => {
       }
 
       // Update recommendedCompanies if the company isn't already present
-      const existingIndex = recommendedCompanies.value.findIndex((c) => c.id === company.id);
+      const existingIndex = recommendedCompanies.value.findIndex(
+        (c) => c.id === company.id
+      );
       if (existingIndex === -1) {
         recommendedCompanies.value.push(company);
       } else {
@@ -158,9 +182,12 @@ export const useCompanyStore = defineStore("companies", () => {
     isLoading.value = true;
     error.value = null;
     try {
-      const response = await axios.get(`${API_BASE_URL}/companies/${companyId}/similar`, {
-        params: { limit },
-      });
+      const response = await axios.get(
+        `${API_BASE_URL}/${subPrefix}/companies/${companyId}/similar`,
+        {
+          params: { limit },
+        }
+      );
       console.log("Raw /companies/:id/similar response:", response.data);
       let data = response.data;
 
@@ -177,8 +204,13 @@ export const useCompanyStore = defineStore("companies", () => {
 
       // Validate that data is an array
       if (!Array.isArray(data)) {
-        console.error("Invalid /companies/:id/similar response structure:", data);
-        throw new Error(`API response is not an array. Received: ${typeof data}`);
+        console.error(
+          "Invalid /companies/:id/similar response structure:",
+          data
+        );
+        throw new Error(
+          `API response is not an array. Received: ${typeof data}`
+        );
       }
 
       console.log("Fetched similar companies:", data);

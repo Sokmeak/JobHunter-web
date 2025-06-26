@@ -8,7 +8,9 @@
       <div v-if="applications.length === 0" class="empty-state">
         <i class="bi bi-briefcase display-4 text-muted mb-3"></i>
         <p class="text-muted">No applications yet. Start applying to jobs!</p>
-        <button class="btn btn-primary">Find Jobs</button>
+        <RouterLink to="/applicant/find-jobs" class="btn btn-primary"
+          >Find Jobs</RouterLink
+        >
       </div>
 
       <div v-else class="applications-list">
@@ -27,33 +29,39 @@
           <div class="company-logo">
             <div class="logo-circle">
               <img
-                v-if="application.companyLogo"
-                :src="application.companyLogo"
-                :alt="application.companyName"
+                v-if="application.job.CompanyLogo"
+                :src="
+                  'http://localhost:3000/files/' + application.job.CompanyLogo
+                "
+                :alt="application.job.CompanyName"
                 class="logo-img"
               />
               <span v-else class="logo-text">
-                {{ getCompanyInitials(application.companyName) }}
+                {{ getCompanyInitials(application.job.CompanyName) }}
               </span>
             </div>
           </div>
 
           <!-- Job Details -->
           <div class="job-details">
-            <h3 class="job-title">{{ application.jobTitle }}</h3>
+            <h3 class="job-title">{{ application.job.title }}</h3>
             <div class="job-meta">
-              <span class="company-name">{{ application.companyName }}</span>
+              <span class="company-name">{{
+                application.job.CompanyName
+              }}</span>
               <span class="separator">•</span>
-              <span class="location">{{ application.location }}</span>
+              <span class="location">{{ application.job.location }}</span>
               <span class="separator">•</span>
-              <span class="job-type">{{ application.jobType }}</span>
+              <span class="job-type">{{ application.job.job_type }}</span>
             </div>
           </div>
 
           <!-- Date Applied -->
           <div class="date-section">
             <div class="date-label">Date Applied</div>
-            <div class="date-value">{{ application.dateApplied }}</div>
+            <div class="date-value">
+              {{ formatDate(application.createdAt) }}
+            </div>
           </div>
 
           <!-- Status Badge -->
@@ -77,6 +85,12 @@
               :class="{ show: activeMenu === application.id }"
             >
               <button
+                class="dropdown-item"
+                @click="viewApplication(application)"
+              >
+                View
+              </button>
+              <button
                 class="dropdown-item danger"
                 @click="deleteApplication(application)"
               >
@@ -92,7 +106,7 @@
         <router-link
           to="/applicant/my-applications"
           class="view-all-link"
-          @click.native="viewAllApplications"
+          @click="viewAllApplications"
         >
           View all applications history
           <i class="bi bi-arrow-up-right"></i>
@@ -103,7 +117,10 @@
 </template>
 
 <script>
+import { RouterLink } from "vue-router";
 import StatusBadge from "../applications/StatusBadge.vue";
+import { format } from "date-fns";
+
 export default {
   name: "RecentApplications",
   components: {
@@ -131,11 +148,18 @@ export default {
   },
   methods: {
     getCompanyInitials(companyName) {
-      return companyName
-        .split(" ")
-        .map((word) => word.charAt(0).toUpperCase())
-        .join("")
-        .substring(0, 2);
+      if (!companyName) return "N/A";
+      const words = companyName.split(" ");
+      return words.length > 1
+        ? words[0][0] + words[1][0]
+        : companyName.slice(0, 2).toUpperCase();
+    },
+    formatDate(isoDate) {
+      try {
+        return format(new Date(isoDate), "MMM dd, yyyy");
+      } catch {
+        return "Invalid Date";
+      }
     },
     toggleMenu(applicationId) {
       this.activeMenu =
@@ -145,20 +169,15 @@ export default {
       this.$emit("view-application", application);
       this.activeMenu = null;
     },
-    editApplication(application) {
-      this.$emit("edit-application", application);
-      this.activeMenu = null;
-    },
     deleteApplication(application) {
       this.$emit("delete-application", application);
       this.activeMenu = null;
     },
-    // viewAllApplications() {
-    //   this.$emit("view-all-applications");
-    // },
+    viewAllApplications() {
+      this.$emit("view-all-applications");
+    },
   },
   mounted() {
-    // Close dropdown when clicking outside
     document.addEventListener("click", (e) => {
       if (!e.target.closest(".action-menu")) {
         this.activeMenu = null;
@@ -166,11 +185,14 @@ export default {
     });
   },
   beforeUnmount() {
-    document.removeEventListener("click", this.handleClickOutside);
+    document.removeEventListener("click", (e) => {
+      if (!e.target.closest(".action-menu")) {
+        this.activeMenu = null;
+      }
+    });
   },
 };
 </script>
-
 
 <style scoped>
 .applications-card {
@@ -232,7 +254,6 @@ export default {
   background-color: #f8f8fd;
 }
 
-/* Odd items (1, 3, 5...) - gray background */
 .application-item.odd-item {
   background-color: white;
 }
@@ -342,6 +363,7 @@ export default {
   background-color: #f3f4f6;
   color: #6b7280;
 }
+
 .dropdown-menu {
   position: absolute;
   top: 100%;

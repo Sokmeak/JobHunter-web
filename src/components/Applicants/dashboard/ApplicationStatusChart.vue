@@ -3,7 +3,7 @@
     <div class="card-body">
       <h5 class="card-title text-muted mb-4">Hired & Interviewed Status</h5>
       <div
-        v-if="statusData[0].name !== 'No Applications'"
+        v-if="statusData?.length && statusData[0]?.name !== 'No Applications'"
         class="d-flex align-items-center justify-content-between"
       >
         <div class="chart-container" style="width: 140px; height: 140px">
@@ -107,14 +107,19 @@ const chartConfig = computed(() => ({
 
 // Initialize or update chart
 const renderChart = () => {
-  if (props.statusData[0].name === "No Applications") return;
-  const ctx = document.getElementById(chartId.value).getContext("2d");
-  if (chartInstance) {
-    chartInstance.destroy();
+  if (
+    !props.statusData?.length ||
+    props.statusData[0]?.name === "No Applications"
+  )
+    return;
+  const canvas = document.getElementById(chartId.value);
+  if (!canvas) return; // Skip if canvas isn’t ready
+  const ctx = canvas.getContext("2d");
+  if (chartInstance.value) {
+    chartInstance.value.destroy();
   }
-  chartInstance = new Chart(ctx, chartConfig.value);
+  chartInstance.value = new Chart(ctx, chartConfig.value);
 };
-
 // Watch for statusData changes
 watch(
   () => props.statusData,

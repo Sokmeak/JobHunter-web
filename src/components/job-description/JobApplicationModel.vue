@@ -7,32 +7,6 @@
     <div class="modal modal-dialog-scrollable d-block" v-if="isVisible">
       <div class="modal-dialog modal-lg">
         <div class="modal-content">
-          <!-- Application Status Bar -->
-          <!-- <div v-if="showStatusBar" class="application-status-bar">
-            <div
-              class="status-progress"
-              :style="{ width: `${statusProgress}%` }"
-            ></div>
-            <div
-              class="status-content d-flex align-items-center justify-content-between px-3 py-2"
-            >
-              <div class="d-flex align-items-center">
-                <div class="status-icon me-2" :class="statusIconClass">
-                  <i :class="statusIcon"></i>
-                </div>
-                <div>
-                  <div class="status-title fw-bold">{{ statusTitle }}</div>
-                  <div class="status-message small">{{ statusMessage }}</div>
-                </div>
-              </div>
-              <button
-                v-if="canDismissStatus"
-                @click="dismissStatus"
-                class="btn-close btn-sm"
-              ></button>
-            </div>
-          </div> -->
-
           <!-- Modal Header -->
           <div class="modal-header border-0 pb-0">
             <div class="d-flex align-items-center gap-3">
@@ -160,14 +134,14 @@
                 </div>
 
                 <div class="mb-3">
-                  <label for="jobTitle" class="form-label fw-medium"
+                  <label for="currentJobTitle" class="form-label fw-medium"
                     >Current or previous job title</label
                   >
                   <input
                     type="text"
                     class="form-control"
-                    id="jobTitle"
-                    v-model="form.jobTitle"
+                    id="currentJobTitle"
+                    v-model="form.currentJobTitle"
                     placeholder="What's your current or previous job title?"
                     :disabled="
                       isSubmitting || applicationStatus === 'submitted'
@@ -183,7 +157,7 @@
                 </h6>
 
                 <div class="mb-3">
-                  <label for="linkedin" class="form-label fw-medium"
+                  <label for="linkedinUrl" class="form-label fw-medium"
                     >LinkedIn URL</label
                   >
                   <div class="input-group">
@@ -193,8 +167,8 @@
                     <input
                       type="url"
                       class="form-control"
-                      id="linkedin"
-                      v-model="form.linkedin"
+                      id="linkedinUrl"
+                      v-model="form.linkedinUrl"
                       placeholder="Link to your LinkedIn profile"
                       :disabled="
                         isSubmitting || applicationStatus === 'submitted'
@@ -204,7 +178,7 @@
                 </div>
 
                 <div class="mb-3">
-                  <label for="portfolio" class="form-label fw-medium"
+                  <label for="portfolioUrl" class="form-label fw-medium"
                     >Portfolio URL</label
                   >
                   <div class="input-group">
@@ -214,8 +188,8 @@
                     <input
                       type="url"
                       class="form-control"
-                      id="portfolio"
-                      v-model="form.portfolio"
+                      id="portfolioUrl"
+                      v-model="form.portfolioUrl"
                       placeholder="Link to your portfolio website"
                       :disabled="
                         isSubmitting || applicationStatus === 'submitted'
@@ -310,7 +284,8 @@
                       </button>
                     </div>
                     <div class="ms-auto text-secondary small">
-                      {{ form.additionalInfo.length }} /
+                      {{ form.additionalInfo ? form.additionalInfo.length : 0 }}
+                      /
                       {{ maxAdditionalInfoLength }}
                     </div>
                   </div>
@@ -428,29 +403,34 @@
     </div>
   </transition>
 </template>
+
 <script setup>
 import { ref, reactive, computed, onMounted, onUnmounted, watch } from "vue";
+import { useApplicationStore } from "@/stores/ApplicantStore/Applications";
+import { useUserProfileStore } from "@/stores/ApplicantStore/userProfile";
 
-// Props with default values
+const applicationStore = useApplicationStore();
+const userProfileStore = useUserProfileStore();
+
 const props = defineProps({
   isVisible: { type: Boolean, default: false },
   job: {
     type: Object,
     default: () => ({
-      id: "default-job-id",
-      title: "Social Media Assistant",
-      company: "Stripe",
-      location: "Paris, France",
+      id: 61,
+      title: "Software Developer",
+      company: "Example Corp",
+      location: "Remote",
       type: "Full-Time",
-      companyLogo:
-        "https://images.unsplash.com/photo-1580893246395-52aead8960dc?ixlib=rb-1.2.1&auto=format&fit=crop&w=64&h=64&q=80",
-      companyId: "default-company-id", // Added for clarity; adjust if not available
+      companyLogo: "/path/to/logo.png",
+      companyId: 123,
     }),
   },
   formTitle: { type: String, default: "Submit your application" },
   formSubtitle: {
     type: String,
-    default: "The following is required and will only be shared with the company",
+    default:
+      "The following is required and will only be shared with the company",
   },
   submitButtonText: { type: String, default: "Submit Application" },
   maxAdditionalInfoLength: { type: Number, default: 500 },
@@ -458,34 +438,33 @@ const props = defineProps({
   acceptedFileTypesDisplay: { type: String, default: "PDF, DOC, DOCX" },
   termsUrl: { type: String, default: "#" },
   privacyUrl: { type: String, default: "#" },
-  apiEndpoint: { type: String, default: "/api/applications" },
-  defaultCompanyLogo: {
-    type: String,
-    default:
-      "https://images.unsplash.com/photo-1580893246395-52aead8960dc?ixlib=rb-1.2.1&auto=format&fit=crop&w=64&h=64&q=80",
-  },
+  apiEndpoint: { type: String, default: "/api/job-seekers/applications" },
+  defaultCompanyLogo: { type: String, default: "/path/to/default-logo.png" },
 });
 
-// Emits
-const emit = defineEmits(["close", "submit-success", "submit-error", "status-change", "view-status"]);
+const emit = defineEmits([
+  "close",
+  "submit-success",
+  "submit-error",
+  "status-change",
+  "view-status",
+]);
 
-// Reactive state
 const isDragging = ref(false);
 const isSubmitting = ref(false);
 const fileInput = ref(null);
 const form = reactive({
-  fullName: "",
-  email: "",
-  phone: "",
-  jobTitle: "",
-  linkedin: "",
-  portfolio: "",
-  additionalInfo: "",
+  fullName: "SOKMEAK SAREN",
+  email: "sokmeak.sarenn@gmail.com",
+  phone: "017546798",
+  currentJobTitle: "",
+  linkedinUrl: "",
+  portfolioUrl: "",
+  additionalInfo: "sddAS",
   resume: null,
 });
 
-// Application status tracking
-const applicationStatus = ref("idle"); // idle, submitting, submitted, error
+const applicationStatus = ref("idle");
 const applicationId = ref(null);
 const showStatusBar = ref(false);
 const statusTitle = ref("");
@@ -494,12 +473,15 @@ const statusIcon = ref("");
 const statusIconClass = ref("");
 const canDismissStatus = ref(false);
 
-// Application steps
-const applicationSteps = ["Submit Application", "Review", "Interview", "Decision"];
+const applicationSteps = [
+  "Submit Application",
+  "Review",
+  "Interview",
+  "Decision",
+];
 const stepStatus = reactive(["active", "pending", "pending", "pending"]);
 const currentStep = ref(0);
 
-// Computed properties
 const statusProgress = computed(() => {
   switch (applicationStatus.value) {
     case "submitting":
@@ -517,7 +499,6 @@ const stepperProgress = computed(() => {
   return (currentStep.value / (applicationSteps.length - 1)) * 100;
 });
 
-// Watch for status changes
 watch(applicationStatus, (newStatus) => {
   updateStatusBar(newStatus);
   emit("status-change", {
@@ -526,7 +507,6 @@ watch(applicationStatus, (newStatus) => {
   });
 });
 
-// Methods
 const updateStatusBar = (status) => {
   switch (status) {
     case "submitting":
@@ -551,7 +531,8 @@ const updateStatusBar = (status) => {
     case "error":
       showStatusBar.value = true;
       statusTitle.value = "Submission Failed";
-      statusMessage.value = "There was an error submitting your application. Please try again.";
+      statusMessage.value =
+        "There was an error submitting your application. Please try again.";
       statusIcon.value = "bi bi-exclamation-circle-fill";
       statusIconClass.value = "text-danger";
       canDismissStatus.value = true;
@@ -577,9 +558,7 @@ const triggerFileInput = () => {
 
 const handleFileUpload = (event) => {
   const file = event.target.files[0];
-  if (file) {
-    form.resume = file;
-  }
+  if (file) form.resume = file;
 };
 
 const handleFileDrop = (event) => {
@@ -599,8 +578,47 @@ const handleFileDrop = (event) => {
 
 const removeFile = () => {
   form.resume = null;
-  if (fileInput.value) {
-    fileInput.value.value = "";
+  if (fileInput.value) fileInput.value.value = "";
+};
+
+const validateForm = () => {
+  if (!form.fullName || form.fullName.length > 100) {
+    throw new Error("Full name is required and must be 100 characters or less");
+  }
+  if (!form.email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) {
+    throw new Error("Valid email is required");
+  }
+  if (form.phone && form.phone.length > 20) {
+    throw new Error("Phone number must be 20 characters or less");
+  }
+  if (form.currentJobTitle && form.currentJobTitle.length > 100) {
+    throw new Error("Job title must be 100 characters or less");
+  }
+  if (
+    form.linkedinUrl &&
+    !/^https?:\/\/[^\s/$.?#].[^\s]*$/.test(form.linkedinUrl)
+  ) {
+    throw new Error("Invalid LinkedIn URL");
+  }
+  if (
+    form.portfolioUrl &&
+    !/^https?:\/\/[^\s/$.?#].[^\s]*$/.test(form.portfolioUrl)
+  ) {
+    throw new Error("Invalid Portfolio URL");
+  }
+  if (form.additionalInfo && form.additionalInfo.length > 2000) {
+    throw new Error("Additional info must be 2000 characters or less");
+  }
+  if (
+    form.resume &&
+    !["pdf", "doc", "docx"].includes(
+      form.resume.name.split(".").pop().toLowerCase()
+    )
+  ) {
+    throw new Error("Resume must be PDF, DOC, or DOCX");
+  }
+  if (!Number.isInteger(Number(props.job.id))) {
+    throw new Error("Job ID must be an integer");
   }
 };
 
@@ -609,22 +627,30 @@ const submitApplication = async () => {
     isSubmitting.value = true;
     applicationStatus.value = "submitting";
 
-    // Create form data for file upload
-    const formData = new FormData();
-    Object.keys(form).forEach((key) => {
-      if (key === "resume" && form[key]) {
-        formData.append(key, form[key]);
-      } else if (key !== "resume") {
-        formData.append(key, form[key]);
-      }
-    });
-    formData.append("jobId", props.job.id);
+    // Validate form
+    validateForm();
 
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 2500));
-    applicationId.value = `APP-${Date.now().toString().slice(-6)}`;
+    // Prepare application data, omitting undefined fields
+    const applicationData = {
+      job_id: String(props.job.id), // Ensure number
+      fullName: form.fullName,
+      email: form.email,
+    };
+    if (form.phone) applicationData.phone = form.phone;
+    if (form.currentJobTitle)
+      applicationData.currentJobTitle = form.currentJobTitle;
+    if (form.linkedinUrl) applicationData.linkedinUrl = form.linkedinUrl;
+    if (form.portfolioUrl) applicationData.portfolioUrl = form.portfolioUrl;
+    if (form.additionalInfo)
+      applicationData.additionalInfo = form.additionalInfo;
+    if (form.resume) applicationData.resume = form.resume;
 
-    // Prepare log data
+    console.log("Submitting application data:", applicationData);
+
+    // Submit application
+    const response = await applicationStore.applyForJob(applicationData);
+    applicationId.value = response.id;
+
     const logData = {
       timestamp: new Date().toISOString(),
       applicationId: applicationId.value,
@@ -632,7 +658,7 @@ const submitApplication = async () => {
         id: props.job.id,
         title: props.job.title,
         company: props.job.company,
-        companyId: props.job.companyId || "unknown", // Use companyId if available
+        companyId: props.job.companyId,
         location: props.job.location,
         type: props.job.type,
         companyLogo: props.job.companyLogo,
@@ -640,37 +666,32 @@ const submitApplication = async () => {
       applicant: {
         fullName: form.fullName,
         email: form.email,
-        phone: form.phone,
-        jobTitle: form.jobTitle,
-        linkedin: form.linkedin,
-        portfolio: form.portfolio,
-        additionalInfo: form.additionalInfo,
-        resume: form.resume ? {
-          name: form.resume.name,
-          size: form.resume.size,
-          type: form.resume.type,
-        } : null,
+        phone: form.phone || null,
+        currentJobTitle: form.currentJobTitle || null,
+        linkedinUrl: form.linkedinUrl || null,
+        portfolioUrl: form.portfolioUrl || null,
+        additionalInfo: form.additionalInfo || null,
+        resume: form.resume
+          ? {
+              name: form.resume.name,
+              size: form.resume.size,
+              type: form.resume.type,
+            }
+          : null,
       },
       status: "submitted",
     };
-
-    // Log the data
     console.log("Application Submission:", JSON.stringify(logData, null, 2));
 
-    // Update application status
     applicationStatus.value = "submitted";
-
-    // Emit success event
     emit("submit-success", {
       jobId: props.job.id,
       applicationId: applicationId.value,
-      applicant: {
-        name: form.fullName,
-        email: form.email,
-      },
+      applicant: { name: form.fullName, email: form.email },
     });
+
+    await applicationStore.fetchApplications();
   } catch (error) {
-    // Prepare log data for error case
     const logData = {
       timestamp: new Date().toISOString(),
       applicationId: applicationId.value || "not-generated",
@@ -678,7 +699,7 @@ const submitApplication = async () => {
         id: props.job.id,
         title: props.job.title,
         company: props.job.company,
-        companyId: props.job.companyId || "unknown",
+        companyId: props.job.companyId,
         location: props.job.location,
         type: props.job.type,
         companyLogo: props.job.companyLogo,
@@ -686,28 +707,34 @@ const submitApplication = async () => {
       applicant: {
         fullName: form.fullName,
         email: form.email,
-        phone: form.phone,
-        jobTitle: form.jobTitle,
-        linkedin: form.linkedin,
-        portfolio: form.portfolio,
-        additionalInfo: form.additionalInfo,
-        resume: form.resume ? {
-          name: form.resume.name,
-          size: form.resume.size,
-          type: form.resume.type,
-        } : null,
+        phone: form.phone || null,
+        currentJobTitle: form.currentJobTitle || null,
+        linkedinUrl: form.linkedinUrl || null,
+        portfolioUrl: form.portfolioUrl || null,
+        additionalInfo: form.additionalInfo || null,
+        resume: form.resume
+          ? {
+              name: form.resume.name,
+              size: form.resume.size,
+              type: form.resume.type,
+            }
+          : null,
       },
       status: "error",
       error: {
         message: error.message,
-        stack: error.stack,
+        response: error.response?.data,
       },
     };
-
-    // Log the error data
-    console.error("Application Submission Failed:", JSON.stringify(logData, null, 2));
+    console.error(
+      "Application Submission Failed:",
+      JSON.stringify(logData, null, 2)
+    );
 
     applicationStatus.value = "error";
+    statusMessage.value =
+      error.response?.data?.message ||
+      "There was an error submitting your application. Please try again.";
     emit("submit-error", error);
   } finally {
     isSubmitting.value = false;
@@ -716,15 +743,10 @@ const submitApplication = async () => {
 
 const resetForm = () => {
   Object.keys(form).forEach((key) => {
-    if (key === "resume") {
-      form[key] = null;
-    } else {
-      form[key] = "";
-    }
+    if (key === "resume") form[key] = null;
+    else form[key] = "";
   });
-  if (fileInput.value) {
-    fileInput.value.value = "";
-  }
+  if (fileInput.value) fileInput.value.value = "";
   applicationStatus.value = "idle";
   applicationId.value = null;
   showStatusBar.value = false;
@@ -741,12 +763,21 @@ const viewApplicationStatus = () => {
   });
 };
 
-// Lifecycle hooks
 onMounted(() => {
+  // Initialize form with default values
+
+  // const userProfileStore = null;
+
+  // if (!userProfileStore) {
+  //   userProfile = userProfileStore.fetchProfile();
+  //   console.log("User profile fetched:", userProfile);
+  // }
+
+  // form.fullName = userProfile.username || "";
+  // form.email = userProfile.email || "";
+
   const handleEscKey = (event) => {
-    if (event.key === "Escape" && props.isVisible) {
-      close();
-    }
+    if (event.key === "Escape" && props.isVisible) close();
   };
   window.addEventListener("keydown", handleEscKey);
   onUnmounted(() => {
@@ -754,16 +785,14 @@ onMounted(() => {
   });
 });
 
-// Reset form when modal is opened
 watch(
   () => props.isVisible,
   (newValue) => {
-    if (newValue && applicationStatus.value !== "submitted") {
-      resetForm();
-    }
+    if (newValue && applicationStatus.value !== "submitted") resetForm();
   }
 );
 </script>
+
 <style scoped>
 .modal-backdrop {
   position: fixed;

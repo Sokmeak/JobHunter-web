@@ -345,8 +345,8 @@ import axios from "axios";
 
 
 // Set the base URL for axios requests
-axios.defaults.baseURL = "http://localhost:3000";
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 // Form data
 const form = ref({
   fullName: "",
@@ -434,7 +434,7 @@ async function handleSubmit() {
   // Add logic for signup (e.g., API call) here
 
   await axios
-    .post(`http://localhost:3000/auth/signup`, signupData)
+    .post(`${API_BASE_URL}/auth/signup`, signupData)
     .then((response) => {
       console.log("Signup successful:", response.data);
       // redirect to login
