@@ -284,9 +284,7 @@
                       </button>
                     </div>
                     <div class="ms-auto text-secondary small">
-                      {{
-                        form.additionalInfo ? form.additionalInfo.length : 0
-                      }}
+                      {{ form.additionalInfo ? form.additionalInfo.length : 0 }}
                       /
                       {{ maxAdditionalInfoLength }}
                     </div>
@@ -409,8 +407,10 @@
 <script setup>
 import { ref, reactive, computed, onMounted, onUnmounted, watch } from "vue";
 import { useApplicationStore } from "@/stores/ApplicantStore/Applications";
+import { useUserProfileStore } from "@/stores/ApplicantStore/userProfile";
 
 const applicationStore = useApplicationStore();
+const userProfileStore = useUserProfileStore();
 
 const props = defineProps({
   isVisible: { type: Boolean, default: false },
@@ -764,6 +764,18 @@ const viewApplicationStatus = () => {
 };
 
 onMounted(() => {
+  // Initialize form with default values
+
+  // const userProfileStore = null;
+
+  // if (!userProfileStore) {
+  //   userProfile = userProfileStore.fetchProfile();
+  //   console.log("User profile fetched:", userProfile);
+  // }
+
+  // form.fullName = userProfile.username || "";
+  // form.email = userProfile.email || "";
+
   const handleEscKey = (event) => {
     if (event.key === "Escape" && props.isVisible) close();
   };
