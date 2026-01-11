@@ -54,7 +54,7 @@
 
             <!-- Empty state when no results found -->
             <div
-              v-if="jobStore.filteredJobs.length === 0"
+              v-if="jobStore.jobs && jobStore.jobs.length === 0"
               class="text-center py-5"
             >
               <div class="mb-4">
@@ -105,9 +105,9 @@
 
             <!-- Job listings (with pagination) -->
             <JobListings
-              v-if="jobStore.filteredJobs.length > 0"
+              v-if="jobStore.jobs && jobStore.jobs.length > 0"
               :context="context"
-              :jobs="jobStore.filteredJobs"
+              :jobs="jobStore.jobs"
               :total-items="jobStore.totalJobs"
               :initial-page="jobStore.currentPage"
               :initial-per-page="jobStore.itemsPerPage"
@@ -517,11 +517,10 @@ onMounted(() => {
 </script> -->
 
 <script setup>
-import { ref } from "vue";
+import { ref, computed } from "vue";
 import { onMounted } from "vue";
 import { useJobStore } from "@/stores/jobStore";
 import SearchJob from "@/components/sharecomponents/SearchJob.vue";
-
 
 import FilterSidebar from "@/components/findjob/FilterSidebar.vue";
 import JobListings from "@/components/findjob/JobListings.vue";
@@ -530,6 +529,11 @@ import JobListings from "@/components/findjob/JobListings.vue";
 const jobStore = useJobStore();
 const heroSection = ref(null);
 const context = "Applicant";
+const searchValue = ref("");
+const placeholder = "Start with a job keyword...";
+
+// Computed properties
+const hasFilters = computed(() => jobStore.hasFilters);
 
 // Methods
 async function fetchData() {

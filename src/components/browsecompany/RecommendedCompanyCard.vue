@@ -12,15 +12,14 @@
 
     <!-- Header -->
     <div class="company-header">
-      <div
-        class="company-logo"
-        :style="{ backgroundColor: company.logoBg || '#f3f4f6' }"
-      >
-        <img
+      <div class="company-logo-wrapper">
+        <AvatarWithFallback
           :src="company.logo"
+          :name="company.name || 'Company'"
           :alt="company.name + ' logo'"
-          class="logo-image"
-          @error="handleImageError"
+          size="md"
+          :rounded="true"
+          :bg-color="company.logoBg"
         />
       </div>
 
@@ -117,6 +116,7 @@
 
 <script setup>
 import { ref, computed } from "vue";
+import AvatarWithFallback from "@/components/common/AvatarWithFallback.vue";
 
 const props = defineProps({
   context: {
@@ -164,13 +164,8 @@ const getTagClass = (tag) => {
   return tagClasses[tag] || "tag-default";
 };
 
-
 const viewDetails = () => {
   emit("view-details", props.company);
-};
-
-const handleImageError = (event) => {
-  event.target.style.display = "none";
 };
 </script>
 
@@ -240,20 +235,12 @@ const handleImageError = (event) => {
   margin-top: 0.5rem;
 }
 
-.company-logo {
+.company-logo-wrapper {
   width: 2.5rem;
   height: 2.5rem;
-  border-radius: 0.5rem;
   display: flex;
   align-items: center;
   justify-content: center;
-  overflow: hidden;
-}
-
-.logo-image {
-  width: 70%;
-  height: 70%;
-  object-fit: contain;
 }
 
 .job-count {

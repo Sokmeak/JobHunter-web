@@ -60,101 +60,117 @@
           </div>
 
           <div class="col-lg-9">
-            <!-- Search query feedback -->
-            <div
-              v-if="
-                jobStore.searchQuery.keyword || jobStore.searchQuery.location
-              "
-              class="d-flex justify-content-between align-items-center mb-3"
-            >
-              <p class="text-muted mb-0">
-                Showing results for:
-                <strong v-if="jobStore.searchQuery.keyword"
-                  >"{{ jobStore.searchQuery.keyword }}"</strong
-                >
-                <span
-                  v-if="
-                    jobStore.searchQuery.keyword &&
-                    jobStore.searchQuery.location
-                  "
-                >
-                  in
-                </span>
-                <strong v-if="jobStore.searchQuery.location"
-                  >"{{ jobStore.searchQuery.location }}"</strong
-                >
-              </p>
-              <button
-                v-if="jobStore.filteredJobs.length > 0"
-                @click="clearSearch"
-                class="btn btn-danger"
-              >
-                Clear search
-              </button>
-            </div>
-
-            <!-- Empty state when no results found -->
-            <div
-              v-if="jobStore.filteredJobs.length === 0"
-              class="text-center py-5"
-            >
-              <div class="mb-4">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="68"
-                  height="68"
-                  fill="currentColor"
-                  class="bi bi-search"
-                  viewBox="0 0 16 16"
-                >
-                  <path
-                    d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"
-                  />
-                </svg>
+            <!-- Loading state for filtering -->
+            <div v-if="jobStore.isLoading" class="loading-overlay">
+              <div class="text-center py-5">
+                <div class="spinner-border text-primary" role="status">
+                  <span class="visually-hidden">Loading...</span>
+                </div>
+                <p class="mt-3">Updating results...</p>
               </div>
-              <h3 class="fs-4 fw-bold">No jobs found</h3>
-              <p class="text-muted">
-                We couldn't find any jobs matching
-                <span v-if="jobStore.searchQuery.keyword"
-                  >'{{ jobStore.searchQuery.keyword }}'</span
-                >
-                <span
-                  v-if="
-                    jobStore.searchQuery.keyword &&
-                    jobStore.searchQuery.location
-                  "
-                >
-                  in
-                </span>
-                <span v-if="jobStore.searchQuery.location"
-                  >'{{ jobStore.searchQuery.location }}'</span
-                >
-                <span
-                  v-if="
-                    !jobStore.searchQuery.keyword &&
-                    !jobStore.searchQuery.location &&
-                    jobStore.hasFilters
-                  "
-                >
-                  your selected filters
-                </span>
-              </p>
-              <button class="btn btn-outline-primary mt-3" @click="clearSearch">
-                Clear search and filters
-              </button>
             </div>
 
-            <!-- Job listings (with pagination) -->
-            <JobListings
-              v-if="jobStore.filteredJobs.length > 0"
-              :context="context"
-              :jobs="jobStore.filteredJobs"
-              :total-items="jobStore.totalJobs"
-              :initial-page="jobStore.currentPage"
-              :initial-per-page="jobStore.itemsPerPage"
-              @page-change="jobStore.updatePage"
-              @per-page-change="jobStore.updatePerPage"
-            />
+            <!-- Content area -->
+            <div v-else>
+              <!-- Search query feedback -->
+              <div
+                v-if="
+                  jobStore.searchQuery.keyword || jobStore.searchQuery.location
+                "
+                class="d-flex justify-content-between align-items-center mb-3"
+              >
+                <p class="text-muted mb-0">
+                  Showing results for:
+                  <strong v-if="jobStore.searchQuery.keyword"
+                    >"{{ jobStore.searchQuery.keyword }}"</strong
+                  >
+                  <span
+                    v-if="
+                      jobStore.searchQuery.keyword &&
+                      jobStore.searchQuery.location
+                    "
+                  >
+                    in
+                  </span>
+                  <strong v-if="jobStore.searchQuery.location"
+                    >"{{ jobStore.searchQuery.location }}"</strong
+                  >
+                </p>
+                <button
+                  v-if="jobStore.jobs && jobStore.jobs.length > 0"
+                  @click="clearSearch"
+                  class="btn btn-danger"
+                >
+                  Clear search
+                </button>
+              </div>
+
+              <!-- Empty state when no results found -->
+              <div
+                v-if="jobStore.jobs && jobStore.jobs.length === 0"
+                class="text-center py-5"
+              >
+                <div class="mb-4">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="68"
+                    height="68"
+                    fill="currentColor"
+                    class="bi bi-search"
+                    viewBox="0 0 16 16"
+                  >
+                    <path
+                      d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"
+                    />
+                  </svg>
+                </div>
+                <h3 class="fs-4 fw-bold">No jobs found</h3>
+                <p class="text-muted">
+                  We couldn't find any jobs matching
+                  <span v-if="jobStore.searchQuery.keyword"
+                    >'{{ jobStore.searchQuery.keyword }}'</span
+                  >
+                  <span
+                    v-if="
+                      jobStore.searchQuery.keyword &&
+                      jobStore.searchQuery.location
+                    "
+                  >
+                    in
+                  </span>
+                  <span v-if="jobStore.searchQuery.location"
+                    >'{{ jobStore.searchQuery.location }}'</span
+                  >
+                  <span
+                    v-if="
+                      !jobStore.searchQuery.keyword &&
+                      !jobStore.searchQuery.location &&
+                      jobStore.hasFilters
+                    "
+                  >
+                    your selected filters
+                  </span>
+                </p>
+                <button
+                  class="btn btn-outline-primary mt-3"
+                  @click="clearSearch"
+                >
+                  Clear search and filters
+                </button>
+              </div>
+
+              <!-- Job listings (with pagination) -->
+              <JobListings
+                v-if="jobStore.jobs && jobStore.jobs.length > 0"
+                :context="context"
+                :jobs="jobStore.jobs"
+                :total-items="jobStore.totalJobs"
+                :initial-page="jobStore.currentPage"
+                :initial-per-page="jobStore.itemsPerPage"
+                @page-change="jobStore.updatePage"
+                @per-page-change="jobStore.updatePerPage"
+              />
+            </div>
           </div>
         </div>
       </div>
@@ -205,12 +221,12 @@ function updateFilters(filterType, value) {
 onMounted(async () => {
   jobStore.initializeFromUrl();
   await fetchData();
-  if (jobStore.filteredJobs.length === 0) {
+  if (jobStore.jobs && jobStore.jobs.length === 0) {
     jobStore.clearSearch(); // Clear search if no jobs found
   }
 
-  if (jobStore.filteredJobs) {
-    console.log("filterJobs", jobStore.filteredJobs);
+  if (jobStore.jobs) {
+    console.log("jobs", jobStore.jobs);
   }
 });
 </script>
@@ -222,6 +238,17 @@ body {
   font-family: "Inter", sans-serif;
   color: #333;
   background-color: #f8f9fa;
+}
+
+/* Loading overlay for smooth transitions */
+.loading-overlay {
+  position: relative;
+  min-height: 400px;
+  background-color: rgba(255, 255, 255, 0.95);
+  border-radius: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 /* Pagination styling */

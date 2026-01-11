@@ -113,11 +113,13 @@
           class="btn d-flex align-items-center w-100 p-0 border-0 bg-transparent"
           data-bs-toggle="dropdown"
         >
-          <img
+          <AvatarWithFallback
             :src="currentCompany.logo || '/placeholder.svg'"
+            :name="currentCompany.name || currentCompany.hr_contact_name || 'Company'"
             alt="Company Logo"
-            class="rounded-circle me-2"
-            style="width: 40px; height: 40px"
+            size="sm"
+            :circle="true"
+            class="me-2"
           />
           <div class="flex-grow-1 text-start">
             <div class="fw-medium text-dark text-truncate">
@@ -165,6 +167,7 @@ import { computed, onMounted } from "vue";
 import { useAuthStore } from "@/stores/company/auth";
 import { useAuthLocalStore } from "@/stores/authLocalStore";
 import PrimaryLogo from "@/components/sharecomponents/PrimaryLogo.vue";
+import AvatarWithFallback from "../../common/AvatarWithFallback.vue";
 
 const auth = useAuthStore();
 const localAuth = useAuthLocalStore();

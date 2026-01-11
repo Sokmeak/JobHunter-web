@@ -17,11 +17,9 @@
 </template>
 
 <script setup>
-
 import RecommendedCompanyCard from "./RecommendedCompanyCard.vue";
 import { computed, onMounted } from "vue";
 import { useCompanyStore } from "@/stores/companyStore";
-
 
 const props = defineProps({
   context: String,
@@ -29,10 +27,9 @@ const props = defineProps({
 
 const companyStore = useCompanyStore();
 
-
 // Compute the first 8 companies to display
 const displayedCompanies = computed(() => {
-  return companyStore.recommendedCompanies.slice(10, 16);
+  return (companyStore.companies || []).slice(10, 16);
 });
 // Fetch companies when the component is mounted
 onMounted(async () => {
@@ -42,69 +39,6 @@ onMounted(async () => {
     console.error("Failed to fetch companies:", error);
   }
 });
-
-// const recommendedCompanies = ref([
-//   {
-//     id: 1,
-//     name: "Nomad",
-//     logo: "https://logo.clearbit.com/nomadproject.io",
-//     logoBg: "#e7f5f0",
-//     jobCount: 3,
-//     description:
-//       "Nomad is located in Paris, France. Nomad has generated $128,000 in sales (USD).",
-//     tags: ["Business Service"],
-//   },
-//   {
-//     id: 2,
-//     name: "Discord",
-//     logo: "https://logo.clearbit.com/discord.com",
-//     logoBg: "#5865f2",
-//     jobCount: 3,
-//     description:
-//       "We'd love to work with someone like you. We care about creating a delightful experience.",
-//     tags: ["Business Service"],
-//   },
-//   {
-//     id: 3,
-//     name: "Google",
-//     logo: "https://logo.clearbit.com/google.com",
-//     logoBg: "#4285f4",
-//     jobCount: 5,
-//     description:
-//       "Google is based in Mountain View, California. It generates over $200 billion in revenue annually.",
-//     tags: ["Tech", "Search Engine"],
-//   },
-//   {
-//     id: 4,
-//     name: "Apple",
-//     logo: "https://logo.clearbit.com/apple.com",
-//     logoBg: "#f1f1f1",
-//     jobCount: 10,
-//     description:
-//       "Apple is a leading technology company known for its innovation in consumer electronics and software.",
-//     tags: ["Tech", "Consumer Electronics"],
-//   },
-//   {
-//     id: 5,
-//     name: "Spotify",
-//     logo: "https://logo.clearbit.com/spotify.com",
-//     logoBg: "#1db954",
-//     jobCount: 7,
-//     description:
-//       "Spotify is a popular streaming service offering a vast library of music and podcasts.",
-//     tags: ["Music", "Streaming"],
-//   },
-//   {
-//     id: 6,
-//     name: "Tesla",
-//     logo: "https://logo.clearbit.com/tesla.com",
-//     logoBg: "#e82127",
-//     jobCount: 4,
-//     description:
-//       "Tesla, Inc. is an electric vehicle and clean energy company based in Palo Alto, California.",
-//     tags: ["Tech", "Electric Vehicles"],
-//   },
-// ]);
 </script>
 
 <style scoped>

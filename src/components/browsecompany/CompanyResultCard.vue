@@ -2,20 +2,22 @@
   <RouterLink
     :to="{
       name:
-    context === 'Landing'
-      ? 'CompanyProfile'
-      : 'CompanyProfile-Applicant',
+        context === 'Landing' ? 'CompanyProfile' : 'CompanyProfile-Applicant',
       params: { id: companyId(company) },
       query: { from: 'search' },
     }"
     class="link"
   >
     <div class="company-result-card" @click="$emit('click', company.id)">
-      <div
-        class="company-result-logo"
-        :style="{ backgroundColor: company.logoBg || '#f3f4f6' }"
-      >
-        <img :src="company.logo" :alt="company.name + ' logo'" />
+      <div class="company-result-logo-wrapper">
+        <AvatarWithFallback
+          :src="company.logo"
+          :name="company.name || 'Company'"
+          :alt="company.name + ' logo'"
+          size="lg"
+          :rounded="true"
+          :bg-color="company.logoBg"
+        />
       </div>
       <h3 class="company-result-name">{{ company.name }}</h3>
       <div class="company-result-jobs">{{ company.jobCount }} Jobs</div>
@@ -25,15 +27,16 @@
 
 <script setup>
 import { defineProps, defineEmits } from "vue";
+import AvatarWithFallback from "@/components/common/AvatarWithFallback.vue";
 
 const props = defineProps({
   context: {
-      type: String,
-      default: "Landing",
-    },
+    type: String,
+    default: "Landing",
+  },
   company: {
     type: Object,
-   
+
     required: true,
     validator: (value) => {
       return (
@@ -75,21 +78,13 @@ defineEmits(["click"]);
   transform: translateY(-2px);
 }
 
-.company-result-logo {
+.company-result-logo-wrapper {
   width: 4rem;
   height: 4rem;
-  border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   margin-bottom: 1rem;
-  overflow: hidden;
-}
-
-.company-result-logo img {
-  width: 60%;
-  height: 60%;
-  object-fit: contain;
 }
 
 .company-result-name {

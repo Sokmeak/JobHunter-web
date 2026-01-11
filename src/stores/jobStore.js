@@ -3,31 +3,62 @@ import { ref, computed } from "vue";
 import { useCompanyStore } from "./companyStore";
 import axios from "axios";
 
-// Ensure the API base URL is set in your environment variables
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
-const subPrefixDefault = "jobhunter-system";
+const API_BASE_URL =
+  import.meta.env.VITE_API_BASE_URL || "http://localhost:3000";
+const subPrefix = "jobhunter-system"; // Confirmed working API prefix
 
 const mockApi = {
-  async fetchJobs(page = 1, limit = 30, searchkeyparam = "", location = "") {
-    console.log(API_BASE_URL, subPrefixDefault);
-
-    const response = await axios.get(
-      `${API_BASE_URL}/${subPrefixDefault}/all-jobs`,
-      {
-        params: { page, limit, searchkeyparam, location },
-      }
+  async fetchJobs({
+    page = 1,
+    limit = 30,
+    keyword = "",
+    location = "",
+    jobType = [],
+    tags = [],
+    techStacks = [], // Added to match JobSearchOptions
+    experience = [],
+    salaryMin = "",
+    salaryMax = "",
+    remote = "",
+    sortBy = "relevance",
+    sortOrder = "DESC",
+    fuzzySearch = false,
+  } = {}) {
+    console.log(
+      "API_BASE_URL:",
+      API_BASE_URL,
+      "subPrefix:",
+      subPrefix,
+      "Time:",
+      new Date().toLocaleString("en-US", { timeZone: "+07:00" })
     );
-    return response.data; // Returns { jobs: Job[], total: number }
+    const response = await axios.get(`${API_BASE_URL}/${subPrefix}/all-jobs`, {
+      params: {
+        page,
+        limit,
+        keyword: keyword || "",
+        location: location || "",
+        jobType: jobType.length ? jobType.join(",") : "",
+        tags: tags.length ? tags.join(",") : "",
+        techStacks: techStacks.length ? techStacks.join(",") : "",
+        experience: experience.length ? experience.join(",") : "",
+        salaryMin: salaryMin || "",
+        salaryMax: salaryMax || "",
+        remote: remote === true ? "true" : remote === false ? "false" : "",
+        sortBy,
+        sortOrder,
+        fuzzySearch,
+      },
+    });
+    return response.data; // Returns { jobs: Job[], total: number, facets?: SearchFacets }
   },
   async fetchJobById(id) {
-    const response = await axios.get(
-      `${API_BASE_URL}/${subPrefixDefault}/jobs/${id}`
-    );
+    const response = await axios.get(`${API_BASE_URL}/${subPrefix}/jobs/${id}`);
     return response.data; // Returns Job
   },
   async fetchSimilarJobs(id, limit = 5) {
     const response = await axios.get(
-      `${API_BASE_URL}/${subPrefixDefault}/jobs/${id}/similar`,
+      `${API_BASE_URL}/${subPrefix}/jobs/${id}/similar`,
       {
         params: { limit },
       }
@@ -35,53 +66,64 @@ const mockApi = {
     return response.data; // Returns { jobs: Job[], total: number }
   },
   async fetchFilterOptions() {
-    await new Promise((resolve) =>
-      setTimeout(resolve, Math.random() * 1000 + 500)
-    );
-    if (Math.random() < 0.05) {
-      throw new Error("Failed to fetch filter options from server");
+    try {
+      const response = await axios.get(
+        `${API_BASE_URL}/${subPrefix}/filter-options`
+      );
+      return response.data; // Returns { jobTypes, categories, experienceLevels, salaryRanges }
+    } catch (err) {
+      console.warn(
+        "Filter options endpoint failed, using fallback:",
+        err.message
+      );
+      return {
+        jobTypes: [
+          { id: "full-time", label: "Full-Time", count: 25 },
+          { id: "part-time", label: "Part-Time ", count: 3 },
+          // { id: "internship", label: "Internship", count: 2 },
+          // { id: "freelance", label: "Freelance", count: 1 },
+        ],
+        categories: [
+          { id: "design", label: "Design", count: 6 },
+          { id: "sales", label: "Sales", count: 2 },
+          { id: "marketing", label: "Marketing", count: 4 },
+          { id: "business", label: "Business", count: 2 },
+          { id: "hr", label: "Human Resource", count: 1 },
+          { id: "finance", label: "Finance", count: 0 },
+          { id: "engineering", label: "Engineering", count: 12 },
+          { id: "technology", label: "Technology", count: 13 },
+        ],
+        experienceLevels: [
+          { id: "entry level", label: "Entry Level", count: 7 },
+          { id: "junior", label: "Junior", count: 10 },
+          { id: "senior level", label: "Senior Level", count: 10 },
+          { id: "manager", label: "Manager", count: 3 },
+        ],
+        salaryRanges: [
+          { id: "range1", label: "$500 - $1000", count: 6 },
+          { id: "range2", label: "$1000 - $1500", count: 3 },
+          { id: "range3", label: "$1500 - $2000", count: 11 },
+          { id: "range4", label: "$3000 or above", count: 10 },
+        ],
+      };
     }
-    return {
-      employmentTypes: [
-        { id: "full-time", label: "Full-time", count: 25 },
-        { id: "part-time", label: "Part-Time", count: 3 },
-        { id: "internship", label: "Internship", count: 2 },
-        { id: "freelance", label: "Freelance", count: 1 },
-      ],
-      categories: [
-        { id: "design", label: "Design", count: 6 },
-        { id: "sales", label: "Sales", count: 2 },
-        { id: "marketing", label: "Marketing", count: 4 },
-        { id: "business", label: "Business", count: 2 },
-        { id: "hr", label: "Human Resource", count: 1 },
-        { id: "finance", label: "Finance", count: 0 },
-        { id: "engineering", label: "Engineering", count: 12 },
-        { id: "technology", label: "Technology", count: 13 },
-      ],
-      jobLevels: [
-        { id: "entry level", label: "Entry Level", count: 7 },
-        { id: "junior", label: "Junior", count: 10 },
-        { id: "senior level", label: "Senior Level", count: 10 },
-        { id: "manager", label: "Manager", count: 3 },
-      ],
-      salaryRanges: [
-        { id: "range1", label: "$500 - $1000", count: 6 },
-        { id: "range2", label: "$1000 - $1500", count: 3 },
-        { id: "range3", label: "$1500 - $2000", count: 11 },
-        { id: "range4", label: "$3000 or above", count: 10 },
-      ],
-    };
   },
 };
 
 export const useJobStore = defineStore("jobStore", () => {
   // State
-  const searchQuery = ref({ keyword: "", location: "" });
-  const selectedFilters = ref({
-    employmentTypes: [],
-    categories: [],
-    jobLevels: [],
-    salaryRanges: [],
+  const searchQuery = ref({
+    keyword: "",
+    location: "",
+    jobType: [],
+    tags: [],
+    techStacks: [], // Added to match JobSearchOptions
+    experience: [],
+    salaryRange: { min: "", max: "" },
+    remote: "",
+    sortBy: "relevance",
+    sortOrder: "DESC",
+    fuzzySearch: false,
   });
   const highDemandJobs = ref([]);
   const latestJobs = ref([]);
@@ -101,82 +143,43 @@ export const useJobStore = defineStore("jobStore", () => {
     Math.max(1, Math.ceil(totalJobs.value / itemsPerPage.value))
   );
   const hasFilters = computed(() => {
-    const { employmentTypes, categories, jobLevels, salaryRanges } =
-      selectedFilters.value;
+    const { jobType, tags, techStacks, experience, salaryRange, remote } =
+      searchQuery.value;
     return (
-      employmentTypes.length > 0 ||
-      categories.length > 0 ||
-      jobLevels.length > 0 ||
-      salaryRanges.length > 0
+      jobType.length > 0 ||
+      tags.length > 0 ||
+      techStacks.length > 0 ||
+      experience.length > 0 ||
+      salaryRange.min !== "" ||
+      salaryRange.max !== "" ||
+      remote !== ""
     );
   });
-  const filteredJobs = computed(() => {
-    const results = applyFilters(jobs.value);
-    const start = (currentPage.value - 1) * itemsPerPage.value;
-    const end = start + itemsPerPage.value;
-    return results.length ? results.slice(start, end) : [];
+
+  const selectedFilters = computed(() => {
+    const { jobType, tags, experience, salaryRange } = searchQuery.value;
+    const salaryRangeIds = [];
+
+    // Map salary range back to IDs
+    if (salaryRange.min || salaryRange.max) {
+      if (salaryRange.min === "500" && salaryRange.max === "1000") {
+        salaryRangeIds.push("range1");
+      } else if (salaryRange.min === "1000" && salaryRange.max === "1500") {
+        salaryRangeIds.push("range2");
+      } else if (salaryRange.min === "1500" && salaryRange.max === "2000") {
+        salaryRangeIds.push("range3");
+      } else if (salaryRange.min === "3000") {
+        salaryRangeIds.push("range4");
+      }
+    }
+
+    return {
+      employmentTypes: jobType || [],
+      categories: tags || [],
+      jobLevels: experience || [],
+      salaryRanges: salaryRangeIds,
+    };
   });
-
-  // Reusable filter function
-  function applyFilters(jobs) {
-    let results = [...jobs];
-    const keyword = searchQuery.value.keyword?.toLowerCase().trim() || "";
-    const location =
-      searchQuery.value.location?.toLowerCase().trim().replace(/\s+/g, "-") ||
-      "";
-    const { employmentTypes, categories, jobLevels, salaryRanges } =
-      selectedFilters.value;
-
-    if (employmentTypes.length > 0) {
-      results = results.filter((job) =>
-        employmentTypes
-          .map((type) => type.toLowerCase())
-          .includes(job.job_type?.toLowerCase())
-      );
-    }
-
-    if (categories.length > 0) {
-      results = results.filter((job) =>
-        job.tags?.some((tag) => categories.includes(tag.toLowerCase()))
-      );
-    }
-
-    if (jobLevels.length > 0) {
-      results = results.filter((job) =>
-        jobLevels.includes(job.level?.toLowerCase())
-      );
-    }
-
-    if (salaryRanges.length > 0) {
-      const salaryRangeMap = {
-        range1: { min: 500, max: 1000 },
-        range2: { min: 1000, max: 1500 },
-        range3: { min: 1500, max: 2000 },
-        range4: { min: 3000, max: Infinity },
-      };
-      results = results.filter((job) => {
-        const salaryRange = job.salary_range?.replace(/[^0-9-]/g, "");
-        if (!salaryRange) return false;
-        if (salaryRange.includes("or above")) {
-          const minSalary = Number(salaryRange.replace(" or above", ""));
-          return salaryRanges.some((range) => {
-            const { min } = salaryRangeMap[range];
-            return minSalary >= min;
-          });
-        }
-        const [minSalary, maxSalary] = salaryRange.split("-").map(Number);
-        if (minSalary && maxSalary) {
-          return salaryRanges.some((range) => {
-            const { min, max } = salaryRangeMap[range];
-            return minSalary >= min && maxSalary <= max;
-          });
-        }
-        return false;
-      });
-    }
-
-    return results;
-  }
 
   async function fetchJobs() {
     const companyStore = useCompanyStore();
@@ -191,12 +194,22 @@ export const useJobStore = defineStore("jobStore", () => {
         }
       }
 
-      const response = await mockApi.fetchJobs(
-        currentPage.value,
-        itemsPerPage.value,
-        searchQuery.value.keyword,
-        searchQuery.value.location
-      );
+      const response = await mockApi.fetchJobs({
+        page: currentPage.value,
+        limit: itemsPerPage.value,
+        keyword: searchQuery.value.keyword,
+        location: searchQuery.value.location,
+        jobType: searchQuery.value.jobType,
+        tags: searchQuery.value.tags,
+        techStacks: searchQuery.value.techStacks, // Added
+        experience: searchQuery.value.experience,
+        salaryMin: searchQuery.value.salaryRange.min,
+        salaryMax: searchQuery.value.salaryRange.max,
+        remote: searchQuery.value.remote,
+        sortBy: searchQuery.value.sortBy,
+        sortOrder: searchQuery.value.sortOrder,
+        fuzzySearch: searchQuery.value.fuzzySearch,
+      });
       console.log("Raw API response:", response);
       const { jobs: jobData, total } = response;
 
@@ -212,8 +225,8 @@ export const useJobStore = defineStore("jobStore", () => {
         return {
           ...job,
           companyName: company ? company.name : "Unknown Company",
-          companyLogo: company ? company.logo : null,
-          companyLocation: company ? company.location : null,
+          companyLogo: company ? company.brand_logo_thumbnail : null,
+          companyLocation: company ? company.headquarters_location : null,
         };
       });
       totalJobs.value = total;
@@ -233,13 +246,13 @@ export const useJobStore = defineStore("jobStore", () => {
     error.value = null;
     try {
       const data = await mockApi.fetchFilterOptions();
-      employmentTypes.value = data.employmentTypes;
-      categories.value = data.categories;
-      jobLevels.value = data.jobLevels;
-      salaryRanges.value = data.salaryRanges;
+      employmentTypes.value = data.jobTypes || [];
+      categories.value = data.categories || [];
+      jobLevels.value = data.experienceLevels || [];
+      salaryRanges.value = data.salaryRanges || [];
     } catch (err) {
       error.value = err.message || "Failed to fetch filter options";
-      console.error("Fetch error:", err);
+      console.error("Fetch filter options error:", err);
     } finally {
       isLoading.value = false;
     }
@@ -250,10 +263,20 @@ export const useJobStore = defineStore("jobStore", () => {
     isLoading.value = true;
     error.value = null;
     try {
-      if (!companyStore.companies || companyStore.companies.length === 0) {
-        await companyStore.fetchCompanies();
+      let companies = companyStore.companies || [];
+      if (!companies.length) {
+        companies = await companyStore.fetchCompanies();
+        if (!companyStore.companies?.length && Array.isArray(companies)) {
+          companyStore.companies = companies;
+        }
       }
-      const response = await mockApi.fetchJobs(1, 30);
+
+      const response = await mockApi.fetchJobs({
+        page: 1,
+        limit: 30,
+        sortBy: "relevance",
+        sortOrder: "DESC",
+      });
       console.log("Raw API response (high demand):", response);
       const { jobs: jobData } = response;
 
@@ -267,12 +290,12 @@ export const useJobStore = defineStore("jobStore", () => {
       highDemandJobs.value = jobData
         .filter((job) => job.applicant_applied > 5)
         .map((job) => {
-          const company = Array.isArray(companyStore.companies)
-            ? companyStore.companies.find((c) => c.id === job.company_id)
-            : null;
+          const company = companies.find((c) => c.id === job.company_id);
           return {
             ...job,
             companyName: company ? company.name : "Unknown Company",
+            companyLogo: company ? company.brand_logo_thumbnail : null,
+            companyLocation: company ? company.headquarters_location : null,
           };
         });
       console.log("High demand jobs:", highDemandJobs.value);
@@ -290,10 +313,20 @@ export const useJobStore = defineStore("jobStore", () => {
     isLoading.value = true;
     error.value = null;
     try {
-      if (!companyStore.companies || companyStore.companies.length === 0) {
-        await companyStore.fetchCompanies();
+      let companies = companyStore.companies || [];
+      if (!companies.length) {
+        companies = await companyStore.fetchCompanies();
+        if (!companyStore.companies?.length && Array.isArray(companies)) {
+          companyStore.companies = companies;
+        }
       }
-      const response = await mockApi.fetchJobs(1, 30);
+
+      const response = await mockApi.fetchJobs({
+        page: 1,
+        limit: 4,
+        sortBy: "created_at",
+        sortOrder: "DESC",
+      });
       console.log("Raw API response (latest):", response);
       const { jobs: jobData } = response;
 
@@ -304,16 +337,13 @@ export const useJobStore = defineStore("jobStore", () => {
         );
       }
 
-      const sortedJobs = [...jobData].sort(
-        (a, b) => new Date(b.posted_at) - new Date(a.posted_at)
-      );
-      latestJobs.value = sortedJobs.slice(0, 4).map((job) => {
-        const company = Array.isArray(companyStore.companies)
-          ? companyStore.companies.find((c) => c.id === job.company_id)
-          : null;
+      latestJobs.value = jobData.map((job) => {
+        const company = companies.find((c) => c.id === job.company_id);
         return {
           ...job,
           companyName: company ? company.name : "Unknown Company",
+          companyLogo: company ? company.brand_logo_thumbnail : null,
+          companyLocation: company ? company.headquarters_location : null,
         };
       });
       console.log("Latest jobs:", latestJobs.value);
@@ -331,9 +361,14 @@ export const useJobStore = defineStore("jobStore", () => {
     isLoading.value = true;
     error.value = null;
     try {
-      if (!companyStore.companies || companyStore.companies.length === 0) {
-        await companyStore.fetchCompanies();
+      let companies = companyStore.companies || [];
+      if (!companies.length) {
+        companies = await companyStore.fetchCompanies();
+        if (!companyStore.companies?.length && Array.isArray(companies)) {
+          companyStore.companies = companies;
+        }
       }
+
       const response = await mockApi.fetchSimilarJobs(jobId, 5);
       console.log("Raw API response (similar jobs):", response);
       const { jobs: jobData } = response;
@@ -346,14 +381,12 @@ export const useJobStore = defineStore("jobStore", () => {
       }
 
       return jobData.map((job) => {
-        const company = Array.isArray(companyStore.companies)
-          ? companyStore.companies.find((c) => c.id === job.company_id)
-          : null;
+        const company = companies.find((c) => c.id === job.company_id);
         return {
           ...job,
           companyName: company ? company.name : "Unknown Company",
-          companyLogo: company ? company.logo : null,
-          companyLocation: company ? company.location : null,
+          companyLogo: company ? company.brand_logo_thumbnail : null,
+          companyLocation: company ? company.headquarters_location : null,
         };
       });
     } catch (err) {
@@ -365,69 +398,10 @@ export const useJobStore = defineStore("jobStore", () => {
     }
   }
 
-  function setSearchQuery(queryObj) {
-    searchQuery.value = queryObj;
-    currentPage.value = 1;
-  }
-
-  function clearSearch() {
-    searchQuery.value = { keyword: "", location: "" };
-    selectedFilters.value = {
-      employmentTypes: [],
-      categories: [],
-      jobLevels: [],
-      salaryRanges: [],
-    };
-    currentPage.value = 1;
-  }
-
-  function updateFilters(filterType, value) {
-    selectedFilters.value = {
-      ...selectedFilters.value,
-      [filterType]: value,
-    };
-    currentPage.value = 1;
-  }
-
-  function updatePage(page) {
-    currentPage.value = page;
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  }
-
-  function updatePerPage(perPage) {
-    itemsPerPage.value = perPage;
-    currentPage.value = 1;
-  }
-
-  function updateUrl() {
-    const url = new URL(window.location);
-    if (searchQuery.value.keyword) {
-      url.searchParams.set("searchkeyparam", searchQuery.value.keyword);
-    } else {
-      url.searchParams.delete("searchkeyparam");
-    }
-    if (searchQuery.value.location) {
-      url.searchParams.set("location", searchQuery.value.location);
-    } else {
-      url.searchParams.delete("location");
-    }
-    window.history.pushState({}, "", url);
-  }
-
-  function initializeFromUrl() {
-    const url = new URL(window.location);
-    searchQuery.value = {
-      keyword: url.searchParams.get("searchkeyparam") || "",
-      location: url.searchParams.get("location") || "",
-    };
-  }
-
-  // Getters
-  const getJobById = async (id) => {
+  async function fetchJobById(id) {
     isLoading.value = true;
     error.value = null;
     try {
-      const job = await mockApi.fetchJobById(id);
       const companyStore = useCompanyStore();
       let companies = companyStore.companies || [];
       if (!companies.length) {
@@ -436,12 +410,21 @@ export const useJobStore = defineStore("jobStore", () => {
           companyStore.companies = companies;
         }
       }
+
+      const job = await mockApi.fetchJobById(id);
+      console.log("Raw /jobs/:id response:", job);
+
+      if (!job || typeof job !== "object" || !job.id) {
+        console.error("Invalid /jobs/:id response structure:", job);
+        throw new Error("Invalid job data received");
+      }
+
       const company = companies.find((c) => c.id === job.company_id);
       return {
         ...job,
         companyName: company ? company.name : "Unknown Company",
-        companyLogo: company ? company.logo : null,
-        companyLocation: company ? company.location : null,
+        companyLogo: company ? company.brand_logo_thumbnail : null,
+        companyLocation: company ? company.headquarters_location : null,
       };
     } catch (err) {
       error.value = err.message || "Failed to fetch job";
@@ -450,6 +433,160 @@ export const useJobStore = defineStore("jobStore", () => {
     } finally {
       isLoading.value = false;
     }
+  }
+
+  function setSearchQuery(queryObj) {
+    searchQuery.value = {
+      ...searchQuery.value,
+      keyword: queryObj.keyword?.trim() || "",
+      location: queryObj.location?.trim() || "",
+      jobType: queryObj.employmentTypes || [],
+      tags: queryObj.categories || [],
+      techStacks: queryObj.techStacks || [], // Added
+      experience: queryObj.jobLevels || [],
+      salaryRange: queryObj.salaryRange || { min: "", max: "" },
+      remote: queryObj.remote ?? "",
+      sortBy: queryObj.sortBy || "relevance",
+      sortOrder: queryObj.sortOrder || "DESC",
+      fuzzySearch: queryObj.fuzzySearch || false,
+    };
+    currentPage.value = 1;
+    return fetchJobs();
+  }
+
+  function clearSearch() {
+    searchQuery.value = {
+      keyword: "",
+      location: "",
+      jobType: [],
+      tags: [],
+      techStacks: [], // Added
+      experience: [],
+      salaryRange: { min: "", max: "" },
+      remote: "",
+      sortBy: "relevance",
+      sortOrder: "DESC",
+      fuzzySearch: false,
+    };
+    currentPage.value = 1;
+
+    // Clear URL parameters by navigating to clean jobs page
+    const url = new URL(window.location);
+    url.search = ""; // Remove all query parameters
+    window.history.pushState({}, "", url.pathname); // Keep only the path, remove all params
+
+    return fetchJobs();
+  }
+
+  function updateFilters(filterType, value) {
+    if (filterType === "employmentTypes") {
+      searchQuery.value.jobType = value || [];
+    } else if (filterType === "categories") {
+      searchQuery.value.tags = value || [];
+    } else if (filterType === "techStacks") {
+      // Added
+      searchQuery.value.techStacks = value || [];
+    } else if (filterType === "jobLevels") {
+      searchQuery.value.experience = value || [];
+    } else if (filterType === "salaryRanges") {
+      const salaryRangeMap = {
+        range1: { min: "500", max: "1000" },
+        range2: { min: "1000", max: "1500" },
+        range3: { min: "1500", max: "2000" },
+        range4: { min: "3000", max: "" },
+      };
+      searchQuery.value.salaryRange = value.length
+        ? salaryRangeMap[value[0]]
+        : { min: "", max: "" };
+    } else if (filterType === "remote") {
+      searchQuery.value.remote = value ?? "";
+    }
+    currentPage.value = 1;
+    return fetchJobs();
+  }
+
+  function updatePage(page) {
+    currentPage.value = page;
+    window.scrollTo({ top: 0, behavior: "smooth" });
+    return fetchJobs();
+  }
+
+  function updatePerPage(perPage) {
+    itemsPerPage.value = perPage;
+    currentPage.value = 1;
+    return fetchJobs();
+  }
+
+  function updateUrl() {
+    const url = new URL(window.location);
+    const {
+      keyword,
+      location,
+      jobType,
+      tags,
+      techStacks,
+      experience,
+      salaryRange,
+      remote,
+      sortBy,
+      sortOrder,
+      fuzzySearch,
+    } = searchQuery.value;
+    url.searchParams.set("keyword", keyword || ""); // Updated from searchkeyparam
+    url.searchParams.set("location", location || "");
+    url.searchParams.set("jobType", jobType.length ? jobType.join(",") : "");
+    url.searchParams.set("tags", tags.length ? tags.join(",") : "");
+    url.searchParams.set(
+      "techStacks",
+      techStacks.length ? techStacks.join(",") : ""
+    );
+    url.searchParams.set(
+      "experience",
+      experience.length ? experience.join(",") : ""
+    );
+    url.searchParams.set("salaryMin", salaryRange.min || "");
+    url.searchParams.set("salaryMax", salaryRange.max || "");
+    url.searchParams.set(
+      "remote",
+      remote === true ? "true" : remote === false ? "false" : ""
+    );
+    url.searchParams.set("sortBy", sortBy || "relevance");
+    url.searchParams.set("sortOrder", sortOrder || "DESC");
+    url.searchParams.set("fuzzySearch", fuzzySearch.toString());
+    window.history.pushState({}, "", url);
+  }
+
+  function initializeFromUrl() {
+    const url = new URL(window.location);
+    searchQuery.value = {
+      keyword: url.searchParams.get("keyword") || "", // Updated from searchkeyparam
+      location: url.searchParams.get("location") || "",
+      jobType:
+        url.searchParams.get("jobType")?.split(",").filter(Boolean) || [],
+      tags: url.searchParams.get("tags")?.split(",").filter(Boolean) || [],
+      techStacks:
+        url.searchParams.get("techStacks")?.split(",").filter(Boolean) || [], // Added
+      experience:
+        url.searchParams.get("experience")?.split(",").filter(Boolean) || [],
+      salaryRange: {
+        min: url.searchParams.get("salaryMin") || "",
+        max: url.searchParams.get("salaryMax") || "",
+      },
+      remote:
+        url.searchParams.get("remote") === "true"
+          ? true
+          : url.searchParams.get("remote") === "false"
+          ? false
+          : "",
+      sortBy: url.searchParams.get("sortBy") || "relevance",
+      sortOrder: url.searchParams.get("sortOrder") || "DESC",
+      fuzzySearch: url.searchParams.get("fuzzySearch") === "true",
+    };
+  }
+
+  // Getters
+  const getJobById = async (id) => {
+    return fetchJobById(id);
   };
 
   const getAllJobs = () => {
@@ -459,18 +596,17 @@ export const useJobStore = defineStore("jobStore", () => {
   return {
     highDemandJobs,
     searchQuery,
-    selectedFilters,
     employmentTypes,
     categories,
     jobLevels,
     salaryRanges,
+    selectedFilters,
     jobs,
     currentPage,
     itemsPerPage,
     totalJobs,
     totalPages,
     hasFilters,
-    filteredJobs,
     isLoading,
     error,
     latestJobs,
