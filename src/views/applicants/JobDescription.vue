@@ -29,12 +29,12 @@
           <div
             class="company-logo rounded-3 d-flex align-items-center justify-content-center me-4"
           >
-            <img
+            <AvatarWithFallback
               :src="currentJob.companyLogo"
+              :name="currentJob.companyName || 'Company'"
               :alt="`${currentJob.companyName} logo`"
-              class="img-fluid rounded-3"
-              width="60"
-              height="60"
+              size="lg"
+              :rounded="true"
             />
           </div>
           <div>
@@ -153,9 +153,15 @@
         <div class="bg-white rounded-4 p-4 shadow-sm mb-4">
           <div class="d-flex align-items-center mb-3">
             <div
-              class="company-logo-sm rounded-3 d-flex align-items-center justify-content-center me-3 bg-secondary text-primary"
+              class="company-logo-sm rounded-3 d-flex align-items-center justify-content-center me-3"
             >
-              <span class="fw-bold">{{ currentJob.companyName }}</span>
+              <AvatarWithFallback
+                :src="currentJob.companyLogo"
+                :name="currentJob.companyName || 'Company'"
+                :alt="`${currentJob.companyName} logo`"
+                size="sm"
+                :rounded="true"
+              />
             </div>
             <h2 class="fs-5 fw-bold mb-0">{{ currentJob.companyName }}</h2>
           </div>
@@ -361,6 +367,7 @@ import { useCompanyStore } from "@/stores/companyStore";
 import JobCard from "@/components/findjob/JobCard.vue";
 import SimpleStatusModal from "@/components/job-description/SimpleStatusModal.vue";
 import JobApplicationModal from "@/components/job-description/JobApplicationModel.vue";
+import AvatarWithFallback from "@/components/common/AvatarWithFallback.vue";
 import { getApplicationStatus } from "@/components/services/applicationService";
 import {
   showSuccessToast,
@@ -444,9 +451,7 @@ const fetchJobData = async (jobId) => {
       location:
         jobData.location || companyData.headquarters_location || "Remote",
       type: jobData.job_type || "Full-time",
-      companyLogo:
-        companyData.brand_logo ||
-        "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-E8FQZgvdXeGyMD4bsP7uoI0UDcGJuH.png",
+      companyLogo: companyData.brand_logo || "",
       description: jobData.description || "No description available",
       salary: jobData.salary_range || "Competitive",
       postedDate: jobData.posted_at || new Date().toISOString(),

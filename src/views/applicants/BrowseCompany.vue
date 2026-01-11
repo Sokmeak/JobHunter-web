@@ -1,16 +1,6 @@
 <template>
   <div class="d-flex">
     <div class="container py-4">
-      <!-- <HeroSection
-        ref="heroSection"
-        :title="title"
-        :subtitle="subtitle"
-        :popular-tags="popularTags"
-        :placeholder="companyPlaceholder"
-        @search="handleSearch"
-        @clearSearch="clearSearch"
-      /> -->
-
       <!-- SearchJob component -->
       <SearchJob
         v-model="searchValue"
@@ -19,99 +9,63 @@
         @search="handleSearch"
       />
 
-      <SearchResultsPage
-        :context="context"
-        :initial-search-query="searchQuery.keyword"
-        @clear-search="clearSearch"
-      />
-    </div>
+      <!-- Show default content when no search query -->
+      <template v-if="!searchQuery.keyword && !searchQuery.location">
+        <RecommendedCompanyCardSection :context="context" />
+        <CompaniesByCategorySection />
+      </template>
 
-    <!-- search -->
+      <!-- Show search results when there is a search query -->
+      <template v-else>
+        <SearchResultsPage
+          :context="context"
+          :initial-search-query="searchQuery"
+          @clear-search="clearSearch"
+        />
+      </template>
+    </div>
   </div>
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
 import SearchJob from "@/components/sharecomponents/SearchJob.vue";
 import SearchResultsPage from "@/components/browsecompany/SearchResultsPage.vue";
+import RecommendedCompanyCardSection from "@/components/browsecompany/RecommendedCompanyCardSection.vue";
+import CompaniesByCategorySection from "@/components/browsecompany/CompaniesByCategorySection.vue";
+
 const context = "Applicant";
-// const companies = [
-//   {
-//     id: 1,
-//     name: "Stripe",
-//     logo: "https://logo.clearbit.com/Stripe.com",
-//     description:
-//       "Stripe is a software platform for starting and running internet businesses. Millions of businesses rely on Stripe's software tools...",
-//     jobCount: 7,
-//     tags: ["Business", "Payment gateway"],
-//   },
-//   {
-//     id: 2,
-//     name: "Truebill",
-//     logo: "https://logo.clearbit.com/Truebill.com",
-//     description:
-//       "Take control of your money. Truebill develops a mobile app that helps consumers take control of their financial...",
-//     jobCount: 7,
-//     tags: ["Business"],
-//   },
-//   {
-//     id: 3,
-//     name: "Square",
-//     logo: "https://logo.clearbit.com/Stripe.com",
-//     description:
-//       "Square builds common business tools in unconventional ways so more people can start, run, and grow their businesses.",
-//     jobCount: 7,
-//     tags: ["Business", "Blockchain"],
-//   },
-//   {
-//     id: 4,
-//     name: "Coinbase",
-//     logo: "https://logo.clearbit.com/Coinbase.com",
-//     description:
-//       "Coinbase is a digital currency wallet and platform where merchants and consumers can transact with new digital currencies.",
-//     jobCount: 7,
-//     tags: ["Business", "Blockchain"],
-//   },
-//   {
-//     id: 5,
-//     name: "Robinhood",
-//     logo: "https://logo.clearbit.com/Robinhood.com",
-//     description:
-//       "Robinhood is lowering barriers, removing fees, and providing greater access to financial information.",
-//     jobCount: 7,
-//     tags: ["Business"],
-//   },
-//   {
-//     id: 6,
-//     name: "Kraken",
-//     logo: "https://logo.clearbit.com/Kraken.com",
-//     description:
-//       "Based in San Francisco, Kraken is the world's largest global bitcoin exchange in euro volume and liquidity.",
-//     jobCount: 7,
-//     tags: ["Business", "Blockchain"],
-//   },
-// ];
 
 const searchQuery = ref({ keyword: "", location: "" });
-
+const searchValue = ref("");
 const placeholder = ref("Company or Organization name...");
+const searchJobComponent = ref(null);
+
+// Initialize search query from URL on mount
+onMounted(() => {
+  const urlParams = new URLSearchParams(window.location.search);
+  const keyword = urlParams.get("keyword") || "";
+  const location = urlParams.get("location") || "";
+  if (keyword || location) {
+    searchQuery.value = { keyword, location };
+    searchValue.value = keyword;
+  }
+});
 
 // Event Handlers
 function handleSearch(query) {
   searchQuery.value.keyword = query;
+  searchQuery.value.location = "";
   console.log("Search query:", searchQuery.value);
-
-  // Update URL with search query
-  const url = new URL(window.location);
-  url.searchParams.set("q", query);
-  window.history.pushState({}, "", url);
+  updateUrl();
 }
 
 function clearSearch() {
   searchQuery.value = { keyword: "", location: "" };
+  searchValue.value = "";
   updateUrl();
-  console.log("Clear is trigger : ");
-  heroSection.value?.clearSearch(); // Programmatically clear search inputs
+  console.log("Clear search triggered");
+  searchJobComponent.value?.clearSearch(); // Programmatically clear search inputs
 }
 
 function updateUrl() {
@@ -126,6 +80,8 @@ function updateUrl() {
   } else {
     url.searchParams.delete("location");
   }
+  // Remove legacy parameters
+  url.searchParams.delete("q");
   window.history.pushState({}, "", url);
 }
 </script>

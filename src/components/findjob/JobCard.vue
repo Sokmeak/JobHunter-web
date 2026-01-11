@@ -2,17 +2,14 @@
   <div class="card" @mouseover="handleHover(job.id)">
     <div class="card-body">
       <div class="d-flex align-items-center">
-        <div class="me-3" style="width: 48px; height: 48px">
-          <div
-            class="bg-light rounded d-flex align-items-center justify-content-center h-100"
-          >
-            <img
-              :src="job.companyLogo"
-              :alt="`${job.company} logo`"
-              class="img-fluid"
-              style="max-width: 40px; max-height: 40px"
-            />
-          </div>
+        <div class="me-3">
+          <AvatarWithFallback
+            :src="job.companyLogo"
+            :name="job.companyName || job.company || 'Company'"
+            :alt="`${job.companyName || job.company} logo`"
+            size="md"
+            :rounded="true"
+          />
         </div>
 
         <div class="flex-grow-1">
@@ -72,6 +69,7 @@
 import { defineProps } from "vue";
 import { computed } from "vue";
 import { RouterLink } from "vue-router";
+import AvatarWithFallback from "@/components/common/AvatarWithFallback.vue";
 
 const props = defineProps({
   job: Object,

@@ -68,7 +68,14 @@
             </td>
             <td>
               <div class="d-flex align-items-center">
-                <img :src="applicant.avatar" :alt="applicant.name" class="rounded-circle me-3 applicant-avatar">
+                <AvatarWithFallback
+                  :src="applicant.avatar"
+                  :name="applicant.name || 'User'"
+                  :alt="applicant.name"
+                  size="sm"
+                  :circle="true"
+                  class="me-3"
+                />
                 <div>
                   <div class="fw-medium">{{ applicant.name }}</div>
                   <small class="text-muted">{{ applicant.location }}</small>
@@ -142,6 +149,7 @@
 
 <script setup>
 import { ref, computed, inject } from 'vue'
+import AvatarWithFallback from '../../common/AvatarWithFallback.vue'
 
 defineEmits(['switchView'])
 

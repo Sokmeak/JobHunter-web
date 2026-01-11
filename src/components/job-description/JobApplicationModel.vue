@@ -11,12 +11,12 @@
           <div class="modal-header border-0 pb-0">
             <div class="d-flex align-items-center gap-3">
               <div class="company-logo">
-                <img
+                <AvatarWithFallback
                   :src="job.companyLogo || defaultCompanyLogo"
+                  :name="job.company || 'Company'"
                   :alt="`${job.company} logo`"
-                  class="rounded"
-                  width="48"
-                  height="48"
+                  size="md"
+                  :rounded="true"
                 />
               </div>
               <div>
@@ -406,6 +406,7 @@
 
 <script setup>
 import { ref, reactive, computed, onMounted, onUnmounted, watch } from "vue";
+import AvatarWithFallback from "../common/AvatarWithFallback.vue";
 import { useApplicationStore } from "@/stores/ApplicantStore/Applications";
 import { useUserProfileStore } from "@/stores/ApplicantStore/userProfile";
 

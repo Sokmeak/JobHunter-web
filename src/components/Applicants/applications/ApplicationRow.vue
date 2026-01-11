@@ -1,14 +1,16 @@
 <template>
-  <div 
-    class="table-row"
-    :class="{ 'odd-row': isOdd }"
-    @click="$emit('click')"
-  >
+  <div class="table-row" :class="{ 'odd-row': isOdd }" @click="$emit('click')">
     <div class="cell index-cell">{{ application.id }}</div>
     <div class="cell company-cell">
       <div class="company-info">
         <div class="company-logo">
-          <img :src="application.companyLogo" :alt="application.companyName" />
+          <AvatarWithFallback
+            :src="application.companyLogo"
+            :name="application.companyName || 'Company'"
+            :alt="application.companyName"
+            size="sm"
+            :rounded="true"
+          />
         </div>
         <span>{{ application.companyName }}</span>
       </div>
@@ -20,7 +22,17 @@
     </div>
     <div class="cell actions-cell">
       <button class="action-button" @click.stop="$emit('action-menu')">
-        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="20"
+          height="20"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
           <circle cx="12" cy="12" r="1"></circle>
           <circle cx="19" cy="12" r="1"></circle>
           <circle cx="5" cy="12" r="1"></circle>
@@ -31,23 +43,25 @@
 </template>
 
 <script>
-import StatusBadge from './StatusBadge.vue';
+import StatusBadge from "./StatusBadge.vue";
+import AvatarWithFallback from "../../common/AvatarWithFallback.vue";
 
 export default {
-  name: 'ApplicationRow',
+  name: "ApplicationRow",
   components: {
-    StatusBadge
+    StatusBadge,
+    AvatarWithFallback,
   },
   props: {
     application: {
       type: Object,
-      required: true
+      required: true,
     },
     isOdd: {
       type: Boolean,
-      default: false
-    }
-  }
+      default: false,
+    },
+  },
 };
 </script>
 
@@ -65,7 +79,7 @@ export default {
 }
 
 .odd-row {
-  background-color: #F8F8FD;
+  background-color: #f8f8fd;
 }
 
 .odd-row:hover {

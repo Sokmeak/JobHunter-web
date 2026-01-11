@@ -7,13 +7,12 @@
       <div class="d-flex justify-content-between align-items-start mb-3">
         <div class="d-flex align-items-center">
           <div class="company-logo me-3">
-            <img
+            <AvatarWithFallback
               :src="job.companyLogo"
-              :alt="job.company"
-              class="rounded-2 border"
-              width="48"
-              height="48"
-              loading="lazy"
+              :name="job.companyName || job.company || 'Company'"
+              :alt="job.companyName || job.company"
+              size="md"
+              :rounded="true"
             />
           </div>
           <div>
@@ -99,6 +98,7 @@
 <script setup>
 import { ref, computed } from "vue";
 import { RouterLink } from "vue-router";
+import AvatarWithFallback from "@/components/common/AvatarWithFallback.vue";
 
 // Props definition
 const props = defineProps({
